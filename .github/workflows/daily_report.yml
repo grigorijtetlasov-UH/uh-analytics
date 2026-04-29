@@ -1,0 +1,58 @@
+name: Daily UH Analytics
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # 08:00 за Києвом (UTC+2)
+  workflow_dispatch:      # можна запустити вручну
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Restore GA4 service account key
+        run: echo '${{ secrets.GA4_CREDENTIALS_JSON }}' > ga4-service-account.json
+
+      - name: Fetch data
+        env:
+          API_URL:         ${{ secrets.API_URL }}
+          API_URL_SH:      ${{ secrets.API_URL_SH }}
+          API_SH_USER:     ${{ secrets.API_SH_USER }}
+          API_SH_PASS:     ${{ secrets.API_SH_PASS }}
+          SD_API_KEY:      ${{ secrets.SD_API_KEY }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GA4_CREDENTIALS: ga4-service-account.json
+          META_TOKEN_BM1:  ${{ secrets.META_TOKEN_BM1 }}
+          META_TOKEN_BM2:  ${{ secrets.META_TOKEN_BM2 }}
+        run: python fetch_data.py
+
+      - name: Generate dashboard
+        run: python generate_dashboard.py
+
+      - name: Cleanup secrets
+        if: always()
+        run: rm -f ga4-service-account.json
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add history/ docs/
+          git diff --staged --quiet || git commit -m "Daily report $(date +%Y-%m-%d)"
+          git push
+
