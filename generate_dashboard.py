@@ -147,7 +147,12 @@ def build_html(data: dict, history: list) -> str:
     sh_sales_podr  = sh.get("SALES",  {}).get("day", {}).get("by_podr", {})
 
     # ── Менеджери CRM ──
-    managers = crm.get("managers", [])
+    managers       = crm.get("managers", [])
+    managers_shop  = crm.get("managers_shop", [])
+    crm_sites      = crm.get("sites", {})
+    crm_products   = crm.get("products", [])
+    crm_refuse     = crm.get("refuse_reasons", {})
+    crm_statuses   = crm.get("statuses", {})
 
     # ── Топ кампанії Meta ──
     meta_campaigns = meta.get("by_campaign", [])[:10]
@@ -171,7 +176,12 @@ def build_html(data: dict, history: list) -> str:
         "sh_orders_podr": sh_orders_podr,
         "uh_sales_podr":  uh_sales_podr,
         "sh_sales_podr":  sh_sales_podr,
-        "managers":    managers,
+        "managers":     managers,
+        "managers_shop": managers_shop,
+        "crm_sites":    crm_sites,
+        "crm_products": crm_products,
+        "crm_refuse":   crm_refuse,
+        "crm_statuses": crm_statuses,
         "meta_camps":  meta_campaigns,
         "ga4_sources": ga4_sources,
         "ga4_pages":   ga4_pages,
@@ -326,24 +336,76 @@ tr:hover td{background:rgba(108,92,231,.05)}
 
 <!-- ════════ CRM ════════ -->
 <div class="pnl" id="p-crm">
-  <div class="cd">
-    <div class="ct"><span class="dot"></span>SalesDrive — Менеджери</div>
-    <div class="cd-d">Виручка, замовлення та відмови по кожному менеджеру за день.</div>
-    <div class="scr">
-      <table>
-        <thead><tr>
-          <th>Менеджер</th>
-          <th class="r">Замовлень</th>
-          <th class="r">Виручка ₴</th>
-          <th class="r">Відмов</th>
-          <th class="r">% Відмов</th>
-        </tr></thead>
-        <tbody id="mgrBody"></tbody>
-      </table>
+  <div class="g2">
+    <div class="cd">
+      <div class="ct"><span class="dot"></span>Менеджери (онлайн)</div>
+      <div class="cd-d">Виручка, замовлення та відмови по кожному менеджеру за день.</div>
+      <div class="scr" style="max-height:380px">
+        <table>
+          <thead><tr>
+            <th>Менеджер</th>
+            <th class="r">Зам.</th>
+            <th class="r">Виручка</th>
+            <th class="r">Відмов</th>
+            <th class="r">%</th>
+          </tr></thead>
+          <tbody id="mgrBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="cd">
+      <div class="ct"><span class="dot" style="background:#66d9e8"></span>Менеджери на магазині</div>
+      <div class="cd-d">Шоу-руми та оффлайн магазини.</div>
+      <div class="scr" style="max-height:380px">
+        <table>
+          <thead><tr>
+            <th>Менеджер</th>
+            <th class="r">Замовлень</th>
+            <th class="r">Виручка ₴</th>
+          </tr></thead>
+          <tbody id="mgrShopBody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
+
+  <div class="g2">
+    <div class="cd">
+      <div class="ct"><span class="dot" style="background:var(--g)"></span>Сайти / канали продажу</div>
+      <div class="cd-d">Розподіл замовлень і виручки по каналах.</div>
+      <div id="crmSites"></div>
+    </div>
+    <div class="cd">
+      <div class="ct"><span class="dot" style="background:var(--o)"></span>Топ товарів</div>
+      <div class="cd-d">ТОП-20 товарів по виручці за день.</div>
+      <div class="scr" style="max-height:380px">
+        <table>
+          <thead><tr>
+            <th>Товар</th>
+            <th class="r">К-сть</th>
+            <th class="r">Виручка ₴</th>
+          </tr></thead>
+          <tbody id="crmProducts"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="cd">
+      <div class="ct"><span class="dot" style="background:var(--r)"></span>Причини відмов</div>
+      <div class="cd-d">Топ причин чому клієнти відмовляються.</div>
+      <canvas id="chRefuse"></canvas>
+    </div>
+    <div class="cd">
+      <div class="ct"><span class="dot" style="background:var(--ac2)"></span>Статуси замовлень</div>
+      <div class="cd-d">Розподіл по всіх статусах за день.</div>
+      <canvas id="chStatuses"></canvas>
+    </div>
+  </div>
+
   <div class="cd">
-    <div class="ct"><span class="dot" style="background:var(--b)"></span>CRM Замовлення (історія)</div>
+    <div class="ct"><span class="dot" style="background:var(--b)"></span>CRM Замовлення — історія</div>
     <canvas id="chCrm"></canvas>
   </div>
 </div>
@@ -524,11 +586,90 @@ if (mgrBody) {
       return `<tr>
         <td>${m.name}</td>
         <td class="r num">${m.orders}</td>
-        <td class="r num">${m.revenue.toLocaleString('uk').replace(/,/g,' ')}</td>
+        <td class="r num">${(m.revenue/1000).toFixed(0)}K</td>
         <td class="r num">${m.refused}</td>
         <td class="r"><span class="badge ${refuseBadge}">${m.refuse_pct.toFixed(1)}%</span></td>
       </tr>`;
     }).join('');
+  }
+}
+
+// ═══════════════════════════ MANAGERS SHOP ════════════════
+const mgrShopBody = document.getElementById('mgrShopBody');
+if (mgrShopBody) {
+  if (!D.managers_shop || !D.managers_shop.length) {
+    mgrShopBody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--td)">Немає даних</td></tr>';
+  } else {
+    mgrShopBody.innerHTML = D.managers_shop.map(m => `<tr>
+      <td>${m.name}</td>
+      <td class="r num">${m.orders}</td>
+      <td class="r num">${m.revenue.toLocaleString('uk').replace(/,/g,' ')}</td>
+    </tr>`).join('');
+  }
+}
+
+// ═══════════════════════════ CRM SITES ═══════════════════
+const crmSites = document.getElementById('crmSites');
+if (crmSites) {
+  const entries = Object.entries(D.crm_sites || {}).sort((a,b) => b[1].revenue - a[1].revenue);
+  if (!entries.length) {
+    crmSites.innerHTML = '<div style="text-align:center;color:var(--td);padding:20px">Немає даних</div>';
+  } else {
+    const max = entries[0][1].revenue || 1;
+    crmSites.innerHTML = entries.map(([name, s]) => {
+      const pct = Math.max(2, Math.round(s.revenue / max * 100));
+      return `<div class="bar-row">
+        <div class="bar-name" title="${name}">${name}</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:linear-gradient(90deg,var(--g),#34d399)"></div></div>
+        <div class="bar-val">${(s.revenue/1000).toFixed(0)}K · ${s.orders}</div>
+      </div>`;
+    }).join('');
+  }
+}
+
+// ═══════════════════════════ CRM PRODUCTS ═════════════════
+const crmProducts = document.getElementById('crmProducts');
+if (crmProducts) {
+  if (!D.crm_products || !D.crm_products.length) {
+    crmProducts.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--td)">Немає даних</td></tr>';
+  } else {
+    crmProducts.innerHTML = D.crm_products.map(p => `<tr>
+      <td title="${p.name}">${p.name.length > 50 ? p.name.substr(0,50)+'...' : p.name}</td>
+      <td class="r num">${p.count}</td>
+      <td class="r num">${(p.revenue/1000).toFixed(1)}K</td>
+    </tr>`).join('');
+  }
+}
+
+// ═══════════════════════════ REFUSE REASONS ═══════════════
+const chRefuse = document.getElementById('chRefuse');
+if (chRefuse) {
+  const reasons = Object.entries(D.crm_refuse || {}).sort((a,b) => b[1] - a[1]);
+  if (reasons.length) {
+    new Chart(chRefuse, {
+      type: 'bar',
+      data: {
+        labels: reasons.map(r => r[0].length > 25 ? r[0].substr(0,25)+'...' : r[0]),
+        datasets: [{ label: 'Кількість', data: reasons.map(r => r[1]), backgroundColor: 'rgba(255,107,107,0.7)', borderColor: '#ff6b6b', borderWidth: 1, borderRadius: 4 }]
+      },
+      options: { ...COMMON, indexAxis: 'y', plugins: { ...COMMON.plugins, legend: { display: false } } }
+    });
+  }
+}
+
+// ═══════════════════════════ STATUSES ═════════════════════
+const chStatuses = document.getElementById('chStatuses');
+if (chStatuses) {
+  const statuses = Object.entries(D.crm_statuses || {}).sort((a,b) => b[1] - a[1]).slice(0, 12);
+  if (statuses.length) {
+    new Chart(chStatuses, {
+      type: 'doughnut',
+      data: {
+        labels: statuses.map(s => s[0]),
+        datasets: [{ data: statuses.map(s => s[1]), backgroundColor: ['#6c5ce7','#00d68f','#ffa94d','#339af0','#ff6b6b','#a29bfe','#20c997','#da77f2','#66d9e8','#fd7e14','#ff8787','#94d82d'], borderWidth: 2, borderColor: '#151929' }]
+      },
+      options: { ...COMMON, scales: {}, cutout: '55%', plugins: { ...COMMON.plugins, legend: { position: 'right', labels: { font: { size: 10 }, padding: 8, usePointStyle: true } } } }
+    });
   }
 }
 

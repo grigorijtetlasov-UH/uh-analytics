@@ -18,6 +18,7 @@ import re
 import base64
 import csv
 import io
+import glob
 import requests
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -31,7 +32,11 @@ API_URL_SH_WD = os.getenv("API_URL_SH_WD", "https://saleshub1.apic.com.ua:8443/m
 API_SH_USER = os.getenv("API_SH_USER", "WS")
 API_SH_PASS = os.getenv("API_SH_PASS", "q1w2E#")
 
-# SalesDrive CRM
+# SalesDrive CRM (Excel-вигрузка)
+CRM_DATA_DIR = Path("data/crm")
+CRM_DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+# (deprecated) SalesDrive API
 SD_API_KEY  = os.getenv("SD_API_KEY", "l-gTmE_eWopdwozFM9AW78imyzIMOErc52dBd8tTCGXBeTE_TeFvcs6AhjHC4A2kKTVCoL3ufp5fZ7xhRIZ1pU-rpD1GckOAkHEq")
 SD_BASE_URL = "https://matrasroll.salesdrive.me"
 
@@ -41,10 +46,13 @@ GSHEET_URL = f"https://docs.google.com/spreadsheets/d/{GSHEET_ID}/export?format=
 
 
 # Meta Ads
+META_TOKEN_BM1 = os.getenv("META_TOKEN_BM1", "EAAOJViuNgBgBRZArQ2iCiHZCHNj0YGRZCL5LOH0GYDQczs63XLz88BZBDR6wpxNbYfOy7mpHOZCAfHBtltbIVZBwkV9zbqOBTVObYTkPN6WlsOAUgvDPL1evn3eNskpL4n47aQOHRqqtRzkZCPZBDTZAHZBA4MsVzPZA2IaIRXFuhgfijXkE9ZAea57tUZCVIxFNe7UIzOgZDZD")
+META_TOKEN_BM2 = os.getenv("META_TOKEN_BM2", "EAAyQRTaR3igBRT9cEqsf4uBeNNAa8uPnaGnKkEDQdp01JxAPBOLgY3TWZBrdOmUBYdwv1lIQ3jqlyfQEO5VInfE0utqKCLkJs091QEmAli5EbbvkC05GOxeYCLsrIefhZCLm3L8aEsWRQMk28lS9CIFJp2cOWKPKVDKo60BFYQ7gWzELgWTbB8SSmMfGCgVC4tC8rPCW9M7iZBXZApm0ZCQqUCRs3SeU4aPmN530M")
+
 META_ACCOUNTS = [
-    {"id": "498543759542047",  "name": "Amebli 2024",     "token": "EAAOJViuNgBgBRZArQ2iCiHZCHNj0YGRZCL5LOH0GYDQczs63XLz88BZBDR6wpxNbYfOy7mpHOZCAfHBtltbIVZBwkV9zbqOBTVObYTkPN6WlsOAUgvDPL1evn3eNskpL4n47aQOHRqqtRzkZCPZBDTZAHZBA4MsVzPZA2IaIRXFuhgfijXkE9ZAea57tUZCVIxFNe7UIzOgZDZD"},
-    {"id": "785104883775481",  "name": "Amebli",          "token": "EAAyQRTaR3igBRT9cEqsf4uBeNNAa8uPnaGnKkEDQdp01JxAPBOLgY3TWZBrdOmUBYdwv1lIQ3jqlyfQEO5VInfE0utqKCLkJs091QEmAli5EbbvkC05GOxeYCLsrIefhZCLm3L8aEsWRQMk28lS9CIFJp2cOWKPKVDKo60BFYQ7gWzELgWTbB8SSmMfGCgVC4tC8rPCW9M7iZBXZApm0ZCQqUCRs3SeU4aPmN530M"},
-    {"id": "1071880631226950", "name": "MatrasRoll 2024", "token": "EAAyQRTaR3igBRT9cEqsf4uBeNNAa8uPnaGnKkEDQdp01JxAPBOLgY3TWZBrdOmUBYdwv1lIQ3jqlyfQEO5VInfE0utqKCLkJs091QEmAli5EbbvkC05GOxeYCLsrIefhZCLm3L8aEsWRQMk28lS9CIFJp2cOWKPKVDKo60BFYQ7gWzELgWTbB8SSmMfGCgVC4tC8rPCW9M7iZBXZApm0ZCQqUCRs3SeU4aPmN530M"},
+    {"id": "498543759542047",  "name": "Amebli 2024",     "token": META_TOKEN_BM1},
+    {"id": "785104883775481",  "name": "Amebli",          "token": META_TOKEN_BM2},
+    {"id": "1071880631226950", "name": "MatrasRoll 2024", "token": META_TOKEN_BM2},
 ]
 META_API_VERSION = "v19.0"
 # Google Analytics 4
@@ -221,211 +229,168 @@ def sd_get(endpoint: str, params: dict = None) -> dict:
     r.raise_for_status()
     return r.json()
 
-# Статуси SalesDrive
-SD_STATUSES = {
-    1:  "Нова",          2:  "В обробці",      3:  "Контроль оператора",
-    4:  "Відправлено",   5:  "Отримано",        6:  "Відмова (не відпр)",
-    7:  "Рекламація",    8:  "Видалений",       9:  "Контроль оплати",
-    12: "Спам/Дубль",   14: "Недозвон",        15: "Питання по замовленню",
-    16: "Відмова (відпр)", 17: "Внесено в 1С", 18: "Лід (не купив)",
-    19: "Сервісний дзвінок", 20: "Перепродзвон", 21: "Автовідповідач",
-    22: "Прозвон обробки",   23: "Виправити дані", 24: "Лід недодзвон",
-    33: "Лід ЧАТИ",     34: "Перенесено UH",   35: "Обробка Чати",
-    36: "Створена ТТН",  37: "Їде до клієнта",  38: "Прибув у відділення",
-    39: "Переадресація", 40: "Закінч. термін",  41: "Виробництво",
-    42: "Йде на шоу-рум", 51: "Повторне звернення", 69: "В виробництві",
-    70: "В черзі відпр",   75: "Рекламний спам",    77: "На прорахунку",
-    79: "Створена з TG",   80: "Спам на узгодження",
-}
-# Групи статусів
-SD_LEADS    = {1, 2, 18, 20, 21, 22, 24, 33}          # ліди
-SD_ORDERS   = {3, 4, 5, 9, 15, 17, 36, 37, 38, 42, 69, 70}  # замовлення
-SD_REFUSED  = {6, 16, 7}                               # відмови
-SD_SPAM     = {8, 12, 75, 80}                          # виключаємо
-
 def fetch_salesdrive(date_str: str) -> dict:
     """
-    date_str — YYYY-MM-DD
-    Фільтрує по полю orderTime (реальне поле дати в SalesDrive API)
-    """
-    result = {"date": date_str, "orders": {}, "leads": {}, "managers": [], "statuses": {}, "error": None}
-    try:
-        # Завантажуємо всі замовлення з пагінацією, фільтруємо по orderTime на стороні клієнта
-        all_orders = []
-        page = 1
-        while True:
-            resp = sd_get("/api/order/list/", {"limit": 100, "page": page})
-            batch = resp.get("data", resp.get("list", []))
-            if not batch:
-                break
-            # Фільтр по orderTime == date_str
-            day_orders = [o for o in batch if str(o.get("orderTime", ""))[:10] == date_str]
-            all_orders.extend(day_orders)
-            # Якщо перший запис вже старіший — зупиняємось
-            if batch:
-                oldest = str(batch[-1].get("orderTime", ""))[:10]
-                if oldest < date_str:
-                    break
-            if len(batch) < 100:
-                break
-            page += 1
-            if page > 20:
-                break
+    Читає останній xlsx файл з папки data/crm/.
+    Фільтрує по даті date_str (YYYY-MM-DD) колонкою "Дата".
 
-        total_revenue = 0.0
-        status_counts = {}
-        manager_stats = {}
-        refused = 0
-        leads_count = 0
-        orders_count = 0
-
-        for o in all_orders:
-            status_id = int(o.get("statusId") or 0)
-            # Пропускаємо спам
-            if status_id in SD_SPAM:
-                continue
-
-            status_name = SD_STATUSES.get(status_id, f"Статус {status_id}")
-            revenue = safe_float(o.get("leadsSalesAmount") or o.get("paymentAmount") or 0)
-
-            # Рахуємо тільки замовлення (не ліди) у виручку
-            if status_id in SD_ORDERS or status_id in SD_REFUSED:
-                total_revenue += revenue
-                orders_count += 1
-            if status_id in SD_LEADS:
-                leads_count += 1
-            if status_id in SD_REFUSED:
-                refused += 1
-
-            status_counts[status_name] = status_counts.get(status_name, 0) + 1
-
-            # Менеджер — беремо з formId як ідентифікатор (userId порожній)
-            mgr_id = str(o.get("userId") or o.get("formId") or "?")
-            mgr_name = f"Менеджер {mgr_id}"
-            if mgr_id not in manager_stats:
-                manager_stats[mgr_id] = {"name": mgr_name, "orders": 0, "revenue": 0.0, "refused": 0}
-            if status_id in SD_ORDERS or status_id in SD_REFUSED:
-                manager_stats[mgr_id]["orders"] += 1
-                manager_stats[mgr_id]["revenue"] += revenue
-            if status_id in SD_REFUSED:
-                manager_stats[mgr_id]["refused"] += 1
-
-        result["orders"] = {
-            "total":      orders_count,
-            "revenue":    round(total_revenue, 2),
-            "refused":    refused,
-            "refuse_pct": round(refused / max(orders_count, 1) * 100, 1),
-            "leads":      leads_count,
-        }
-        result["leads"]    = {"new_leads": leads_count}
-        result["statuses"] = status_counts
-        result["managers"] = [
-            {"name": s["name"], "orders": s["orders"], "revenue": round(s["revenue"], 2),
-             "refused": s["refused"], "refuse_pct": round(s["refused"] / max(s["orders"], 1) * 100, 1)}
-            for s in sorted(manager_stats.values(), key=lambda x: x["revenue"], reverse=True)
-        ]
-    except Exception as e:
-        result["error"] = str(e)
-        print(f"  ⚠️  SalesDrive помилка: {e}")
-    return result
-
-
-# ──────────────────────── GOOGLE SHEETS ───────────────────────
-
-def fetch_gsheet(date_str: str) -> dict:
-    """
-    Завантажує дані GA4 + Meta з Google Sheets за конкретну дату.
-    Колонки: Day | Source | Campaign | Sessions | Total users |
-             Ads cost | Ads clicks | Ads cost per click
+    Очікувані колонки в Excel:
+      Дата, Менеджер, Сайт, Сума, Статус, Назва [Товари/Послуги],
+      Причина відмови ?, Менеджер на магазині, UTM_SOURCE_Чат
     """
     result = {
-        "date":     date_str,
-        "sessions": 0,
-        "users":    0,
-        "ads_cost": 0.0,
-        "ads_clicks": 0,
-        "cpc":      0.0,
-        "by_source":   {},
-        "by_campaign": {},
-        "error":    None
+        "date": date_str,
+        "source_file": None,
+        "orders": {},
+        "leads": {},
+        "managers": [],
+        "managers_shop": [],
+        "statuses": {},
+        "sites": {},
+        "products": [],
+        "refuse_reasons": {},
+        "error": None
     }
+
     try:
-        r = requests.get(GSHEET_URL, timeout=(5, 30))
-        r.raise_for_status()
+        import pandas as pd
 
-        # Парсимо CSV (перший рядок — заголовок таблиці, другий — колонки)
-        lines = r.content.decode("utf-8")
-        reader = csv.reader(io.StringIO(lines))
-        next(reader)  # пропускаємо рядок з назвою таблиці
-        headers = next(reader)  # Day, Source, Campaign, Sessions, ...
+        # Знаходимо найсвіжіший xlsx у папці data/crm/
+        files = sorted(CRM_DATA_DIR.glob("*.xlsx"), key=lambda f: f.stat().st_mtime, reverse=True)
+        if not files:
+            result["error"] = f"Немає файлів у {CRM_DATA_DIR}/"
+            print(f"  ⚠️  CRM Excel: {result['error']}")
+            return result
 
-        # Індекси колонок
-        idx = {h.strip(): i for i, h in enumerate(headers)}
+        latest = files[0]
+        result["source_file"] = latest.name
+        print(f"     📂 Читаю файл: {latest.name}")
 
-        total_sessions = 0
-        total_users    = 0
-        total_cost     = 0.0
-        total_clicks   = 0
-        by_source      = {}
-        by_campaign    = {}
+        df = pd.read_excel(latest)
 
-        for row in reader:
-            if not row or not row[0]:
-                continue
-            row_date = row[idx.get("Day", 0)].strip()
-            if row_date != date_str:
-                continue
+        # Парсимо дату
+        df["_дата"] = pd.to_datetime(df["Дата"], errors="coerce")
+        df["_день"] = df["_дата"].dt.strftime("%Y-%m-%d")
 
-            source   = row[idx.get("Source", 1)].strip()
-            campaign = row[idx.get("Campaign", 2)].strip()
-            sessions = int(row[idx.get("Sessions", 3)] or 0)
-            users    = int(row[idx.get("Total users", 4)] or 0)
+        # Фільтр на потрібну дату
+        day_df = df[df["_день"] == date_str].copy()
 
-            # Витрати — прибираємо $ та пробіли
-            cost_raw = row[idx.get("Ads cost", 5)].replace("$","").replace(",",".").strip()
-            cost     = safe_float(cost_raw)
-            clicks   = int(row[idx.get("Ads clicks", 6)] or 0)
+        if day_df.empty:
+            print(f"     ⚠️  Замовлень за {date_str} в файлі немає")
+            result["error"] = f"Немає рядків за {date_str}"
+            return result
 
-            total_sessions += sessions
-            total_users    += users
-            total_cost     += cost
-            total_clicks   += clicks
+        total_orders  = len(day_df)
+        total_revenue = float(day_df["Сума"].fillna(0).sum())
 
-            # Агрегація по джерелах
-            if source not in by_source:
-                by_source[source] = {"sessions": 0, "cost": 0.0, "clicks": 0}
-            by_source[source]["sessions"] += sessions
-            by_source[source]["cost"]     += cost
-            by_source[source]["clicks"]   += clicks
+        # ── Статуси ──
+        status_counts = day_df["Статус"].fillna("Невідомо").value_counts().to_dict()
+        result["statuses"] = status_counts
 
-            # Агрегація по кампаніях (тільки платні)
-            if cost > 0 and campaign and campaign not in ["(not set)", "(direct)"]:
-                if campaign not in by_campaign:
-                    by_campaign[campaign] = {"sessions": 0, "cost": 0.0, "clicks": 0}
-                by_campaign[campaign]["sessions"] += sessions
-                by_campaign[campaign]["cost"]     += cost
-                by_campaign[campaign]["clicks"]   += clicks
+        # ── Ліди / Замовлення / Відмови (за статусом) ──
+        leads_keywords    = ["лід", "недодзвон", "перепродзвон", "автовідповідач", "прозвон обробки", "обробці"]
+        refused_keywords  = ["відмова", "відмов"]
+        order_keywords    = ["отримано", "відправлено", "їде", "ттн", "контроль", "1с", "виробництв", "черз"]
+        spam_keywords     = ["спам", "видалений", "дубль"]
 
-        cpc = round(total_cost / max(total_clicks, 1), 2)
+        def categorize(s):
+            sl = str(s).lower()
+            if any(k in sl for k in spam_keywords):    return "spam"
+            if any(k in sl for k in refused_keywords): return "refused"
+            if any(k in sl for k in leads_keywords):   return "lead"
+            if any(k in sl for k in order_keywords):   return "order"
+            return "other"
 
-        result["sessions"]    = total_sessions
-        result["users"]       = total_users
-        result["ads_cost"]    = round(total_cost, 2)
-        result["ads_clicks"]  = total_clicks
-        result["cpc"]         = cpc
-        result["by_source"]   = dict(sorted(
-            by_source.items(), key=lambda x: x[1]["sessions"], reverse=True
-        )[:10])
-        result["by_campaign"] = dict(sorted(
-            by_campaign.items(), key=lambda x: x[1]["cost"], reverse=True
-        )[:10])
+        day_df["_категорія"] = day_df["Статус"].fillna("").apply(categorize)
+
+        leads_count   = (day_df["_категорія"] == "lead").sum()
+        orders_count  = (day_df["_категорія"] == "order").sum()
+        refused_count = (day_df["_категорія"] == "refused").sum()
+        spam_count    = (day_df["_категорія"] == "spam").sum()
+
+        # Ефективні (не спам)
+        valid = day_df[day_df["_категорія"] != "spam"]
+
+        result["orders"] = {
+            "total":      int(orders_count + refused_count),
+            "revenue":    round(float(valid[valid["_категорія"].isin(["order", "refused"])]["Сума"].fillna(0).sum()), 2),
+            "refused":    int(refused_count),
+            "refuse_pct": round(refused_count / max(orders_count + refused_count, 1) * 100, 1),
+            "spam":       int(spam_count),
+            "all_rows":   int(total_orders),
+        }
+        result["leads"] = {"new_leads": int(leads_count)}
+
+        # ── Менеджери (онлайн) ──
+        mgr_df = valid[valid["Менеджер"].notna()]
+        managers_agg = mgr_df.groupby("Менеджер").agg(
+            orders=("Сума", "count"),
+            revenue=("Сума", lambda x: float(x.fillna(0).sum())),
+        ).reset_index()
+        # Відмови по менеджерах
+        refused_by_mgr = mgr_df[mgr_df["_категорія"] == "refused"].groupby("Менеджер").size().to_dict()
+        managers_agg["refused"] = managers_agg["Менеджер"].map(refused_by_mgr).fillna(0).astype(int)
+        managers_agg["refuse_pct"] = (managers_agg["refused"] / managers_agg["orders"].replace(0, 1) * 100).round(1)
+
+        result["managers"] = [
+            {"name": r["Менеджер"], "orders": int(r["orders"]),
+             "revenue": round(r["revenue"], 2),
+             "refused": int(r["refused"]), "refuse_pct": float(r["refuse_pct"])}
+            for _, r in managers_agg.sort_values("revenue", ascending=False).iterrows()
+        ]
+
+        # ── Менеджери на магазині ──
+        if "Менеджер на магазині" in day_df.columns:
+            shop_df = valid[valid["Менеджер на магазині"].notna()]
+            shop_agg = shop_df.groupby("Менеджер на магазині").agg(
+                orders=("Сума", "count"),
+                revenue=("Сума", lambda x: float(x.fillna(0).sum())),
+            ).reset_index()
+            result["managers_shop"] = [
+                {"name": r["Менеджер на магазині"], "orders": int(r["orders"]),
+                 "revenue": round(r["revenue"], 2)}
+                for _, r in shop_agg.sort_values("revenue", ascending=False).iterrows()
+            ]
+
+        # ── Сайти ──
+        if "Сайт" in day_df.columns:
+            sites_agg = valid[valid["Сайт"].notna()].groupby("Сайт").agg(
+                orders=("Сума", "count"),
+                revenue=("Сума", lambda x: float(x.fillna(0).sum())),
+            ).reset_index()
+            result["sites"] = {
+                r["Сайт"]: {"orders": int(r["orders"]), "revenue": round(r["revenue"], 2)}
+                for _, r in sites_agg.sort_values("revenue", ascending=False).iterrows()
+            }
+
+        # ── Топ товарів ──
+        if "Назва [Товари/Послуги]" in day_df.columns:
+            prod_col = "Назва [Товари/Послуги]"
+            prod_df = day_df[day_df[prod_col].notna() & (day_df["_категорія"] != "spam")].copy()
+            if "Сума [Товари/Послуги]" in prod_df.columns:
+                prod_agg = prod_df.groupby(prod_col).agg(
+                    count=(prod_col, "count"),
+                    revenue=("Сума [Товари/Послуги]", lambda x: float(x.fillna(0).sum())),
+                ).reset_index()
+                result["products"] = [
+                    {"name": r[prod_col], "count": int(r["count"]), "revenue": round(r["revenue"], 2)}
+                    for _, r in prod_agg.sort_values("revenue", ascending=False).head(20).iterrows()
+                ]
+
+        # ── Причини відмов ──
+        if "Причина відмови ?" in day_df.columns:
+            ref_df = day_df[day_df["Причина відмови ?"].notna()]
+            if not ref_df.empty:
+                reasons = ref_df["Причина відмови ?"].value_counts().head(10).to_dict()
+                result["refuse_reasons"] = {str(k): int(v) for k, v in reasons.items()}
 
     except Exception as e:
         result["error"] = str(e)
-        print(f"  ⚠️  Google Sheets помилка: {e}")
+        print(f"  ⚠️  CRM помилка: {e}")
+        import traceback
+        traceback.print_exc()
 
     return result
-
 
 
 # ──────────────────────── META ADS ───────────────────────────
@@ -729,15 +694,19 @@ def main():
     print(f"   ✅ SH SALES  день:  {data['sh'].get('SALES',  {}).get('day', {}).get('total', '—')}")
 
     # ── SalesDrive CRM ────────────────────────────────────────
-    print("\n🎯 Завантаження SalesDrive CRM...")
+    print("\n🎯 Завантаження SalesDrive CRM (Excel)...")
     data["crm"] = fetch_salesdrive(day_iso)
     if data["crm"]["error"]:
         print(f"   ⚠️  Помилка CRM: {data['crm']['error']}")
     else:
-        print(f"   ✅ Замовлень: {data['crm']['orders']['total']}")
-        print(f"   ✅ Виручка:   {data['crm']['orders']['revenue']}")
-        print(f"   ✅ Відмови:   {data['crm']['orders']['refuse_pct']}%")
-        print(f"   ✅ Менеджерів: {len(data['crm']['managers'])}")
+        print(f"   ✅ Файл:        {data['crm'].get('source_file', '—')}")
+        print(f"   ✅ Замовлень:   {data['crm']['orders']['total']}")
+        print(f"   ✅ Лідів:       {data['crm']['leads']['new_leads']}")
+        print(f"   ✅ Виручка:     {data['crm']['orders']['revenue']:,.0f} ₴")
+        print(f"   ✅ Відмови:     {data['crm']['orders']['refused']} ({data['crm']['orders']['refuse_pct']}%)")
+        print(f"   ✅ Менеджерів:  {len(data['crm']['managers'])}")
+        print(f"   ✅ Сайтів:      {len(data['crm']['sites'])}")
+        print(f"   ✅ Товарів:     {len(data['crm']['products'])}")
 
     # ── Meta Ads ─────────────────────────────────────────────────
     print("\n📱 Завантаження Meta Ads...")
@@ -759,17 +728,6 @@ def main():
         print(f"   ✅ Відмови:      {data['ga4']['bounce_rate']}%")
         print(f"   ✅ Топ джерел:   {len(data['ga4']['by_source'])}")
         print(f"   ✅ Топ сторінок: {len(data['ga4']['by_page'])}")
-
-    # ── Google Sheets (GA4 + Meta) ───────────────────────────────
-    print("\n📊 Завантаження Google Sheets (GA4 + Meta)...")
-    data["gsheet"] = fetch_gsheet(day_iso)
-    if data["gsheet"]["error"]:
-        print(f"   ⚠️  Помилка: {data['gsheet']['error']}")
-    else:
-        print(f"   ✅ Сесій:     {data['gsheet']['sessions']}")
-        print(f"   ✅ Витрати:   ${data['gsheet']['ads_cost']}")
-        print(f"   ✅ Кліки:     {data['gsheet']['ads_clicks']}")
-        print(f"   ✅ CPC:       ${data['gsheet']['cpc']}")
 
     # ── Збереження ────────────────────────────────────────────
     out_path = HISTORY_DIR / f"{day_iso}.json"
