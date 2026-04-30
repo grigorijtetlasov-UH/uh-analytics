@@ -2,7 +2,7 @@
   "date": "2026-04-29",
   "date_disp": "29.04.2026",
   "month": "01.04 – 29.04.2026",
-  "generated": "2026-04-30T10:24:17.285975",
+  "generated": "2026-04-30T11:17:49.020109",
   "uh": {
     "label": "UH",
     "ORDERS": {
@@ -26,8 +26,8 @@
         }
       },
       "month": {
-        "total": 16631180.52,
-        "count": 7036
+        "total": 16640470.52,
+        "count": 7038
       }
     },
     "ORDERSWD": {
@@ -51,8 +51,8 @@
         }
       },
       "month": {
-        "total": 15639457.52,
-        "count": 4909
+        "total": 15647997.52,
+        "count": 4910
       }
     },
     "SALES": {
@@ -75,8 +75,8 @@
         }
       },
       "month": {
-        "total": 16310218.01,
-        "count": 5785
+        "total": 16365920.01,
+        "count": 5799
       }
     }
   },
@@ -120,29 +120,16 @@
   },
   "crm": {
     "date": "2026-04-29",
-    "orders": {
-      "total": 0,
-      "revenue": 0.0,
-      "refused": 0,
-      "refuse_pct": 0.0,
-      "leads": 23
-    },
-    "leads": {
-      "new_leads": 23
-    },
-    "managers": [
-      {
-        "name": "Менеджер 1",
-        "orders": 0,
-        "revenue": 0.0,
-        "refused": 0,
-        "refuse_pct": 0.0
-      }
-    ],
-    "statuses": {
-      "Нова": 23
-    },
-    "error": null
+    "source_file": null,
+    "orders": {},
+    "leads": {},
+    "managers": [],
+    "managers_shop": [],
+    "statuses": {},
+    "sites": {},
+    "products": [],
+    "refuse_reasons": {},
+    "error": "Немає файлів у data/crm/"
   },
   "meta": {
     "date": "2026-04-29",
@@ -150,122 +137,48 @@
       {
         "id": "498543759542047",
         "name": "Amebli 2024",
-        "spend": 2991.56,
-        "impressions": 17957,
-        "clicks": 960,
-        "results": 28,
-        "cpc": 3.12,
-        "ctr": 5.35,
-        "error": null,
-        "cpm": 166.6
+        "spend": 0.0,
+        "impressions": 0,
+        "clicks": 0,
+        "results": 0,
+        "cpc": 0.0,
+        "ctr": 0.0,
+        "error": "(#200) Provide valid app ID"
       },
       {
         "id": "785104883775481",
         "name": "Amebli",
-        "spend": 258.31,
-        "impressions": 21247,
-        "clicks": 43,
+        "spend": 0.0,
+        "impressions": 0,
+        "clicks": 0,
         "results": 0,
-        "cpc": 6.01,
-        "ctr": 0.2,
-        "error": null,
-        "cpm": 12.16
+        "cpc": 0.0,
+        "ctr": 0.0,
+        "error": "(#200) Provide valid app ID"
       },
       {
         "id": "1071880631226950",
         "name": "MatrasRoll 2024",
-        "spend": 1063.87,
-        "impressions": 9118,
-        "clicks": 364,
-        "results": 16,
-        "cpc": 2.92,
-        "ctr": 3.99,
-        "error": null,
-        "cpm": 116.68
+        "spend": 0.0,
+        "impressions": 0,
+        "clicks": 0,
+        "results": 0,
+        "cpc": 0.0,
+        "ctr": 0.0,
+        "error": "(#200) Provide valid app ID"
       }
     ],
     "total": {
-      "spend": 4313.74,
-      "impressions": 48322,
-      "clicks": 1367,
-      "cpc": 3.16,
-      "cpm": 89.27,
-      "ctr": 2.83,
-      "results": 44,
-      "cpr": 98.04
+      "spend": 0.0,
+      "impressions": 0,
+      "clicks": 0,
+      "cpc": 0.0,
+      "cpm": 0.0,
+      "ctr": 0.0,
+      "results": 0,
+      "cpr": 0.0
     },
-    "by_campaign": [
-      {
-        "account": "Amebli 2024",
-        "campaign": "EW Конверсії матрац ORANGE Handy",
-        "spend": 1098.55,
-        "impressions": 5349,
-        "clicks": 188,
-        "cpc": 5.84,
-        "ctr": 3.51,
-        "results": 6
-      },
-      {
-        "account": "MatrasRoll 2024",
-        "campaign": "EW Сonversions Bionica Linen Active",
-        "spend": 1063.87,
-        "impressions": 9118,
-        "clicks": 364,
-        "cpc": 2.92,
-        "ctr": 3.99,
-        "results": 16
-      },
-      {
-        "account": "Amebli 2024",
-        "campaign": "EW Конверсії матрац ORANGE Handy Cocos 2026",
-        "spend": 572.68,
-        "impressions": 3056,
-        "clicks": 91,
-        "cpc": 6.29,
-        "ctr": 2.98,
-        "results": 0
-      },
-      {
-        "account": "Amebli 2024",
-        "campaign": "EW Конверсії матрац  Porto Cocos",
-        "spend": 556.52,
-        "impressions": 4645,
-        "clicks": 182,
-        "cpc": 3.06,
-        "ctr": 3.92,
-        "results": 2
-      },
-      {
-        "account": "Amebli 2024",
-        "campaign": "EW Динамічний ремаркетинг",
-        "spend": 384.24,
-        "impressions": 2471,
-        "clicks": 312,
-        "cpc": 1.23,
-        "ctr": 12.63,
-        "results": 12
-      },
-      {
-        "account": "Amebli 2024",
-        "campaign": "EW Конверсії топери 2026",
-        "spend": 379.57,
-        "impressions": 2436,
-        "clicks": 187,
-        "cpc": 2.03,
-        "ctr": 7.68,
-        "results": 8
-      },
-      {
-        "account": "Amebli",
-        "campaign": "EW Охват | Шоурум",
-        "spend": 258.31,
-        "impressions": 21247,
-        "clicks": 43,
-        "cpc": 6.01,
-        "ctr": 0.2,
-        "results": 0
-      }
-    ],
+    "by_campaign": [],
     "error": null
   },
   "ga4": {
@@ -422,16 +335,5 @@
       }
     ],
     "error": null
-  },
-  "gsheet": {
-    "date": "2026-04-29",
-    "sessions": 0,
-    "users": 0,
-    "ads_cost": 0.0,
-    "ads_clicks": 0,
-    "cpc": 0.0,
-    "by_source": {},
-    "by_campaign": {},
-    "error": ""
   }
 }
