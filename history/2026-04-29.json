@@ -2,7 +2,7 @@
   "date": "2026-04-29",
   "date_disp": "29.04.2026",
   "month": "01.04 – 29.04.2026",
-  "generated": "2026-04-30T11:45:44.286254",
+  "generated": "2026-04-30T11:55:21.611678",
   "uh": {
     "label": "UH",
     "ORDERS": {
@@ -75,8 +75,8 @@
         }
       },
       "month": {
-        "total": 16372820.01,
-        "count": 5815
+        "total": 16381856.01,
+        "count": 5817
       }
     }
   },
@@ -471,48 +471,122 @@
       {
         "id": "498543759542047",
         "name": "Amebli 2024",
-        "spend": 0.0,
-        "impressions": 0,
-        "clicks": 0,
-        "results": 0,
-        "cpc": 0.0,
-        "ctr": 0.0,
-        "error": "(#200) Provide valid app ID"
+        "spend": 2992.41,
+        "impressions": 17959,
+        "clicks": 960,
+        "results": 28,
+        "cpc": 3.12,
+        "ctr": 5.35,
+        "error": null,
+        "cpm": 166.62
       },
       {
         "id": "785104883775481",
         "name": "Amebli",
-        "spend": 0.0,
-        "impressions": 0,
-        "clicks": 0,
+        "spend": 258.38,
+        "impressions": 21252,
+        "clicks": 43,
         "results": 0,
-        "cpc": 0.0,
-        "ctr": 0.0,
-        "error": "(#200) Provide valid app ID"
+        "cpc": 6.01,
+        "ctr": 0.2,
+        "error": null,
+        "cpm": 12.16
       },
       {
         "id": "1071880631226950",
         "name": "MatrasRoll 2024",
-        "spend": 0.0,
-        "impressions": 0,
-        "clicks": 0,
-        "results": 0,
-        "cpc": 0.0,
-        "ctr": 0.0,
-        "error": "(#200) Provide valid app ID"
+        "spend": 1063.89,
+        "impressions": 9120,
+        "clicks": 364,
+        "results": 16,
+        "cpc": 2.92,
+        "ctr": 3.99,
+        "error": null,
+        "cpm": 116.65
       }
     ],
     "total": {
-      "spend": 0.0,
-      "impressions": 0,
-      "clicks": 0,
-      "cpc": 0.0,
-      "cpm": 0.0,
-      "ctr": 0.0,
-      "results": 0,
-      "cpr": 0.0
+      "spend": 4314.68,
+      "impressions": 48331,
+      "clicks": 1367,
+      "cpc": 3.16,
+      "cpm": 89.27,
+      "ctr": 2.83,
+      "results": 44,
+      "cpr": 98.06
     },
-    "by_campaign": [],
+    "by_campaign": [
+      {
+        "account": "Amebli 2024",
+        "campaign": "EW Конверсії матрац ORANGE Handy",
+        "spend": 1098.8,
+        "impressions": 5350,
+        "clicks": 188,
+        "cpc": 5.84,
+        "ctr": 3.51,
+        "results": 6
+      },
+      {
+        "account": "MatrasRoll 2024",
+        "campaign": "EW Сonversions Bionica Linen Active",
+        "spend": 1063.89,
+        "impressions": 9120,
+        "clicks": 364,
+        "cpc": 2.92,
+        "ctr": 3.99,
+        "results": 16
+      },
+      {
+        "account": "Amebli 2024",
+        "campaign": "EW Конверсії матрац ORANGE Handy Cocos 2026",
+        "spend": 572.68,
+        "impressions": 3056,
+        "clicks": 91,
+        "cpc": 6.29,
+        "ctr": 2.98,
+        "results": 0
+      },
+      {
+        "account": "Amebli 2024",
+        "campaign": "EW Конверсії матрац  Porto Cocos",
+        "spend": 557.12,
+        "impressions": 4646,
+        "clicks": 182,
+        "cpc": 3.06,
+        "ctr": 3.92,
+        "results": 2
+      },
+      {
+        "account": "Amebli 2024",
+        "campaign": "EW Динамічний ремаркетинг",
+        "spend": 384.24,
+        "impressions": 2471,
+        "clicks": 312,
+        "cpc": 1.23,
+        "ctr": 12.63,
+        "results": 12
+      },
+      {
+        "account": "Amebli 2024",
+        "campaign": "EW Конверсії топери 2026",
+        "spend": 379.57,
+        "impressions": 2436,
+        "clicks": 187,
+        "cpc": 2.03,
+        "ctr": 7.68,
+        "results": 8
+      },
+      {
+        "account": "Amebli",
+        "campaign": "EW Охват | Шоурум",
+        "spend": 258.38,
+        "impressions": 21252,
+        "clicks": 43,
+        "cpc": 6.01,
+        "ctr": 0.2,
+        "results": 0
+      }
+    ],
     "error": null
   },
   "ga4": {
