@@ -2,15 +2,15 @@
   "date": "2026-04-29",
   "date_disp": "29.04.2026",
   "month": "01.04 – 29.04.2026",
-  "generated": "2026-04-30T11:27:09.414860",
+  "generated": "2026-04-30T11:33:44.394886",
   "uh": {
     "label": "UH",
     "ORDERS": {
       "day": {
-        "total": 750912.0,
-        "count": 282,
+        "total": 755379.0,
+        "count": 286,
         "by_podr": {
-          "Matrasroll": 206878.0,
+          "Matrasroll": 211345.0,
           "Sofino": 134908.0,
           "A-mebli": 117203.0,
           "DR-TV": 74650.0,
@@ -26,16 +26,16 @@
         }
       },
       "month": {
-        "total": 16643920.52,
-        "count": 7040
+        "total": 16648387.52,
+        "count": 7044
       }
     },
     "ORDERSWD": {
       "day": {
-        "total": 711302.0,
-        "count": 199,
+        "total": 715169.0,
+        "count": 201,
         "by_podr": {
-          "Matrasroll": 185488.0,
+          "Matrasroll": 189355.0,
           "Sofino": 125218.0,
           "A-mebli": 110303.0,
           "DR-TV": 74400.0,
@@ -51,8 +51,8 @@
         }
       },
       "month": {
-        "total": 15651067.52,
-        "count": 4911
+        "total": 15654934.52,
+        "count": 4913
       }
     },
     "SALES": {
@@ -75,8 +75,8 @@
         }
       },
       "month": {
-        "total": 16372060.01,
-        "count": 5801
+        "total": 16387465.01,
+        "count": 5808
       }
     }
   },
@@ -120,16 +120,350 @@
   },
   "crm": {
     "date": "2026-04-29",
-    "source_file": null,
-    "orders": {},
-    "leads": {},
-    "managers": [],
-    "managers_shop": [],
-    "statuses": {},
-    "sites": {},
-    "products": [],
-    "refuse_reasons": {},
-    "error": "Немає файлів у data/crm/"
+    "source_file": "salesdrive_order3.matrasroll_2026-04-30_13-49-59.xlsx",
+    "orders": {
+      "total": 253,
+      "revenue": 1196582.3,
+      "refused": 11,
+      "refuse_pct": 4.3,
+      "spam": 44,
+      "all_rows": 441
+    },
+    "leads": {
+      "new_leads": 48
+    },
+    "managers": [
+      {
+        "name": "Вікторія Шегедин",
+        "orders": 82,
+        "revenue": 316483.0,
+        "refused": 3,
+        "refuse_pct": 3.7
+      },
+      {
+        "name": "Юлія Горбань",
+        "orders": 50,
+        "revenue": 305099.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Ольга Галишин",
+        "orders": 29,
+        "revenue": 234985.3,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Богдан Малик",
+        "orders": 59,
+        "revenue": 214200.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Катерина Мещерiна",
+        "orders": 26,
+        "revenue": 115305.0,
+        "refused": 2,
+        "refuse_pct": 7.7
+      },
+      {
+        "name": "Руслан Сава",
+        "orders": 15,
+        "revenue": 81163.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Мария Волохата",
+        "orders": 27,
+        "revenue": 79127.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Марта Онищук",
+        "orders": 9,
+        "revenue": 41196.0,
+        "refused": 3,
+        "refuse_pct": 33.3
+      },
+      {
+        "name": "Тетяна Молянко",
+        "orders": 9,
+        "revenue": 40794.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "ШоуРум ДрімТаун",
+        "orders": 2,
+        "revenue": 35891.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Александр Шамардин",
+        "orders": 10,
+        "revenue": 30616.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Вікторія Кирієнко",
+        "orders": 13,
+        "revenue": 25863.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Валерія Захожа",
+        "orders": 6,
+        "revenue": 18966.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Шоу-Рум Ретровіль",
+        "orders": 1,
+        "revenue": 17558.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Дарʼя Маменко",
+        "orders": 6,
+        "revenue": 15376.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Шоу Рум Дарынок",
+        "orders": 1,
+        "revenue": 5775.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Діана Дзюба",
+        "orders": 2,
+        "revenue": 4300.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Анастасія Любарец",
+        "orders": 2,
+        "revenue": 3044.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Яков Маншилін",
+        "orders": 1,
+        "revenue": 1690.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      }
+    ],
+    "managers_shop": [
+      {
+        "name": "Ярмоленко Наталія",
+        "orders": 2,
+        "revenue": 35891.0
+      },
+      {
+        "name": "Кучинська Еля",
+        "orders": 1,
+        "revenue": 5775.0
+      }
+    ],
+    "statuses": {
+      "Контроль оператора": 107,
+      "Їде до клієнта": 86,
+      "Питання по замовленню": 51,
+      "Спам на согласование": 25,
+      "В обробці": 21,
+      "Прибув у відділення": 21,
+      "В черзі на відправлення": 19,
+      "Отримано": 15,
+      "Лід (не купив)": 14,
+      "Недодзвон": 13,
+      "Відмова (не відправлено)": 11,
+      "Спам Дубль": 10,
+      "Рекламный спам": 9,
+      "Повторне звернення": 8,
+      "Контроль оплати": 8,
+      "Новий": 7,
+      "Відвідає шоу-рум": 5,
+      "Переадресація": 4,
+      "Створена ТТН": 4,
+      "В виробництві": 3
+    },
+    "sites": {
+      "matrasroll.com.ua": {
+        "orders": 195,
+        "revenue": 680506.0
+      },
+      "sofino": {
+        "orders": 51,
+        "revenue": 352286.3
+      },
+      "amebli.com.ua": {
+        "orders": 55,
+        "revenue": 327570.0
+      },
+      "Розетка СХ": {
+        "orders": 22,
+        "revenue": 112938.0
+      },
+      "hubstore.com.ua": {
+        "orders": 9,
+        "revenue": 39608.0
+      },
+      "Шоу-Рум Дрім Таун": {
+        "orders": 2,
+        "revenue": 35891.0
+      },
+      "Шоу-Рум Ретровіль": {
+        "orders": 1,
+        "revenue": 17558.0
+      },
+      "Епіцентр ЮХ": {
+        "orders": 2,
+        "revenue": 11426.0
+      },
+      "Епіцентр СХ": {
+        "orders": 5,
+        "revenue": 10883.0
+      },
+      "Rozetka UnitedHomes": {
+        "orders": 1,
+        "revenue": 8458.0
+      },
+      "Шоу-Рум Якова Гніздовського": {
+        "orders": 1,
+        "revenue": 5775.0
+      },
+      "DR-TV": {
+        "orders": 3,
+        "revenue": 4734.0
+      },
+      "АЛЛО UnitedHome": {
+        "orders": 1,
+        "revenue": 2821.0
+      }
+    },
+    "products": [
+      {
+        "name": "Доставка Нова Пошта",
+        "count": 108,
+        "revenue": 46827.0
+      },
+      {
+        "name": "Диван кутовий RidneTUT Bradley, 5 кат., кут Г Divotex Grand 03 Cocoa",
+        "count": 1,
+        "revenue": 34911.0
+      },
+      {
+        "name": "Ортопедичний матрац Tiramisu (вакуум) 80x200",
+        "count": 2,
+        "revenue": 28456.75
+      },
+      {
+        "name": "Диван KNK Group Каліфорнія, тк.1, Мюзік",
+        "count": 1,
+        "revenue": 22914.0
+      },
+      {
+        "name": "Диван прямий RidneTUT Norman, 1 кат, Делюкс Текстиль Boss 04",
+        "count": 1,
+        "revenue": 17558.0
+      },
+      {
+        "name": "Тонкий матрац-топер Purple Bionica Memory Cocos 150x200",
+        "count": 4,
+        "revenue": 16552.0
+      },
+      {
+        "name": "Розкладний диван-ліжко Sofyno Поло 1.5 ППУ з механізмом Викатний • спальне місце 150х190 см (ширина 159 см, глибина 99 см, висота 74,5 см)",
+        "count": 1,
+        "revenue": 14588.0
+      },
+      {
+        "name": "Топпер PURPLE Base Lite NEW 140x190",
+        "count": 6,
+        "revenue": 14075.0
+      },
+      {
+        "name": "118372",
+        "count": 2,
+        "revenue": 13408.0
+      },
+      {
+        "name": "Топпер BIONICA Linen Ultra 150x200",
+        "count": 4,
+        "revenue": 13184.0
+      },
+      {
+        "name": "Топпер PURPLE Base Lite NEW 160x190",
+        "count": 4,
+        "revenue": 12663.0
+      },
+      {
+        "name": "Топпер BIONICA Linen Ultra 140x200",
+        "count": 4,
+        "revenue": 12280.0
+      },
+      {
+        "name": "Топпер PURPLE Bionica Linen Cocos 160x200",
+        "count": 3,
+        "revenue": 12215.0
+      },
+      {
+        "name": "Ліжко Smart Tramonto Lite 180х200 см Lili 94 Сіре",
+        "count": 1,
+        "revenue": 12131.0
+      },
+      {
+        "name": "Матрац Smart Mattresses Dual 80х190 см (2111609SM80190)",
+        "count": 2,
+        "revenue": 11607.0
+      },
+      {
+        "name": "Топпер PURPLE Base Lite NEW 140x200",
+        "count": 5,
+        "revenue": 11544.0
+      },
+      {
+        "name": "Ортопедичний матрац Cacao (вакуум) 160x200",
+        "count": 1,
+        "revenue": 11172.0
+      },
+      {
+        "name": "Ліжко RidneTut Taylor Lite 160х200 см Lili 94 Сіре (33433-1112094)",
+        "count": 1,
+        "revenue": 11069.0
+      },
+      {
+        "name": "Топпер PURPLE Base Lite NEW 130x190",
+        "count": 5,
+        "revenue": 11004.0
+      },
+      {
+        "name": "Ортопедичний матрац Tiramisu (вакуум) 180x200",
+        "count": 1,
+        "revenue": 10571.0
+      }
+    ],
+    "refuse_reasons": {
+      "Знайшов дешевше": 2,
+      "Не бере слухавку": 2,
+      "Купив в іншому місці": 1,
+      "Інше (вказати в коментарі)": 1
+    },
+    "error": null
   },
   "meta": {
     "date": "2026-04-29",
