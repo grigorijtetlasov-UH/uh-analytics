@@ -1,0 +1,687 @@
+{
+  "date": "2026-05-03",
+  "date_disp": "03.05.2026",
+  "month": "01.05 – 03.05.2026",
+  "generated": "2026-05-04T12:12:01.623344",
+  "uh": {
+    "label": "UH",
+    "ORDERS": {
+      "day": {
+        "total": 503274.0,
+        "count": 163,
+        "by_podr": {
+          "Matrasroll": 179553.0,
+          "A-mebli": 114988.0,
+          "Sofino": 76436.0,
+          "Шоу-Рум Ретровіль": 52230.0,
+          "Шоу-Рум Дрим": 39933.0,
+          "Шоу-Рум Дарынок": 36595.0,
+          "HabStor": 3539.0
+        }
+      },
+      "month": {
+        "total": 1686533.0,
+        "count": 671
+      }
+    },
+    "ORDERSWD": {
+      "day": {
+        "total": 476144.0,
+        "count": 106,
+        "by_podr": {
+          "Matrasroll": 163423.0,
+          "A-mebli": 108038.0,
+          "Sofino": 72786.0,
+          "Шоу-Рум Ретровіль": 52230.0,
+          "Шоу-Рум Дрим": 39933.0,
+          "Шоу-Рум Дарынок": 36595.0,
+          "HabStor": 3139.0
+        }
+      },
+      "month": {
+        "total": 1586543.0,
+        "count": 465
+      }
+    },
+    "SALES": {
+      "day": {
+        "total": 0.0,
+        "count": 0,
+        "by_podr": {}
+      },
+      "month": {
+        "total": 2512585.0,
+        "count": 639
+      }
+    }
+  },
+  "sh": {
+    "label": "SH",
+    "ORDERS": {
+      "day": {
+        "total": 0.0,
+        "count": 0,
+        "by_podr": {}
+      },
+      "month": {
+        "total": 0,
+        "count": 0
+      }
+    },
+    "ORDERSWD": {
+      "day": {
+        "total": 0.0,
+        "count": 0,
+        "by_podr": {}
+      },
+      "month": {
+        "total": 0,
+        "count": 0
+      }
+    },
+    "SALES": {
+      "day": {
+        "total": 0.0,
+        "count": 0,
+        "by_podr": {}
+      },
+      "month": {
+        "total": 22561.0,
+        "count": 3
+      }
+    }
+  },
+  "crm": {
+    "date": "2026-05-03",
+    "source_file": "salesdrive_order3.matrasroll_2026-05-04_10-47-55.xlsx",
+    "orders": {
+      "total": 186,
+      "revenue": 1167165.0,
+      "refused": 4,
+      "refuse_pct": 2.2,
+      "spam": 41,
+      "all_rows": 307
+    },
+    "leads": {
+      "new_leads": 45
+    },
+    "managers": [
+      {
+        "name": "Вікторія Шегедин",
+        "orders": 62,
+        "revenue": 382945.0,
+        "refused": 2,
+        "refuse_pct": 3.2
+      },
+      {
+        "name": "Юлія Горбань",
+        "orders": 41,
+        "revenue": 262642.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Мария Волохата",
+        "orders": 44,
+        "revenue": 152554.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Ольга Галишин",
+        "orders": 17,
+        "revenue": 148133.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Шоу-Рум Ретровіль",
+        "orders": 5,
+        "revenue": 147135.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Шоу Рум Дарынок",
+        "orders": 5,
+        "revenue": 73167.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Анна Романенко",
+        "orders": 23,
+        "revenue": 59773.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Діана Дзюба",
+        "orders": 15,
+        "revenue": 49460.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "ШоуРум ДрімТаун",
+        "orders": 1,
+        "revenue": 39933.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Руслан Сава",
+        "orders": 3,
+        "revenue": 22331.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Надія Карпенко",
+        "orders": 5,
+        "revenue": 17341.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Валерія Захожа",
+        "orders": 2,
+        "revenue": 6760.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Марта Онищук",
+        "orders": 2,
+        "revenue": 6080.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Вікторія Кирієнко",
+        "orders": 2,
+        "revenue": 5900.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Олена Вус",
+        "orders": 1,
+        "revenue": 3934.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Едуард Бутенко",
+        "orders": 1,
+        "revenue": 2083.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      }
+    ],
+    "managers_shop": [
+      {
+        "name": "Кутафіна Алла",
+        "orders": 5,
+        "revenue": 147135.0
+      },
+      {
+        "name": "Кучинська Еля",
+        "orders": 3,
+        "revenue": 43679.0
+      },
+      {
+        "name": "Чернявська Таміла",
+        "orders": 1,
+        "revenue": 39933.0
+      },
+      {
+        "name": "Мачула Оксана",
+        "orders": 2,
+        "revenue": 29488.0
+      }
+    ],
+    "statuses": {
+      "Контроль оператора": 96,
+      "Створена ТТН": 58,
+      "Спам на согласование": 41,
+      "Новий": 26,
+      "В черзі на відправлення": 26,
+      "В обробці": 22,
+      "Недодзвон": 15,
+      "Лід (не купив)": 8,
+      "Питання по замовленню": 5,
+      "Відмова (не відправлено)": 4,
+      "Відвідає шоу-рум": 3,
+      "В виробництві": 2,
+      "Повторне звернення": 1
+    },
+    "sites": {
+      "amebli.com.ua": {
+        "orders": 70,
+        "revenue": 515610.0
+      },
+      "matrasroll.com.ua": {
+        "orders": 123,
+        "revenue": 413781.0
+      },
+      "sofino": {
+        "orders": 22,
+        "revenue": 184476.0
+      },
+      "Шоу-Рум Ретровіль": {
+        "orders": 5,
+        "revenue": 147135.0
+      },
+      "Розетка СХ": {
+        "orders": 17,
+        "revenue": 92861.0
+      },
+      "Шоу-Рум Якова Гніздовського": {
+        "orders": 5,
+        "revenue": 73167.0
+      },
+      "Шоу-Рум Дрім Таун": {
+        "orders": 1,
+        "revenue": 39933.0
+      },
+      "hubstore.com.ua": {
+        "orders": 6,
+        "revenue": 19113.0
+      },
+      "Rozetka UnitedHomes": {
+        "orders": 2,
+        "revenue": 14308.0
+      },
+      "Епіцентр СХ": {
+        "orders": 3,
+        "revenue": 11772.0
+      },
+      "АЛЛО UnitedHome": {
+        "orders": 1,
+        "revenue": 778.0
+      }
+    },
+    "products": [
+      {
+        "name": "Диван кутовий RidneTUT Bradley XXL, 1 кат., кут Г, Делюкс Текстиль Boss 03",
+        "count": 1,
+        "revenue": 39933.0
+      },
+      {
+        "name": "Доставка Нова Пошта",
+        "count": 68,
+        "revenue": 31760.0
+      },
+      {
+        "name": "Диван прямий RidneTUT Jamison, 1 кат., тк. Дивотекс Делано 722",
+        "count": 1,
+        "revenue": 28400.0
+      },
+      {
+        "name": "Диван RidneTUT Eva 1, 3 кат. Exim Textil Х'юстон 44",
+        "count": 1,
+        "revenue": 24000.0
+      },
+      {
+        "name": "Ліжко з п/м Ridne TUT Памела (євро) 160x200, тк.1,Ексім текстіль Аляска 28",
+        "count": 1,
+        "revenue": 23830.0
+      },
+      {
+        "name": "Ліжко з п/м Ridne TUT Памела (євро) 160x200, тк.1,Divotex Delano 702",
+        "count": 1,
+        "revenue": 23830.0
+      },
+      {
+        "name": "Ортопедичний матрац Smart Mattresses Dual 160х200",
+        "count": 3,
+        "revenue": 22257.0
+      },
+      {
+        "name": "Ортопедичний матрац ORANGE Handy (вакуум) 160x200",
+        "count": 3,
+        "revenue": 20439.0
+      },
+      {
+        "name": "Шафа-купе розсувна двохдверна Софіно (чорний) з фасадами ДСП + Дзеркало • 1700x450x2200 см",
+        "count": 1,
+        "revenue": 19936.0
+      },
+      {
+        "name": "Ортопедичний матрац Chocolate (вакуум) 160x200",
+        "count": 2,
+        "revenue": 16526.0
+      },
+      {
+        "name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 90x190",
+        "count": 3,
+        "revenue": 15183.0
+      },
+      {
+        "name": "Ортопедичний матрац Smart Mattresses Dual Cocos 160х200",
+        "count": 2,
+        "revenue": 14676.0
+      },
+      {
+        "name": "Ортопедичний матрац Sleep & GO Active 160x200 см",
+        "count": 2,
+        "revenue": 14308.0
+      },
+      {
+        "name": "Ортопедичний матрац ORANGE Sun Style 80x190",
+        "count": 1,
+        "revenue": 14096.0
+      },
+      {
+        "name": "Топпер BIONICA Linen Ultra 160x200",
+        "count": 5,
+        "revenue": 13988.0
+      },
+      {
+        "name": "Ортопедичний матрац Smart Mattresses Dual 90х190",
+        "count": 2,
+        "revenue": 12903.0
+      },
+      {
+        "name": "Ортопедичний матрац ORANGE Handy (вакуум) 90x190",
+        "count": 3,
+        "revenue": 12078.0
+      },
+      {
+        "name": "Ліжко з п/м Ridne TUT Одісей (євро) 160x200, тк.1 Дівотекс Делано 722",
+        "count": 1,
+        "revenue": 11550.0
+      },
+      {
+        "name": "Топпер PURPLE Evolution Luxe Cocos 140x190",
+        "count": 2,
+        "revenue": 10976.0
+      },
+      {
+        "name": "Шафа для одягу Doros Гелар Графіт 4 ДСП",
+        "count": 1,
+        "revenue": 10367.0
+      }
+    ],
+    "refuse_reasons": {
+      "Купив в іншому місці,\nНе бере слухавку": 3,
+      "Інше (вказати в коментарі)": 1
+    },
+    "error": null
+  },
+  "meta": {
+    "date": "2026-05-03",
+    "accounts": [
+      {
+        "id": "498543759542047",
+        "name": "Amebli 2024",
+        "spend": 3866.01,
+        "impressions": 20672,
+        "clicks": 1016,
+        "results": 10,
+        "cpc": 3.81,
+        "ctr": 4.91,
+        "error": null,
+        "cpm": 187.02
+      },
+      {
+        "id": "785104883775481",
+        "name": "Amebli",
+        "spend": 290.78,
+        "impressions": 23520,
+        "clicks": 48,
+        "results": 0,
+        "cpc": 6.06,
+        "ctr": 0.2,
+        "error": null,
+        "cpm": 12.36
+      },
+      {
+        "id": "1071880631226950",
+        "name": "MatrasRoll 2024",
+        "spend": 1113.25,
+        "impressions": 11618,
+        "clicks": 394,
+        "results": 2,
+        "cpc": 2.83,
+        "ctr": 3.39,
+        "error": null,
+        "cpm": 95.82
+      }
+    ],
+    "total": {
+      "spend": 5270.04,
+      "impressions": 55810,
+      "clicks": 1458,
+      "cpc": 3.61,
+      "cpm": 94.43,
+      "ctr": 2.61,
+      "results": 12,
+      "cpr": 439.17
+    },
+    "by_campaign": [
+      {
+        "account": "Amebli 2024",
+        "campaign": "EW Конверсії матрац ORANGE Handy",
+        "spend": 1444.76,
+        "impressions": 6153,
+        "clicks": 197,
+        "cpc": 7.33,
+        "ctr": 3.2,
+        "results": 0
+      },
+      {
+        "account": "MatrasRoll 2024",
+        "campaign": "EW Сonversions Bionica Linen Active",
+        "spend": 1113.25,
+        "impressions": 11618,
+        "clicks": 394,
+        "cpc": 2.83,
+        "ctr": 3.39,
+        "results": 2
+      },
+      {
+        "account": "Amebli 2024",
+        "campaign": "EW Конверсії матрац ORANGE Handy Cocos 2026",
+        "spend": 698.86,
+        "impressions": 3421,
+        "clicks": 82,
+        "cpc": 8.52,
+        "ctr": 2.4,
+        "results": 4
+      },
+      {
+        "account": "Amebli 2024",
+        "campaign": "EW Конверсії матрац  Porto Cocos",
+        "spend": 604.88,
+        "impressions": 4774,
+        "clicks": 169,
+        "cpc": 3.58,
+        "ctr": 3.54,
+        "results": 0
+      },
+      {
+        "account": "Amebli 2024",
+        "campaign": "EW Конверсії топери 2026",
+        "spend": 598.3,
+        "impressions": 3339,
+        "clicks": 217,
+        "cpc": 2.76,
+        "ctr": 6.5,
+        "results": 4
+      },
+      {
+        "account": "Amebli 2024",
+        "campaign": "EW Динамічний ремаркетинг",
+        "spend": 519.21,
+        "impressions": 2985,
+        "clicks": 351,
+        "cpc": 1.48,
+        "ctr": 11.76,
+        "results": 2
+      },
+      {
+        "account": "Amebli",
+        "campaign": "EW Охват | Шоурум",
+        "spend": 290.78,
+        "impressions": 23520,
+        "clicks": 48,
+        "cpc": 6.06,
+        "ctr": 0.2,
+        "results": 0
+      }
+    ],
+    "error": null
+  },
+  "ga4": {
+    "date": "2026-05-03",
+    "sessions": 3780,
+    "users": 3476,
+    "new_users": 2135,
+    "bounce_rate": 31.8,
+    "avg_duration": 536.0,
+    "by_source": [
+      {
+        "source": "google",
+        "medium": "cpc",
+        "sessions": 2234,
+        "conversions": 47
+      },
+      {
+        "source": "facebook",
+        "medium": "cpc",
+        "sessions": 689,
+        "conversions": 16
+      },
+      {
+        "source": "facebook-rk2",
+        "medium": "cpc",
+        "sessions": 270,
+        "conversions": 2
+      },
+      {
+        "source": "(direct)",
+        "medium": "(none)",
+        "sessions": 261,
+        "conversions": 5
+      },
+      {
+        "source": "google",
+        "medium": "organic",
+        "sessions": 201,
+        "conversions": 4
+      },
+      {
+        "source": "facebook.com",
+        "medium": "referral",
+        "sessions": 37,
+        "conversions": 0
+      },
+      {
+        "source": "(data not available)",
+        "medium": "(data not available)",
+        "sessions": 25,
+        "conversions": 0
+      },
+      {
+        "source": "homescreen",
+        "medium": "(not set)",
+        "sessions": 19,
+        "conversions": 0
+      },
+      {
+        "source": "(not set)",
+        "medium": "(not set)",
+        "sessions": 18,
+        "conversions": 2
+      },
+      {
+        "source": "m.facebook.com",
+        "medium": "referral",
+        "sessions": 15,
+        "conversions": 0
+      }
+    ],
+    "by_page": [
+      {
+        "path": "/tonkyi-matrats-toper-purple-bionica-linen-active/",
+        "title": "Тонкий матрац-топер Bionica Linen Active Цена от 989 грн в Україні",
+        "views": 904,
+        "bounce": 21.0
+      },
+      {
+        "path": "/tonkyi-matrats-toper-purple-bionica-linen-active/",
+        "title": "Тонкий матрац-топер Bionica Linen Active",
+        "views": 659,
+        "bounce": 2.3
+      },
+      {
+        "path": "/toppery/",
+        "title": "Топери - Офіційний інтернет-магазин Purple™ Simpler™ та представник Matroluxe™ Eurosleep™",
+        "views": 557,
+        "bounce": 29.4
+      },
+      {
+        "path": "/toppery-purple/",
+        "title": "Топери Purple - Офіційний інтернет-магазин Purple™ Simpler™ та представник Matroluxe™ Eurosleep™",
+        "views": 486,
+        "bounce": 25.9
+      },
+      {
+        "path": "/tonkyi-matrats-toper-purple-bionica-linen-active-160x200/",
+        "title": "Тонкий матрац-топер Bionica Linen Active",
+        "views": 241,
+        "bounce": 6.3
+      },
+      {
+        "path": "/",
+        "title": "Офіційний гуртовий магазин Purple, Eurosleep і MatroLuxe",
+        "views": 209,
+        "bounce": 36.9
+      },
+      {
+        "path": "/tonkyi-matrats-toper-purple-bionica-linen-active-nestandartnyi-rozmir/",
+        "title": "Тонкий матрац-топер Bionica Linen Active Цена от 953 грн в Україні",
+        "views": 171,
+        "bounce": 11.7
+      },
+      {
+        "path": "/tonkyi-matrats-toper-purple-bionica-mini/",
+        "title": "Тонкий матрац-топер Purple Bionica Mini Цена от 623 грн в Україні",
+        "views": 163,
+        "bounce": 9.4
+      },
+      {
+        "path": "/tonkyi-matrats-toper-purple-bionica-linen-active-160x190/",
+        "title": "Тонкий матрац-топер Bionica Linen Active",
+        "views": 142,
+        "bounce": 7.4
+      },
+      {
+        "path": "/vsi-matratsy/",
+        "title": "Всі матраци - Офіційний інтернет-магазин Purple™ Simpler™ та представник Matroluxe™ Eurosleep™",
+        "views": 141,
+        "bounce": 20.0
+      }
+    ],
+    "by_device": [
+      {
+        "device": "mobile",
+        "sessions": 3375,
+        "pct": 89.3
+      },
+      {
+        "device": "desktop",
+        "sessions": 374,
+        "pct": 9.9
+      },
+      {
+        "device": "tablet",
+        "sessions": 45,
+        "pct": 1.2
+      }
+    ],
+    "error": null
+  }
+}
