@@ -2,6 +2,7 @@
 <html lang="uk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>UH — Daily Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 :root{--bg:#0c0f1a;--s:#151929;--s2:#1c2137;--s3:#242b47;--brd:#2a3050;--brd2:#3a4170;--t:#e4e8f7;--t2:#c1c7e0;--td:#7b84a3;--td2:#5a6280;--ac:#6c5ce7;--ac2:#a29bfe;--g:#00d68f;--gd:rgba(0,214,143,.15);--o:#ffa94d;--od:rgba(255,169,77,.15);--r:#ff6b6b;--rd:rgba(255,107,107,.15);--b:#339af0;--bd:rgba(51,154,240,.15);--y:#ffd43b;--p:#da77f2;--c:#66d9e8;--lime:#94d82d}
@@ -88,29 +89,46 @@ tbody tr:hover td{background:rgba(108,92,231,.06)}
 .cmp-name{font-weight:500}
 .cmp-val{font-family:'JetBrains Mono',monospace;text-align:right;font-weight:500}
 .ftr{text-align:center;color:var(--td2);font-size:10px;padding-top:18px;border-top:1px solid var(--brd);margin-top:24px;font-family:'JetBrains Mono',monospace}
+
+/* PDF Export Button */
+.pdf-btn{position:absolute;top:0;left:0;display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.3px;box-shadow:0 2px 8px rgba(108,92,231,.25);transition:.15s}
+.pdf-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(108,92,231,.4)}
+.pdf-btn:disabled{opacity:.6;cursor:wait;transform:none}
+.pdf-btn .ic{font-size:13px}
+
+/* PDF EXPORT MODE — show all panels */
+body.pdf-mode .pnl{display:block !important;page-break-after:always;padding-top:14px}
+body.pdf-mode .pnl.pdf-first{padding-top:0}
+body.pdf-mode .tabs{display:none !important}
+body.pdf-mode .pdf-btn{display:none !important}
+body.pdf-mode .view-switch{display:none !important}
+body.pdf-mode{padding:20px}
+body.pdf-mode .pnl-title{font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--ac2),var(--g));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:18px 0 12px;border-bottom:1px solid var(--brd);padding-bottom:6px;display:block !important}
+.pnl-title{display:none}
 </style></head>
 <body>
 
 <div class="hdr">
+  <button class="pdf-btn" id="pdfBtn" onclick="exportPDF()"><span class="ic">📄</span><span>Експорт PDF</span></button>
   <div class="view-switch">
     <a href="index.html" class="on">📊 День</a>
     <a href="month.html">📅 Місяць</a>
   </div>
   <h1>UH Executive Dashboard</h1>
   <div class="sub">United Home · 04.05.2026</div>
-  <div class="stamp">Період місяця: 2026-05 · оновлено 05.05.2026 08:56</div>
+  <div class="stamp">Період місяця: 2026-04 · оновлено 05.05.2026 09:52</div>
 </div>
 
-<div class="ins-wrap"><div class="ins ins-good"><span class="ins-ico">🚀</span><span class="ins-txt">Замовлення зросли на +94.3% порівняно з попереднім днем</span></div><div class="ins ins-good"><span class="ins-ico">✅</span><span class="ins-txt">Відмінні відмови CRM: лише 0.0%</span></div><div class="ins ins-good"><span class="ins-ico">💎</span><span class="ins-txt">Чудовий ROAS Відгрузок: 37.48× (на 1₴ реклами 37.48₴ заробітку)</span></div><div class="ins ins-info"><span class="ins-ico">🏆</span><span class="ins-txt">Топ менеджер дня: Юлія Горбань — 96 143 ₴ замовлень (5 зам.)</span></div><div class="ins ins-info"><span class="ins-ico">🌐</span><span class="ins-txt">Топ канал: DR-TV — 72 675 ₴ замовлень</span></div><div class="ins ins-info"><span class="ins-ico">📱</span><span class="ins-txt">Топ кампанія: EW Конверсії матрац ORANGE Handy — 1 230 ₴ витрат</span></div></div>
+<div class="ins-wrap"><div class="ins ins-good"><span class="ins-ico">🚀</span><span class="ins-txt">Замовлення зросли на +94.3% порівняно з попереднім днем</span></div><div class="ins ins-good"><span class="ins-ico">💎</span><span class="ins-txt">Чудовий ROAS Відгрузок: 36.54× (на 1₴ реклами 36.54₴ заробітку)</span></div><div class="ins ins-info"><span class="ins-ico">📱</span><span class="ins-txt">Топ кампанія: EW Конверсії матрац ORANGE Handy — 1 230 ₴ витрат</span></div></div>
 
 <div class="kpi-row">
-  <div class="kpi"><div class="kl">Замовлення день (1С)</div><div class="kv">978 009<span class="ku">₴</span></div><div class="ks">UH+SH без відмов · <span class="dlt up">+94.3%</span></div></div>
-  <div class="kpi"><div class="kl">Відгрузки день (1С)</div><div class="kv">181 137<span class="ku">₴</span></div><div class="ks">фактичний заробіток</div></div>
+  <div class="kpi"><div class="kl">Замовлення день (1С)</div><div class="kv">978 009<span class="ku">₴</span></div><div class="ks">без відмов · <span class="dlt up">+94.3%</span></div></div>
+  <div class="kpi"><div class="kl">Відгрузки день (1С)</div><div class="kv">176 604<span class="ku">₴</span></div><div class="ks">фактичний заробіток</div></div>
   <div class="kpi"><div class="kl">Відмови день (1С)</div><div class="kv">0<span class="ku">₴</span></div><div class="ks">Отказ Не/Відправлений</div></div>
   <div class="kpi"><div class="kl">Замовлення місяць</div><div class="kv">2.69M<span class="ku">₴</span></div><div class="ks">сум. з 1-го числа</div></div>
-  <div class="kpi"><div class="kl">CRM Заявки (всі)</div><div class="kv">54</div><div class="ks">248 452 ₴ · усі статуси · <span class="dlt down">-86.0%</span></div></div>
-  <div class="kpi"><div class="kl">CRM Замовлення</div><div class="kv">26</div><div class="ks">176 590 ₴ · 0.0% відмов · сер.чек 6 792</div></div>
-  <div class="kpi"><div class="kl">ROAS</div><div class="kv">37.48<span class="ku">×</span></div><div class="ks">відгрузки/реклама · замовл. 202.37×</div></div>
+  <div class="kpi"><div class="kl">CRM Заявки (всі)</div><div class="kv">0</div><div class="ks">0 ₴ · усі статуси · <span class="dlt down">-100.0%</span></div></div>
+  <div class="kpi"><div class="kl">CRM Замовлення</div><div class="kv">0</div><div class="ks">0 ₴ · 0.0% відмов · сер.чек 0</div></div>
+  <div class="kpi"><div class="kl">ROAS</div><div class="kv">36.54<span class="ku">×</span></div><div class="ks">відгрузки/реклама · замовл. 202.36×</div></div>
   <div class="kpi"><div class="kl">Meta Витрати</div><div class="kv">4 833<span class="ku">₴</span></div><div class="ks">30 результ. · GA4 3 641 сесій</div></div>
 </div>
 
@@ -124,15 +142,15 @@ tbody tr:hover td{background:rgba(108,92,231,.06)}
   <button class="tab" onclick="sw('analytics', this)">📈 Аналітика</button>
 </div>
 
-<div class="pnl on" id="p-overview">
+<div class="pnl on" id="p-overview"><h2 class="pnl-title">📊 Огляд</h2>
   <div class="cd">
     <div class="ct"><span class="dot"></span>Динаміка замовлень CRM — 30 днів<span class="badge-tot" id="trend30Total"></span></div>
     <div class="cd-d">Сума замовлень по днях з SalesDrive (без спаму). Стовпчики — сума замовлень, лінія — ліди.</div>
     <canvas id="chTrend30"></canvas>
   </div>
   <div class="g2">
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--ac)"></span>Замовлення UH+SH (1С) — без відмов</div><canvas id="chOrders"></canvas></div>
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--g)"></span>Відгрузки UH+SH (1С) — фактичний заробіток</div><canvas id="chSales"></canvas></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--ac)"></span>Замовлення (1С) — без відмов</div><canvas id="chOrders"></canvas></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--g)"></span>Відгрузки (1С) — фактичний заробіток</div><canvas id="chSales"></canvas></div>
   </div>
   <div class="g3">
     <div class="cd"><div class="ct"><span class="dot" style="background:var(--b)"></span>GA4 Сесії</div><canvas id="chGa4" style="max-height:200px"></canvas></div>
@@ -141,43 +159,41 @@ tbody tr:hover td{background:rgba(108,92,231,.06)}
   </div>
 </div>
 
-<div class="pnl" id="p-sales1c">
+<div class="pnl" id="p-sales1c"><h2 class="pnl-title">💰 1С Продажі</h2>
   <div class="mini-kpi">
-    <div class="mk"><div class="mk-l">UH ORDERS день</div><div class="mk-v" style="color:var(--ac)">978K</div></div>
-    <div class="mk"><div class="mk-l">SH ORDERS день</div><div class="mk-v" style="color:var(--g)">0</div></div>
-    <div class="mk"><div class="mk-l">UH ВІДМОВИ</div><div class="mk-v" style="color:var(--r)">0</div></div>
-    <div class="mk"><div class="mk-l">SH ВІДМОВИ</div><div class="mk-v" style="color:var(--r)">0</div></div>
-    <div class="mk"><div class="mk-l">UH SALES день</div><div class="mk-v" style="color:var(--o)">177K</div></div>
-    <div class="mk"><div class="mk-l">SH SALES день</div><div class="mk-v" style="color:var(--lime)">5K</div></div>
-    <div class="mk"><div class="mk-l">UH ORDERS міс.</div><div class="mk-v" style="color:var(--ac)">2.69M</div></div>
-    <div class="mk"><div class="mk-l">SH ORDERS міс.</div><div class="mk-v" style="color:var(--g)">0</div></div>
-    <div class="mk"><div class="mk-l">UH SALES міс.</div><div class="mk-v" style="color:var(--o)">2.79M</div></div>
-    <div class="mk"><div class="mk-l">SH SALES міс.</div><div class="mk-v" style="color:var(--lime)">27K</div></div>
+    <div class="mk"><div class="mk-l">ORDERS день</div><div class="mk-v" style="color:var(--ac)">978K</div></div>
+    <div class="mk"><div class="mk-l">ВІДМОВИ день</div><div class="mk-v" style="color:var(--r)">0</div></div>
+    <div class="mk"><div class="mk-l">SALES день</div><div class="mk-v" style="color:var(--o)">177K</div></div>
+    <div class="mk"><div class="mk-l">ORDERS міс.</div><div class="mk-v" style="color:var(--ac)">2.69M</div></div>
+    <div class="mk"><div class="mk-l">SALES міс.</div><div class="mk-v" style="color:var(--o)">2.83M</div></div>
   </div>
-  <div class="g2">
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--ac)"></span>UH Замовлення по підрозділах<span class="badge-tot">978 009 ₴</span></div><div class="cd-d">Без статусу "Отказ"</div><div id="uhOrdPodr"></div></div>
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--g)"></span>SH Замовлення по підрозділах<span class="badge-tot">0 ₴</span></div><div class="cd-d">Без статусу "Отказ"</div><div id="shOrdPodr"></div></div>
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--ac)"></span>Замовлення по підрозділах<span class="badge-tot">978 009 ₴</span></div>
+    <div class="cd-d">Без статусу "Отказ"</div>
+    <div id="uhOrdPodr"></div>
   </div>
-  <div class="g2">
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--r)"></span>UH Відмови (1С)<span class="badge-tot">0 ₴</span></div><div class="cd-d">Статус "Отказ Не отправлен" + "Отказ Отправлен"</div><div id="uhRefPodr"></div></div>
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--r)"></span>SH Відмови (1С)<span class="badge-tot">0 ₴</span></div><div class="cd-d">Статус "Отказ Не отправлен" + "Отказ Отправлен"</div><div id="shRefPodr"></div></div>
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--r)"></span>Відмови (1С)<span class="badge-tot">0 ₴</span></div>
+    <div class="cd-d">Статус "Отказ Не отправлен" + "Отказ Отправлен"</div>
+    <div id="uhRefPodr"></div>
   </div>
-  <div class="g2">
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--o)"></span>UH Відгрузки по підрозділах<span class="badge-tot">176 604 ₴</span></div><div class="cd-d">Реальний заробіток (без доставок)</div><div id="uhSalPodr"></div></div>
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--lime)"></span>SH Відгрузки по підрозділах<span class="badge-tot">4 533 ₴</span></div><div class="cd-d">Реальний заробіток (без доставок)</div><div id="shSalPodr"></div></div>
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--o)"></span>Відгрузки по підрозділах<span class="badge-tot">176 604 ₴</span></div>
+    <div class="cd-d">Реальний заробіток (без доставок)</div>
+    <div id="uhSalPodr"></div>
   </div>
 </div>
 
-<div class="pnl" id="p-crm">
+<div class="pnl" id="p-crm"><h2 class="pnl-title">👥 CRM Менеджери</h2>
   <div class="mini-kpi">
-    <div class="mk"><div class="mk-l">Усього менеджерів</div><div class="mk-v">8</div></div>
-    <div class="mk"><div class="mk-l">Магазин</div><div class="mk-v">1</div></div>
-    <div class="mk"><div class="mk-l">Чатери</div><div class="mk-v">1</div></div>
-    <div class="mk"><div class="mk-l">Сума замовлень</div><div class="mk-v">177K</div></div>
-    <div class="mk"><div class="mk-l">Сер. чек</div><div class="mk-v">6 792</div></div>
+    <div class="mk"><div class="mk-l">Усього менеджерів</div><div class="mk-v">0</div></div>
+    <div class="mk"><div class="mk-l">Магазин</div><div class="mk-v">0</div></div>
+    <div class="mk"><div class="mk-l">Чатери</div><div class="mk-v">0</div></div>
+    <div class="mk"><div class="mk-l">Сума замовлень</div><div class="mk-v">0</div></div>
+    <div class="mk"><div class="mk-l">Сер. чек</div><div class="mk-v">0</div></div>
   </div>
   <div class="cd">
-    <div class="ct"><span class="dot"></span>🏆 Рейтинг менеджерів (онлайн)<span class="badge-tot">8 активних</span></div>
+    <div class="ct"><span class="dot"></span>🏆 Рейтинг менеджерів (онлайн)<span class="badge-tot">0 активних</span></div>
     <div class="cd-d">Конв. = orders/(orders+leads). Сортовано за виручкою.</div>
     <div class="scr">
       <table>
@@ -192,7 +208,7 @@ tbody tr:hover td{background:rgba(108,92,231,.06)}
   </div>
 </div>
 
-<div class="pnl" id="p-crmops">
+<div class="pnl" id="p-crmops"><h2 class="pnl-title">🏭 CRM Операції</h2>
   <div class="g2">
     <div class="cd"><div class="ct"><span class="dot" style="background:var(--p)"></span>📦 Категорії товарів</div><canvas id="chCategories"></canvas></div>
     <div class="cd"><div class="ct"><span class="dot" style="background:var(--c)"></span>📞 Тип звернення</div><canvas id="chRequestTypes"></canvas></div>
@@ -216,9 +232,9 @@ tbody tr:hover td{background:rgba(108,92,231,.06)}
   </div>
 </div>
 
-<div class="pnl" id="p-channels">
+<div class="pnl" id="p-channels"><h2 class="pnl-title">🌐 Канали</h2>
   <div class="cd">
-    <div class="ct"><span class="dot" style="background:var(--g)"></span>🌐 Канали продажу<span class="badge-tot">8 активних</span></div>
+    <div class="ct"><span class="dot" style="background:var(--g)"></span>🌐 Канали продажу<span class="badge-tot">0 активних</span></div>
     <div class="scr"><table><thead><tr><th>#</th><th>Канал</th><th class="r">Зам.</th><th class="r">Замовлення ₴</th><th class="r">Сер.чек</th><th>Графік</th></tr></thead><tbody id="sitesBody"></tbody></table></div>
   </div>
   <div class="cd">
@@ -227,17 +243,17 @@ tbody tr:hover td{background:rgba(108,92,231,.06)}
   </div>
 </div>
 
-<div class="pnl" id="p-ads">
+<div class="pnl" id="p-ads"><h2 class="pnl-title">📱 Реклама</h2>
   <div class="mini-kpi">
     <div class="mk"><div class="mk-l">Витрати</div><div class="mk-v" style="color:var(--ac)">4 833</div></div>
-    <div class="mk"><div class="mk-l">Покази</div><div class="mk-v">52 281</div></div>
+    <div class="mk"><div class="mk-l">Покази</div><div class="mk-v">52 293</div></div>
     <div class="mk"><div class="mk-l">Кліки</div><div class="mk-v">1 350</div></div>
     <div class="mk"><div class="mk-l">CPC</div><div class="mk-v" style="color:var(--b)">3.58 ₴</div></div>
     <div class="mk"><div class="mk-l">CTR</div><div class="mk-v" style="color:var(--g)">2.58%</div></div>
     <div class="mk"><div class="mk-l">Результати</div><div class="mk-v" style="color:var(--p)">30</div></div>
-    <div class="mk"><div class="mk-l">CPR</div><div class="mk-v" style="color:var(--o)">161.09 ₴</div></div>
-    <div class="mk"><div class="mk-l">ROAS Замовл.</div><div class="mk-v" style="color:var(--g)">202.37×</div></div>
-    <div class="mk"><div class="mk-l">ROAS Відгр.</div><div class="mk-v" style="color:var(--lime)">37.48×</div></div>
+    <div class="mk"><div class="mk-l">CPR</div><div class="mk-v" style="color:var(--o)">161.1 ₴</div></div>
+    <div class="mk"><div class="mk-l">ROAS Замовл.</div><div class="mk-v" style="color:var(--g)">202.36×</div></div>
+    <div class="mk"><div class="mk-l">ROAS Відгр.</div><div class="mk-v" style="color:var(--lime)">36.54×</div></div>
   </div>
   <div class="cd"><div class="ct"><span class="dot"></span>🏢 Розбивка по кабінетах</div><div id="metaAccounts"></div></div>
   <div class="cd">
@@ -246,14 +262,14 @@ tbody tr:hover td{background:rgba(108,92,231,.06)}
   </div>
 </div>
 
-<div class="pnl" id="p-analytics">
+<div class="pnl" id="p-analytics"><h2 class="pnl-title">📈 Аналітика</h2>
   <div class="mini-kpi">
     <div class="mk"><div class="mk-l">Сесії</div><div class="mk-v" style="color:var(--ac)">3 641</div></div>
     <div class="mk"><div class="mk-l">Користувачі</div><div class="mk-v" style="color:var(--g)">3 350</div></div>
     <div class="mk"><div class="mk-l">Нові</div><div class="mk-v" style="color:var(--b)">1 943</div></div>
     <div class="mk"><div class="mk-l">% Відмов</div><div class="mk-v" style="color:var(--r)">32.1%</div></div>
     <div class="mk"><div class="mk-l">Сер. час</div><div class="mk-v" style="color:var(--p)">9:49</div></div>
-    <div class="mk"><div class="mk-l">Конв. сайту</div><div class="mk-v" style="color:var(--o)">0.71%</div></div>
+    <div class="mk"><div class="mk-l">Конв. сайту</div><div class="mk-v" style="color:var(--o)">0.0%</div></div>
   </div>
   <div class="g2">
     <div class="cd"><div class="ct"><span class="dot" style="background:var(--ac)"></span>🔗 Топ джерела</div><div id="ga4Sources"></div></div>
@@ -262,10 +278,10 @@ tbody tr:hover td{background:rgba(108,92,231,.06)}
   <div class="cd"><div class="ct"><span class="dot" style="background:var(--o)"></span>📱 Пристрої</div><canvas id="chDevices" style="max-height:240px"></canvas></div>
 </div>
 
-<div class="ftr">UH Analytics · daily · 05.05.2026 08:56</div>
+<div class="ftr">UH Analytics · daily · 05.05.2026 09:52</div>
 
 <script>
-const D = {"trend_dates": ["04-05", "04-06", "04-07", "04-08", "04-09", "04-10", "04-11", "04-12", "04-13", "04-14", "04-15", "04-16", "04-17", "04-18", "04-19", "04-20", "04-21", "04-22", "04-23", "04-24", "04-25", "04-26", "04-27", "04-28", "04-29", "04-30", "05-01", "05-02", "05-03"], "trend_revenue": [431768.0, 791614.0, 506454.0, 477112.0, 561913.0, 554569.0, 408034.0, 307969.0, 559907.0, 607087.0, 692719.0, 692864.0, 507280.0, 657240.0, 552448.0, 745758.0, 630994.0, 771877.0, 659112.0, 664573.0, 693084.0, 767427.0, 1080990.0, 974040.0, 896549.15, 840283.0, 750509.0, 746991.0, 833406.0], "trend_orders": [100, 174, 127, 119, 130, 135, 92, 72, 137, 147, 149, 146, 135, 136, 122, 175, 141, 163, 151, 158, 145, 162, 217, 188, 202, 183, 144, 145, 148], "trend_leads": [16, 58, 22, 28, 40, 30, 10, 5, 32, 44, 25, 23, 36, 24, 15, 25, 35, 41, 24, 24, 37, 32, 36, 48, 69, 56, 34, 45, 63], "hist_dates": ["29.04", "30.04", "01.05", "02.05", "03.05", "04.05"], "hist_uh": [755379.0, 695699.0, 616537.0, 531515.0, 503274.0, 978008.95], "hist_sh": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "hist_uh_s": [739314.0, 828557.0, 199592.0, 113734.0, 0.0, 176604.0], "hist_sh_s": [8586.0, 5935.0, -1853.0, 24414.0, 0.0, 4533.0], "hist_meta": [4314.72, 4865.1, 4691.92, 4534.11, 5270.04, 4832.69], "hist_ga4": [3806, 3670, 3473, 3698, 3780, 3641], "hist_crm": [253, 112, 0, 0, 186, 26], "uh_orders_podr": {"Matrasroll": 248988.0, "A-mebli": 240332.0, "МР Розетка (Мережі)": 160169.0, "Sofino": 144831.95, "DR-TV": 72675.0, "HabStor": 31262.0, "МР Эпицентр (Мережі)": 22011.0, "Шоу-Рум Дрим": 21727.0, "ДРОП": 21611.0, "ОПТ": 13424.0, "Алло (Мережі)": 778.0, "Шоу-Рум Ретровіль": 200.0}, "sh_orders_podr": {}, "uh_refused_podr": {}, "sh_refused_podr": {}, "uh_sales_podr": {"DR-TV": 71856.0, "ОПТ": 38570.0, "A-mebli": 32543.0, "Matrasroll": 13368.0, "Sofino": 12211.0, "Невідомо": 12080.0, "Шоу-Рум Дрим": 526.0, "Шоу-Рум Ретровіль": 200.0, "HabStor": -4750.0}, "sh_sales_podr": {"Purple": 4533.0}, "managers": [{"name": "Юлія Горбань", "orders": 5, "revenue": 96143.0, "refused": 0, "refuse_pct": 0.0, "leads": 3, "avg_check": 19229.0, "conv": 62.5}, {"name": "Діана Дзюба", "orders": 11, "revenue": 34774.0, "refused": 0, "refuse_pct": 0.0, "leads": 4, "avg_check": 3161.0, "conv": 73.3}, {"name": "Надія Карпенко", "orders": 7, "revenue": 20546.0, "refused": 0, "refuse_pct": 0.0, "leads": 3, "avg_check": 2935.0, "conv": 70.0}, {"name": "Ольга Галишин", "orders": 5, "revenue": 19124.0, "refused": 0, "refuse_pct": 0.0, "leads": 1, "avg_check": 3825.0, "conv": 83.3}, {"name": "Вікторія Шегедин", "orders": 4, "revenue": 19097.0, "refused": 0, "refuse_pct": 0.0, "leads": 3, "avg_check": 4774.0, "conv": 57.1}, {"name": "ШоуРум ДрімТаун", "orders": 1, "revenue": 16232.0, "refused": 0, "refuse_pct": 0.0, "leads": 0, "avg_check": 16232.0, "conv": 100.0}, {"name": "Валерія Захожа", "orders": 1, "revenue": 4190.0, "refused": 0, "refuse_pct": 0.0, "leads": 0, "avg_check": 4190.0, "conv": 100.0}, {"name": "Руслан Сава", "orders": 0, "revenue": 0.0, "refused": 0, "refuse_pct": 0.0, "leads": 1, "avg_check": 0.0, "conv": 0.0}], "managers_shop": [{"name": "Чернявська Таміла", "orders": 1, "revenue": 16232.0, "avg_check": 16232.0}], "chatters": [{"name": "Марта Онищук", "orders": 0, "revenue": 0.0}], "sites": {"DR-TV": {"orders": 1, "revenue": 72675.0, "avg_check": 72675.0}, "matrasroll.com.ua": {"orders": 23, "revenue": 68933.0, "avg_check": 2997.0}, "amebli.com.ua": {"orders": 8, "revenue": 42565.0, "avg_check": 5321.0}, "sofino": {"orders": 6, "revenue": 22833.0, "avg_check": 3806.0}, "Шоу-Рум Дрім Таун": {"orders": 1, "revenue": 16232.0, "avg_check": 16232.0}, "Розетка СХ": {"orders": 1, "revenue": 7338.0, "avg_check": 7338.0}, "АЛЛО UnitedHome": {"orders": 1, "revenue": 3562.0, "avg_check": 3562.0}, "hubstore.com.ua": {"orders": 0, "revenue": 0.0, "avg_check": 0.0}}, "products": [{"name": "Ортопедичний матрац ORANGE Handy (вакуум) 80x200", "count": 1, "revenue": 66000.0, "qty": 20}, {"name": "Ортопедичний матрац M.Y.M Comfort Deluxe 2025 - Roll Pack 160x200", "count": 1, "revenue": 16232.0, "qty": 1}, {"name": "Orange Big Roll Memory,матрац 80x190", "count": 1, "revenue": 9840.0, "qty": 2}, {"name": "Ортопедичний матрац Purple Base Promo Cocos New 160x200", "count": 1, "revenue": 7338.0, "qty": 1}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 150x190", "count": 1, "revenue": 6340.0, "qty": 1}, {"name": "Матрас ЕММ Comfort/Комфорт Зима/Лето 180x200 см", "count": 1, "revenue": 5716.0, "qty": 1}, {"name": "Ортопедичний матрац Chocolate (вакуум) 110x190", "count": 1, "revenue": 5612.0, "qty": 1}, {"name": "Топпер Purple Evolution Comfort (без коробки) 160x200", "count": 1, "revenue": 5357.0, "qty": 1}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 120x190", "count": 1, "revenue": 5067.0, "qty": 1}, {"name": "Топпер PURPLE Bionica Linen Active 160x200", "count": 2, "revenue": 4798.0, "qty": 2}, {"name": "Топпер BIONICA Linen Ultra 90x190", "count": 2, "revenue": 4102.0, "qty": 2}, {"name": "Топпер PURPLE Base Lite Cocos 160x200", "count": 1, "revenue": 4065.0, "qty": 1}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 90x200", "count": 1, "revenue": 4050.0, "qty": 1}, {"name": "Топпер Purple Bionica Memory Cocos 120x190", "count": 1, "revenue": 3890.0, "qty": 1}, {"name": "2753432", "count": 1, "revenue": 3709.0, "qty": 1}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 80x190", "count": 1, "revenue": 3647.0, "qty": 1}, {"name": "Тонкий матрас-топпер Purple Bionica Linen Luxe 160x190 см (13543-160190)", "count": 1, "revenue": 3562.0, "qty": 1}, {"name": "Топпер BIONICA Linen Ultra 160x200", "count": 1, "revenue": 3497.0, "qty": 1}, {"name": "Топпер BIONICA Linen Ultra 150x190", "count": 1, "revenue": 3296.0, "qty": 1}, {"name": "Топпер BIONICA Linen Ultra 150x200", "count": 1, "revenue": 3296.0, "qty": 1}, {"name": "Ортопедичний матрац Dreamo Cosmo Double Cocos 80x190", "count": 1, "revenue": 3235.0, "qty": 1}, {"name": "Топпер Orange Wonder Plus 150x190", "count": 1, "revenue": 3111.0, "qty": 1}, {"name": "Топпер PURPLE Base Lite Cocos 120x190", "count": 1, "revenue": 3039.0, "qty": 1}, {"name": "Purple Low,матрац 90x190", "count": 1, "revenue": 2898.0, "qty": 1}, {"name": "Orange Fine Roll,матрац 90x190", "count": 1, "revenue": 2898.0, "qty": 1}, {"name": "Orange Fine Roll,матрац 80x190", "count": 1, "revenue": 2671.0, "qty": 1}, {"name": "Purple Low,матрац 80x200", "count": 1, "revenue": 2671.0, "qty": 1}, {"name": "Топпер BIONICA Linen Ultra 120x190", "count": 1, "revenue": 2600.0, "qty": 1}, {"name": "Топпер Purple Base Plus 120x190", "count": 1, "revenue": 2504.0, "qty": 1}, {"name": "Топпер ORANGE Wonder Area 140x190", "count": 1, "revenue": 2295.0, "qty": 1}], "categories": {"Топер": 20, "Ортопедичний матрац": 7, "Безпружинний матрац": 3, "Ортопедичний матрац,\nАксесуари для сну": 1, "Корпусні меблі": 1}, "request_types": {"Корзина": 18, "Вхідний дзвінок": 14, "GetCall": 2, "GetCall,\nКорзина": 1, "Instagram": 1}, "payment_methods": {"Оплата при отриманні": 32, "Р/Р + наложка": 2, "LiqPay": 2, "LiqPay+наложка": 1, "part_pay": 1, "Р/Р": 1, "ОЧ + Наложка": 1}, "delivery_types": {"На відділення": 19, "Адресна": 8, "Самовивіз": 1}, "carriers": {"Нова Пошта": 23, "Власна по Києву": 4, "Самовивіз": 1}, "warehouses": {"Виробництво": 11, "Склад Двушка": 9, "Від постачальника": 7, "Склад Шоу-Рум": 1}, "statuses": {"Контроль оператора": 17, "Новий": 16, "Спам на согласование": 5, "В черзі на відправлення": 4, "Недодзвон": 3, "Створена ТТН": 3, "В обробці": 2, "Контроль оплати": 2, "Питання по замовленню": 1, "Повторне звернення": 1}, "refuse_reasons": {}, "lead_objections": {}, "meta_camps": [{"account": "Amebli 2024", "campaign": "EW Конверсії матрац ORANGE Handy", "spend": 1229.87, "impressions": 6693, "clicks": 198, "cpc": 6.21, "ctr": 2.96, "results": 4}, {"account": "MatrasRoll 2024", "campaign": "EW Сonversions Bionica Linen Active", "spend": 990.81, "impressions": 9508, "clicks": 359, "cpc": 2.76, "ctr": 3.78, "results": 8}, {"account": "Amebli 2024", "campaign": "EW Конверсії матрац ORANGE Handy Cocos 2026", "spend": 681.21, "impressions": 3610, "clicks": 89, "cpc": 7.65, "ctr": 2.47, "results": 10}, {"account": "Amebli 2024", "campaign": "EW Конверсії матрац  Porto Cocos 2026", "spend": 592.72, "impressions": 2942, "clicks": 214, "cpc": 2.77, "ctr": 7.27, "results": 0}, {"account": "Amebli 2024", "campaign": "EW Динамічний ремаркетинг", "spend": 530.27, "impressions": 2696, "clicks": 245, "cpc": 2.16, "ctr": 9.09, "results": 6}, {"account": "Amebli 2024", "campaign": "EW Конверсії топери 2026", "spend": 440.59, "impressions": 2287, "clicks": 160, "cpc": 2.75, "ctr": 7.0, "results": 0}, {"account": "Amebli", "campaign": "EW Охват | Шоурум", "spend": 266.75, "impressions": 23850, "clicks": 57, "cpc": 4.68, "ctr": 0.24, "results": 0}, {"account": "Amebli 2024", "campaign": "EW Конверсії матрац  Porto Cocos", "spend": 100.47, "impressions": 695, "clicks": 28, "cpc": 3.59, "ctr": 4.03, "results": 2}], "meta_accounts": [{"id": "498543759542047", "name": "Amebli 2024", "spend": 3575.13, "impressions": 18923, "clicks": 934, "results": 22, "cpc": 3.83, "ctr": 4.94, "error": null, "cpm": 188.93}, {"id": "785104883775481", "name": "Amebli", "spend": 266.75, "impressions": 23850, "clicks": 57, "results": 0, "cpc": 4.68, "ctr": 0.24, "error": null, "cpm": 11.18}, {"id": "1071880631226950", "name": "MatrasRoll 2024", "spend": 990.81, "impressions": 9508, "clicks": 359, "results": 8, "cpc": 2.76, "ctr": 3.78, "error": null, "cpm": 104.21}], "ga4_sources": [{"source": "google", "medium": "cpc", "sessions": 2013, "conversions": 65}, {"source": "facebook", "medium": "cpc", "sessions": 579, "conversions": 14}, {"source": "google", "medium": "organic", "sessions": 282, "conversions": 16}, {"source": "(direct)", "medium": "(none)", "sessions": 275, "conversions": 14}, {"source": "facebook-rk2", "medium": "cpc", "sessions": 264, "conversions": 3}, {"source": "facebook", "medium": "paid_social", "sessions": 143, "conversions": 0}, {"source": "(not set)", "medium": "(not set)", "sessions": 37, "conversions": 1}, {"source": "fb", "medium": "paid", "sessions": 29, "conversions": 0}, {"source": "(data not available)", "medium": "(data not available)", "sessions": 18, "conversions": 5}, {"source": "homescreen", "medium": "(not set)", "sessions": 15, "conversions": 0}], "ga4_pages": [{"path": "/tonkyi-matrats-toper-purple-bionica-linen-active/", "title": "Тонкий матрац-топер Bionica Linen Active Цена от 989 грн в Україні", "views": 838, "bounce": 24.7}, {"path": "/toppery/", "title": "Топери - Офіційний інтернет-магазин Purple™ Simpler™ та представник Matroluxe™ Eurosleep™", "views": 662, "bounce": 33.1}, {"path": "/tonkyi-matrats-toper-purple-bionica-linen-active/", "title": "Тонкий матрац-топер Bionica Linen Active", "views": 639, "bounce": 2.7}, {"path": "/toppery-purple/", "title": "Топери Purple - Офіційний інтернет-магазин Purple™ Simpler™ та представник Matroluxe™ Eurosleep™", "views": 381, "bounce": 21.2}, {"path": "/", "title": "Офіційний гуртовий магазин Purple, Eurosleep і MatroLuxe", "views": 263, "bounce": 16.8}, {"path": "/tonkyi-matrats-toper-purple-bionica-linen-active-160x200/", "title": "Тонкий матрац-топер Bionica Linen Active", "views": 182, "bounce": 6.2}, {"path": "/toppery/", "title": "Топер матрац купити в Києві: ціни, відгуки в Україні ≡ MatrasRoll™", "views": 149, "bounce": 9.9}, {"path": "/tonkyi-matrats-toper-purple-bionica-linen-active-nestandartnyi-rozmir/", "title": "Тонкий матрац-топер Bionica Linen Active Цена от 953 грн в Україні", "views": 141, "bounce": 18.9}, {"path": "/vsi-matratsy/", "title": "Всі матраци - Офіційний інтернет-магазин Purple™ Simpler™ та представник Matroluxe™ Eurosleep™", "views": 134, "bounce": 24.7}, {"path": "/tonkyi-matrats-toper-purple-bionica-mini/", "title": "Тонкий матрац-топер Purple Bionica Mini Цена от 623 грн в Україні", "views": 123, "bounce": 5.6}], "ga4_devices": [{"device": "mobile", "sessions": 3109, "pct": 85.4}, {"device": "desktop", "sessions": 521, "pct": 14.3}, {"device": "tablet", "sessions": 36, "pct": 1.0}]};
+const D = {"trend_dates": [], "trend_revenue": [], "trend_orders": [], "trend_leads": [], "hist_dates": ["29.04", "30.04", "01.05", "02.05", "03.05", "04.05"], "hist_uh": [755379.0, 695699.0, 616537.0, 531515.0, 503274.0, 978008.95], "hist_uh_s": [739314.0, 828557.0, 199592.0, 113734.0, 0.0, 176604.0], "hist_meta": [4314.72, 4865.1, 4691.92, 4534.11, 5270.04, 4833.05], "hist_ga4": [3806, 3670, 3473, 3698, 3780, 3641], "hist_crm": [253, 112, 0, 0, 186, 0], "uh_orders_podr": {"Matrasroll": 248988.0, "A-mebli": 240332.0, "МР Розетка (Мережі)": 160169.0, "Sofino": 144831.95, "DR-TV": 72675.0, "HabStor": 31262.0, "МР Эпицентр (Мережі)": 22011.0, "Шоу-Рум Дрим": 21727.0, "ДРОП": 21611.0, "ОПТ": 13424.0, "Алло (Мережі)": 778.0, "Шоу-Рум Ретровіль": 200.0}, "uh_refused_podr": {}, "uh_sales_podr": {"DR-TV": 71856.0, "ОПТ": 38570.0, "A-mebli": 32543.0, "Matrasroll": 13368.0, "Sofino": 12211.0, "Невідомо": 12080.0, "Шоу-Рум Дрим": 526.0, "Шоу-Рум Ретровіль": 200.0, "HabStor": -4750.0}, "managers": [], "managers_shop": [], "chatters": [], "sites": {}, "products": [], "categories": {}, "request_types": {}, "payment_methods": {}, "delivery_types": {}, "carriers": {}, "warehouses": {}, "statuses": {}, "refuse_reasons": {}, "lead_objections": {}, "meta_camps": [{"account": "Amebli 2024", "campaign": "EW Конверсії матрац ORANGE Handy", "spend": 1229.96, "impressions": 6695, "clicks": 198, "cpc": 6.21, "ctr": 2.96, "results": 4}, {"account": "MatrasRoll 2024", "campaign": "EW Сonversions Bionica Linen Active", "spend": 990.84, "impressions": 9510, "clicks": 359, "cpc": 2.76, "ctr": 3.77, "results": 8}, {"account": "Amebli 2024", "campaign": "EW Конверсії матрац ORANGE Handy Cocos 2026", "spend": 681.21, "impressions": 3610, "clicks": 89, "cpc": 7.65, "ctr": 2.47, "results": 10}, {"account": "Amebli 2024", "campaign": "EW Конверсії матрац  Porto Cocos 2026", "spend": 592.72, "impressions": 2942, "clicks": 214, "cpc": 2.77, "ctr": 7.27, "results": 0}, {"account": "Amebli 2024", "campaign": "EW Динамічний ремаркетинг", "spend": 530.35, "impressions": 2697, "clicks": 245, "cpc": 2.16, "ctr": 9.08, "results": 6}, {"account": "Amebli 2024", "campaign": "EW Конверсії топери 2026", "spend": 440.69, "impressions": 2288, "clicks": 160, "cpc": 2.75, "ctr": 6.99, "results": 0}, {"account": "Amebli", "campaign": "EW Охват | Шоурум", "spend": 266.81, "impressions": 23856, "clicks": 57, "cpc": 4.68, "ctr": 0.24, "results": 0}, {"account": "Amebli 2024", "campaign": "EW Конверсії матрац  Porto Cocos", "spend": 100.47, "impressions": 695, "clicks": 28, "cpc": 3.59, "ctr": 4.03, "results": 2}], "meta_accounts": [{"id": "498543759542047", "name": "Amebli 2024", "spend": 3575.4, "impressions": 18927, "clicks": 934, "results": 22, "cpc": 3.83, "ctr": 4.93, "error": null, "cpm": 188.9}, {"id": "785104883775481", "name": "Amebli", "spend": 266.81, "impressions": 23856, "clicks": 57, "results": 0, "cpc": 4.68, "ctr": 0.24, "error": null, "cpm": 11.18}, {"id": "1071880631226950", "name": "MatrasRoll 2024", "spend": 990.84, "impressions": 9510, "clicks": 359, "results": 8, "cpc": 2.76, "ctr": 3.77, "error": null, "cpm": 104.19}], "ga4_sources": [{"source": "google", "medium": "cpc", "sessions": 2013, "conversions": 65}, {"source": "facebook", "medium": "cpc", "sessions": 579, "conversions": 14}, {"source": "google", "medium": "organic", "sessions": 282, "conversions": 16}, {"source": "(direct)", "medium": "(none)", "sessions": 275, "conversions": 14}, {"source": "facebook-rk2", "medium": "cpc", "sessions": 264, "conversions": 3}, {"source": "facebook", "medium": "paid_social", "sessions": 143, "conversions": 0}, {"source": "(not set)", "medium": "(not set)", "sessions": 37, "conversions": 1}, {"source": "fb", "medium": "paid", "sessions": 29, "conversions": 0}, {"source": "(data not available)", "medium": "(data not available)", "sessions": 18, "conversions": 5}, {"source": "homescreen", "medium": "(not set)", "sessions": 15, "conversions": 0}], "ga4_pages": [{"path": "/tonkyi-matrats-toper-purple-bionica-linen-active/", "title": "Тонкий матрац-топер Bionica Linen Active Цена от 989 грн в Україні", "views": 838, "bounce": 24.7}, {"path": "/toppery/", "title": "Топери - Офіційний інтернет-магазин Purple™ Simpler™ та представник Matroluxe™ Eurosleep™", "views": 662, "bounce": 33.1}, {"path": "/tonkyi-matrats-toper-purple-bionica-linen-active/", "title": "Тонкий матрац-топер Bionica Linen Active", "views": 639, "bounce": 2.7}, {"path": "/toppery-purple/", "title": "Топери Purple - Офіційний інтернет-магазин Purple™ Simpler™ та представник Matroluxe™ Eurosleep™", "views": 381, "bounce": 21.2}, {"path": "/", "title": "Офіційний гуртовий магазин Purple, Eurosleep і MatroLuxe", "views": 263, "bounce": 16.8}, {"path": "/tonkyi-matrats-toper-purple-bionica-linen-active-160x200/", "title": "Тонкий матрац-топер Bionica Linen Active", "views": 182, "bounce": 6.2}, {"path": "/toppery/", "title": "Топер матрац купити в Києві: ціни, відгуки в Україні ≡ MatrasRoll™", "views": 149, "bounce": 9.9}, {"path": "/tonkyi-matrats-toper-purple-bionica-linen-active-nestandartnyi-rozmir/", "title": "Тонкий матрац-топер Bionica Linen Active Цена от 953 грн в Україні", "views": 141, "bounce": 18.9}, {"path": "/vsi-matratsy/", "title": "Всі матраци - Офіційний інтернет-магазин Purple™ Simpler™ та представник Matroluxe™ Eurosleep™", "views": 134, "bounce": 24.7}, {"path": "/tonkyi-matrats-toper-purple-bionica-mini/", "title": "Тонкий матрац-топер Purple Bionica Mini Цена от 623 грн в Україні", "views": 123, "bounce": 5.6}], "ga4_devices": [{"device": "mobile", "sessions": 3109, "pct": 85.4}, {"device": "desktop", "sessions": 521, "pct": 14.3}, {"device": "tablet", "sessions": 36, "pct": 1.0}]};
 function sw(name, btn){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));document.querySelectorAll('.pnl').forEach(p=>p.classList.remove('on'));btn.classList.add('on');document.getElementById('p-'+name).classList.add('on');}
 Chart.defaults.color='#7b84a3';Chart.defaults.font.family="'DM Sans', sans-serif";Chart.defaults.font.size=10;
 const COMMON={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{padding:10,usePointStyle:true,pointStyleWidth:8,font:{size:10}}},tooltip:{backgroundColor:'#1c2137',borderColor:'#3a4170',borderWidth:1,padding:10}},scales:{x:{grid:{color:'rgba(255,255,255,0.03)'},ticks:{maxRotation:45,font:{size:9}}},y:{grid:{color:'rgba(255,255,255,0.03)'},ticks:{font:{size:9},callback:v=>v>=1000?(v/1000).toFixed(0)+'K':v}}}};
@@ -279,16 +295,16 @@ new Chart(document.getElementById('chTrend30'),{type:'bar',data:{labels:D.trend_
 {type:'line',label:'Лідів',data:D.trend_leads,borderColor:'#ffa94d',tension:.4,borderWidth:2,pointRadius:2,borderDash:[5,3],yAxisID:'y2',order:0,fill:false}]},
 options:{...COMMON,scales:{x:{...COMMON.scales.x},y1:{position:'left',grid:COMMON.scales.y.grid,ticks:{...COMMON.scales.y.ticks,color:'#a29bfe'}},y2:{position:'right',grid:{display:false},ticks:{font:{size:9},color:'#00d68f'}}}}});}
 
-new Chart(document.getElementById('chOrders'),{type:'bar',data:{labels:D.hist_dates,datasets:[{label:'UH',data:D.hist_uh,backgroundColor:'rgba(108,92,231,0.8)',stack:'s',borderRadius:3},{label:'SH',data:D.hist_sh,backgroundColor:'rgba(0,214,143,0.7)',stack:'s',borderRadius:3}]},options:{...COMMON,scales:{...COMMON.scales,x:{...COMMON.scales.x,stacked:true},y:{...COMMON.scales.y,stacked:true}}}});
-new Chart(document.getElementById('chSales'),{type:'bar',data:{labels:D.hist_dates,datasets:[{label:'UH',data:D.hist_uh_s,backgroundColor:'rgba(255,169,77,0.8)',stack:'s',borderRadius:3},{label:'SH',data:D.hist_sh_s,backgroundColor:'rgba(255,107,107,0.7)',stack:'s',borderRadius:3}]},options:{...COMMON,scales:{...COMMON.scales,x:{...COMMON.scales.x,stacked:true},y:{...COMMON.scales.y,stacked:true}}}});
+new Chart(document.getElementById('chOrders'),{type:'bar',data:{labels:D.hist_dates,datasets:[{label:'Замовлення',data:D.hist_uh,backgroundColor:'rgba(108,92,231,0.85)',borderColor:'#6c5ce7',borderWidth:1,borderRadius:3}]},options:{...COMMON,plugins:{...COMMON.plugins,legend:{display:false}}}});
+new Chart(document.getElementById('chSales'),{type:'bar',data:{labels:D.hist_dates,datasets:[{label:'Відгрузки',data:D.hist_uh_s,backgroundColor:'rgba(255,169,77,0.85)',borderColor:'#ffa94d',borderWidth:1,borderRadius:3}]},options:{...COMMON,plugins:{...COMMON.plugins,legend:{display:false}}}});
 
 function lineChart(id,data,color){new Chart(document.getElementById(id),{type:'line',data:{labels:D.hist_dates,datasets:[{data,borderColor:color,backgroundColor:color+'22',fill:true,tension:.4,borderWidth:2,pointRadius:2}]},options:{...COMMON,plugins:{...COMMON.plugins,legend:{display:false}}}});}
 lineChart('chGa4',D.hist_ga4,'#339af0');lineChart('chMeta',D.hist_meta,'#ffa94d');lineChart('chCrmOrd',D.hist_crm,'#da77f2');
 
 function renderPodr(elId,podrObj,color){const el=document.getElementById(elId);const items=Object.entries(podrObj||{}).sort((a,b)=>b[1]-a[1]);if(!items.length){el.innerHTML='<div style="text-align:center;color:var(--td);padding:18px">Немає даних</div>';return;}const max=items[0][1]||1;el.innerHTML=items.map(([n,v])=>{const p=Math.max(2,Math.round(v/max*100));return `<div class="bar-row"><div class="bar-name" title="${n}">${n}</div><div class="bar-wrap"><div class="bar-fill" style="width:${p}%;background:${color}"></div></div><div class="bar-val">${fmtK(v)}</div></div>`;}).join('');}
-renderPodr('uhOrdPodr',D.uh_orders_podr,'#6c5ce7');renderPodr('shOrdPodr',D.sh_orders_podr,'#00d68f');
-renderPodr('uhRefPodr',D.uh_refused_podr,'#ff6b6b');renderPodr('shRefPodr',D.sh_refused_podr,'#ff6b6b');
-renderPodr('uhSalPodr',D.uh_sales_podr,'#ffa94d');renderPodr('shSalPodr',D.sh_sales_podr,'#94d82d');
+renderPodr('uhOrdPodr',D.uh_orders_podr,'#6c5ce7');
+renderPodr('uhRefPodr',D.uh_refused_podr,'#ff6b6b');
+renderPodr('uhSalPodr',D.uh_sales_podr,'#ffa94d');
 
 const mgrBody=document.getElementById('mgrBody');
 if(D.managers&&D.managers.length){mgrBody.innerHTML=D.managers.map((m,i)=>{const refClass=m.refuse_pct>=12?'br':m.refuse_pct>=5?'bo':'bg';const convClass=m.conv>=85?'bg':m.conv>=70?'bo':'br';return `<tr><td class="num" style="color:var(--td)">${i+1}</td><td>${m.name}</td><td class="r num">${m.orders}</td><td class="r num" style="color:var(--td)">${m.leads||0}</td><td class="r num" style="color:var(--g)">${fmtK(m.revenue)}</td><td class="r num">${fmt(m.avg_check||0)}</td><td class="r"><span class="badge ${convClass}">${(m.conv||0).toFixed(0)}%</span></td><td class="r num">${m.refused}</td><td class="r"><span class="badge ${refClass}">${m.refuse_pct.toFixed(1)}%</span></td></tr>`;}).join('');}else{mgrBody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}
@@ -330,5 +346,45 @@ if(D.ga4_pages.length){const max=D.ga4_pages[0].views||1;ga4P.innerHTML=D.ga4_pa
 
 const chDev=document.getElementById('chDevices');
 if(chDev&&D.ga4_devices&&D.ga4_devices.length){new Chart(chDev,{type:'doughnut',data:{labels:D.ga4_devices.map(d=>d.device),datasets:[{data:D.ga4_devices.map(d=>d.sessions),backgroundColor:['#6c5ce7','#00d68f','#ffa94d','#339af0'],borderWidth:2,borderColor:'#151929'}]},options:{...COMMON,scales:{},cutout:'60%'}});}
+
+// === PDF EXPORT ===
+async function exportPDF() {
+  const btn = document.getElementById('pdfBtn');
+  if (!btn) return;
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="ic">⏳</span><span>Готую PDF...</span>';
+
+  document.body.classList.add('pdf-mode');
+  const firstPnl = document.querySelector('.pnl');
+  if (firstPnl) firstPnl.classList.add('pdf-first');
+
+  await new Promise(r => setTimeout(r, 400));
+
+  const today = new Date();
+  const stamp = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+  const fileName = (document.title.includes('Monthly') ? 'UH_Monthly_' : 'UH_Daily_') + stamp + '.pdf';
+
+  const opt = {
+    margin:       [8, 6, 8, 6],
+    filename:     fileName,
+    image:        { type: 'jpeg', quality: 0.95 },
+    html2canvas:  { scale: 1.6, useCORS: true, backgroundColor: '#0c0f1a', logging: false, windowWidth: 1400 },
+    jsPDF:        { unit: 'mm', format: 'a3', orientation: 'landscape', compress: true },
+    pagebreak:    { mode: ['css', 'legacy'], avoid: ['.cd', '.kpi', 'table', 'canvas'] }
+  };
+
+  try {
+    await html2pdf().set(opt).from(document.body).save();
+  } catch (e) {
+    console.error('PDF export error:', e);
+    alert('Помилка експорту PDF: ' + e.message);
+  } finally {
+    document.body.classList.remove('pdf-mode');
+    if (firstPnl) firstPnl.classList.remove('pdf-first');
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+}
 </script>
 </body></html>
