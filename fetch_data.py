@@ -1262,17 +1262,18 @@ def main():
     print(f"   ✅ UH ORDERS день:  {data['uh'].get('ORDERS', {}).get('day', {}).get('total', '—')}")
     print(f"   ✅ UH SALES  день:  {data['uh'].get('SALES',  {}).get('day', {}).get('total', '—')}")
 
-    # ── 1С SH ─────────────────────────────────────────────────
-    print("\n📦 Завантаження 1С SH...")
-    data["sh"] = fetch_1c_block(
-        label="SH",
-        api_url=API_URL_SH,
-        day=day, m_start=m_start, m_end=m_end,
-        user=API_SH_USER, password=API_SH_PASS,
-        exclude_delivery_on_sales=True,   # Без доставок у SALES
-    )
-    print(f"   ✅ SH ORDERS день:  {data['sh'].get('ORDERS', {}).get('day', {}).get('total', '—')}")
-    print(f"   ✅ SH SALES  день:  {data['sh'].get('SALES',  {}).get('day', {}).get('total', '—')}")
+    # ── 1С SH вимкнено за вимогою керівництва ────────────────
+    # SH-збір прибрано з логіки. Залишаємо порожній dict для зворотної сумісності
+    # зі старими JSON у history/ (на випадок міграції чи відкату).
+    data["sh"] = {
+        "label": "SH",
+        "ORDERS": {"day": {"total": 0, "by_podr": {}}, "day_refused": {"total": 0, "by_podr": {}},
+                   "month": {"total": 0, "count": 0}, "month_refused": {"total": 0, "count": 0}},
+        "ORDERSWD": {"day": {"total": 0, "by_podr": {}}, "day_refused": {"total": 0, "by_podr": {}},
+                     "month": {"total": 0, "count": 0}, "month_refused": {"total": 0, "count": 0}},
+        "SALES": {"day": {"total": 0, "by_podr": {}}, "month": {"total": 0, "count": 0}},
+        "_disabled": True,
+    }
 
     # ── SalesDrive CRM ────────────────────────────────────────
     print("\n🎯 Завантаження SalesDrive CRM (Excel)...")

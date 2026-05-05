@@ -140,6 +140,22 @@ tbody tr:hover td{background:rgba(108,92,231,.06)}
 .cmp-name{font-weight:500}
 .cmp-val{font-family:'JetBrains Mono',monospace;text-align:right;font-weight:500}
 .ftr{text-align:center;color:var(--td2);font-size:10px;padding-top:18px;border-top:1px solid var(--brd);margin-top:24px;font-family:'JetBrains Mono',monospace}
+
+/* PDF Export Button */
+.pdf-btn{position:absolute;top:0;left:0;display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.3px;box-shadow:0 2px 8px rgba(108,92,231,.25);transition:.15s}
+.pdf-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(108,92,231,.4)}
+.pdf-btn:disabled{opacity:.6;cursor:wait;transform:none}
+.pdf-btn .ic{font-size:13px}
+
+/* PDF EXPORT MODE — show all panels */
+body.pdf-mode .pnl{display:block !important;page-break-after:always;padding-top:14px}
+body.pdf-mode .pnl.pdf-first{padding-top:0}
+body.pdf-mode .tabs{display:none !important}
+body.pdf-mode .pdf-btn{display:none !important}
+body.pdf-mode .view-switch{display:none !important}
+body.pdf-mode{padding:20px}
+body.pdf-mode .pnl-title{font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--ac2),var(--g));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:18px 0 12px;border-bottom:1px solid var(--brd);padding-bottom:6px;display:block !important}
+.pnl-title{display:none}
 '''
 
 
@@ -154,32 +170,25 @@ def build_daily(data, history):
     else:
         month_str = month_raw or "—"
     uh   = data.get("uh", {})
-    sh   = data.get("sh", {})
     crm  = data.get("crm", {})
     ga4  = data.get("ga4", {})
     meta = data.get("meta", {})
 
     uh_orders_d = uh.get("ORDERS", {}).get("day", {}).get("total", 0)
-    sh_orders_d = sh.get("ORDERS", {}).get("day", {}).get("total", 0)
     uh_sales_d  = uh.get("SALES",  {}).get("day", {}).get("total", 0)
-    sh_sales_d  = sh.get("SALES",  {}).get("day", {}).get("total", 0)
     uh_orders_m = uh.get("ORDERS", {}).get("month", {}).get("total", 0)
-    sh_orders_m = sh.get("ORDERS", {}).get("month", {}).get("total", 0)
     uh_sales_m  = uh.get("SALES",  {}).get("month", {}).get("total", 0)
-    sh_sales_m  = sh.get("SALES",  {}).get("month", {}).get("total", 0)
 
     # Відмови 1С (Отказ Не отправлен / Отказ Отправлен)
     uh_refused_d = uh.get("ORDERS", {}).get("day_refused", {}).get("total", 0)
-    sh_refused_d = sh.get("ORDERS", {}).get("day_refused", {}).get("total", 0)
     uh_refused_m = uh.get("ORDERS", {}).get("month_refused", {}).get("total", 0)
-    sh_refused_m = sh.get("ORDERS", {}).get("month_refused", {}).get("total", 0)
 
-    total_orders_d  = uh_orders_d + sh_orders_d   # 1С Замовлення (без відмов)
-    total_sales_d   = uh_sales_d + sh_sales_d     # 1С Відгрузки (фактичний заробіток)
-    total_refused_d = uh_refused_d + sh_refused_d # 1С Відмови
-    total_orders_m  = uh_orders_m + sh_orders_m
-    total_sales_m   = uh_sales_m + sh_sales_m
-    total_refused_m = uh_refused_m + sh_refused_m
+    total_orders_d  = uh_orders_d   # 1С Замовлення (без відмов)
+    total_sales_d   = uh_sales_d     # 1С Відгрузки (фактичний заробіток)
+    total_refused_d = uh_refused_d # 1С Відмови
+    total_orders_m  = uh_orders_m
+    total_sales_m   = uh_sales_m
+    total_refused_m = uh_refused_m
     total_revenue_d = total_orders_d  # сумісність
 
     crm_o   = crm.get("orders", {})
@@ -216,8 +225,7 @@ def build_daily(data, history):
     site_conv = round(crm_orders_d / max(ga4_sessions, 1) * 100, 2) if ga4_sessions > 0 else 0
 
     prev_data = history[-2] if len(history) >= 2 else None
-    prev_revenue = (prev_data.get("uh", {}).get("ORDERS", {}).get("day", {}).get("total", 0) +
-                    prev_data.get("sh", {}).get("ORDERS", {}).get("day", {}).get("total", 0)) if prev_data else 0
+    prev_revenue = prev_data.get("uh", {}).get("ORDERS", {}).get("day", {}).get("total", 0) if prev_data else 0
     prev_orders = prev_data.get("crm", {}).get("orders", {}).get("total", 0) if prev_data else 0
     prev_sessions = prev_data.get("ga4", {}).get("sessions", 0) if prev_data else 0
     prev_meta_spend = prev_data.get("meta", {}).get("total", {}).get("spend", 0) if prev_data else 0
@@ -233,7 +241,7 @@ def build_daily(data, history):
     trend_orders   = [t["orders"] for t in crm_trend]
     trend_leads    = [t["leads"] for t in crm_trend]
 
-    hist_dates, hist_uh, hist_sh, hist_uh_s, hist_sh_s, hist_meta, hist_ga4, hist_crm = [], [], [], [], [], [], [], []
+    hist_dates, hist_uh, hist_uh_s, hist_meta, hist_ga4, hist_crm = [], [], [], [], [], []
     for h in history:
         d = h.get("date", "")
         try:
@@ -241,9 +249,7 @@ def build_daily(data, history):
             hist_dates.append(dt.strftime("%d.%m"))
         except: hist_dates.append(d)
         hist_uh.append(h.get("uh", {}).get("ORDERS", {}).get("day", {}).get("total", 0))
-        hist_sh.append(h.get("sh", {}).get("ORDERS", {}).get("day", {}).get("total", 0))
         hist_uh_s.append(h.get("uh", {}).get("SALES", {}).get("day", {}).get("total", 0))
-        hist_sh_s.append(h.get("sh", {}).get("SALES", {}).get("day", {}).get("total", 0))
         hist_meta.append(h.get("meta", {}).get("total", {}).get("spend", 0))
         hist_ga4.append(h.get("ga4", {}).get("sessions", 0))
         hist_crm.append(h.get("crm", {}).get("orders", {}).get("total", 0))
@@ -287,15 +293,12 @@ def build_daily(data, history):
     chart_data = {
         "trend_dates": trend_dates, "trend_revenue": trend_revenue,
         "trend_orders": trend_orders, "trend_leads": trend_leads,
-        "hist_dates": hist_dates, "hist_uh": hist_uh, "hist_sh": hist_sh,
-        "hist_uh_s": hist_uh_s, "hist_sh_s": hist_sh_s,
+        "hist_dates": hist_dates, "hist_uh": hist_uh,
+        "hist_uh_s": hist_uh_s,
         "hist_meta": hist_meta, "hist_ga4": hist_ga4, "hist_crm": hist_crm,
         "uh_orders_podr": uh.get("ORDERS", {}).get("day", {}).get("by_podr", {}),
-        "sh_orders_podr": sh.get("ORDERS", {}).get("day", {}).get("by_podr", {}),
         "uh_refused_podr": uh.get("ORDERS", {}).get("day_refused", {}).get("by_podr", {}),
-        "sh_refused_podr": sh.get("ORDERS", {}).get("day_refused", {}).get("by_podr", {}),
         "uh_sales_podr":  uh.get("SALES", {}).get("day", {}).get("by_podr", {}),
-        "sh_sales_podr":  sh.get("SALES", {}).get("day", {}).get("by_podr", {}),
         "managers": managers, "managers_shop": crm.get("managers_shop", []),
         "chatters": crm.get("chatters", []), "sites": sites,
         "products": crm.get("products", []), "categories": crm.get("categories", {}),
@@ -332,14 +335,14 @@ def build_daily(data, history):
         total_orders_m=money_k(total_orders_m),
         total_sales_m=money_k(total_sales_m),
         total_refused_m=money_k(total_refused_m),
-        uh_orders_d=money(uh_orders_d), sh_orders_d=money(sh_orders_d),
-        uh_sales_d=money(uh_sales_d), sh_sales_d=money(sh_sales_d),
-        uh_refused_d=money(uh_refused_d), sh_refused_d=money(sh_refused_d),
-        uh_orders_d_k=money_k(uh_orders_d), sh_orders_d_k=money_k(sh_orders_d),
-        uh_sales_d_k=money_k(uh_sales_d), sh_sales_d_k=money_k(sh_sales_d),
-        uh_refused_d_k=money_k(uh_refused_d), sh_refused_d_k=money_k(sh_refused_d),
-        uh_orders_m_k=money_k(uh_orders_m), sh_orders_m_k=money_k(sh_orders_m),
-        uh_sales_m_k=money_k(uh_sales_m), sh_sales_m_k=money_k(sh_sales_m),
+        uh_orders_d=money(uh_orders_d),
+        uh_sales_d=money(uh_sales_d),
+        uh_refused_d=money(uh_refused_d),
+        uh_orders_d_k=money_k(uh_orders_d),
+        uh_sales_d_k=money_k(uh_sales_d),
+        uh_refused_d_k=money_k(uh_refused_d),
+        uh_orders_m_k=money_k(uh_orders_m),
+        uh_sales_m_k=money_k(uh_sales_m),
         # CRM
         crm_orders_d=crm_orders_d,
         crm_all_req=crm_all_req,
@@ -540,10 +543,12 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
 <html lang="uk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>UH — Daily Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>{css}</style></head>
 <body>
 
 <div class="hdr">
+  <button class="pdf-btn" id="pdfBtn" onclick="exportPDF()"><span class="ic">📄</span><span>Експорт PDF</span></button>
   <div class="view-switch">
     <a href="index.html" class="on">📊 День</a>
     <a href="month.html">📅 Місяць</a>
@@ -556,7 +561,7 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
 {insights_block}
 
 <div class="kpi-row">
-  <div class="kpi"><div class="kl">Замовлення день (1С)</div><div class="kv">{total_orders_d}<span class="ku">₴</span></div><div class="ks">UH+SH без відмов · <span class="dlt {rev_delta_cls}">{rev_delta_txt}</span></div></div>
+  <div class="kpi"><div class="kl">Замовлення день (1С)</div><div class="kv">{total_orders_d}<span class="ku">₴</span></div><div class="ks">без відмов · <span class="dlt {rev_delta_cls}">{rev_delta_txt}</span></div></div>
   <div class="kpi"><div class="kl">Відгрузки день (1С)</div><div class="kv">{total_sales_d}<span class="ku">₴</span></div><div class="ks">фактичний заробіток</div></div>
   <div class="kpi"><div class="kl">Відмови день (1С)</div><div class="kv">{total_refused_d}<span class="ku">₴</span></div><div class="ks">Отказ Не/Відправлений</div></div>
   <div class="kpi"><div class="kl">Замовлення місяць</div><div class="kv">{total_orders_m}<span class="ku">₴</span></div><div class="ks">сум. з 1-го числа</div></div>
@@ -576,15 +581,15 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
   <button class="tab" onclick="sw('analytics', this)">📈 Аналітика</button>
 </div>
 
-<div class="pnl on" id="p-overview">
+<div class="pnl on" id="p-overview"><h2 class="pnl-title">📊 Огляд</h2>
   <div class="cd">
     <div class="ct"><span class="dot"></span>Динаміка замовлень CRM — 30 днів<span class="badge-tot" id="trend30Total"></span></div>
     <div class="cd-d">Сума замовлень по днях з SalesDrive (без спаму). Стовпчики — сума замовлень, лінія — ліди.</div>
     <canvas id="chTrend30"></canvas>
   </div>
   <div class="g2">
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--ac)"></span>Замовлення UH+SH (1С) — без відмов</div><canvas id="chOrders"></canvas></div>
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--g)"></span>Відгрузки UH+SH (1С) — фактичний заробіток</div><canvas id="chSales"></canvas></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--ac)"></span>Замовлення (1С) — без відмов</div><canvas id="chOrders"></canvas></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--g)"></span>Відгрузки (1С) — фактичний заробіток</div><canvas id="chSales"></canvas></div>
   </div>
   <div class="g3">
     <div class="cd"><div class="ct"><span class="dot" style="background:var(--b)"></span>GA4 Сесії</div><canvas id="chGa4" style="max-height:200px"></canvas></div>
@@ -593,34 +598,32 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
   </div>
 </div>
 
-<div class="pnl" id="p-sales1c">
+<div class="pnl" id="p-sales1c"><h2 class="pnl-title">💰 1С Продажі</h2>
   <div class="mini-kpi">
-    <div class="mk"><div class="mk-l">UH ORDERS день</div><div class="mk-v" style="color:var(--ac)">{uh_orders_d_k}</div></div>
-    <div class="mk"><div class="mk-l">SH ORDERS день</div><div class="mk-v" style="color:var(--g)">{sh_orders_d_k}</div></div>
-    <div class="mk"><div class="mk-l">UH ВІДМОВИ</div><div class="mk-v" style="color:var(--r)">{uh_refused_d_k}</div></div>
-    <div class="mk"><div class="mk-l">SH ВІДМОВИ</div><div class="mk-v" style="color:var(--r)">{sh_refused_d_k}</div></div>
-    <div class="mk"><div class="mk-l">UH SALES день</div><div class="mk-v" style="color:var(--o)">{uh_sales_d_k}</div></div>
-    <div class="mk"><div class="mk-l">SH SALES день</div><div class="mk-v" style="color:var(--lime)">{sh_sales_d_k}</div></div>
-    <div class="mk"><div class="mk-l">UH ORDERS міс.</div><div class="mk-v" style="color:var(--ac)">{uh_orders_m_k}</div></div>
-    <div class="mk"><div class="mk-l">SH ORDERS міс.</div><div class="mk-v" style="color:var(--g)">{sh_orders_m_k}</div></div>
-    <div class="mk"><div class="mk-l">UH SALES міс.</div><div class="mk-v" style="color:var(--o)">{uh_sales_m_k}</div></div>
-    <div class="mk"><div class="mk-l">SH SALES міс.</div><div class="mk-v" style="color:var(--lime)">{sh_sales_m_k}</div></div>
+    <div class="mk"><div class="mk-l">ORDERS день</div><div class="mk-v" style="color:var(--ac)">{uh_orders_d_k}</div></div>
+    <div class="mk"><div class="mk-l">ВІДМОВИ день</div><div class="mk-v" style="color:var(--r)">{uh_refused_d_k}</div></div>
+    <div class="mk"><div class="mk-l">SALES день</div><div class="mk-v" style="color:var(--o)">{uh_sales_d_k}</div></div>
+    <div class="mk"><div class="mk-l">ORDERS міс.</div><div class="mk-v" style="color:var(--ac)">{uh_orders_m_k}</div></div>
+    <div class="mk"><div class="mk-l">SALES міс.</div><div class="mk-v" style="color:var(--o)">{uh_sales_m_k}</div></div>
   </div>
-  <div class="g2">
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--ac)"></span>UH Замовлення по підрозділах<span class="badge-tot">{uh_orders_d} ₴</span></div><div class="cd-d">Без статусу "Отказ"</div><div id="uhOrdPodr"></div></div>
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--g)"></span>SH Замовлення по підрозділах<span class="badge-tot">{sh_orders_d} ₴</span></div><div class="cd-d">Без статусу "Отказ"</div><div id="shOrdPodr"></div></div>
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--ac)"></span>Замовлення по підрозділах<span class="badge-tot">{uh_orders_d} ₴</span></div>
+    <div class="cd-d">Без статусу "Отказ"</div>
+    <div id="uhOrdPodr"></div>
   </div>
-  <div class="g2">
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--r)"></span>UH Відмови (1С)<span class="badge-tot">{uh_refused_d} ₴</span></div><div class="cd-d">Статус "Отказ Не отправлен" + "Отказ Отправлен"</div><div id="uhRefPodr"></div></div>
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--r)"></span>SH Відмови (1С)<span class="badge-tot">{sh_refused_d} ₴</span></div><div class="cd-d">Статус "Отказ Не отправлен" + "Отказ Отправлен"</div><div id="shRefPodr"></div></div>
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--r)"></span>Відмови (1С)<span class="badge-tot">{uh_refused_d} ₴</span></div>
+    <div class="cd-d">Статус "Отказ Не отправлен" + "Отказ Отправлен"</div>
+    <div id="uhRefPodr"></div>
   </div>
-  <div class="g2">
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--o)"></span>UH Відгрузки по підрозділах<span class="badge-tot">{uh_sales_d} ₴</span></div><div class="cd-d">Реальний заробіток (без доставок)</div><div id="uhSalPodr"></div></div>
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--lime)"></span>SH Відгрузки по підрозділах<span class="badge-tot">{sh_sales_d} ₴</span></div><div class="cd-d">Реальний заробіток (без доставок)</div><div id="shSalPodr"></div></div>
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--o)"></span>Відгрузки по підрозділах<span class="badge-tot">{uh_sales_d} ₴</span></div>
+    <div class="cd-d">Реальний заробіток (без доставок)</div>
+    <div id="uhSalPodr"></div>
   </div>
 </div>
 
-<div class="pnl" id="p-crm">
+<div class="pnl" id="p-crm"><h2 class="pnl-title">👥 CRM Менеджери</h2>
   <div class="mini-kpi">
     <div class="mk"><div class="mk-l">Усього менеджерів</div><div class="mk-v">{managers_count}</div></div>
     <div class="mk"><div class="mk-l">Магазин</div><div class="mk-v">{managers_shop_count}</div></div>
@@ -644,7 +647,7 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
   </div>
 </div>
 
-<div class="pnl" id="p-crmops">
+<div class="pnl" id="p-crmops"><h2 class="pnl-title">🏭 CRM Операції</h2>
   <div class="g2">
     <div class="cd"><div class="ct"><span class="dot" style="background:var(--p)"></span>📦 Категорії товарів</div><canvas id="chCategories"></canvas></div>
     <div class="cd"><div class="ct"><span class="dot" style="background:var(--c)"></span>📞 Тип звернення</div><canvas id="chRequestTypes"></canvas></div>
@@ -668,7 +671,7 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
   </div>
 </div>
 
-<div class="pnl" id="p-channels">
+<div class="pnl" id="p-channels"><h2 class="pnl-title">🌐 Канали</h2>
   <div class="cd">
     <div class="ct"><span class="dot" style="background:var(--g)"></span>🌐 Канали продажу<span class="badge-tot">{sites_count} активних</span></div>
     <div class="scr"><table><thead><tr><th>#</th><th>Канал</th><th class="r">Зам.</th><th class="r">Замовлення ₴</th><th class="r">Сер.чек</th><th>Графік</th></tr></thead><tbody id="sitesBody"></tbody></table></div>
@@ -679,7 +682,7 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
   </div>
 </div>
 
-<div class="pnl" id="p-ads">
+<div class="pnl" id="p-ads"><h2 class="pnl-title">📱 Реклама</h2>
   <div class="mini-kpi">
     <div class="mk"><div class="mk-l">Витрати</div><div class="mk-v" style="color:var(--ac)">{meta_spend}</div></div>
     <div class="mk"><div class="mk-l">Покази</div><div class="mk-v">{meta_imp}</div></div>
@@ -698,7 +701,7 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
   </div>
 </div>
 
-<div class="pnl" id="p-analytics">
+<div class="pnl" id="p-analytics"><h2 class="pnl-title">📈 Аналітика</h2>
   <div class="mini-kpi">
     <div class="mk"><div class="mk-l">Сесії</div><div class="mk-v" style="color:var(--ac)">{ga4_sessions}</div></div>
     <div class="mk"><div class="mk-l">Користувачі</div><div class="mk-v" style="color:var(--g)">{ga4_users}</div></div>
@@ -731,16 +734,16 @@ new Chart(document.getElementById('chTrend30'),{{type:'bar',data:{{labels:D.tren
 {{type:'line',label:'Лідів',data:D.trend_leads,borderColor:'#ffa94d',tension:.4,borderWidth:2,pointRadius:2,borderDash:[5,3],yAxisID:'y2',order:0,fill:false}}]}},
 options:{{...COMMON,scales:{{x:{{...COMMON.scales.x}},y1:{{position:'left',grid:COMMON.scales.y.grid,ticks:{{...COMMON.scales.y.ticks,color:'#a29bfe'}}}},y2:{{position:'right',grid:{{display:false}},ticks:{{font:{{size:9}},color:'#00d68f'}}}}}}}}}});}}
 
-new Chart(document.getElementById('chOrders'),{{type:'bar',data:{{labels:D.hist_dates,datasets:[{{label:'UH',data:D.hist_uh,backgroundColor:'rgba(108,92,231,0.8)',stack:'s',borderRadius:3}},{{label:'SH',data:D.hist_sh,backgroundColor:'rgba(0,214,143,0.7)',stack:'s',borderRadius:3}}]}},options:{{...COMMON,scales:{{...COMMON.scales,x:{{...COMMON.scales.x,stacked:true}},y:{{...COMMON.scales.y,stacked:true}}}}}}}});
-new Chart(document.getElementById('chSales'),{{type:'bar',data:{{labels:D.hist_dates,datasets:[{{label:'UH',data:D.hist_uh_s,backgroundColor:'rgba(255,169,77,0.8)',stack:'s',borderRadius:3}},{{label:'SH',data:D.hist_sh_s,backgroundColor:'rgba(255,107,107,0.7)',stack:'s',borderRadius:3}}]}},options:{{...COMMON,scales:{{...COMMON.scales,x:{{...COMMON.scales.x,stacked:true}},y:{{...COMMON.scales.y,stacked:true}}}}}}}});
+new Chart(document.getElementById('chOrders'),{{type:'bar',data:{{labels:D.hist_dates,datasets:[{{label:'Замовлення',data:D.hist_uh,backgroundColor:'rgba(108,92,231,0.85)',borderColor:'#6c5ce7',borderWidth:1,borderRadius:3}}]}},options:{{...COMMON,plugins:{{...COMMON.plugins,legend:{{display:false}}}}}}}});
+new Chart(document.getElementById('chSales'),{{type:'bar',data:{{labels:D.hist_dates,datasets:[{{label:'Відгрузки',data:D.hist_uh_s,backgroundColor:'rgba(255,169,77,0.85)',borderColor:'#ffa94d',borderWidth:1,borderRadius:3}}]}},options:{{...COMMON,plugins:{{...COMMON.plugins,legend:{{display:false}}}}}}}});
 
 function lineChart(id,data,color){{new Chart(document.getElementById(id),{{type:'line',data:{{labels:D.hist_dates,datasets:[{{data,borderColor:color,backgroundColor:color+'22',fill:true,tension:.4,borderWidth:2,pointRadius:2}}]}},options:{{...COMMON,plugins:{{...COMMON.plugins,legend:{{display:false}}}}}}}});}}
 lineChart('chGa4',D.hist_ga4,'#339af0');lineChart('chMeta',D.hist_meta,'#ffa94d');lineChart('chCrmOrd',D.hist_crm,'#da77f2');
 
 function renderPodr(elId,podrObj,color){{const el=document.getElementById(elId);const items=Object.entries(podrObj||{{}}).sort((a,b)=>b[1]-a[1]);if(!items.length){{el.innerHTML='<div style="text-align:center;color:var(--td);padding:18px">Немає даних</div>';return;}}const max=items[0][1]||1;el.innerHTML=items.map(([n,v])=>{{const p=Math.max(2,Math.round(v/max*100));return `<div class="bar-row"><div class="bar-name" title="${{n}}">${{n}}</div><div class="bar-wrap"><div class="bar-fill" style="width:${{p}}%;background:${{color}}"></div></div><div class="bar-val">${{fmtK(v)}}</div></div>`;}}).join('');}}
-renderPodr('uhOrdPodr',D.uh_orders_podr,'#6c5ce7');renderPodr('shOrdPodr',D.sh_orders_podr,'#00d68f');
-renderPodr('uhRefPodr',D.uh_refused_podr,'#ff6b6b');renderPodr('shRefPodr',D.sh_refused_podr,'#ff6b6b');
-renderPodr('uhSalPodr',D.uh_sales_podr,'#ffa94d');renderPodr('shSalPodr',D.sh_sales_podr,'#94d82d');
+renderPodr('uhOrdPodr',D.uh_orders_podr,'#6c5ce7');
+renderPodr('uhRefPodr',D.uh_refused_podr,'#ff6b6b');
+renderPodr('uhSalPodr',D.uh_sales_podr,'#ffa94d');
 
 const mgrBody=document.getElementById('mgrBody');
 if(D.managers&&D.managers.length){{mgrBody.innerHTML=D.managers.map((m,i)=>{{const refClass=m.refuse_pct>=12?'br':m.refuse_pct>=5?'bo':'bg';const convClass=m.conv>=85?'bg':m.conv>=70?'bo':'br';return `<tr><td class="num" style="color:var(--td)">${{i+1}}</td><td>${{m.name}}</td><td class="r num">${{m.orders}}</td><td class="r num" style="color:var(--td)">${{m.leads||0}}</td><td class="r num" style="color:var(--g)">${{fmtK(m.revenue)}}</td><td class="r num">${{fmt(m.avg_check||0)}}</td><td class="r"><span class="badge ${{convClass}}">${{(m.conv||0).toFixed(0)}}%</span></td><td class="r num">${{m.refused}}</td><td class="r"><span class="badge ${{refClass}}">${{m.refuse_pct.toFixed(1)}}%</span></td></tr>`;}}).join('');}}else{{mgrBody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}}
@@ -782,6 +785,46 @@ if(D.ga4_pages.length){{const max=D.ga4_pages[0].views||1;ga4P.innerHTML=D.ga4_p
 
 const chDev=document.getElementById('chDevices');
 if(chDev&&D.ga4_devices&&D.ga4_devices.length){{new Chart(chDev,{{type:'doughnut',data:{{labels:D.ga4_devices.map(d=>d.device),datasets:[{{data:D.ga4_devices.map(d=>d.sessions),backgroundColor:['#6c5ce7','#00d68f','#ffa94d','#339af0'],borderWidth:2,borderColor:'#151929'}}]}},options:{{...COMMON,scales:{{}},cutout:'60%'}}}});}}
+
+// === PDF EXPORT ===
+async function exportPDF() {{
+  const btn = document.getElementById('pdfBtn');
+  if (!btn) return;
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="ic">⏳</span><span>Готую PDF...</span>';
+
+  document.body.classList.add('pdf-mode');
+  const firstPnl = document.querySelector('.pnl');
+  if (firstPnl) firstPnl.classList.add('pdf-first');
+
+  await new Promise(r => setTimeout(r, 400));
+
+  const today = new Date();
+  const stamp = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+  const fileName = (document.title.includes('Monthly') ? 'UH_Monthly_' : 'UH_Daily_') + stamp + '.pdf';
+
+  const opt = {{
+    margin:       [8, 6, 8, 6],
+    filename:     fileName,
+    image:        {{ type: 'jpeg', quality: 0.95 }},
+    html2canvas:  {{ scale: 1.6, useCORS: true, backgroundColor: '#0c0f1a', logging: false, windowWidth: 1400 }},
+    jsPDF:        {{ unit: 'mm', format: 'a3', orientation: 'landscape', compress: true }},
+    pagebreak:    {{ mode: ['css', 'legacy'], avoid: ['.cd', '.kpi', 'table', 'canvas'] }}
+  }};
+
+  try {{
+    await html2pdf().set(opt).from(document.body).save();
+  }} catch (e) {{
+    console.error('PDF export error:', e);
+    alert('Помилка експорту PDF: ' + e.message);
+  }} finally {{
+    document.body.classList.remove('pdf-mode');
+    if (firstPnl) firstPnl.classList.remove('pdf-first');
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }}
+}}
 </script>
 </body></html>
 '''
@@ -792,10 +835,12 @@ MONTHLY_TEMPLATE = '''<!DOCTYPE html>
 <html lang="uk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>UH — Monthly Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>{css}</style></head>
 <body>
 
 <div class="hdr">
+  <button class="pdf-btn" id="pdfBtn" onclick="exportPDF()"><span class="ic">📄</span><span>Експорт PDF</span></button>
   <div class="view-switch">
     <a href="index.html">📊 День</a>
     <a href="month.html" class="on">📅 Місяць</a>
@@ -826,7 +871,7 @@ MONTHLY_TEMPLATE = '''<!DOCTYPE html>
   <button class="tab" onclick="sw('products', this)">🛏️ Товари</button>
 </div>
 
-<div class="pnl on" id="p-overview">
+<div class="pnl on" id="p-overview"><h2 class="pnl-title">📊 Огляд</h2>
   <div class="cd">
     <div class="ct"><span class="dot"></span>📈 Динаміка по днях за {target_month}<span class="badge-tot" id="trend30Total"></span></div>
     <div class="cd-d">Накопичена виручка з 1-го числа місяця.</div>
@@ -834,7 +879,7 @@ MONTHLY_TEMPLATE = '''<!DOCTYPE html>
   </div>
 </div>
 
-<div class="pnl" id="p-crm">
+<div class="pnl" id="p-crm"><h2 class="pnl-title">👥 Менеджери</h2>
   <div class="cd">
     <div class="ct"><span class="dot"></span>🏆 Рейтинг менеджерів за місяць<span class="badge-tot">{managers_count} активних</span></div>
     <div class="cd-d">Дельта = зміна виручки vs попередній місяць.</div>
@@ -852,7 +897,7 @@ MONTHLY_TEMPLATE = '''<!DOCTYPE html>
   </div>
 </div>
 
-<div class="pnl" id="p-crmops">
+<div class="pnl" id="p-crmops"><h2 class="pnl-title">🏭 Операції</h2>
   <div class="g2">
     <div class="cd"><div class="ct"><span class="dot" style="background:var(--p)"></span>📦 Категорії товарів</div><canvas id="chCategories"></canvas></div>
     <div class="cd"><div class="ct"><span class="dot" style="background:var(--c)"></span>📞 Тип звернення</div><canvas id="chRequestTypes"></canvas></div>
@@ -872,7 +917,7 @@ MONTHLY_TEMPLATE = '''<!DOCTYPE html>
   </div>
 </div>
 
-<div class="pnl" id="p-channels">
+<div class="pnl" id="p-channels"><h2 class="pnl-title">🌐 Канали</h2>
   <div class="cd">
     <div class="ct"><span class="dot" style="background:var(--g)"></span>🌐 Канали продажу — порівняння з попереднім<span class="badge-tot">{sites_count}</span></div>
     <div class="scr">
@@ -885,7 +930,7 @@ MONTHLY_TEMPLATE = '''<!DOCTYPE html>
   <div class="cd"><div class="ct"><span class="dot"></span>📊 Графік замовлень</div><canvas id="chSites"></canvas></div>
 </div>
 
-<div class="pnl" id="p-products">
+<div class="pnl" id="p-products"><h2 class="pnl-title">🛏️ Товари</h2>
   <div class="cd">
     <div class="ct"><span class="dot" style="background:var(--lime)"></span>🛏️ ТОП-50 товарів за місяць<span class="badge-tot">{products_count} SKU</span></div>
     <div class="scr">
@@ -943,6 +988,46 @@ if(D.sites&&D.sites.length){{sitesBody.innerHTML=D.sites.map((s,i)=>{{const dCls
 // Products
 const prodBody=document.getElementById('prodBody');
 if(D.products&&D.products.length){{prodBody.innerHTML=D.products.map((p,i)=>`<tr><td class="num" style="color:var(--td)">${{i+1}}</td><td title="${{p.name}}">${{p.name.length>70?p.name.substr(0,70)+'…':p.name}}</td><td class="r num">${{p.qty||p.count}}</td><td class="r num" style="color:var(--td)">${{p.count}}</td><td class="r num" style="color:var(--g)">${{fmtK(p.revenue)}}</td></tr>`).join('');}}else{{prodBody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}}
+
+// === PDF EXPORT ===
+async function exportPDF() {{
+  const btn = document.getElementById('pdfBtn');
+  if (!btn) return;
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="ic">⏳</span><span>Готую PDF...</span>';
+
+  document.body.classList.add('pdf-mode');
+  const firstPnl = document.querySelector('.pnl');
+  if (firstPnl) firstPnl.classList.add('pdf-first');
+
+  await new Promise(r => setTimeout(r, 400));
+
+  const today = new Date();
+  const stamp = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+  const fileName = (document.title.includes('Monthly') ? 'UH_Monthly_' : 'UH_Daily_') + stamp + '.pdf';
+
+  const opt = {{
+    margin:       [8, 6, 8, 6],
+    filename:     fileName,
+    image:        {{ type: 'jpeg', quality: 0.95 }},
+    html2canvas:  {{ scale: 1.6, useCORS: true, backgroundColor: '#0c0f1a', logging: false, windowWidth: 1400 }},
+    jsPDF:        {{ unit: 'mm', format: 'a3', orientation: 'landscape', compress: true }},
+    pagebreak:    {{ mode: ['css', 'legacy'], avoid: ['.cd', '.kpi', 'table', 'canvas'] }}
+  }};
+
+  try {{
+    await html2pdf().set(opt).from(document.body).save();
+  }} catch (e) {{
+    console.error('PDF export error:', e);
+    alert('Помилка експорту PDF: ' + e.message);
+  }} finally {{
+    document.body.classList.remove('pdf-mode');
+    if (firstPnl) firstPnl.classList.remove('pdf-first');
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }}
+}}
 </script>
 </body></html>
 '''
