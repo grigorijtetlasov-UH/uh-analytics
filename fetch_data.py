@@ -165,6 +165,17 @@ def is_delivery_row(r: dict) -> bool:
 def is_ne_trogat(r: dict) -> bool:
     return "НЕ ТРОГАТЬ" in norm(" ".join(str(v) for v in r.values()))
 
+def is_refused_1c(r: dict) -> bool:
+    """Перевіряє чи замовлення в статусі 'Отказ' (Не отправлен / Отправлен)."""
+    text = " ".join([
+        str(r.get("Стан", "") or ""),
+        str(r.get("Статус", "") or ""),
+        str(r.get("СтатусЗамовлення", "") or ""),
+        str(r.get("СтанЗамовлення", "") or ""),
+    ]).lower()
+    # Шукаємо "отказ" в будь-якому регістрі і мові
+    return ("отказ" in text) or ("відмов" in text) or ("отказано" in text)
+
 def agg_by_podr(rows: list, sum_key: str) -> dict:
     total = 0.0
     by_podr = {}
@@ -186,6 +197,8 @@ def fetch_1c_block(label: str, api_url: str, day: str,
                    exclude_delivery_on_sales: bool = False) -> dict:
     """
     Повертає dict з даними по всіх трьох типах за день і місяць.
+    ORDERS і ORDERSWD: розділяє на основні замовлення і відмови ("Отказ").
+    SALES: реальні відгрузки.
     """
     result = {"label": label}
 
@@ -204,13 +217,34 @@ def fetch_1c_block(label: str, api_url: str, day: str,
             if exclude_delivery_on_sales and type_key == "SALES":
                 rows_m = [r for r in rows_m if not is_delivery_row(r)]
 
-            result[type_key] = {
-                "day":   agg_by_podr(rows_day, sum_key),
-                "month": {
-                    "total": round(sum(safe_float(r.get(sum_key)) for r in rows_m), 2),
-                    "count": len(rows_m)
+            # Для ORDERS і ORDERSWD виділяємо відмови окремо
+            if type_key in ("ORDERS", "ORDERSWD"):
+                day_active   = [r for r in rows_day if not is_refused_1c(r)]
+                day_refused  = [r for r in rows_day if is_refused_1c(r)]
+                m_active     = [r for r in rows_m if not is_refused_1c(r)]
+                m_refused    = [r for r in rows_m if is_refused_1c(r)]
+
+                result[type_key] = {
+                    "day":          agg_by_podr(day_active, sum_key),
+                    "day_refused":  agg_by_podr(day_refused, sum_key),
+                    "month": {
+                        "total": round(sum(safe_float(r.get(sum_key)) for r in m_active), 2),
+                        "count": len(m_active)
+                    },
+                    "month_refused": {
+                        "total": round(sum(safe_float(r.get(sum_key)) for r in m_refused), 2),
+                        "count": len(m_refused)
+                    }
                 }
-            }
+            else:
+                # SALES — без розділення (там немає "Отказ")
+                result[type_key] = {
+                    "day":   agg_by_podr(rows_day, sum_key),
+                    "month": {
+                        "total": round(sum(safe_float(r.get(sum_key)) for r in rows_m), 2),
+                        "count": len(rows_m)
+                    }
+                }
         except Exception as e:
             result[type_key] = {"error": str(e)}
 
@@ -231,31 +265,36 @@ def sd_get(endpoint: str, params: dict = None) -> dict:
 
 def fetch_salesdrive(date_str: str) -> dict:
     """
-    Читає останній xlsx файл з папки data/crm/.
-    Фільтрує по даті date_str (YYYY-MM-DD) колонкою "Дата".
-
-    Очікувані колонки в Excel:
-      Дата, Менеджер, Сайт, Сума, Статус, Назва [Товари/Послуги],
-      Причина відмови ?, Менеджер на магазині, UTM_SOURCE_Чат
+    Розширений збір з Excel SalesDrive — всі ключові поля для дашборду.
     """
     result = {
-        "date": date_str,
-        "source_file": None,
-        "orders": {},
-        "leads": {},
-        "managers": [],
-        "managers_shop": [],
-        "statuses": {},
-        "sites": {},
-        "products": [],
+        "date":           date_str,
+        "source_file":    None,
+        "orders":         {},
+        "leads":          {},
+        "managers":       [],
+        "managers_shop":  [],
+        "chatters":       [],
+        "statuses":       {},
+        "sites":          {},
+        "products":       [],
+        "categories":     {},   # Категорія звернення
+        "request_types":  {},   # Тип звернення (Корзина/Чат/Дзвінок)
+        "payment_methods":{},   # Спосіб оплати
+        "delivery_types": {},   # Тип доставки
+        "carriers":       {},   # Перевізник
+        "warehouses":     {},   # Склад
         "refuse_reasons": {},
+        "lead_objections":{},   # Проблемне заперечення
+        "process_reasons":{},   # Причина обробки
+        "trend_30d":      [],   # Динаміка за 30 днів
+        "month_total":    {},   # Підсумок місяця
         "error": None
     }
 
     try:
         import pandas as pd
 
-        # Знаходимо найсвіжіший xlsx у папці data/crm/
         files = sorted(CRM_DATA_DIR.glob("*.xlsx"), key=lambda f: f.stat().st_mtime, reverse=True)
         if not files:
             result["error"] = f"Немає файлів у {CRM_DATA_DIR}/"
@@ -267,126 +306,668 @@ def fetch_salesdrive(date_str: str) -> dict:
         print(f"     📂 Читаю файл: {latest.name}")
 
         df = pd.read_excel(latest)
-
-        # Парсимо дату
         df["_дата"] = pd.to_datetime(df["Дата"], errors="coerce")
         df["_день"] = df["_дата"].dt.strftime("%Y-%m-%d")
+        df["_місяць"] = df["_дата"].dt.strftime("%Y-%m")
 
-        # Фільтр на потрібну дату
+        target_month = date_str[:7]
         day_df = df[df["_день"] == date_str].copy()
+        month_df = df[df["_місяць"] == target_month].copy()
 
         if day_df.empty:
-            print(f"     ⚠️  Замовлень за {date_str} в файлі немає")
+            print(f"     ⚠️  Замовлень за {date_str} немає")
             result["error"] = f"Немає рядків за {date_str}"
             return result
 
-        total_orders  = len(day_df)
-        total_revenue = float(day_df["Сума"].fillna(0).sum())
-
-        # ── Статуси ──
-        status_counts = day_df["Статус"].fillna("Невідомо").value_counts().to_dict()
-        result["statuses"] = status_counts
-
-        # ── Ліди / Замовлення / Відмови (за статусом) ──
-        leads_keywords    = ["лід", "недодзвон", "перепродзвон", "автовідповідач", "прозвон обробки", "обробці"]
-        refused_keywords  = ["відмова", "відмов"]
-        order_keywords    = ["отримано", "відправлено", "їде", "ттн", "контроль", "1с", "виробництв", "черз"]
-        spam_keywords     = ["спам", "видалений", "дубль"]
+        # ── Категоризація статусів (точне зіставлення з SalesDrive) ──
+        # Замовлення (продажі) — підтверджені статуси з фільтра 1С/SD
+        ORDER_STATUSES = {
+            "виправити дані",
+            "створена ттн",
+            "їде до клієнта",
+            "прибув у відділення",
+            "переадресація",
+            "в виробництві",
+            "в черзі на відправлення",
+            "контроль оператора",
+            "контроль оплати",
+            "відправлено",
+            "отримано",
+            "повернення",  # повернення це теж замовлення (вже відвантажене)
+        }
+        # Відмови (НЕ зараховуються в замовлення)
+        REFUSED_STATUSES = {
+            "відмова (відправлено)",
+            "відмова (не відправлено)",
+            "відмова",
+            "лід (не купив)",
+        }
+        # Ліди (на стадії обробки, ще не замовлення)
+        LEAD_STATUSES = {
+            "новий",
+            "недодзвон",
+            "автовідповідач",
+            "повторне звернення",
+            "потрібне уточнення/перезвон",
+            "питання по замовленню",
+            "в обробці",
+            "відвідає шоу-рум",
+        }
+        # Спам / технічні (повністю виключаються з продажів)
+        SPAM_STATUSES = {
+            "спам на согласовании",
+            "рекламный спам",
+            "спам",
+            "видалений",
+            "дубль",
+        }
 
         def categorize(s):
-            sl = str(s).lower()
-            if any(k in sl for k in spam_keywords):    return "spam"
-            if any(k in sl for k in refused_keywords): return "refused"
-            if any(k in sl for k in leads_keywords):   return "lead"
-            if any(k in sl for k in order_keywords):   return "order"
+            sl = str(s).strip().lower()
+            if sl in ORDER_STATUSES:   return "order"
+            if sl in REFUSED_STATUSES: return "refused"
+            if sl in LEAD_STATUSES:    return "lead"
+            if sl in SPAM_STATUSES:    return "spam"
+            # fallback на ключові слова для невідомих
+            if "відмов" in sl: return "refused"
+            if "спам" in sl:   return "spam"
+            if "лід" in sl:    return "lead"
             return "other"
 
         day_df["_категорія"] = day_df["Статус"].fillna("").apply(categorize)
+        month_df["_категорія"] = month_df["Статус"].fillna("").apply(categorize)
 
         leads_count   = (day_df["_категорія"] == "lead").sum()
         orders_count  = (day_df["_категорія"] == "order").sum()
         refused_count = (day_df["_категорія"] == "refused").sum()
         spam_count    = (day_df["_категорія"] == "spam").sum()
 
-        # Ефективні (не спам)
         valid = day_df[day_df["_категорія"] != "spam"]
+        valid_orders = valid[valid["_категорія"].isin(["order", "refused"])]
+
+        # ── ДЕДУПЛІКАЦІЯ ─────────────────────────────────────
+        # В Excel КОЖЕН ТОВАР = окремий рядок, але "Сума" = сума всього замовлення
+        # яка ДУБЛЮЄТЬСЯ для кожної товарної позиції.
+        # Тому групуємо по унікальній заявці (Дата + Контакт) і беремо першу "Сума".
+        # Альтернатива: підсумувати "Сума [Товари/Послуги]" — це сума по позиціях.
+
+        def dedup_key_cols(df_):
+            """Колонки що ідентифікують унікальну заявку"""
+            cols = []
+            for c in ["Дата", "Ім'я [Контакт]", "Телефон [Контакт]"]:
+                if c in df_.columns:
+                    cols.append(c)
+            return cols
+
+        def unique_orders_count(df_):
+            """К-сть унікальних заявок (за датою + контактом)"""
+            keys = dedup_key_cols(df_)
+            if not keys or df_.empty:
+                return len(df_)
+            return df_.drop_duplicates(subset=keys).shape[0]
+
+        def sum_unique(df_):
+            """Сума по УНІКАЛЬНИМ заявкам (без дублів за рядками-товарами)."""
+            if df_.empty:
+                return 0.0
+            keys = dedup_key_cols(df_)
+            if not keys:
+                # fallback: сумуємо "Сума [Товари/Послуги]"
+                if "Сума [Товари/Послуги]" in df_.columns:
+                    return float(df_["Сума [Товари/Послуги]"].fillna(0).sum())
+                return float(df_["Сума"].fillna(0).sum())
+            uniq = df_.drop_duplicates(subset=keys)
+            return float(uniq["Сума"].fillna(0).sum())
+
+        # Точні рахунки унікальних заявок
+        unique_all_count    = unique_orders_count(day_df)
+        unique_valid_count  = unique_orders_count(valid)
+        unique_orders_only  = unique_orders_count(valid_orders)
+        unique_leads_count  = unique_orders_count(day_df[day_df["_категорія"] == "lead"])
+        unique_refused_count = unique_orders_count(day_df[day_df["_категорія"] == "refused"])
+        unique_spam_count   = unique_orders_count(day_df[day_df["_категорія"] == "spam"])
+
+        # Суми (по унікальним заявкам)
+        sum_all_requests   = sum_unique(day_df)
+        sum_no_spam        = sum_unique(valid)
+        sum_orders_only    = sum_unique(valid_orders)
+        avg_check = sum_orders_only / max(unique_orders_only, 1)
 
         result["orders"] = {
-            "total":      int(orders_count + refused_count),
-            "revenue":    round(float(valid[valid["_категорія"].isin(["order", "refused"])]["Сума"].fillna(0).sum()), 2),
-            "refused":    int(refused_count),
-            "refuse_pct": round(refused_count / max(orders_count + refused_count, 1) * 100, 1),
-            "spam":       int(spam_count),
-            "all_rows":   int(total_orders),
+            "total":            int(unique_orders_only),
+            "all_requests":     int(unique_all_count),
+            "sum_all":          round(sum_all_requests, 2),
+            "sum_no_spam":      round(sum_no_spam, 2),
+            "sum_orders":       round(sum_orders_only, 2),
+            "revenue":          round(sum_orders_only, 2),
+            "refused":          int(unique_refused_count),
+            "refuse_pct":       round(unique_refused_count / max(unique_orders_only, 1) * 100, 1),
+            "spam":             int(unique_spam_count),
+            "all_rows":         int(len(day_df)),
+            "avg_check":        round(avg_check, 2),
         }
-        result["leads"] = {"new_leads": int(leads_count)}
+        result["leads"] = {"new_leads": int(unique_leads_count)}
 
-        # ── Менеджери (онлайн) ──
-        mgr_df = valid[valid["Менеджер"].notna()]
-        managers_agg = mgr_df.groupby("Менеджер").agg(
+        # ── Місячний підсумок (дедупльоване) ──
+        month_valid = month_df[month_df["_категорія"] != "spam"]
+        month_orders = month_valid[month_valid["_категорія"].isin(["order", "refused"])]
+        m_keys = dedup_key_cols(month_df)
+        if m_keys:
+            month_orders_uniq = month_orders.drop_duplicates(subset=m_keys)
+            month_uniq_local = month_df.drop_duplicates(subset=m_keys)
+        else:
+            month_orders_uniq = month_orders
+            month_uniq_local = month_df
+        result["month_total"] = {
+            "orders":  int(len(month_orders_uniq)),
+            "revenue": round(float(month_orders_uniq["Сума"].fillna(0).sum()), 2),
+            "leads":   int((month_uniq_local["_категорія"] == "lead").sum()),
+            "refused": int((month_uniq_local["_категорія"] == "refused").sum()),
+        }
+
+        # ── Тренд 30 днів ──
+        end_dt = pd.to_datetime(date_str)
+        start_dt = end_dt - pd.Timedelta(days=29)
+        trend_df = df[(df["_дата"] >= start_dt) & (df["_дата"] <= end_dt)].copy()
+        trend_df["_категорія"] = trend_df["Статус"].fillna("").apply(categorize)
+        trend_valid = trend_df[trend_df["_категорія"] != "spam"]
+        # Дедуплікація по днях
+        trend_keys = dedup_key_cols(trend_df) if not trend_df.empty else []
+        if trend_keys:
+            trend_valid_uniq = trend_valid.drop_duplicates(subset=trend_keys)
+            trend_uniq = trend_df.drop_duplicates(subset=trend_keys)
+        else:
+            trend_valid_uniq = trend_valid
+            trend_uniq = trend_df
+        daily = trend_valid_uniq.groupby("_день").agg(
             orders=("Сума", "count"),
             revenue=("Сума", lambda x: float(x.fillna(0).sum())),
         ).reset_index()
-        # Відмови по менеджерах
-        refused_by_mgr = mgr_df[mgr_df["_категорія"] == "refused"].groupby("Менеджер").size().to_dict()
-        managers_agg["refused"] = managers_agg["Менеджер"].map(refused_by_mgr).fillna(0).astype(int)
-        managers_agg["refuse_pct"] = (managers_agg["refused"] / managers_agg["orders"].replace(0, 1) * 100).round(1)
-
-        result["managers"] = [
-            {"name": r["Менеджер"], "orders": int(r["orders"]),
-             "revenue": round(r["revenue"], 2),
-             "refused": int(r["refused"]), "refuse_pct": float(r["refuse_pct"])}
-            for _, r in managers_agg.sort_values("revenue", ascending=False).iterrows()
+        daily_leads = trend_uniq[trend_uniq["_категорія"] == "lead"].groupby("_день").size().to_dict()
+        daily_refused = trend_uniq[trend_uniq["_категорія"] == "refused"].groupby("_день").size().to_dict()
+        result["trend_30d"] = [
+            {"date": r["_день"],
+             "orders": int(r["orders"]),
+             "revenue": round(float(r["revenue"]), 2),
+             "leads": int(daily_leads.get(r["_день"], 0)),
+             "refused": int(daily_refused.get(r["_день"], 0))}
+            for _, r in daily.iterrows()
         ]
+
+        # ── Статуси (всі) — теж дедупльовані ──
+        # Дедуплікуємо для агрегаційних обчислень (одна заявка = один рядок)
+        mgr_keys = dedup_key_cols(day_df)
+        valid_uniq = valid.drop_duplicates(subset=mgr_keys) if mgr_keys else valid
+        day_uniq = day_df.drop_duplicates(subset=mgr_keys) if mgr_keys else day_df
+        result["statuses"] = day_uniq["Статус"].fillna("Невідомо").value_counts().to_dict() if not day_uniq.empty else {}
+
+        # ── Менеджери (онлайн) ──
+        # valid_uniq і day_uniq вже визначені вище (для статусів)
+        mgr_df = valid_uniq[valid_uniq["Менеджер"].notna()]
+        if not mgr_df.empty:
+            agg = mgr_df.groupby("Менеджер").agg(
+                orders=("Сума", "count"),
+                revenue=("Сума", lambda x: float(x.fillna(0).sum())),
+            ).reset_index()
+            refused_by_mgr = mgr_df[mgr_df["_категорія"] == "refused"].groupby("Менеджер").size().to_dict()
+            leads_by_mgr = day_uniq[(day_uniq["_категорія"] == "lead") & day_uniq["Менеджер"].notna()].groupby("Менеджер").size().to_dict()
+            agg["refused"] = agg["Менеджер"].map(refused_by_mgr).fillna(0).astype(int)
+            agg["leads"] = agg["Менеджер"].map(leads_by_mgr).fillna(0).astype(int)
+            agg["refuse_pct"] = (agg["refused"] / agg["orders"].replace(0, 1) * 100).round(1)
+            agg["avg_check"] = (agg["revenue"] / agg["orders"].replace(0, 1)).round(0)
+            agg["conv"] = (agg["orders"] / (agg["orders"] + agg["leads"]).replace(0, 1) * 100).round(1)
+            result["managers"] = [
+                {"name": r["Менеджер"], "orders": int(r["orders"]),
+                 "revenue": round(r["revenue"], 2),
+                 "refused": int(r["refused"]), "refuse_pct": float(r["refuse_pct"]),
+                 "leads": int(r["leads"]), "avg_check": float(r["avg_check"]),
+                 "conv": float(r["conv"])}
+                for _, r in agg.sort_values("revenue", ascending=False).iterrows()
+            ]
 
         # ── Менеджери на магазині ──
         if "Менеджер на магазині" in day_df.columns:
-            shop_df = valid[valid["Менеджер на магазині"].notna()]
-            shop_agg = shop_df.groupby("Менеджер на магазині").agg(
-                orders=("Сума", "count"),
-                revenue=("Сума", lambda x: float(x.fillna(0).sum())),
-            ).reset_index()
-            result["managers_shop"] = [
-                {"name": r["Менеджер на магазині"], "orders": int(r["orders"]),
-                 "revenue": round(r["revenue"], 2)}
-                for _, r in shop_agg.sort_values("revenue", ascending=False).iterrows()
-            ]
+            shop_df = valid_uniq[valid_uniq["Менеджер на магазині"].notna()]
+            if not shop_df.empty:
+                agg = shop_df.groupby("Менеджер на магазині").agg(
+                    orders=("Сума", "count"),
+                    revenue=("Сума", lambda x: float(x.fillna(0).sum())),
+                ).reset_index()
+                agg["avg_check"] = (agg["revenue"] / agg["orders"].replace(0, 1)).round(0)
+                result["managers_shop"] = [
+                    {"name": r["Менеджер на магазині"], "orders": int(r["orders"]),
+                     "revenue": round(r["revenue"], 2), "avg_check": float(r["avg_check"])}
+                    for _, r in agg.sort_values("revenue", ascending=False).iterrows()
+                ]
+
+        # ── Чатери ──
+        if "Відповідальний чатер" in day_df.columns:
+            chat_df = valid_uniq[valid_uniq["Відповідальний чатер"].notna()]
+            if not chat_df.empty:
+                agg = chat_df.groupby("Відповідальний чатер").agg(
+                    orders=("Сума", "count"),
+                    revenue=("Сума", lambda x: float(x.fillna(0).sum())),
+                ).reset_index()
+                result["chatters"] = [
+                    {"name": r["Відповідальний чатер"], "orders": int(r["orders"]),
+                     "revenue": round(r["revenue"], 2)}
+                    for _, r in agg.sort_values("revenue", ascending=False).iterrows()
+                ]
 
         # ── Сайти ──
         if "Сайт" in day_df.columns:
-            sites_agg = valid[valid["Сайт"].notna()].groupby("Сайт").agg(
-                orders=("Сума", "count"),
-                revenue=("Сума", lambda x: float(x.fillna(0).sum())),
-            ).reset_index()
-            result["sites"] = {
-                r["Сайт"]: {"orders": int(r["orders"]), "revenue": round(r["revenue"], 2)}
-                for _, r in sites_agg.sort_values("revenue", ascending=False).iterrows()
-            }
+            sites_df = valid_uniq[valid_uniq["Сайт"].notna()]
+            if not sites_df.empty:
+                agg = sites_df.groupby("Сайт").agg(
+                    orders=("Сума", "count"),
+                    revenue=("Сума", lambda x: float(x.fillna(0).sum())),
+                ).reset_index()
+                agg["avg_check"] = (agg["revenue"] / agg["orders"].replace(0, 1)).round(0)
+                result["sites"] = {
+                    r["Сайт"]: {"orders": int(r["orders"]),
+                                "revenue": round(r["revenue"], 2),
+                                "avg_check": float(r["avg_check"])}
+                    for _, r in agg.sort_values("revenue", ascending=False).iterrows()
+                }
+
+        # ── Категорії звернення (Топер/Матрац/Диван) ──
+        if "Категорія звернення" in day_df.columns:
+            cat = day_uniq[day_uniq["Категорія звернення"].notna()]["Категорія звернення"].value_counts().head(15).to_dict()
+            result["categories"] = {str(k): int(v) for k, v in cat.items()}
+
+        # ── Тип звернення (Корзина/Чат/Дзвінок) ──
+        if "Тип звернення" in day_df.columns:
+            rt = day_uniq[day_uniq["Тип звернення"].notna()]["Тип звернення"].value_counts().head(10).to_dict()
+            result["request_types"] = {str(k): int(v) for k, v in rt.items()}
+
+        # ── Спосіб оплати ──
+        if "Спосіб оплати" in day_df.columns:
+            pm = valid_uniq[valid_uniq["Спосіб оплати"].notna()]["Спосіб оплати"].value_counts().head(10).to_dict()
+            result["payment_methods"] = {str(k): int(v) for k, v in pm.items()}
+
+        # ── Тип доставки ──
+        if "Тип доставки" in day_df.columns:
+            dt_ = valid_uniq[valid_uniq["Тип доставки"].notna()]["Тип доставки"].value_counts().to_dict()
+            result["delivery_types"] = {str(k): int(v) for k, v in dt_.items()}
+
+        # ── Перевізник ──
+        if "Перевізник" in day_df.columns:
+            cr = valid_uniq[valid_uniq["Перевізник"].notna()]["Перевізник"].value_counts().head(10).to_dict()
+            result["carriers"] = {str(k): int(v) for k, v in cr.items()}
+
+        # ── Склад ──
+        if "Склад" in day_df.columns:
+            wh = valid_uniq[valid_uniq["Склад"].notna()]["Склад"].value_counts().to_dict()
+            result["warehouses"] = {str(k): int(v) for k, v in wh.items()}
 
         # ── Топ товарів ──
         if "Назва [Товари/Послуги]" in day_df.columns:
             prod_col = "Назва [Товари/Послуги]"
+            sum_col  = "Сума [Товари/Послуги]" if "Сума [Товари/Послуги]" in day_df.columns else "Сума"
+            qty_col  = "К-ть [Товари/Послуги]" if "К-ть [Товари/Послуги]" in day_df.columns else None
             prod_df = day_df[day_df[prod_col].notna() & (day_df["_категорія"] != "spam")].copy()
-            if "Сума [Товари/Послуги]" in prod_df.columns:
-                prod_agg = prod_df.groupby(prod_col).agg(
+            # Фільтр доставок
+            prod_df = prod_df[~prod_df[prod_col].str.lower().str.contains("доставка|нова пошта|укрпошт|самовивіз|сборка|занос", na=False)]
+            if not prod_df.empty:
+                grp = prod_df.groupby(prod_col).agg(
                     count=(prod_col, "count"),
-                    revenue=("Сума [Товари/Послуги]", lambda x: float(x.fillna(0).sum())),
+                    revenue=(sum_col, lambda x: float(x.fillna(0).sum())),
                 ).reset_index()
+                if qty_col and qty_col in prod_df.columns:
+                    qty_grp = prod_df.groupby(prod_col)[qty_col].sum().reset_index()
+                    grp = grp.merge(qty_grp, on=prod_col, how="left")
                 result["products"] = [
-                    {"name": r[prod_col], "count": int(r["count"]), "revenue": round(r["revenue"], 2)}
-                    for _, r in prod_agg.sort_values("revenue", ascending=False).head(20).iterrows()
+                    {"name": r[prod_col], "count": int(r["count"]),
+                     "revenue": round(r["revenue"], 2),
+                     "qty": int(r.get(qty_col, r["count"])) if qty_col else int(r["count"])}
+                    for _, r in grp.sort_values("revenue", ascending=False).head(30).iterrows()
                 ]
 
         # ── Причини відмов ──
         if "Причина відмови ?" in day_df.columns:
-            ref_df = day_df[day_df["Причина відмови ?"].notna()]
-            if not ref_df.empty:
-                reasons = ref_df["Причина відмови ?"].value_counts().head(10).to_dict()
-                result["refuse_reasons"] = {str(k): int(v) for k, v in reasons.items()}
+            rr = day_uniq[day_uniq["Причина відмови ?"].notna()]["Причина відмови ?"].value_counts().head(15).to_dict()
+            result["refuse_reasons"] = {str(k): int(v) for k, v in rr.items()}
+
+        # ── Заперечення лідів ──
+        if "Проблемне заперечення" in day_df.columns:
+            lo = day_uniq[day_uniq["Проблемне заперечення"].notna()]["Проблемне заперечення"].value_counts().head(10).to_dict()
+            result["lead_objections"] = {str(k): int(v) for k, v in lo.items()}
+
+        # ── Причини обробки ──
+        if "Причина обробки" in day_df.columns:
+            pr = day_uniq[day_uniq["Причина обробки"].notna()]["Причина обробки"].value_counts().head(10).to_dict()
+            result["process_reasons"] = {str(k): int(v) for k, v in pr.items()}
 
     except Exception as e:
         result["error"] = str(e)
         print(f"  ⚠️  CRM помилка: {e}")
+        import traceback
+        traceback.print_exc()
+
+    return result
+
+
+
+def aggregate_month_crm(target_month: str) -> dict:
+    """
+    Збирає повну місячну аналітику з Excel за target_month (YYYY-MM).
+    Повертає всі ті ж поля, що і денний fetch_salesdrive, але за весь місяць.
+    """
+    result = {
+        "month":           target_month,
+        "source_file":     None,
+        "orders":          {},
+        "leads":           {},
+        "managers":        [],
+        "managers_shop":   [],
+        "chatters":        [],
+        "statuses":        {},
+        "sites":           {},
+        "products":        [],
+        "categories":      {},
+        "request_types":   {},
+        "payment_methods": {},
+        "delivery_types":  {},
+        "carriers":        {},
+        "warehouses":      {},
+        "refuse_reasons":  {},
+        "lead_objections": {},
+        "process_reasons": {},
+        "daily_trend":     [],   # тренд по днях у межах місяця
+        "error":           None
+    }
+    try:
+        import pandas as pd
+
+        files = sorted(CRM_DATA_DIR.glob("*.xlsx"), key=lambda f: f.stat().st_mtime, reverse=True)
+        if not files:
+            result["error"] = f"Немає файлів у {CRM_DATA_DIR}/"
+            return result
+
+        latest = files[0]
+        result["source_file"] = latest.name
+
+        df = pd.read_excel(latest)
+        df["_дата"] = pd.to_datetime(df["Дата"], errors="coerce")
+        df["_день"] = df["_дата"].dt.strftime("%Y-%m-%d")
+        df["_місяць"] = df["_дата"].dt.strftime("%Y-%m")
+
+        month_df = df[df["_місяць"] == target_month].copy()
+        if month_df.empty:
+            result["error"] = f"Немає рядків за {target_month}"
+            return result
+
+        # ── Категоризація статусів (місяць, точне зіставлення) ──
+        # Замовлення (продажі) — підтверджені статуси з фільтра 1С/SD
+        ORDER_STATUSES = {
+            "виправити дані",
+            "створена ттн",
+            "їде до клієнта",
+            "прибув у відділення",
+            "переадресація",
+            "в виробництві",
+            "в черзі на відправлення",
+            "контроль оператора",
+            "контроль оплати",
+            "відправлено",
+            "отримано",
+            "повернення",  # повернення це теж замовлення (вже відвантажене)
+        }
+        # Відмови (НЕ зараховуються в замовлення)
+        REFUSED_STATUSES = {
+            "відмова (відправлено)",
+            "відмова (не відправлено)",
+            "відмова",
+            "лід (не купив)",
+        }
+        # Ліди (на стадії обробки, ще не замовлення)
+        LEAD_STATUSES = {
+            "новий",
+            "недодзвон",
+            "автовідповідач",
+            "повторне звернення",
+            "потрібне уточнення/перезвон",
+            "питання по замовленню",
+            "в обробці",
+            "відвідає шоу-рум",
+        }
+        # Спам / технічні (повністю виключаються з продажів)
+        SPAM_STATUSES = {
+            "спам на согласовании",
+            "рекламный спам",
+            "спам",
+            "видалений",
+            "дубль",
+        }
+
+        def categorize(s):
+            sl = str(s).strip().lower()
+            if sl in ORDER_STATUSES:   return "order"
+            if sl in REFUSED_STATUSES: return "refused"
+            if sl in LEAD_STATUSES:    return "lead"
+            if sl in SPAM_STATUSES:    return "spam"
+            # fallback на ключові слова для невідомих
+            if "відмов" in sl: return "refused"
+            if "спам" in sl:   return "spam"
+            if "лід" in sl:    return "lead"
+            return "other"
+
+        month_df["_категорія"] = month_df["Статус"].fillna("").apply(categorize)
+        valid = month_df[month_df["_категорія"] != "spam"]
+        valid_orders = valid[valid["_категорія"].isin(["order", "refused"])]
+
+        leads_count   = (month_df["_категорія"] == "lead").sum()
+        orders_count  = (month_df["_категорія"] == "order").sum()
+        refused_count = (month_df["_категорія"] == "refused").sum()
+        spam_count    = (month_df["_категорія"] == "spam").sum()
+
+        # ── ДЕДУПЛІКАЦІЯ (так само як у денному) ──
+        def dedup_key_cols_m(df_):
+            cols = []
+            for c in ["Дата", "Ім'я [Контакт]", "Телефон [Контакт]"]:
+                if c in df_.columns:
+                    cols.append(c)
+            return cols
+
+        def unique_count_m(df_):
+            keys = dedup_key_cols_m(df_)
+            if not keys or df_.empty:
+                return len(df_)
+            return df_.drop_duplicates(subset=keys).shape[0]
+
+        def sum_unique_m(df_):
+            if df_.empty:
+                return 0.0
+            keys = dedup_key_cols_m(df_)
+            if not keys:
+                return float(df_["Сума"].fillna(0).sum())
+            return float(df_.drop_duplicates(subset=keys)["Сума"].fillna(0).sum())
+
+        unique_all_count    = unique_count_m(month_df)
+        unique_orders_only  = unique_count_m(valid_orders)
+        unique_leads_count  = unique_count_m(month_df[month_df["_категорія"] == "lead"])
+        unique_refused_count = unique_count_m(month_df[month_df["_категорія"] == "refused"])
+        unique_spam_count   = unique_count_m(month_df[month_df["_категорія"] == "spam"])
+
+        sum_all_requests = sum_unique_m(month_df)
+        sum_no_spam      = sum_unique_m(valid)
+        sum_orders_only  = sum_unique_m(valid_orders)
+        avg_check        = sum_orders_only / max(unique_orders_only, 1)
+
+        # Дедупльовані df-и для менеджерів/сайтів
+        keys_m = dedup_key_cols_m(month_df)
+        valid_uniq_m = valid.drop_duplicates(subset=keys_m) if keys_m else valid
+        month_uniq   = month_df.drop_duplicates(subset=keys_m) if keys_m else month_df
+
+        result["orders"] = {
+            "total":            int(unique_orders_only),
+            "all_requests":     int(unique_all_count),
+            "sum_all":          round(sum_all_requests, 2),
+            "sum_no_spam":      round(sum_no_spam, 2),
+            "sum_orders":       round(sum_orders_only, 2),
+            "revenue":          round(sum_orders_only, 2),
+            "refused":          int(unique_refused_count),
+            "refuse_pct":       round(unique_refused_count / max(unique_orders_only, 1) * 100, 1),
+            "spam":             int(unique_spam_count),
+            "all_rows":         int(len(month_df)),
+            "avg_check":        round(avg_check, 2),
+        }
+        result["leads"] = {"new_leads": int(unique_leads_count)}
+        result["statuses"] = month_uniq["Статус"].fillna("Невідомо").value_counts().to_dict()
+
+        # ── Менеджери ──
+        mgr_df = valid_uniq_m[valid_uniq_m["Менеджер"].notna()]
+        if not mgr_df.empty:
+            agg = mgr_df.groupby("Менеджер").agg(
+                orders=("Сума", "count"),
+                revenue=("Сума", lambda x: float(x.fillna(0).sum())),
+            ).reset_index()
+            refused_by_mgr = mgr_df[mgr_df["_категорія"] == "refused"].groupby("Менеджер").size().to_dict()
+            leads_by_mgr   = month_uniq[(month_uniq["_категорія"] == "lead") & month_uniq["Менеджер"].notna()].groupby("Менеджер").size().to_dict()
+            agg["refused"] = agg["Менеджер"].map(refused_by_mgr).fillna(0).astype(int)
+            agg["leads"] = agg["Менеджер"].map(leads_by_mgr).fillna(0).astype(int)
+            agg["refuse_pct"] = (agg["refused"] / agg["orders"].replace(0, 1) * 100).round(1)
+            agg["avg_check"] = (agg["revenue"] / agg["orders"].replace(0, 1)).round(0)
+            agg["conv"] = (agg["orders"] / (agg["orders"] + agg["leads"]).replace(0, 1) * 100).round(1)
+            result["managers"] = [
+                {"name": r["Менеджер"], "orders": int(r["orders"]),
+                 "revenue": round(r["revenue"], 2),
+                 "refused": int(r["refused"]), "refuse_pct": float(r["refuse_pct"]),
+                 "leads": int(r["leads"]), "avg_check": float(r["avg_check"]),
+                 "conv": float(r["conv"])}
+                for _, r in agg.sort_values("revenue", ascending=False).iterrows()
+            ]
+
+        # ── Менеджери на магазині ──
+        if "Менеджер на магазині" in month_df.columns:
+            shop_df = valid_uniq_m[valid_uniq_m["Менеджер на магазині"].notna()]
+            if not shop_df.empty:
+                agg = shop_df.groupby("Менеджер на магазині").agg(
+                    orders=("Сума", "count"),
+                    revenue=("Сума", lambda x: float(x.fillna(0).sum())),
+                ).reset_index()
+                agg["avg_check"] = (agg["revenue"] / agg["orders"].replace(0, 1)).round(0)
+                result["managers_shop"] = [
+                    {"name": r["Менеджер на магазині"], "orders": int(r["orders"]),
+                     "revenue": round(r["revenue"], 2), "avg_check": float(r["avg_check"])}
+                    for _, r in agg.sort_values("revenue", ascending=False).iterrows()
+                ]
+
+        # ── Чатери ──
+        if "Відповідальний чатер" in month_df.columns:
+            chat_df = valid_uniq_m[valid_uniq_m["Відповідальний чатер"].notna()]
+            if not chat_df.empty:
+                agg = chat_df.groupby("Відповідальний чатер").agg(
+                    orders=("Сума", "count"),
+                    revenue=("Сума", lambda x: float(x.fillna(0).sum())),
+                ).reset_index()
+                result["chatters"] = [
+                    {"name": r["Відповідальний чатер"], "orders": int(r["orders"]),
+                     "revenue": round(r["revenue"], 2)}
+                    for _, r in agg.sort_values("revenue", ascending=False).iterrows()
+                ]
+
+        # ── Сайти ──
+        if "Сайт" in month_df.columns:
+            sites_df = valid_uniq_m[valid_uniq_m["Сайт"].notna()]
+            if not sites_df.empty:
+                agg = sites_df.groupby("Сайт").agg(
+                    orders=("Сума", "count"),
+                    revenue=("Сума", lambda x: float(x.fillna(0).sum())),
+                ).reset_index()
+                agg["avg_check"] = (agg["revenue"] / agg["orders"].replace(0, 1)).round(0)
+                result["sites"] = {
+                    r["Сайт"]: {"orders": int(r["orders"]),
+                                "revenue": round(r["revenue"], 2),
+                                "avg_check": float(r["avg_check"])}
+                    for _, r in agg.sort_values("revenue", ascending=False).iterrows()
+                }
+
+        # ── Категорії звернення ──
+        if "Категорія звернення" in month_df.columns:
+            cat = month_uniq[month_uniq["Категорія звернення"].notna()]["Категорія звернення"].value_counts().head(15).to_dict()
+            result["categories"] = {str(k): int(v) for k, v in cat.items()}
+
+        # ── Тип звернення ──
+        if "Тип звернення" in month_df.columns:
+            rt = month_uniq[month_uniq["Тип звернення"].notna()]["Тип звернення"].value_counts().head(10).to_dict()
+            result["request_types"] = {str(k): int(v) for k, v in rt.items()}
+
+        # ── Спосіб оплати ──
+        if "Спосіб оплати" in month_df.columns:
+            pm = valid_uniq_m[valid_uniq_m["Спосіб оплати"].notna()]["Спосіб оплати"].value_counts().head(10).to_dict()
+            result["payment_methods"] = {str(k): int(v) for k, v in pm.items()}
+
+        # ── Тип доставки ──
+        if "Тип доставки" in month_df.columns:
+            dt_ = valid_uniq_m[valid_uniq_m["Тип доставки"].notna()]["Тип доставки"].value_counts().to_dict()
+            result["delivery_types"] = {str(k): int(v) for k, v in dt_.items()}
+
+        # ── Перевізник ──
+        if "Перевізник" in month_df.columns:
+            cr = valid_uniq_m[valid_uniq_m["Перевізник"].notna()]["Перевізник"].value_counts().head(10).to_dict()
+            result["carriers"] = {str(k): int(v) for k, v in cr.items()}
+
+        # ── Склад ──
+        if "Склад" in month_df.columns:
+            wh = valid_uniq_m[valid_uniq_m["Склад"].notna()]["Склад"].value_counts().to_dict()
+            result["warehouses"] = {str(k): int(v) for k, v in wh.items()}
+
+        # ── Топ товарів (по позиціях, не дедуплікуємо — кожен товар це окрема одиниця) ──
+        # Тут НЕ робимо дедуплікацію, бо назви товарів унікальні і кожен товар це окрема позиція.
+        # АЛЕ використовуємо "Сума [Товари/Послуги]" — там реальна сума по позиції, не дублікат.
+        if "Назва [Товари/Послуги]" in month_df.columns:
+            prod_col = "Назва [Товари/Послуги]"
+            sum_col  = "Сума [Товари/Послуги]" if "Сума [Товари/Послуги]" in month_df.columns else "Сума"
+            qty_col  = "К-ть [Товари/Послуги]" if "К-ть [Товари/Послуги]" in month_df.columns else None
+            prod_df = month_df[month_df[prod_col].notna() & (month_df["_категорія"] != "spam")].copy()
+            prod_df = prod_df[~prod_df[prod_col].str.lower().str.contains("доставка|нова пошта|укрпошт|самовивіз|сборка|занос", na=False)]
+            if not prod_df.empty:
+                grp = prod_df.groupby(prod_col).agg(
+                    count=(prod_col, "count"),
+                    revenue=(sum_col, lambda x: float(x.fillna(0).sum())),
+                ).reset_index()
+                if qty_col and qty_col in prod_df.columns:
+                    qty_grp = prod_df.groupby(prod_col)[qty_col].sum().reset_index()
+                    grp = grp.merge(qty_grp, on=prod_col, how="left")
+                result["products"] = [
+                    {"name": r[prod_col], "count": int(r["count"]),
+                     "revenue": round(r["revenue"], 2),
+                     "qty": int(r.get(qty_col, r["count"])) if qty_col else int(r["count"])}
+                    for _, r in grp.sort_values("revenue", ascending=False).head(50).iterrows()
+                ]
+
+        # ── Причини відмов / заперечення / обробки (дедупльовані) ──
+        if "Причина відмови ?" in month_df.columns:
+            rr = month_uniq[month_uniq["Причина відмови ?"].notna()]["Причина відмови ?"].value_counts().head(15).to_dict()
+            result["refuse_reasons"] = {str(k): int(v) for k, v in rr.items()}
+        if "Проблемне заперечення" in month_df.columns:
+            lo = month_uniq[month_uniq["Проблемне заперечення"].notna()]["Проблемне заперечення"].value_counts().head(10).to_dict()
+            result["lead_objections"] = {str(k): int(v) for k, v in lo.items()}
+        if "Причина обробки" in month_df.columns:
+            pr = month_uniq[month_uniq["Причина обробки"].notna()]["Причина обробки"].value_counts().head(10).to_dict()
+            result["process_reasons"] = {str(k): int(v) for k, v in pr.items()}
+
+        # ── Daily trend по днях у межах місяця (дедупльоване) ──
+        valid_for_trend = valid_uniq_m  # дедупльовані без спаму
+        daily = valid_for_trend.groupby("_день").agg(
+            orders=("Сума", "count"),
+            revenue=("Сума", lambda x: float(x.fillna(0).sum())),
+        ).reset_index()
+        daily_leads = month_uniq[month_uniq["_категорія"] == "lead"].groupby("_день").size().to_dict()
+        daily_refused = month_uniq[month_uniq["_категорія"] == "refused"].groupby("_день").size().to_dict()
+        result["daily_trend"] = [
+            {"date": r["_день"],
+             "orders": int(r["orders"]),
+             "revenue": round(float(r["revenue"]), 2),
+             "leads": int(daily_leads.get(r["_день"], 0)),
+             "refused": int(daily_refused.get(r["_день"], 0))}
+            for _, r in daily.iterrows()
+        ]
+
+    except Exception as e:
+        result["error"] = str(e)
+        print(f"  ⚠️  Місячний CRM помилка: {e}")
         import traceback
         traceback.print_exc()
 
@@ -696,17 +1277,23 @@ def main():
     # ── SalesDrive CRM ────────────────────────────────────────
     print("\n🎯 Завантаження SalesDrive CRM (Excel)...")
     data["crm"] = fetch_salesdrive(day_iso)
-    if data["crm"]["error"]:
-        print(f"   ⚠️  Помилка CRM: {data['crm']['error']}")
+    crm = data["crm"]
+    if crm["error"] and not crm["orders"]:
+        print(f"   ⚠️  Помилка CRM: {crm['error']}")
     else:
-        print(f"   ✅ Файл:        {data['crm'].get('source_file', '—')}")
-        print(f"   ✅ Замовлень:   {data['crm']['orders']['total']}")
-        print(f"   ✅ Лідів:       {data['crm']['leads']['new_leads']}")
-        print(f"   ✅ Виручка:     {data['crm']['orders']['revenue']:,.0f} ₴")
-        print(f"   ✅ Відмови:     {data['crm']['orders']['refused']} ({data['crm']['orders']['refuse_pct']}%)")
-        print(f"   ✅ Менеджерів:  {len(data['crm']['managers'])}")
-        print(f"   ✅ Сайтів:      {len(data['crm']['sites'])}")
-        print(f"   ✅ Товарів:     {len(data['crm']['products'])}")
+        o = crm["orders"]
+        m = crm.get("month_total", {})
+        print(f"   ✅ Файл:        {crm.get('source_file', '—')}")
+        print(f"   ✅ Замовлень:   {o.get('total', 0)} (всього {o.get('all_rows', 0)} рядків)")
+        print(f"   ✅ Лідів:       {crm['leads'].get('new_leads', 0)}")
+        print(f"   ✅ Виручка:     {o.get('revenue', 0):,.0f} ₴ | сер. чек: {o.get('avg_check', 0):,.0f}")
+        print(f"   ✅ Відмови:     {o.get('refused', 0)} ({o.get('refuse_pct', 0)}%)")
+        print(f"   ✅ Місяць:      {m.get('orders', 0)} зам. | {m.get('revenue', 0):,.0f} ₴")
+        print(f"   ✅ Менеджерів:  {len(crm['managers'])}")
+        print(f"   ✅ Сайтів:      {len(crm['sites'])}")
+        print(f"   ✅ Товарів:     {len(crm['products'])}")
+        print(f"   ✅ Категорій:   {len(crm['categories'])} | Типів звернень: {len(crm['request_types'])}")
+        print(f"   ✅ Тренд 30 дн: {len(crm['trend_30d'])} точок")
 
     # ── Meta Ads ─────────────────────────────────────────────────
     print("\n📱 Завантаження Meta Ads...")
@@ -728,6 +1315,58 @@ def main():
         print(f"   ✅ Відмови:      {data['ga4']['bounce_rate']}%")
         print(f"   ✅ Топ джерел:   {len(data['ga4']['by_source'])}")
         print(f"   ✅ Топ сторінок: {len(data['ga4']['by_page'])}")
+
+    # ── МІСЯЧНА АГРЕГАЦІЯ ─────────────────────────────────────
+    target_month = day_iso[:7]
+    print(f"\n📅 Збір місячних даних за {target_month}...")
+    data["month"] = {
+        "target_month": target_month,
+        "crm": aggregate_month_crm(target_month),
+    }
+
+    # FALLBACK: якщо в Excel немає даних за поточний місяць —
+    # використовуємо останній доступний (Excel вигрузка може бути застарілою)
+    if not data["month"]["crm"].get("orders"):
+        print(f"   ⚠️  Excel не має даних за {target_month}, шукаю останній доступний місяць...")
+        try:
+            import pandas as pd
+            files = sorted(CRM_DATA_DIR.glob("*.xlsx"), key=lambda f: f.stat().st_mtime, reverse=True)
+            if files:
+                df_check = pd.read_excel(files[0])
+                df_check["_дата"] = pd.to_datetime(df_check["Дата"], errors="coerce")
+                df_check["_місяць"] = df_check["_дата"].dt.strftime("%Y-%m")
+                available_months = sorted(df_check["_місяць"].dropna().unique(), reverse=True)
+                if available_months:
+                    fallback_month = available_months[0]
+                    print(f"   📂 Знайдено: {fallback_month} (використовую як поточний)")
+                    target_month = fallback_month
+                    data["month"]["target_month"] = target_month
+                    data["month"]["crm"] = aggregate_month_crm(target_month)
+                    data["month"]["fallback_used"] = True
+        except Exception as e:
+            print(f"   ⚠️  Помилка fallback: {e}")
+
+    if data["month"]["crm"].get("orders"):
+        mo = data["month"]["crm"]["orders"]
+        print(f"   ✅ Поточний міс ({target_month}): {mo.get('total', 0)} зам. | {mo.get('revenue', 0):,.0f} ₴ | сер. чек {mo.get('avg_check', 0):,.0f}")
+        print(f"   ✅ Менеджерів:  {len(data['month']['crm']['managers'])}")
+        print(f"   ✅ Товарів:     {len(data['month']['crm']['products'])}")
+
+    # Попередній місяць (для порівняння) — від target_month
+    tm_year, tm_mon = int(target_month[:4]), int(target_month[5:7])
+    if tm_mon == 1:
+        prev_m_start_dt = datetime(tm_year - 1, 12, 1)
+    else:
+        prev_m_start_dt = datetime(tm_year, tm_mon - 1, 1)
+    prev_month = prev_m_start_dt.strftime("%Y-%m")
+
+    print(f"\n📅 CRM за попередній місяць ({prev_month})...")
+    data["month"]["prev_crm"] = aggregate_month_crm(prev_month)
+    if data["month"]["prev_crm"].get("orders"):
+        po = data["month"]["prev_crm"]["orders"]
+        print(f"   ✅ Прев. місяць: {po.get('total', 0)} зам. | {po.get('revenue', 0):,.0f} ₴")
+    else:
+        print(f"   ⚠️  Немає даних за {prev_month}")
 
     # ── Збереження ────────────────────────────────────────────
     out_path = HISTORY_DIR / f"{day_iso}.json"
