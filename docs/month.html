@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="uk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>UH — Monthly Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+:root{--bg:#0c0f1a;--s:#151929;--s2:#1c2137;--s3:#242b47;--brd:#2a3050;--brd2:#3a4170;--t:#e4e8f7;--t2:#c1c7e0;--td:#7b84a3;--td2:#5a6280;--ac:#6c5ce7;--ac2:#a29bfe;--g:#00d68f;--gd:rgba(0,214,143,.15);--o:#ffa94d;--od:rgba(255,169,77,.15);--r:#ff6b6b;--rd:rgba(255,107,107,.15);--b:#339af0;--bd:rgba(51,154,240,.15);--y:#ffd43b;--p:#da77f2;--c:#66d9e8;--lime:#94d82d}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;padding:14px 18px;font-size:12px;line-height:1.4}
+.hdr{text-align:center;margin-bottom:8px;position:relative}
+.hdr h1{font-size:24px;font-weight:700;background:linear-gradient(135deg,var(--ac2),var(--g));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px}
+.hdr .sub{color:var(--td);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-top:3px}
+.hdr .stamp{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--td2);margin-top:4px;padding:2px 8px;background:var(--s);border:1px solid var(--brd);border-radius:10px}
+.view-switch{position:absolute;top:0;right:0;display:flex;gap:2px;background:var(--s);border:1px solid var(--brd);border-radius:8px;padding:3px}
+.view-switch a{padding:6px 14px;border-radius:6px;text-decoration:none;color:var(--td);font-size:11px;font-weight:500;transition:.15s}
+.view-switch a.on{background:var(--ac);color:#fff}
+.view-switch a:hover:not(.on){color:var(--t);background:var(--s2)}
+.ins-wrap{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.ins{flex:1;min-width:240px;background:var(--s);border:1px solid var(--brd);border-radius:9px;padding:8px 12px;display:flex;align-items:center;gap:8px;font-size:11px}
+.ins-ico{font-size:14px;flex-shrink:0}
+.ins-txt{color:var(--t2);line-height:1.3}
+.ins-good{border-left:3px solid var(--g)}
+.ins-warn{border-left:3px solid var(--o)}
+.ins-bad{border-left:3px solid var(--r)}
+.ins-info{border-left:3px solid var(--b)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:9px;margin-bottom:14px}
+.kpi{background:var(--s);border:1px solid var(--brd);border-radius:11px;padding:12px 11px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:11px 11px 0 0}
+.kpi:nth-child(1)::before{background:linear-gradient(90deg,var(--ac),var(--ac2))}
+.kpi:nth-child(2)::before{background:var(--g)}
+.kpi:nth-child(3)::before{background:var(--o)}
+.kpi:nth-child(4)::before{background:var(--b)}
+.kpi:nth-child(5)::before{background:var(--p)}
+.kpi:nth-child(6)::before{background:var(--c)}
+.kpi:nth-child(7)::before{background:var(--r)}
+.kpi:nth-child(8)::before{background:var(--lime)}
+.kl{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--td);margin-bottom:3px;font-weight:500}
+.kv{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:600;line-height:1.1}
+.ku{font-size:9px;color:var(--td);margin-left:3px;font-family:'DM Sans'}
+.ks{font-size:9px;color:var(--td);margin-top:3px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.dlt{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;padding:1px 5px;border-radius:4px}
+.dlt.up{background:var(--gd);color:var(--g)}
+.dlt.down{background:var(--rd);color:var(--r)}
+.dlt.neu{background:rgba(123,132,163,.15);color:var(--td)}
+.tabs{display:flex;gap:2px;margin-bottom:14px;background:var(--s);border-radius:10px;padding:3px;border:1px solid var(--brd);flex-wrap:wrap}
+.tab{flex:1;min-width:110px;padding:9px 6px;border-radius:8px;text-align:center;cursor:pointer;font-size:11px;font-weight:500;color:var(--td);border:none;background:none;transition:.15s;letter-spacing:.3px}
+.tab:hover{color:var(--t);background:var(--s2)}
+.tab.on{background:var(--ac);color:#fff}
+.pnl{display:none}
+.pnl.on{display:block;animation:fade .2s ease-in}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.cd{background:var(--s);border:1px solid var(--brd);border-radius:11px;padding:14px;margin-bottom:11px}
+.ct{font-size:12px;font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.ct .dot{width:7px;height:7px;border-radius:50%;background:var(--ac);flex-shrink:0}
+.ct .badge-tot{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:var(--td);margin-left:auto;padding:2px 8px;background:var(--s2);border-radius:5px}
+.cd-d{font-size:10px;color:var(--td);margin-bottom:11px;line-height:1.4}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:11px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:11px}
+@media(max-width:980px){.g2,.g3,.g4{grid-template-columns:1fr}}
+canvas{max-height:280px}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{background:var(--s2);padding:7px 9px;text-align:left;font-weight:600;color:var(--td);font-size:9px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;border-bottom:1px solid var(--brd)}
+th.r,td.r{text-align:right}
+td{padding:6px 9px;border-bottom:1px solid rgba(255,255,255,.04)}
+tbody tr:hover td{background:rgba(108,92,231,.06)}
+.scr{max-height:420px;overflow-y:auto}
+.scr::-webkit-scrollbar{width:5px}
+.scr::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:3px}
+.scr::-webkit-scrollbar-track{background:var(--s2)}
+.badge{display:inline-block;padding:2px 7px;border-radius:5px;font-size:9px;font-weight:600;letter-spacing:.2px}
+.bg{background:var(--gd);color:var(--g)}.bo{background:var(--od);color:var(--o)}
+.br{background:var(--rd);color:var(--r)}.bb{background:var(--bd);color:var(--b)}
+.num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500}
+.bar-row{display:flex;align-items:center;gap:9px;padding:5px 11px;border-bottom:1px solid rgba(255,255,255,.03)}
+.bar-row:last-child{border-bottom:none}
+.bar-name{font-size:11px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+.bar-wrap{flex:2;background:var(--s2);border-radius:3px;height:6px;overflow:hidden;min-width:60px}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:3px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.bar-val{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;width:90px;text-align:right;color:var(--t2)}
+.mini-kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:11px}
+.mk{background:var(--s2);border:1px solid var(--brd);border-radius:8px;padding:9px;text-align:center}
+.mk-l{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:var(--td);margin-bottom:3px}
+.mk-v{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600}
+.mk-d{font-size:8px;margin-top:2px}
+.cmp-row{display:grid;grid-template-columns:1fr 90px 90px 80px;gap:10px;padding:7px 11px;border-bottom:1px solid rgba(255,255,255,.04);align-items:center;font-size:11px}
+.cmp-row:hover{background:rgba(108,92,231,.05)}
+.cmp-name{font-weight:500}
+.cmp-val{font-family:'JetBrains Mono',monospace;text-align:right;font-weight:500}
+.ftr{text-align:center;color:var(--td2);font-size:10px;padding-top:18px;border-top:1px solid var(--brd);margin-top:24px;font-family:'JetBrains Mono',monospace}
+</style></head>
+<body>
+
+<div class="hdr">
+  <div class="view-switch">
+    <a href="index.html">📊 День</a>
+    <a href="month.html" class="on">📅 Місяць</a>
+  </div>
+  <h1>UH Monthly Dashboard</h1>
+  <div class="sub">United Home · 2026-05</div>
+  <div class="stamp">Поточний: 2026-05 · Порівняння з 2026-04 · оновлено 05.05.2026 08:56</div>
+</div>
+
+<div class="ins-wrap"><div class="ins ins-warn"><span class="ins-ico">📉</span><span class="ins-txt">Замовлення впали на -88.3% vs попередній місяць</span></div><div class="ins ins-bad"><span class="ins-ico">🔴</span><span class="ins-txt">Висока частка відмов за місяць: 15.5%</span></div><div class="ins ins-info"><span class="ins-ico">🏆</span><span class="ins-txt">Топ менеджер місяця: Олена Вус — 275 608 ₴ (30 зам.)</span></div><div class="ins ins-info"><span class="ins-ico">🌐</span><span class="ins-txt">Топ канал місяця: matrasroll.com.ua — 770 877 ₴</span></div><div class="ins ins-info"><span class="ins-ico">🛏️</span><span class="ins-txt">Топ товар: Ортопедичний матрац ORANGE Handy (вакуум) 80x200 — 69 741 ₴</span></div></div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kl">Замовлення місяць</div><div class="kv">2 031 766<span class="ku">₴</span></div><div class="ks">vs 17 435 662 ₴ · <span class="dlt down">-88.3%</span></div></div>
+  <div class="kpi"><div class="kl">Замовлень місяць</div><div class="kv">375</div><div class="ks">vs 4025 · <span class="dlt down">-90.7%</span></div></div>
+  <div class="kpi"><div class="kl">Лідів місяць</div><div class="kv">165</div><div class="ks">vs 963 · <span class="dlt down">-82.9%</span></div></div>
+  <div class="kpi"><div class="kl">Сер. чек</div><div class="kv">5 418<span class="ku">₴</span></div><div class="ks">vs 4 332 ₴ · <span class="dlt up">+25.1%</span></div></div>
+  <div class="kpi"><div class="kl">Відмов</div><div class="kv">58</div><div class="ks">15.5% · vs 20.0% · <span class="dlt down">-92.8%</span></div></div>
+  <div class="kpi"><div class="kl">Менеджерів</div><div class="kv">22</div><div class="ks">активних</div></div>
+  <div class="kpi"><div class="kl">Каналів</div><div class="kv">12</div><div class="ks">продажу</div></div>
+  <div class="kpi"><div class="kl">SKU товарів</div><div class="kv">50</div><div class="ks">унікальних</div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab on" onclick="sw('overview', this)">📊 Огляд</button>
+  <button class="tab" onclick="sw('crm', this)">👥 Менеджери</button>
+  <button class="tab" onclick="sw('crmops', this)">🏭 Операції</button>
+  <button class="tab" onclick="sw('channels', this)">🌐 Канали</button>
+  <button class="tab" onclick="sw('products', this)">🛏️ Товари</button>
+</div>
+
+<div class="pnl on" id="p-overview">
+  <div class="cd">
+    <div class="ct"><span class="dot"></span>📈 Динаміка по днях за 2026-05<span class="badge-tot" id="trend30Total"></span></div>
+    <div class="cd-d">Накопичена виручка з 1-го числа місяця.</div>
+    <canvas id="chDaily" style="max-height:340px"></canvas>
+  </div>
+</div>
+
+<div class="pnl" id="p-crm">
+  <div class="cd">
+    <div class="ct"><span class="dot"></span>🏆 Рейтинг менеджерів за місяць<span class="badge-tot">22 активних</span></div>
+    <div class="cd-d">Дельта = зміна виручки vs попередній місяць.</div>
+    <div class="scr">
+      <table>
+        <thead><tr><th>#</th><th>Менеджер</th><th class="r">Зам.</th><th class="r">Замовлення ₴</th><th class="r">Сер.чек</th><th class="r">Поп. міс.</th><th class="r">Δ</th><th class="r">% Відм.</th></tr></thead>
+        <tbody id="mgrBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--c)"></span>🏪 Менеджери на магазині</div><div class="scr" style="max-height:300px"><table><thead><tr><th>Менеджер</th><th class="r">Зам.</th><th class="r">Замовлення ₴</th><th class="r">Сер.чек</th></tr></thead><tbody id="mgrShopBody"></tbody></table></div></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--p)"></span>💬 Чатери</div><div class="scr" style="max-height:300px"><table><thead><tr><th>Чатер</th><th class="r">Зам.</th><th class="r">Замовлення ₴</th></tr></thead><tbody id="chatterBody"></tbody></table></div></div>
+  </div>
+</div>
+
+<div class="pnl" id="p-crmops">
+  <div class="g2">
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--p)"></span>📦 Категорії товарів</div><canvas id="chCategories"></canvas></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--c)"></span>📞 Тип звернення</div><canvas id="chRequestTypes"></canvas></div>
+  </div>
+  <div class="g3">
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--g)"></span>💳 Спосіб оплати</div><div id="paymentMethods"></div></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--o)"></span>🚚 Тип доставки</div><div id="deliveryTypes"></div></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--b)"></span>📮 Перевізник</div><div id="carriers"></div></div>
+  </div>
+  <div class="g2">
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--y)"></span>🏭 Склад</div><div id="warehouses"></div></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--ac2)"></span>📊 Статуси замовлень</div><canvas id="chStatuses" style="max-height:280px"></canvas></div>
+  </div>
+  <div class="g2">
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--r)"></span>🚫 Причини відмов</div><canvas id="chRefuse"></canvas></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--o)"></span>🤔 Заперечення лідів</div><canvas id="chObjections"></canvas></div>
+  </div>
+</div>
+
+<div class="pnl" id="p-channels">
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--g)"></span>🌐 Канали продажу — порівняння з попереднім<span class="badge-tot">12</span></div>
+    <div class="scr">
+      <table>
+        <thead><tr><th>#</th><th>Канал</th><th class="r">Зам.</th><th class="r">Замовлення ₴</th><th class="r">Сер.чек</th><th class="r">Поп. міс.</th><th class="r">Δ</th></tr></thead>
+        <tbody id="sitesBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="cd"><div class="ct"><span class="dot"></span>📊 Графік замовлень</div><canvas id="chSites"></canvas></div>
+</div>
+
+<div class="pnl" id="p-products">
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--lime)"></span>🛏️ ТОП-50 товарів за місяць<span class="badge-tot">50 SKU</span></div>
+    <div class="scr">
+      <table>
+        <thead><tr><th>#</th><th>Товар</th><th class="r">Од.</th><th class="r">Замовл.</th><th class="r">Замовлення ₴</th></tr></thead>
+        <tbody id="prodBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="ftr">UH Analytics · monthly · 05.05.2026 08:56</div>
+
+<script>
+const D = {"daily_dates": ["01", "02", "03", "04"], "daily_revenue": [750509.0, 746991.0, 833406.0, 234138.0], "daily_orders": [144, 145, 148, 41], "daily_leads": [34, 45, 63, 23], "managers": [{"name": "Олена Вус", "orders": 30, "revenue": 275608.0, "avg_check": 9187.0, "refuse_pct": 16.7, "prev_revenue": 349323.0, "delta_cls": "down", "delta_txt": "-21.1%"}, {"name": "Діана Дзюба", "orders": 83, "revenue": 274334.0, "avg_check": 3305.0, "refuse_pct": 12.0, "prev_revenue": 1320666.0, "delta_cls": "down", "delta_txt": "-79.2%"}, {"name": "Юлія Горбань", "orders": 26, "revenue": 200124.0, "avg_check": 7697.0, "refuse_pct": 7.7, "prev_revenue": 1621882.0, "delta_cls": "down", "delta_txt": "-87.7%"}, {"name": "Вікторія Шегедин", "orders": 32, "revenue": 174146.0, "avg_check": 5442.0, "refuse_pct": 3.1, "prev_revenue": 2146533.0, "delta_cls": "down", "delta_txt": "-91.9%"}, {"name": "Надія Карпенко", "orders": 54, "revenue": 166116.0, "avg_check": 3076.0, "refuse_pct": 16.7, "prev_revenue": 1250006.0, "delta_cls": "down", "delta_txt": "-86.7%"}, {"name": "Ростислав Куций", "orders": 17, "revenue": 141182.0, "avg_check": 8305.0, "refuse_pct": 17.6, "prev_revenue": 317746.0, "delta_cls": "down", "delta_txt": "-55.6%"}, {"name": "Ольга Галишин", "orders": 16, "revenue": 128833.0, "avg_check": 8052.0, "refuse_pct": 6.2, "prev_revenue": 477420.15, "delta_cls": "down", "delta_txt": "-73.0%"}, {"name": "ШоуРум ДрімТаун", "orders": 6, "revenue": 125068.0, "avg_check": 20845.0, "refuse_pct": 0.0, "prev_revenue": 610654.0, "delta_cls": "down", "delta_txt": "-79.5%"}, {"name": "Анна Глотова", "orders": 16, "revenue": 120402.0, "avg_check": 7525.0, "refuse_pct": 0.0, "prev_revenue": 1110612.0, "delta_cls": "down", "delta_txt": "-89.2%"}, {"name": "Мария Волохата", "orders": 33, "revenue": 114605.0, "avg_check": 3473.0, "refuse_pct": 9.1, "prev_revenue": 93586.0, "delta_cls": "up", "delta_txt": "+22.5%"}, {"name": "Катерина Мещерiна", "orders": 24, "revenue": 108270.0, "avg_check": 4511.0, "refuse_pct": 20.8, "prev_revenue": 1512464.0, "delta_cls": "down", "delta_txt": "-92.8%"}, {"name": "Шоу-Рум Ретровіль", "orders": 4, "revenue": 105600.0, "avg_check": 26400.0, "refuse_pct": 0.0, "prev_revenue": 371468.0, "delta_cls": "down", "delta_txt": "-71.6%"}, {"name": "Вікторія Кудрицька", "orders": 22, "revenue": 98418.0, "avg_check": 4474.0, "refuse_pct": 22.7, "prev_revenue": 1172093.0, "delta_cls": "down", "delta_txt": "-91.6%"}, {"name": "Анна Романенко", "orders": 28, "revenue": 83249.0, "avg_check": 2973.0, "refuse_pct": 10.7, "prev_revenue": 940178.0, "delta_cls": "down", "delta_txt": "-91.1%"}, {"name": "Ірина Молянко", "orders": 12, "revenue": 78138.0, "avg_check": 6512.0, "refuse_pct": 16.7, "prev_revenue": 567304.0, "delta_cls": "down", "delta_txt": "-86.2%"}, {"name": "Шоу Рум Дарынок", "orders": 5, "revenue": 60975.0, "avg_check": 12195.0, "refuse_pct": 0.0, "prev_revenue": 779211.0, "delta_cls": "down", "delta_txt": "-92.2%"}, {"name": "Руслан Сава", "orders": 9, "revenue": 48019.0, "avg_check": 5335.0, "refuse_pct": 11.1, "prev_revenue": 286904.0, "delta_cls": "down", "delta_txt": "-83.3%"}, {"name": "Марта Онищук", "orders": 5, "revenue": 15939.0, "avg_check": 3188.0, "refuse_pct": 0.0, "prev_revenue": 293333.0, "delta_cls": "down", "delta_txt": "-94.6%"}, {"name": "Валерія Захожа", "orders": 4, "revenue": 14843.0, "avg_check": 3711.0, "refuse_pct": 0.0, "prev_revenue": 190692.0, "delta_cls": "down", "delta_txt": "-92.2%"}, {"name": "Едуард Бутенко", "orders": 3, "revenue": 9552.0, "avg_check": 3184.0, "refuse_pct": 0.0, "prev_revenue": 0, "delta_cls": "neu", "delta_txt": "—"}, {"name": "Александр Шамардин", "orders": 2, "revenue": 5639.0, "avg_check": 2820.0, "refuse_pct": 0.0, "prev_revenue": 277660.0, "delta_cls": "down", "delta_txt": "-98.0%"}, {"name": "Вікторія Кирієнко", "orders": 1, "revenue": 2950.0, "avg_check": 2950.0, "refuse_pct": 0.0, "prev_revenue": 109321.0, "delta_cls": "down", "delta_txt": "-97.3%"}], "managers_shop": [{"name": "Чернявська Таміла", "orders": 3, "revenue": 86826.0, "avg_check": 28942.0}, {"name": "Кутафіна Алла", "orders": 3, "revenue": 83865.0, "avg_check": 27955.0}, {"name": "Ярмоленко Наталія", "orders": 2, "revenue": 35685.0, "avg_check": 17842.0}, {"name": "Мачула Оксана", "orders": 3, "revenue": 35582.0, "avg_check": 11861.0}, {"name": "Кучинська Еля", "orders": 2, "revenue": 25393.0, "avg_check": 12696.0}], "chatters": [{"name": "Марта Онищук", "orders": 2, "revenue": 10110.0}, {"name": "Кірієнко Вікторія", "orders": 1, "revenue": 2950.0}, {"name": "Валерія Захожа", "orders": 0, "revenue": 0.0}], "sites": [{"name": "matrasroll.com.ua", "orders": 238, "revenue": 770877.0, "avg_check": 3239.0, "prev_revenue": 8780199.0, "delta_cls": "down", "delta_txt": "-91.2%"}, {"name": "sofino", "orders": 71, "revenue": 599316.0, "avg_check": 8441.0, "prev_revenue": 1232229.15, "delta_cls": "down", "delta_txt": "-51.4%"}, {"name": "amebli.com.ua", "orders": 78, "revenue": 493070.0, "avg_check": 6321.0, "prev_revenue": 5853801.0, "delta_cls": "down", "delta_txt": "-91.6%"}, {"name": "Розетка СХ", "orders": 42, "revenue": 192506.0, "avg_check": 4583.0, "prev_revenue": 209033.0, "delta_cls": "down", "delta_txt": "-7.9%"}, {"name": "Шоу-Рум Дрім Таун", "orders": 6, "revenue": 125068.0, "avg_check": 20845.0, "prev_revenue": 620816.0, "delta_cls": "down", "delta_txt": "-79.9%"}, {"name": "Шоу-Рум Ретровіль", "orders": 4, "revenue": 105600.0, "avg_check": 26400.0, "prev_revenue": 371468.0, "delta_cls": "down", "delta_txt": "-71.6%"}, {"name": "DR-TV", "orders": 1, "revenue": 72675.0, "avg_check": 72675.0, "prev_revenue": 120316.0, "delta_cls": "down", "delta_txt": "-39.6%"}, {"name": "Шоу-Рум Якова Гніздовського", "orders": 5, "revenue": 60975.0, "avg_check": 12195.0, "prev_revenue": 809466.0, "delta_cls": "down", "delta_txt": "-92.5%"}, {"name": "hubstore.com.ua", "orders": 14, "revenue": 46938.0, "avg_check": 3353.0, "prev_revenue": 121745.0, "delta_cls": "down", "delta_txt": "-61.4%"}, {"name": "Rozetka UnitedHomes", "orders": 7, "revenue": 45299.0, "avg_check": 6471.0, "prev_revenue": 18982.0, "delta_cls": "up", "delta_txt": "+138.6%"}, {"name": "Епіцентр СХ", "orders": 9, "revenue": 44356.0, "avg_check": 4928.0, "prev_revenue": 471040.0, "delta_cls": "down", "delta_txt": "-90.6%"}, {"name": "АЛЛО UnitedHome", "orders": 2, "revenue": 4340.0, "avg_check": 2170.0, "prev_revenue": 18652.0, "delta_cls": "down", "delta_txt": "-76.7%"}], "products": [{"name": "Ортопедичний матрац ORANGE Handy (вакуум) 80x200", "count": 2, "revenue": 69741.0, "qty": 21}, {"name": "Ортопедичний матрац Chocolate (вакуум) 160x200", "count": 6, "revenue": 49515.0, "qty": 6}, {"name": "Топпер BIONICA Linen Ultra 160x200", "count": 13, "revenue": 41929.0, "qty": 13}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 160x200", "count": 6, "revenue": 40878.0, "qty": 6}, {"name": "Диван кутовий RidneTUT Bradley XXL, 1 кат., кут Г, Делюкс Текстиль Boss 03", "count": 1, "revenue": 39933.0, "qty": 1}, {"name": "Диван кутовий \"РіднеТут\" Bradley (правий) 2500х1500 мм еврокнига Emilia 88 Синій ordf", "count": 1, "revenue": 30591.0, "qty": 1}, {"name": "Ортопедичний матрац Smart Mattresses Dual 160х200", "count": 4, "revenue": 29676.0, "qty": 4}, {"name": "Ортопедичний матрац Smart Mattresses Dual Cocos 160х200", "count": 4, "revenue": 29352.0, "qty": 4}, {"name": "Диван прямий RidneTUT Jamison, 1 кат., тк. Дивотекс Делано 722", "count": 1, "revenue": 28400.0, "qty": 1}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 80x190", "count": 7, "revenue": 28378.0, "qty": 8}, {"name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 160x200", "count": 4, "revenue": 28337.0, "qty": 4}, {"name": "Диван кутовий RidneTUT Norman Класік, 4 кат., кут 7, Arteks Glorry Shell", "count": 1, "revenue": 28300.0, "qty": 1}, {"name": "Диван RidneTUT Eva 1, 3 кат. Exim Textil Х'юстон 44", "count": 1, "revenue": 24000.0, "qty": 1}, {"name": "Ліжко з п/м Ridne TUT Памела (євро) 160x200, тк.1,Divotex Delano 702", "count": 1, "revenue": 23830.0, "qty": 1}, {"name": "Ліжко з п/м Ridne TUT Памела (євро) 160x200, тк.1,Ексім текстіль Аляска 28", "count": 1, "revenue": 23830.0, "qty": 1}, {"name": "2779677", "count": 1, "revenue": 23680.0, "qty": 1}, {"name": "Диван кутовий Amely Токіо, тип тканини 5", "count": 1, "revenue": 22400.0, "qty": 1}, {"name": "Шафа-купе трьодверна ДСП/Дзеркало/ДСП Стандарт 1 - Габарити: 230х240х60 (ШхВхГ), Шухлядки: Так", "count": 1, "revenue": 22356.0, "qty": 1}, {"name": "Шафа-купе Віват В186 Дуб сонома 180х250х60,проф.стандарт чорний мат, фас: 2 двері СТ9.4 Дзеркало+ДСП", "count": 1, "revenue": 21735.0, "qty": 1}, {"name": "Кровать Морфей 180х200", "count": 1, "revenue": 21266.0, "qty": 1}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 120x190", "count": 3, "revenue": 20570.0, "qty": 4}, {"name": "Шафа-купе розсувна двохдверна Софіно (чорний) з фасадами ДСП + Дзеркало • 1700x450x2200 см", "count": 1, "revenue": 19936.0, "qty": 1}, {"name": "Топпер BIONICA Linen Ultra 140x200", "count": 6, "revenue": 18210.0, "qty": 6}, {"name": "Ортопедичний матрац Caramel (вакуум) 160x200", "count": 2, "revenue": 17718.0, "qty": 2}, {"name": "Топпер BIONICA Linen Ultra 160x190", "count": 5, "revenue": 17488.0, "qty": 5}, {"name": "Ортопедичний матрац Smart Mattresses Dual 120х200 см", "count": 3, "revenue": 17223.0, "qty": 3}, {"name": "Ліжко з п/м Ridne TUT Джонсон (економ) 160x200, тк.4, Toptextil Magic Velvet  2218", "count": 1, "revenue": 16577.0, "qty": 1}, {"name": "Топпер PURPLE Evolution Luxe Cocos 140x190", "count": 3, "revenue": 16464.0, "qty": 3}, {"name": "Ортопедичний матрац M.Y.M Comfort Deluxe 2025 - Roll Pack 160x200", "count": 1, "revenue": 16232.0, "qty": 1}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 90x190", "count": 4, "revenue": 16028.0, "qty": 4}, {"name": "Диван модуль 2-місний(1,6)Веста Вікторія не розкладний з п/л , 2 кат.тк. Exim Textil Флай Nova 2200", "count": 1, "revenue": 15340.0, "qty": 1}, {"name": "Матрац Orange Handy Linen+Комплект All Inclusive 2 подушки+наматрацник (вакуум) 160x200", "count": 2, "revenue": 15330.0, "qty": 2}, {"name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 90x190", "count": 3, "revenue": 15183.0, "qty": 3}, {"name": "Топпер BIONICA Linen Ultra 140x190", "count": 5, "revenue": 15140.0, "qty": 5}, {"name": "291818", "count": 1, "revenue": 14770.0, "qty": 1}, {"name": "Топпер BIONICA Linen Ultra 110x190", "count": 6, "revenue": 14669.0, "qty": 6}, {"name": "Топпер BIONICA Linen Ultra 90x190", "count": 7, "revenue": 14355.0, "qty": 7}, {"name": "Ортопедичний матрац Sleep & GO Active 160x200 см", "count": 2, "revenue": 14308.0, "qty": 2}, {"name": "Ортопедичний матрац Chocolate (вакуум) 140x200", "count": 2, "revenue": 14214.0, "qty": 2}, {"name": "Топпер PURPLE Base Lite Cocos 140x190", "count": 4, "revenue": 14124.0, "qty": 4}, {"name": "Ортопедичний матрац ORANGE Sun Style 80x190", "count": 1, "revenue": 14096.0, "qty": 2}, {"name": "Диван прямий RidneTUT Купер, 1 кат., Exim Textil Аляска 93", "count": 1, "revenue": 14084.0, "qty": 1}, {"name": "Топпер BIONICA Linen Ultra 130x190", "count": 5, "revenue": 14046.0, "qty": 5}, {"name": "Топпер PURPLE Base Lite NEW 160x200", "count": 5, "revenue": 13520.0, "qty": 5}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 160x190", "count": 2, "revenue": 13472.0, "qty": 2}, {"name": "2753454", "count": 1, "revenue": 13198.0, "qty": 2}, {"name": "Топпер BIONICA Linen Ultra 150x200", "count": 4, "revenue": 13184.0, "qty": 4}, {"name": "Топпер BIONICA Linen Ultra 150x190", "count": 4, "revenue": 13184.0, "qty": 4}, {"name": "Топпер BIONICA Linen Ultra 120x190", "count": 5, "revenue": 13180.0, "qty": 5}, {"name": "Ортопедичний матрац Smart Mattresses Dual 90х190", "count": 2, "revenue": 12903.0, "qty": 3}], "categories": {"Топер": 261, "Ортопедичний матрац": 127, "Безпружинний матрац": 21, "Дивани": 8, "Шафи": 5, "Інше": 4, "Ліжка": 4, "Корпусні меблі": 4, "Аксесуари для сну": 2, "Топер,\nОртопедичний матрац": 2, "Ортопедичний матрац,\nАксесуари для сну": 2, "Топер,\nАксесуари для сну": 1, "Шафи,\nДивани": 1, "М'які меблі": 1, "Ортопедичний матрац,\nДивани,\nЛіжка": 1}, "request_types": {"Корзина": 261, "Вхідний дзвінок": 106, "GetCall": 67, "Чат": 12, "Шоу-рум": 6, "Instagram": 2, "Вхідний дзвінок,\nGetCall": 1, "Вхідний дзвінок,\nШоу-рум": 1, "GetCall,\nКорзина": 1}, "payment_methods": {"Оплата при отриманні": 326, "Оплата частинами": 19, "Р/Р": 18, "Р/Р + наложка": 17, "LiqPay": 16, "ОЧ + Наложка": 10, "LiqPay+наложка": 8, "part_pay": 8, "Готівка (для самовивозу)": 6, "google_pay": 6}, "delivery_types": {"На відділення": 209, "Адресна": 126, "Самовивіз": 14}, "carriers": {"Нова Пошта": 268, "Власна по Києву": 67, "Самовивіз": 13, "Догруз": 1}, "warehouses": {"Виробництво": 198, "Склад Двушка": 114, "Від постачальника": 32, "Склад Шоу-Рум": 12}, "statuses": {"Контроль оператора": 169, "Спам на согласование": 93, "Створена ТТН": 63, "В черзі на відправлення": 54, "Новий": 51, "Недодзвон": 40, "В обробці": 40, "Лід (не купив)": 38, "Відмова (не відправлено)": 19, "Питання по замовленню": 16, "Отримано": 14, "Спам Дубль": 11, "Повторне звернення": 11, "В виробництві": 9, "Відвідає шоу-рум": 7, "Їде до клієнта": 3, "Прибув у відділення": 3, "Помилка менеджера": 3, "Рекламный спам": 2, "Контроль оплати": 2, "Відмова (відправлено)": 1}, "refuse_reasons": {"Змінились обставини": 3, "Змінились обставини,\nІнше (вказати в коментарі)": 2, "Купив в іншому місці": 1, "Імпульсивне замовлення": 1, "Купив в іншому місці,\nНе бере слухавку": 1, "Інше (вказати в коментарі)": 1}, "lead_objections": {"Інше (вказати в коментарі)": 10, "Шукав магазин в місті": 3, "Купив в іншому місці": 2, "Недостача асортименту": 2, "Дорого": 2, "Неактуально": 2, "Дорога доставка": 1, "Дорого,\nТовар знятий з виробництва": 1, "Регіон доставки": 1, "Хоче лише лід-магніт": 1}, "prev_revenue": 17435662.15, "prev_orders": 4025};
+function sw(name, btn){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));document.querySelectorAll('.pnl').forEach(p=>p.classList.remove('on'));btn.classList.add('on');document.getElementById('p-'+name).classList.add('on');}
+Chart.defaults.color='#7b84a3';Chart.defaults.font.family="'DM Sans', sans-serif";Chart.defaults.font.size=10;
+const COMMON={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{padding:10,usePointStyle:true,pointStyleWidth:8,font:{size:10}}},tooltip:{backgroundColor:'#1c2137',borderColor:'#3a4170',borderWidth:1,padding:10}},scales:{x:{grid:{color:'rgba(255,255,255,0.03)'},ticks:{maxRotation:45,font:{size:9}}},y:{grid:{color:'rgba(255,255,255,0.03)'},ticks:{font:{size:9},callback:v=>v>=1000?(v/1000).toFixed(0)+'K':v}}}};
+const fmt=n=>(n||0).toLocaleString('uk').replace(/,/g,' ');
+const fmtK=n=>{n=Number(n)||0;if(n>=1e6)return(n/1e6).toFixed(2)+'M';if(n>=1e3)return(n/1e3).toFixed(0)+'K';return n.toFixed(0);};
+
+// Daily trend by month
+{const totalRev=D.daily_revenue.reduce((a,b)=>a+b,0);document.getElementById('trend30Total').textContent='∑ '+fmtK(totalRev)+' ₴';
+new Chart(document.getElementById('chDaily'),{type:'bar',data:{labels:D.daily_dates,datasets:[
+{type:'bar',label:'Замовлення ₴',data:D.daily_revenue,backgroundColor:'rgba(108,92,231,0.65)',borderColor:'#6c5ce7',borderWidth:1,borderRadius:4,yAxisID:'y1',order:2},
+{type:'line',label:'Замовлень',data:D.daily_orders,borderColor:'#00d68f',backgroundColor:'rgba(0,214,143,.15)',tension:.4,borderWidth:2.5,pointRadius:3,yAxisID:'y2',order:1},
+{type:'line',label:'Лідів',data:D.daily_leads,borderColor:'#ffa94d',tension:.4,borderWidth:2,pointRadius:2,borderDash:[5,3],yAxisID:'y2',order:0,fill:false}]},
+options:{...COMMON,scales:{x:{...COMMON.scales.x},y1:{position:'left',grid:COMMON.scales.y.grid,ticks:{...COMMON.scales.y.ticks,color:'#a29bfe'}},y2:{position:'right',grid:{display:false},ticks:{font:{size:9},color:'#00d68f'}}}}});}
+
+// Managers
+const mgrBody=document.getElementById('mgrBody');
+if(D.managers&&D.managers.length){mgrBody.innerHTML=D.managers.map((m,i)=>{const refClass=m.refuse_pct>=12?'br':m.refuse_pct>=5?'bo':'bg';const dCls=m.delta_cls||'neu';return `<tr><td class="num" style="color:var(--td)">${i+1}</td><td>${m.name}</td><td class="r num">${m.orders}</td><td class="r num" style="color:var(--g)">${fmtK(m.revenue)}</td><td class="r num">${fmt(m.avg_check||0)}</td><td class="r num" style="color:var(--td)">${fmtK(m.prev_revenue||0)}</td><td class="r"><span class="dlt ${dCls}">${m.delta_txt}</span></td><td class="r"><span class="badge ${refClass}">${(m.refuse_pct||0).toFixed(1)}%</span></td></tr>`;}).join('');}else{mgrBody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}
+
+const mgrShopBody=document.getElementById('mgrShopBody');
+if(D.managers_shop&&D.managers_shop.length){mgrShopBody.innerHTML=D.managers_shop.map(m=>`<tr><td>${m.name}</td><td class="r num">${m.orders}</td><td class="r num" style="color:var(--g)">${fmtK(m.revenue)}</td><td class="r num">${fmt(m.avg_check||0)}</td></tr>`).join('');}else{mgrShopBody.innerHTML='<tr><td colspan="4" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}
+
+const chatterBody=document.getElementById('chatterBody');
+if(D.chatters&&D.chatters.length){chatterBody.innerHTML=D.chatters.map(c=>`<tr><td>${c.name}</td><td class="r num">${c.orders}</td><td class="r num" style="color:var(--g)">${fmtK(c.revenue)}</td></tr>`).join('');}else{chatterBody.innerHTML='<tr><td colspan="3" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}
+
+// Pie charts
+function pieChart(elId,dataObj){const el=document.getElementById(elId);if(!el)return;const palette=['#6c5ce7','#a29bfe','#00d68f','#ffa94d','#339af0','#ff6b6b','#da77f2','#66d9e8','#94d82d','#ffd43b','#fd7e14','#94d2bd'];const entries=Object.entries(dataObj||{}).sort((a,b)=>b[1]-a[1]).slice(0,12);if(!entries.length){el.parentElement.insertAdjacentHTML('beforeend','<div style="text-align:center;color:var(--td);padding:18px">Немає даних</div>');el.style.display='none';return;}new Chart(el,{type:'doughnut',data:{labels:entries.map(e=>e[0]),datasets:[{data:entries.map(e=>e[1]),backgroundColor:palette,borderWidth:2,borderColor:'#151929'}]},options:{...COMMON,scales:{},cutout:'55%',plugins:{...COMMON.plugins,legend:{position:'right',labels:{font:{size:9},padding:6,usePointStyle:true,boxWidth:8}}}}});}
+pieChart('chCategories',D.categories);pieChart('chRequestTypes',D.request_types);pieChart('chStatuses',D.statuses);
+
+function listChart(elId,dataObj,color){const el=document.getElementById(elId);if(!el)return;const entries=Object.entries(dataObj||{}).sort((a,b)=>b[1]-a[1]);if(!entries.length){el.innerHTML='<div style="text-align:center;color:var(--td);padding:18px">Немає даних</div>';return;}const max=entries[0][1]||1;el.innerHTML=entries.map(([n,v])=>{const p=Math.max(2,Math.round(v/max*100));return `<div class="bar-row"><div class="bar-name" title="${n}">${n}</div><div class="bar-wrap"><div class="bar-fill" style="width:${p}%;background:${color}"></div></div><div class="bar-val">${v}</div></div>`;}).join('');}
+listChart('paymentMethods',D.payment_methods,'#00d68f');listChart('deliveryTypes',D.delivery_types,'#ffa94d');
+listChart('carriers',D.carriers,'#339af0');listChart('warehouses',D.warehouses,'#ffd43b');
+
+function barChartH(elId,dataObj,color){const el=document.getElementById(elId);if(!el)return;const entries=Object.entries(dataObj||{}).sort((a,b)=>b[1]-a[1]).slice(0,10);if(!entries.length){el.parentElement.insertAdjacentHTML('beforeend','<div style="text-align:center;color:var(--td);padding:18px">Немає даних</div>');el.style.display='none';return;}new Chart(el,{type:'bar',data:{labels:entries.map(e=>e[0].length>30?e[0].substr(0,30)+'…':e[0]),datasets:[{label:'К-сть',data:entries.map(e=>e[1]),backgroundColor:color+'aa',borderColor:color,borderWidth:1,borderRadius:4}]},options:{...COMMON,indexAxis:'y',plugins:{...COMMON.plugins,legend:{display:false}}}});}
+barChartH('chRefuse',D.refuse_reasons,'#ff6b6b');barChartH('chObjections',D.lead_objections,'#ffa94d');
+
+// Sites
+const sitesBody=document.getElementById('sitesBody');
+if(D.sites&&D.sites.length){sitesBody.innerHTML=D.sites.map((s,i)=>{const dCls=s.delta_cls||'neu';return `<tr><td class="num" style="color:var(--td)">${i+1}</td><td>${s.name}</td><td class="r num">${s.orders}</td><td class="r num" style="color:var(--g)">${fmtK(s.revenue)}</td><td class="r num">${fmt(s.avg_check||0)}</td><td class="r num" style="color:var(--td)">${fmtK(s.prev_revenue||0)}</td><td class="r"><span class="dlt ${dCls}">${s.delta_txt}</span></td></tr>`;}).join('');new Chart(document.getElementById('chSites'),{type:'bar',data:{labels:D.sites.map(s=>s.name),datasets:[{label:'Замовлення',data:D.sites.map(s=>s.revenue),backgroundColor:'rgba(0,214,143,0.7)',borderColor:'#00d68f',borderRadius:4}]},options:{...COMMON,plugins:{...COMMON.plugins,legend:{display:false}},indexAxis:'y'}});}else{sitesBody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}
+
+// Products
+const prodBody=document.getElementById('prodBody');
+if(D.products&&D.products.length){prodBody.innerHTML=D.products.map((p,i)=>`<tr><td class="num" style="color:var(--td)">${i+1}</td><td title="${p.name}">${p.name.length>70?p.name.substr(0,70)+'…':p.name}</td><td class="r num">${p.qty||p.count}</td><td class="r num" style="color:var(--td)">${p.count}</td><td class="r num" style="color:var(--g)">${fmtK(p.revenue)}</td></tr>`).join('');}else{prodBody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}
+</script>
+</body></html>
