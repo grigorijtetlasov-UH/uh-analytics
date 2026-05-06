@@ -1743,7 +1743,7 @@ def fetch_google_ads(date_str: str) -> dict:
     return result
 
 
-
+def fetch_ga4(date_str: str) -> dict:
     """
     Тягне з GA4 за конкретну дату:
       - Сесії, користувачі, нові користувачі
