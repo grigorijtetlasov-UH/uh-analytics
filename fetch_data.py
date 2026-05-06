@@ -470,6 +470,26 @@ META_API_VERSION = "v19.0"
 GA4_PROPERTY_ID  = os.getenv("GA4_PROPERTY_ID", "349048143")
 GA4_CREDENTIALS  = os.getenv("GA4_CREDENTIALS", "uh-sh-analitics-c316f4cad6c0.json")
 
+# ─── Google Ads API ───────────────────────────────────────────
+# Налаштування (env або значення за замовчуванням):
+#   GADS_DEVELOPER_TOKEN  — Developer Token з ads.google.com → Tools → API Center
+#   GADS_CLIENT_ID        — OAuth Client ID з Google Cloud Console
+#   GADS_CLIENT_SECRET    — OAuth Client Secret
+#   GADS_REFRESH_TOKEN    — Refresh Token (отримується одноразово)
+#   GADS_LOGIN_CUSTOMER_ID — MCC (manager) ID, якщо акаунти під MCC, інакше пусто
+GADS_DEVELOPER_TOKEN  = os.getenv("GADS_DEVELOPER_TOKEN", "")
+GADS_CLIENT_ID        = os.getenv("GADS_CLIENT_ID", "")
+GADS_CLIENT_SECRET    = os.getenv("GADS_CLIENT_SECRET", "")
+GADS_REFRESH_TOKEN    = os.getenv("GADS_REFRESH_TOKEN", "")
+GADS_LOGIN_CUSTOMER_ID = os.getenv("GADS_LOGIN_CUSTOMER_ID", "")
+
+# Список Google Ads клієнтських акаунтів (Customer ID з UI Google Ads — 10 цифр)
+# Знайти: правий верхній кут Google Ads → під назвою акаунта (формат XXX-XXX-XXXX)
+GADS_ACCOUNTS = [
+    {"id": os.getenv("GADS_AMEBLI_ID",     "5509417188"), "name": "amebli.com.ua"},
+    {"id": os.getenv("GADS_MATRASROLL_ID", "3965110945"), "name": "matrasroll.com.ua"},
+]
+
 # Папка для збереження історії
 HISTORY_DIR = Path("history")
 HISTORY_DIR.mkdir(exist_ok=True)
@@ -1558,7 +1578,172 @@ def fetch_meta(date_str: str) -> dict:
 
 # ──────────────────────── GOOGLE ANALYTICS 4 ─────────────────
 
-def fetch_ga4(date_str: str) -> dict:
+def fetch_google_ads(date_str: str) -> dict:
+    """
+    Тягне реальні рекламні витрати з Google Ads API напряму (точні дані як в UI).
+    Якщо GADS_* змінні не налаштовані — повертає пусті значення без помилки.
+
+    Повертає:
+    {
+      "total_spend": float,
+      "total_clicks": int,
+      "total_impressions": int,
+      "total_conversions": float,
+      "by_account": [
+        {"id": ..., "name": ..., "spend": ..., "clicks": ..., "impressions": ..., "conversions": ...},
+        ...
+      ],
+      "by_campaign": [
+        {"account": ..., "campaign": ..., "spend": ..., "clicks": ..., "impressions": ...},
+        ...
+      ],
+      "error": str or None,
+    }
+    """
+    result = {
+        "total_spend":       0.0,
+        "total_clicks":      0,
+        "total_impressions": 0,
+        "total_conversions": 0.0,
+        "by_account":        [],
+        "by_campaign":       [],
+        "error":             None,
+    }
+
+    # Якщо токени не налаштовані — тихо вийти
+    if not all([GADS_DEVELOPER_TOKEN, GADS_CLIENT_ID, GADS_CLIENT_SECRET, GADS_REFRESH_TOKEN]):
+        result["error"] = "GADS токени не налаштовані (потрібно: GADS_DEVELOPER_TOKEN, GADS_CLIENT_ID, GADS_CLIENT_SECRET, GADS_REFRESH_TOKEN)"
+        return result
+
+    try:
+        # Крок 1: оновити access_token через refresh_token
+        token_resp = requests.post(
+            "https://oauth2.googleapis.com/token",
+            data={
+                "client_id":     GADS_CLIENT_ID,
+                "client_secret": GADS_CLIENT_SECRET,
+                "refresh_token": GADS_REFRESH_TOKEN,
+                "grant_type":    "refresh_token",
+            },
+            timeout=30,
+        )
+        if token_resp.status_code != 200:
+            result["error"] = f"OAuth помилка: {token_resp.status_code} — {token_resp.text[:200]}"
+            return result
+        access_token = token_resp.json().get("access_token")
+        if not access_token:
+            result["error"] = "Не вдалось отримати access_token"
+            return result
+
+        # Крок 2: для кожного customer ID — запит на витрати
+        # API: POST https://googleads.googleapis.com/v17/customers/{cid}/googleAds:search
+        api_version = "v17"
+        for acc in GADS_ACCOUNTS:
+            cid = acc["id"].replace("-", "").strip()
+            if not cid:
+                continue
+            acc_result = {
+                "id": cid, "name": acc["name"],
+                "spend": 0.0, "clicks": 0, "impressions": 0, "conversions": 0.0,
+                "error": None,
+            }
+
+            # Загальні метрики кабінету
+            headers = {
+                "Authorization":     f"Bearer {access_token}",
+                "developer-token":   GADS_DEVELOPER_TOKEN,
+                "Content-Type":      "application/json",
+            }
+            if GADS_LOGIN_CUSTOMER_ID:
+                headers["login-customer-id"] = GADS_LOGIN_CUSTOMER_ID.replace("-", "")
+
+            # GAQL запит: метрики за день
+            query_total = f"""
+                SELECT
+                  metrics.cost_micros,
+                  metrics.clicks,
+                  metrics.impressions,
+                  metrics.conversions
+                FROM customer
+                WHERE segments.date = '{date_str}'
+            """
+            try:
+                r = requests.post(
+                    f"https://googleads.googleapis.com/{api_version}/customers/{cid}/googleAds:search",
+                    headers=headers,
+                    json={"query": query_total},
+                    timeout=30,
+                )
+                if r.status_code == 200:
+                    rows = r.json().get("results", [])
+                    for row in rows:
+                        m = row.get("metrics", {})
+                        acc_result["spend"]       += float(m.get("costMicros", 0)) / 1_000_000
+                        acc_result["clicks"]      += int(m.get("clicks", 0))
+                        acc_result["impressions"] += int(m.get("impressions", 0))
+                        acc_result["conversions"] += float(m.get("conversions", 0))
+                else:
+                    acc_result["error"] = f"HTTP {r.status_code}: {r.text[:200]}"
+            except Exception as ex:
+                acc_result["error"] = str(ex)
+
+            # Топ кампанії
+            query_camp = f"""
+                SELECT
+                  campaign.name,
+                  metrics.cost_micros,
+                  metrics.clicks,
+                  metrics.impressions
+                FROM campaign
+                WHERE segments.date = '{date_str}'
+                  AND metrics.cost_micros > 0
+                ORDER BY metrics.cost_micros DESC
+                LIMIT 20
+            """
+            try:
+                r2 = requests.post(
+                    f"https://googleads.googleapis.com/{api_version}/customers/{cid}/googleAds:search",
+                    headers=headers,
+                    json={"query": query_camp},
+                    timeout=30,
+                )
+                if r2.status_code == 200:
+                    rows2 = r2.json().get("results", [])
+                    for row in rows2:
+                        camp = row.get("campaign", {})
+                        m    = row.get("metrics", {})
+                        result["by_campaign"].append({
+                            "account":     acc["name"],
+                            "campaign":    camp.get("name", ""),
+                            "spend":       round(float(m.get("costMicros", 0)) / 1_000_000, 2),
+                            "clicks":      int(m.get("clicks", 0)),
+                            "impressions": int(m.get("impressions", 0)),
+                        })
+            except Exception:
+                pass  # не критично
+
+            acc_result["spend"] = round(acc_result["spend"], 2)
+            acc_result["conversions"] = round(acc_result["conversions"], 2)
+            result["by_account"].append(acc_result)
+            result["total_spend"]       += acc_result["spend"]
+            result["total_clicks"]      += acc_result["clicks"]
+            result["total_impressions"] += acc_result["impressions"]
+            result["total_conversions"] += acc_result["conversions"]
+
+        result["total_spend"] = round(result["total_spend"], 2)
+        result["total_conversions"] = round(result["total_conversions"], 2)
+        # Сортуємо кампанії по витратам
+        result["by_campaign"].sort(key=lambda x: x["spend"], reverse=True)
+
+    except Exception as ex:
+        result["error"] = str(ex)
+        import traceback
+        traceback.print_exc()
+
+    return result
+
+
+
     """
     Тягне з GA4 за конкретну дату:
       - Сесії, користувачі, нові користувачі
@@ -1794,6 +1979,21 @@ def main(target_date=None):
     print(f"   ✅ Результати: {data['meta']['total']['results']}")
     print(f"   ✅ CPC:        {data['meta']['total']['cpc']} UAH")
     print(f"   ✅ Кампаній:   {len(data['meta']['by_campaign'])}")
+
+    # ── Google Ads (точні витрати з API) ─────────────────────────
+    print("\n🅖 Завантаження Google Ads...")
+    data["google_ads"] = fetch_google_ads(day_iso)
+    if data["google_ads"]["error"]:
+        print(f"   ⚠️  Google Ads: {data['google_ads']['error']}")
+    else:
+        print(f"   ✅ Витрати:     {data['google_ads']['total_spend']} UAH")
+        print(f"   ✅ Кліки:       {data['google_ads']['total_clicks']}")
+        print(f"   ✅ Покази:      {data['google_ads']['total_impressions']}")
+        print(f"   ✅ Конверсії:   {data['google_ads']['total_conversions']}")
+        print(f"   ✅ Кампаній:    {len(data['google_ads']['by_campaign'])}")
+        for acc in data["google_ads"]["by_account"]:
+            err_str = f" ❌ {acc['error']}" if acc.get('error') else ""
+            print(f"      {acc['name']}: {acc['spend']} UAH ({acc['clicks']} клк){err_str}")
 
     # ── Google Analytics 4 ───────────────────────────────────────
     print("\n📈 Завантаження Google Analytics 4...")

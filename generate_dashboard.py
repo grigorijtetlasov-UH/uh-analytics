@@ -344,10 +344,18 @@ def build_daily(data, history):
     site_conv = round(crm_orders_d / max(ga4_sessions, 1) * 100, 2) if ga4_sessions > 0 else 0
 
     # ── ДРР (Доля Рекламних Витрат) ──
-    # Чисельник: всі рекламні витрати (Meta з усіх кабінетів + Google Ads з GA4)
-    ga4_ads_cost = float(ga4.get("ads_cost", 0) or 0)
-    # Сумуємо: Meta завжди + Google Ads якщо GA4 повертає
-    total_ad_spend = meta_spend + ga4_ads_cost
+    # Чисельник: Meta Ads + Google Ads
+    # Пріоритет джерела Google: точний Google Ads API → fallback на GA4 ads_cost
+    gads_block = data.get("google_ads", {}) or {}
+    gads_spend = float(gads_block.get("total_spend", 0) or 0)
+    if gads_spend > 0:
+        google_spend = gads_spend
+        google_source = "Google Ads API"
+    else:
+        google_spend = float(ga4.get("ads_cost", 0) or 0)
+        google_source = "GA4 (приблизно)"
+
+    total_ad_spend = meta_spend + google_spend
 
     # Знаменник: 1С виручка БЕЗ ШОУРУМІВ (бо реклама Meta/Google не веде в офлайн)
     def _revenue_no_showroom(by_podr_dict):
@@ -533,7 +541,7 @@ def build_daily(data, history):
         drr_orders_cls=drr_orders_cls,
         drr_sales_cls=drr_sales_cls,
         total_ad_spend=money(total_ad_spend),
-        ga4_ads_cost_str=money(ga4_ads_cost),
+        ga4_ads_cost_str=money(google_spend),
         # GA4 / Meta
         ga4_sessions=money(ga4_sessions),
         ga4_bounce_str=pct(ga4_bounce),
@@ -675,7 +683,8 @@ def build_monthly(data, history):
         return podr_name and "шоу" in str(podr_name).lower()
 
     def _agg_month_ad_spend(month_str, day_limit=None):
-        """Сумує Meta + Google Ads за місяць (опційно обмежено першими N днями)."""
+        """Сумує Meta + Google Ads за місяць (опційно обмежено першими N днями).
+        Пріоритет джерела Google: точний Google Ads API → fallback GA4 ads_cost."""
         spend = 0.0
         for h in history:
             d_str = h.get("date", "")
@@ -688,9 +697,12 @@ def build_monthly(data, history):
                     continue
                 if d_num > day_limit:
                     continue
-            meta_d   = float(h.get("meta", {}).get("total", {}).get("spend", 0) or 0)
-            ga4_cost = float(h.get("ga4", {}).get("ads_cost", 0) or 0)
-            spend += meta_d + ga4_cost   # ОБИДВА
+            meta_d = float(h.get("meta", {}).get("total", {}).get("spend", 0) or 0)
+            # Google: спочатку API, якщо нема — GA4
+            gads_d = float(h.get("google_ads", {}).get("total_spend", 0) or 0)
+            if gads_d == 0:
+                gads_d = float(h.get("ga4", {}).get("ads_cost", 0) or 0)
+            spend += meta_d + gads_d
         return spend
 
     def _agg_month_revenue_no_sh(month_str, key="SALES", day_limit=None):

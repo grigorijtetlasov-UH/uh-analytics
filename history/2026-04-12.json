@@ -1,0 +1,182 @@
+{
+  "date": "2026-04-12",
+  "date_disp": "12.04.2026",
+  "month": "01.04 – 12.04.2026",
+  "generated": "2026-04-13T13:45:11.284644",
+  "uh": {
+    "label": "UH",
+    "ORDERS": {
+      "day": {
+        "total": 266292.0,
+        "count": 121,
+        "by_podr": {
+          "Matrasroll": 146800.0,
+          "A-mebli": 64456.0,
+          "Шоу-Рум Дрим": 36663.0,
+          "Шоу-Рум Ретровіль": 14176.0,
+          "DR-TV": 4197.0
+        }
+      },
+      "month": {
+        "total": 5647157.85,
+        "count": 2425
+      }
+    },
+    "ORDERSWD": {
+      "day": {
+        "total": 247582.0,
+        "count": 80,
+        "by_podr": {
+          "Matrasroll": 132590.0,
+          "A-mebli": 59956.0,
+          "Шоу-Рум Дрим": 36663.0,
+          "Шоу-Рум Ретровіль": 14176.0,
+          "DR-TV": 4197.0
+        }
+      },
+      "month": {
+        "total": 5289280.85,
+        "count": 1659
+      }
+    },
+    "SALES": {
+      "day": {
+        "total": 1479.0,
+        "count": 1,
+        "by_podr": {
+          "Шоу-Рум Ретровіль": 1479.0
+        }
+      },
+      "month": {
+        "total": 6266681.85,
+        "count": 2025
+      }
+    }
+  },
+  "sh": {
+    "label": "SH",
+    "ORDERS": {
+      "day": {
+        "total": 46000.0,
+        "count": 26,
+        "by_podr": {
+          "Purple": 26105.0,
+          "Sofino": 11306.0,
+          "HabStor": 8589.0
+        }
+      },
+      "month": {
+        "total": 2097915.68,
+        "count": 830
+      }
+    },
+    "ORDERSWD": {
+      "day": {
+        "total": 41780.0,
+        "count": 15,
+        "by_podr": {
+          "Purple": 23385.0,
+          "Sofino": 10056.0,
+          "HabStor": 8339.0
+        }
+      },
+      "month": {
+        "total": 1951880.68,
+        "count": 541
+      }
+    },
+    "SALES": {
+      "day": {
+        "total": 0.0,
+        "count": 0,
+        "by_podr": {}
+      },
+      "month": {
+        "total": 1660198.68,
+        "count": 535
+      }
+    }
+  },
+  "crm": {
+    "date": "2026-04-12",
+    "orders": {
+      "total": 15,
+      "revenue": 37029.0,
+      "refused": 0,
+      "refuse_pct": 0.0,
+      "leads": 2
+    },
+    "leads": {
+      "new_leads": 2
+    },
+    "managers": [
+      {
+        "name": "Менеджер 11",
+        "orders": 4,
+        "revenue": 11658.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Менеджер 159",
+        "orders": 4,
+        "revenue": 8000.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Менеджер 74",
+        "orders": 3,
+        "revenue": 6105.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Менеджер 54",
+        "orders": 1,
+        "revenue": 4509.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Менеджер 176",
+        "orders": 2,
+        "revenue": 4091.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Менеджер 179",
+        "orders": 1,
+        "revenue": 2666.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Менеджер 1",
+        "orders": 0,
+        "revenue": 0.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      },
+      {
+        "name": "Менеджер 154",
+        "orders": 0,
+        "revenue": 0.0,
+        "refused": 0,
+        "refuse_pct": 0.0
+      }
+    ],
+    "statuses": {
+      "Контроль оператора": 12,
+      "Виправити дані": 1,
+      "Нова": 1,
+      "Недозвон": 2,
+      "Питання по замовленню": 1,
+      "Йде на шоу-рум": 1,
+      "Контроль оплати": 1,
+      "Лід (не купив)": 1
+    },
+    "error": null
+  }
+}

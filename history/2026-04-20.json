@@ -1,6 +1,6 @@
 {
-  "date": "2026-04-30",
-  "date_disp": "30.04.2026",
+  "date": "2026-04-20",
+  "date_disp": "20.04.2026",
   "month": {
     "target_month": "2026-04",
     "crm": {
@@ -2964,57 +2964,15 @@
               "leads": 0
             },
             {
-              "day": 20,
-              "orders": 332,
-              "revenue": 775031.0,
-              "leads": 0
-            },
-            {
-              "day": 21,
-              "orders": 262,
-              "revenue": 564290.0,
-              "leads": 0
-            },
-            {
-              "day": 22,
-              "orders": 274,
-              "revenue": 660805.0,
-              "leads": 0
-            },
-            {
               "day": 23,
               "orders": 278,
               "revenue": 595973.0,
               "leads": 0
             },
             {
-              "day": 24,
-              "orders": 291,
-              "revenue": 588114.0,
-              "leads": 0
-            },
-            {
-              "day": 25,
-              "orders": 203,
-              "revenue": 512093.0,
-              "leads": 0
-            },
-            {
-              "day": 26,
-              "orders": 224,
-              "revenue": 555465.0,
-              "leads": 0
-            },
-            {
               "day": 27,
               "orders": 404,
               "revenue": 1011801.0,
-              "leads": 0
-            },
-            {
-              "day": 28,
-              "orders": 374,
-              "revenue": 841289.0,
               "leads": 0
             },
             {
@@ -3325,57 +3283,15 @@
               "leads": 0
             },
             {
-              "day": 20,
-              "orders": 399,
-              "revenue": 817673.0,
-              "leads": 0
-            },
-            {
-              "day": 21,
-              "orders": 237,
-              "revenue": 658580.0,
-              "leads": 0
-            },
-            {
-              "day": 22,
-              "orders": 268,
-              "revenue": 754709.0,
-              "leads": 0
-            },
-            {
               "day": 23,
               "orders": 262,
               "revenue": 815755.0,
               "leads": 0
             },
             {
-              "day": 24,
-              "orders": 344,
-              "revenue": 991325.0,
-              "leads": 0
-            },
-            {
-              "day": 25,
-              "orders": 21,
-              "revenue": 114821.0,
-              "leads": 0
-            },
-            {
-              "day": 26,
-              "orders": 1,
-              "revenue": 3244.0,
-              "leads": 0
-            },
-            {
               "day": 27,
               "orders": 358,
               "revenue": 837156.0,
-              "leads": 0
-            },
-            {
-              "day": 28,
-              "orders": 299,
-              "revenue": 755298.0,
               "leads": 0
             },
             {
@@ -3389,24 +3305,23 @@
       ]
     }
   },
-  "generated": "2026-05-06T11:17:35.856186",
+  "generated": "2026-05-06T11:08:33.744604",
   "uh": {
     "label": "UH",
     "ORDERS": {
       "day": {
-        "total": 714593.0,
-        "count": 282,
+        "total": 775031.0,
+        "count": 332,
         "by_podr": {
-          "Matrasroll": 219615.0,
-          "Sofino": 179484.0,
-          "A-mebli": 142389.0,
-          "МР Розетка (Мережі)": 57321.0,
-          "Шоу-Рум Дарынок": 34902.0,
-          "ОПТ": 30792.0,
-          "МР Эпицентр (Мережі)": 21635.0,
-          "ДРОП": 19964.0,
-          "HabStor": 5670.0,
-          "Алло (Мережі)": 2821.0
+          "A-mebli": 263874.0,
+          "Matrasroll": 253405.0,
+          "МР Розетка (Мережі)": 106474.0,
+          "МР Эпицентр (Мережі)": 45511.0,
+          "Шоу-Рум Дрим": 41794.0,
+          "Шоу-Рум Дарынок": 40472.0,
+          "ДРОП": 22045.0,
+          "Алло (Мережі)": 999.0,
+          "Администрация": 457.0
         }
       },
       "day_refused": {
@@ -3415,8 +3330,8 @@
         "by_podr": {}
       },
       "month": {
-        "total": 17408899.67,
-        "count": 7330
+        "total": 10623925.67,
+        "count": 4447
       },
       "month_refused": {
         "total": 0,
@@ -3425,19 +3340,18 @@
     },
     "ORDERSWD": {
       "day": {
-        "total": 672143.0,
-        "count": 200,
+        "total": 737651.0,
+        "count": 249,
         "by_podr": {
-          "Matrasroll": 198065.0,
-          "Sofino": 169534.0,
-          "A-mebli": 131439.0,
-          "МР Розетка (Мережі)": 57321.0,
-          "Шоу-Рум Дарынок": 34902.0,
-          "ОПТ": 30792.0,
-          "МР Эпицентр (Мережі)": 21635.0,
-          "ДРОП": 19964.0,
-          "HabStor": 5670.0,
-          "Алло (Мережі)": 2821.0
+          "A-mebli": 251024.0,
+          "Matrasroll": 228875.0,
+          "МР Розетка (Мережі)": 106474.0,
+          "МР Эпицентр (Мережі)": 45511.0,
+          "Шоу-Рум Дрим": 41794.0,
+          "Шоу-Рум Дарынок": 40472.0,
+          "ДРОП": 22045.0,
+          "Алло (Мережі)": 999.0,
+          "Администрация": 457.0
         }
       },
       "day_refused": {
@@ -3446,8 +3360,8 @@
         "by_podr": {}
       },
       "month": {
-        "total": 16369096.67,
-        "count": 5115
+        "total": 10000178.67,
+        "count": 3088
       },
       "month_refused": {
         "total": 0,
@@ -3456,29 +3370,22 @@
     },
     "SALES": {
       "day": {
-        "total": 1448828.0,
-        "count": 413,
+        "total": 817673.0,
+        "count": 399,
         "by_podr": {
-          "Matrasroll": 421467.0,
-          "A-mebli": 353117.0,
-          "Sofino": 201928.0,
-          "Шоу-Рум Дрим": 100932.0,
-          "МР Розетка (Мережі)": 92106.0,
-          "Шоу-Рум Ретровіль": 78977.0,
-          "Шоу-Рум Дарынок": 47760.0,
-          "ОПТ": 46492.0,
-          "ДРОП": 35768.0,
-          "МР Эпицентр (Мережі)": 33651.0,
-          "HabStor": 25357.0,
-          "Невідомо": 6680.0,
-          "Алло (Мережі)": 2821.0,
-          "DR-TV": 1272.0,
-          "Администрация": 500.0
+          "Matrasroll": 410002.0,
+          "A-mebli": 164319.0,
+          "Невідомо": 112062.0,
+          "ДРОП": 54817.0,
+          "МР Эпицентр (Мережі)": 36873.0,
+          "МР Розетка (Мережі)": 28906.0,
+          "Шоу-Рум Дарынок": 10794.0,
+          "DR-TV": -100.0
         }
       },
       "month": {
-        "total": 19458712.96,
-        "count": 6741
+        "total": 19447001.96,
+        "count": 6739
       }
     }
   },
@@ -3533,7 +3440,7 @@
     "_disabled": true
   },
   "crm": {
-    "date": "2026-04-30",
+    "date": "2026-04-20",
     "source_file": "daily/ (4 файлів)",
     "orders": {},
     "leads": {},
@@ -3554,198 +3461,228 @@
     "process_reasons": {},
     "trend_30d": [],
     "month_total": {},
-    "error": "Немає рядків за 2026-04-30"
+    "error": "Немає рядків за 2026-04-20"
   },
   "meta": {
-    "date": "2026-04-30",
+    "date": "2026-04-20",
     "accounts": [
       {
         "id": "498543759542047",
         "name": "Amebli 2024",
-        "spend": 3497.06,
-        "impressions": 17445,
-        "clicks": 945,
-        "results": 32,
-        "cpc": 3.7,
-        "ctr": 5.42,
+        "spend": 2587.82,
+        "impressions": 14844,
+        "clicks": 817,
+        "results": 18,
+        "cpc": 3.17,
+        "ctr": 5.5,
         "error": null,
-        "cpm": 200.46
+        "cpm": 174.33
       },
       {
         "id": "785104883775481",
         "name": "Amebli",
-        "spend": 283.21,
-        "impressions": 22956,
-        "clicks": 62,
+        "spend": 260.58,
+        "impressions": 22435,
+        "clicks": 59,
         "results": 0,
-        "cpc": 4.57,
-        "ctr": 0.27,
+        "cpc": 4.42,
+        "ctr": 0.26,
         "error": null,
-        "cpm": 12.34
+        "cpm": 11.61
       },
       {
         "id": "1071880631226950",
         "name": "MatrasRoll 2024",
-        "spend": 1098.75,
-        "impressions": 7616,
-        "clicks": 370,
-        "results": 8,
-        "cpc": 2.97,
-        "ctr": 4.86,
+        "spend": 1120.51,
+        "impressions": 10162,
+        "clicks": 491,
+        "results": 12,
+        "cpc": 2.28,
+        "ctr": 4.83,
         "error": null,
-        "cpm": 144.27
+        "cpm": 110.26
       }
     ],
     "total": {
-      "spend": 4879.02,
-      "impressions": 48017,
-      "clicks": 1377,
-      "cpc": 3.54,
-      "cpm": 101.61,
-      "ctr": 2.87,
-      "results": 40,
-      "cpr": 121.98
+      "spend": 3968.91,
+      "impressions": 47441,
+      "clicks": 1367,
+      "cpc": 2.9,
+      "cpm": 83.66,
+      "ctr": 2.88,
+      "results": 30,
+      "cpr": 132.3
     },
     "by_campaign": [
       {
-        "account": "Amebli 2024",
-        "campaign": "EW Конверсії матрац ORANGE Handy",
-        "spend": 1308.6,
-        "impressions": 4813,
-        "clicks": 167,
-        "cpc": 7.84,
-        "ctr": 3.47,
+        "account": "MatrasRoll 2024",
+        "campaign": "EW Сonversions Bionica Linen Active",
+        "spend": 1120.51,
+        "impressions": 10162,
+        "clicks": 491,
+        "cpc": 2.28,
+        "ctr": 4.83,
         "results": 12
       },
       {
-        "account": "MatrasRoll 2024",
-        "campaign": "EW Сonversions Bionica Linen Active",
-        "spend": 1098.75,
-        "impressions": 7616,
-        "clicks": 370,
-        "cpc": 2.97,
-        "ctr": 4.86,
+        "account": "Amebli 2024",
+        "campaign": "EW Конверсії матрац ORANGE Handy",
+        "spend": 618.61,
+        "impressions": 3559,
+        "clicks": 100,
+        "cpc": 6.19,
+        "ctr": 2.81,
         "results": 8
       },
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії матрац  Porto Cocos",
-        "spend": 766.39,
-        "impressions": 4968,
-        "clicks": 203,
-        "cpc": 3.78,
-        "ctr": 4.09,
-        "results": 8
-      },
-      {
-        "account": "Amebli 2024",
-        "campaign": "EW Конверсії матрац ORANGE Handy Cocos 2026",
-        "spend": 540.67,
-        "impressions": 2601,
-        "clicks": 70,
-        "cpc": 7.72,
-        "ctr": 2.69,
+        "spend": 593.11,
+        "impressions": 3541,
+        "clicks": 152,
+        "cpc": 3.9,
+        "ctr": 4.29,
         "results": 6
       },
       {
         "account": "Amebli 2024",
+        "campaign": "EW Конверсії матрац ORANGE Handy | Плейсменти",
+        "spend": 423.94,
+        "impressions": 2065,
+        "clicks": 86,
+        "cpc": 4.93,
+        "ctr": 4.16,
+        "results": 2
+      },
+      {
+        "account": "Amebli 2024",
         "campaign": "EW Динамічний ремаркетинг",
-        "spend": 494.04,
-        "impressions": 3084,
-        "clicks": 330,
-        "cpc": 1.5,
-        "ctr": 10.7,
-        "results": 4
+        "spend": 418.52,
+        "impressions": 2946,
+        "clicks": 345,
+        "cpc": 1.21,
+        "ctr": 11.71,
+        "results": 2
       },
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії топери 2026",
-        "spend": 387.36,
-        "impressions": 1979,
-        "clicks": 175,
-        "cpc": 2.21,
-        "ctr": 8.84,
-        "results": 2
+        "spend": 381.32,
+        "impressions": 2044,
+        "clicks": 96,
+        "cpc": 3.97,
+        "ctr": 4.7,
+        "results": 0
       },
       {
         "account": "Amebli",
         "campaign": "EW Охват | Шоурум",
-        "spend": 283.21,
-        "impressions": 22956,
-        "clicks": 62,
-        "cpc": 4.57,
-        "ctr": 0.27,
+        "spend": 260.58,
+        "impressions": 22435,
+        "clicks": 59,
+        "cpc": 4.42,
+        "ctr": 0.26,
+        "results": 0
+      },
+      {
+        "account": "Amebli 2024",
+        "campaign": "EW Конверсії матрац Linen акція",
+        "spend": 97.11,
+        "impressions": 436,
+        "clicks": 13,
+        "cpc": 7.47,
+        "ctr": 2.98,
+        "results": 0
+      },
+      {
+        "account": "Amebli 2024",
+        "campaign": "EW Конверсії топери",
+        "spend": 55.21,
+        "impressions": 253,
+        "clicks": 25,
+        "cpc": 2.21,
+        "ctr": 9.88,
+        "results": 0
+      },
+      {
+        "account": "Amebli 2024",
+        "campaign": "EW Конверсії матрац ORANGE Handy 2",
+        "spend": 0.0,
+        "impressions": 0,
+        "clicks": 0,
+        "cpc": 0.0,
+        "ctr": 0.0,
         "results": 0
       }
     ],
     "error": null
   },
   "ga4": {
-    "date": "2026-04-30",
-    "sessions": 3670,
-    "users": 3185,
-    "new_users": 1827,
-    "bounce_rate": 35.5,
-    "avg_duration": 555.0,
+    "date": "2026-04-20",
+    "sessions": 4512,
+    "users": 4101,
+    "new_users": 2587,
+    "bounce_rate": 34.9,
+    "avg_duration": 558.0,
     "by_source": [
       {
         "source": "google",
         "medium": "cpc",
-        "sessions": 1874,
-        "conversions": 61
+        "sessions": 2593,
+        "conversions": 72
       },
       {
         "source": "facebook",
         "medium": "cpc",
-        "sessions": 647,
+        "sessions": 643,
         "conversions": 11
-      },
-      {
-        "source": "facebook-rk2",
-        "medium": "cpc",
-        "sessions": 281,
-        "conversions": 7
-      },
-      {
-        "source": "(direct)",
-        "medium": "(none)",
-        "sessions": 278,
-        "conversions": 9
       },
       {
         "source": "google",
         "medium": "organic",
-        "sessions": 256,
-        "conversions": 11
+        "sessions": 390,
+        "conversions": 20
+      },
+      {
+        "source": "(direct)",
+        "medium": "(none)",
+        "sessions": 367,
+        "conversions": 12
+      },
+      {
+        "source": "facebook-rk2",
+        "medium": "cpc",
+        "sessions": 340,
+        "conversions": 6
+      },
+      {
+        "source": "(not set)",
+        "medium": "(not set)",
+        "sessions": 27,
+        "conversions": 4
+      },
+      {
+        "source": "(data not available)",
+        "medium": "(data not available)",
+        "sessions": 26,
+        "conversions": 0
       },
       {
         "source": "facebook.com",
         "medium": "referral",
-        "sessions": 31,
+        "sessions": 22,
         "conversions": 0
       },
       {
         "source": "homescreen",
         "medium": "(not set)",
-        "sessions": 29,
-        "conversions": 1
-      },
-      {
-        "source": "(data not available)",
-        "medium": "(data not available)",
-        "sessions": 25,
-        "conversions": 3
-      },
-      {
-        "source": "fb",
-        "medium": "paid",
-        "sessions": 15,
-        "conversions": 0
+        "sessions": 21,
+        "conversions": 2
       },
       {
         "source": "l.facebook.com",
         "medium": "referral",
-        "sessions": 15,
+        "sessions": 13,
         "conversions": 0
       }
     ],
@@ -3753,79 +3690,84 @@
       {
         "path": "/tonkyi-matrats-toper-purple-bionica-linen-active/",
         "title": "Тонкий матрац-топер Bionica Linen Active Цена от 989 грн в Україні",
-        "views": 827,
-        "bounce": 18.0
-      },
-      {
-        "path": "/tonkyi-matrats-toper-purple-bionica-linen-active/",
-        "title": "Тонкий матрац-топер Bionica Linen Active",
-        "views": 574,
-        "bounce": 1.3
+        "views": 948,
+        "bounce": 20.7
       },
       {
         "path": "/toppery/",
         "title": "Топери - Офіційний інтернет-магазин Purple™ Simpler™ та представник Matroluxe™ Eurosleep™",
-        "views": 410,
-        "bounce": 29.1
+        "views": 754,
+        "bounce": 29.0
+      },
+      {
+        "path": "/tonkyi-matrats-toper-purple-bionica-linen-active/",
+        "title": "Тонкий матрац-топер Bionica Linen Active",
+        "views": 631,
+        "bounce": 2.5
       },
       {
         "path": "/toppery-purple/",
         "title": "Топери Purple - Офіційний інтернет-магазин Purple™ Simpler™ та представник Matroluxe™ Eurosleep™",
-        "views": 395,
-        "bounce": 22.7
+        "views": 356,
+        "bounce": 26.2
       },
       {
         "path": "/",
         "title": "Офіційний гуртовий магазин Purple, Eurosleep і MatroLuxe",
-        "views": 258,
-        "bounce": 22.5
+        "views": 309,
+        "bounce": 16.9
       },
       {
         "path": "/tonkyi-matrats-toper-purple-bionica-linen-active-160x200/",
         "title": "Тонкий матрац-топер Bionica Linen Active",
-        "views": 183,
-        "bounce": 7.6
-      },
-      {
-        "path": "/ortopedychni-matratsy-purple/",
-        "title": "Ортопедичні матраци Purple - Офіційний інтернет-магазин Purple™ Simpler™ та представник Matroluxe™ Eurosleep™",
-        "views": 158,
-        "bounce": 32.3
-      },
-      {
-        "path": "/tonkyi-matrats-toper-purple-bionica-mini/",
-        "title": "Тонкий матрац-топер Purple Bionica Mini Цена от 623 грн в Україні",
-        "views": 154,
-        "bounce": 10.3
-      },
-      {
-        "path": "/toppery/",
-        "title": "Топер матрац купити в Києві: ціни, відгуки в Україні ≡ MatrasRoll™",
-        "views": 146,
-        "bounce": 6.1
+        "views": 201,
+        "bounce": 6.6
       },
       {
         "path": "/tonkyi-matrats-toper-purple-bionica-linen-active-nestandartnyi-rozmir/",
         "title": "Тонкий матрац-топер Bionica Linen Active Цена от 953 грн в Україні",
-        "views": 142,
-        "bounce": 11.2
+        "views": 172,
+        "bounce": 10.5
+      },
+      {
+        "path": "/vsi-matratsy/",
+        "title": "Всі матраци - Офіційний інтернет-магазин Purple™ Simpler™ та представник Matroluxe™ Eurosleep™",
+        "views": 170,
+        "bounce": 26.1
+      },
+      {
+        "path": "/tonkyi-matrats-toper-purple-bionica-linen-active-140x190/",
+        "title": "Тонкий матрац-топер Bionica Linen Active",
+        "views": 162,
+        "bounce": 2.8
+      },
+      {
+        "path": "/toppery/",
+        "title": "Топер матрац купити в Києві: ціни, відгуки в Україні ≡ MatrasRoll™",
+        "views": 162,
+        "bounce": 14.1
       }
     ],
     "by_device": [
       {
         "device": "mobile",
-        "sessions": 3000,
-        "pct": 81.7
+        "sessions": 3771,
+        "pct": 83.6
       },
       {
         "device": "desktop",
-        "sessions": 569,
-        "pct": 15.5
+        "sessions": 702,
+        "pct": 15.6
       },
       {
         "device": "tablet",
-        "sessions": 40,
-        "pct": 1.1
+        "sessions": 46,
+        "pct": 1.0
+      },
+      {
+        "device": "smart tv",
+        "sessions": 2,
+        "pct": 0.0
       }
     ],
     "error": null

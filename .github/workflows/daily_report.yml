@@ -39,6 +39,13 @@ jobs:
           GA4_CREDENTIALS: ga4-service-account.json
           META_TOKEN_BM1:  ${{ secrets.META_TOKEN_BM1 }}
           META_TOKEN_BM2:  ${{ secrets.META_TOKEN_BM2 }}
+          GADS_DEVELOPER_TOKEN:    ${{ secrets.GADS_DEVELOPER_TOKEN }}
+          GADS_CLIENT_ID:          ${{ secrets.GADS_CLIENT_ID }}
+          GADS_CLIENT_SECRET:      ${{ secrets.GADS_CLIENT_SECRET }}
+          GADS_REFRESH_TOKEN:      ${{ secrets.GADS_REFRESH_TOKEN }}
+          GADS_LOGIN_CUSTOMER_ID:  ${{ secrets.GADS_LOGIN_CUSTOMER_ID }}
+          GADS_AMEBLI_ID:          ${{ secrets.GADS_AMEBLI_ID }}
+          GADS_MATRASROLL_ID:      ${{ secrets.GADS_MATRASROLL_ID }}
         run: python fetch_data.py
 
       - name: Generate dashboard
@@ -53,8 +60,5 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add history/ docs/
-          git diff --staged --quiet && exit 0
-          git commit -m "Daily report $(date +%Y-%m-%d)"
-          git pull --rebase origin main
+          git diff --staged --quiet || git commit -m "Daily report $(date +%Y-%m-%d)"
           git push
-

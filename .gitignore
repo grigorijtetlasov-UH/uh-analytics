@@ -1,0 +1,30 @@
+﻿# Sensitive credentials
+ga4-service-account.json
+uh-sh-analitics-*.json
+*.credentials.json
+.env
+
+# Local data
+data/
+*.xlsx
+*.xls
+*.xlsm
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Local debug scripts (опційно)
+debug_*.py
+diagnose_*.py
+find_*.py
+test_*.py
