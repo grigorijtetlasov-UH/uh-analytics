@@ -36,6 +36,104 @@ def delta_str(curr, prev):
     if d < 0:   return ("down", f"{d:.1f}%")
     return ("neu", "0%")
 
+
+def build_multi_month_summary(multi_month: list, source_label: str = "CRM") -> str:
+    """
+    Будує HTML-блок з текстовим резюме по multi_month масиву (3 місяці).
+    Кожен місяць — окрема картка з: total, топ-день, мін-день, середнє, тренд.
+    Знизу — крос-місячне порівняння.
+    """
+    if not multi_month:
+        return ""
+
+    cards = []
+    totals_by_month = []  # для крос-порівняння
+
+    for mm in multi_month:
+        days = mm.get("days", [])
+        label = mm.get("label", mm.get("month", ""))
+        if not days:
+            cards.append(f'''
+            <div class="mm-card mm-empty">
+              <div class="mm-h">{label}</div>
+              <div class="mm-empty-msg">немає даних</div>
+            </div>''')
+            totals_by_month.append({"label": label, "month": mm.get("month"), "revenue": 0, "orders": 0, "days_count": 0})
+            continue
+
+        total_rev = sum(d["revenue"] for d in days)
+        total_ord = sum(d["orders"] for d in days)
+        total_lds = sum(d.get("leads", 0) for d in days)
+        avg_rev = total_rev / len(days) if days else 0
+
+        top_day = max(days, key=lambda x: x["revenue"])
+        min_day = min(days, key=lambda x: x["revenue"]) if len(days) > 1 else top_day
+
+        # Тренд: ділимо на дві половини, рахуємо середню виручку, порівнюємо
+        trend_html = ""
+        if len(days) >= 4:
+            half = len(days) // 2
+            first_avg = sum(d["revenue"] for d in days[:half]) / half
+            second_avg = sum(d["revenue"] for d in days[half:]) / (len(days) - half)
+            if first_avg > 0:
+                tr_pct = (second_avg - first_avg) / first_avg * 100
+                if tr_pct > 5:
+                    trend_html = f'<div class="mm-trend up">↗ Тренд росте: {tr_pct:+.1f}% (2-га половина vs 1-ша)</div>'
+                elif tr_pct < -5:
+                    trend_html = f'<div class="mm-trend down">↘ Тренд падає: {tr_pct:+.1f}% (2-га половина vs 1-ша)</div>'
+                else:
+                    trend_html = f'<div class="mm-trend neu">→ Стабільно ({tr_pct:+.1f}%)</div>'
+
+        cards.append(f'''
+        <div class="mm-card">
+          <div class="mm-h">{label}</div>
+          <div class="mm-rows">
+            <div class="mm-r"><span class="mm-l">Всього:</span><span class="mm-v"><b>{money(total_rev)} ₴</b> · {total_ord} зам.{f" · {total_lds} лід" if total_lds else ""}</span></div>
+            <div class="mm-r"><span class="mm-l">Середнє/день:</span><span class="mm-v">{money(avg_rev)} ₴</span></div>
+            <div class="mm-r"><span class="mm-l">🏆 Топ-день:</span><span class="mm-v">{top_day["day"]:02d} — {money(top_day["revenue"])} ₴ ({top_day["orders"]} зам.)</span></div>
+            <div class="mm-r"><span class="mm-l">📉 Мін-день:</span><span class="mm-v">{min_day["day"]:02d} — {money(min_day["revenue"])} ₴ ({min_day["orders"]} зам.)</span></div>
+            <div class="mm-r"><span class="mm-l">Активних днів:</span><span class="mm-v">{len(days)}</span></div>
+          </div>
+          {trend_html}
+        </div>''')
+        totals_by_month.append({
+            "label": label, "month": mm.get("month"),
+            "revenue": total_rev, "orders": total_ord,
+            "days_count": len(days), "avg": avg_rev
+        })
+
+    # Крос-порівняння: останній (поточний) vs кожен попередній
+    cross_lines = []
+    if len(totals_by_month) >= 2:
+        newest = totals_by_month[-1]
+        nd = newest["days_count"]
+        if nd > 0:
+            for prev in totals_by_month[:-1]:
+                # Same-period: беремо ті самі N днів з прев місяця для чесного порівняння
+                # (треба взяти з multi_month оригінальні дні — нижче)
+                prev_days_full = next((m["days"] for m in multi_month if m["month"] == prev["month"]), [])
+                same_period_days = [d for d in prev_days_full if d["day"] <= nd]
+                same_rev = sum(d["revenue"] for d in same_period_days)
+                same_ord = sum(d["orders"] for d in same_period_days)
+
+                cls, txt = delta_str(newest["revenue"], same_rev)
+                cross_lines.append(
+                    f'<div class="mm-cmp"><span class="mm-cmp-l">{newest["label"]} vs {prev["label"]} (1-{nd:02d}):</span> '
+                    f'<b>{money(newest["revenue"])} ₴</b> vs <b>{money(same_rev)} ₴</b> '
+                    f'<span class="dlt {cls}">{txt}</span> '
+                    f'<span class="mm-cmp-sub">· зам.: {newest["orders"]} vs {same_ord}</span></div>'
+                )
+
+    cross_html = ""
+    if cross_lines:
+        cross_html = f'<div class="mm-cross"><div class="mm-cross-h">📊 Same-period порівняння ({source_label})</div>{"".join(cross_lines)}</div>'
+
+    return f'''
+    <div class="mm-summary">
+      <div class="mm-cards">{"".join(cards)}</div>
+      {cross_html}
+    </div>'''
+
 def load_data(date_iso):
     p = HISTORY_DIR / f"{date_iso}.json"
     if not p.exists(): return None
@@ -56,7 +154,7 @@ def load_history(days=30):
 # ──────────────────── CSS (загальний стиль) ────────────────────
 SHARED_CSS = '''
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-:root{--bg:#0c0f1a;--s:#151929;--s2:#1c2137;--s3:#242b47;--brd:#2a3050;--brd2:#3a4170;--t:#e4e8f7;--t2:#c1c7e0;--td:#7b84a3;--td2:#5a6280;--ac:#6c5ce7;--ac2:#a29bfe;--g:#00d68f;--gd:rgba(0,214,143,.15);--o:#ffa94d;--od:rgba(255,169,77,.15);--r:#ff6b6b;--rd:rgba(255,107,107,.15);--b:#339af0;--bd:rgba(51,154,240,.15);--y:#ffd43b;--p:#da77f2;--c:#66d9e8;--lime:#94d82d}
+:root{--bg:#0c0f1a;--s:#151929;--s2:#1c2137;--s3:#242b47;--brd:#2a3050;--brd2:#3a4170;--t:#e4e8f7;--t2:#c1c7e0;--td:#7b84a3;--td2:#5a6280;--ac:#6c5ce7;--ac2:#a29bfe;--g:#00d68f;--gd:rgba(0,214,143,.15);--o:#ffa94d;--od:rgba(255,169,77,.15);--r:#ff6b6b;--rd:rgba(255,107,107,.15);--b:#339af0;--bd:rgba(51,154,240,.15);--y:#ffd43b;--p:#da77f2;--c:#66d9e8;--lime:#94d82d;--drr-good:#00d68f;--drr-ok:#94d82d;--drr-warn:#ffa94d;--drr-bad:#ff6b6b;--drr-neu:#7b84a3}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;padding:14px 18px;font-size:12px;line-height:1.4}
 .hdr{text-align:center;margin-bottom:8px;position:relative}
@@ -147,15 +245,36 @@ tbody tr:hover td{background:rgba(108,92,231,.06)}
 .pdf-btn:disabled{opacity:.6;cursor:wait;transform:none}
 .pdf-btn .ic{font-size:13px}
 
-/* PDF EXPORT MODE — show all panels */
-body.pdf-mode .pnl{display:block !important;page-break-after:always;padding-top:14px}
+/* PDF EXPORT MODE — show all panels (without forced page-breaks; pages added manually in JS) */
+body.pdf-mode .pnl{display:block !important;padding-top:14px;break-inside:avoid}
 body.pdf-mode .pnl.pdf-first{padding-top:0}
 body.pdf-mode .tabs{display:none !important}
 body.pdf-mode .pdf-btn{display:none !important}
 body.pdf-mode .view-switch{display:none !important}
 body.pdf-mode{padding:20px}
-body.pdf-mode .pnl-title{font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--ac2),var(--g));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:18px 0 12px;border-bottom:1px solid var(--brd);padding-bottom:6px;display:block !important}
+body.pdf-mode .pnl-title{font-size:18px;font-weight:700;color:var(--ac2);margin:0 0 12px;border-bottom:1px solid var(--brd);padding-bottom:6px;display:block !important}
 .pnl-title{display:none}
+
+/* Multi-month summary cards */
+.mm-summary{margin-top:14px}
+.mm-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-bottom:14px}
+.mm-card{background:linear-gradient(180deg,rgba(108,92,231,.06),rgba(108,92,231,.02));border:1px solid var(--brd);border-radius:10px;padding:12px 14px}
+.mm-card.mm-empty{opacity:.5}
+.mm-h{font-size:13px;font-weight:700;color:var(--ac2);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--brd)}
+.mm-rows{display:flex;flex-direction:column;gap:5px}
+.mm-r{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;line-height:1.35}
+.mm-l{color:var(--td);flex-shrink:0}
+.mm-v{color:var(--tx);text-align:right}
+.mm-trend{margin-top:8px;padding:5px 8px;border-radius:6px;font-size:11px;font-weight:600;text-align:center}
+.mm-trend.up{background:var(--gd);color:var(--g)}
+.mm-trend.down{background:var(--rd);color:var(--r)}
+.mm-trend.neu{background:rgba(123,132,163,.12);color:var(--td)}
+.mm-empty-msg{text-align:center;color:var(--td);font-size:12px;padding:20px 0}
+.mm-cross{background:rgba(108,92,231,.05);border:1px solid var(--brd);border-radius:10px;padding:12px 14px}
+.mm-cross-h{font-size:12px;font-weight:700;color:var(--ac2);margin-bottom:10px}
+.mm-cmp{font-size:11.5px;line-height:1.7;color:var(--tx)}
+.mm-cmp-l{color:var(--td)}
+.mm-cmp-sub{color:var(--td);font-size:11px}
 '''
 
 
@@ -224,6 +343,48 @@ def build_daily(data, history):
     roas = roas_sales  # для сумісності з insights
     site_conv = round(crm_orders_d / max(ga4_sessions, 1) * 100, 2) if ga4_sessions > 0 else 0
 
+    # ── ДРР (Доля Рекламних Витрат) ──
+    # Чисельник: всі рекламні витрати (Meta з усіх кабінетів + Google Ads з GA4)
+    ga4_ads_cost = float(ga4.get("ads_cost", 0) or 0)
+    # Сумуємо: Meta завжди + Google Ads якщо GA4 повертає
+    total_ad_spend = meta_spend + ga4_ads_cost
+
+    # Знаменник: 1С виручка БЕЗ ШОУРУМІВ (бо реклама Meta/Google не веде в офлайн)
+    def _revenue_no_showroom(by_podr_dict):
+        if not by_podr_dict:
+            return 0.0
+        total = 0.0
+        for podr, amt in by_podr_dict.items():
+            if podr and "шоу" in str(podr).lower():
+                continue
+            total += float(amt or 0)
+        return total
+
+    sales_by_podr  = data.get("uh", {}).get("SALES",  {}).get("day", {}).get("by_podr", {})
+    orders_by_podr = data.get("uh", {}).get("ORDERS", {}).get("day", {}).get("by_podr", {})
+    sales_no_sh  = _revenue_no_showroom(sales_by_podr)
+    orders_no_sh = _revenue_no_showroom(orders_by_podr)
+
+    # Якщо by_podr порожнє (старі JSON-и) — fallback на повну суму
+    if sales_no_sh == 0 and total_sales_d > 0:
+        sales_no_sh = total_sales_d
+    if orders_no_sh == 0 and total_orders_d > 0:
+        orders_no_sh = total_orders_d
+
+    # ДРР по замовленням і відгрузкам (без шоурумів), в %
+    drr_orders = round(total_ad_spend / orders_no_sh * 100, 2) if orders_no_sh > 0 else 0
+    drr_sales  = round(total_ad_spend / sales_no_sh  * 100, 2) if sales_no_sh  > 0 else 0
+
+    # Категоризація для розфарбовки плитки
+    def _drr_class(drr):
+        if drr <= 0:        return "neu"
+        if drr < 10:        return "good"
+        if drr < 20:        return "ok"
+        if drr < 30:        return "warn"
+        return "bad"
+    drr_orders_cls = _drr_class(drr_orders)
+    drr_sales_cls  = _drr_class(drr_sales)
+
     prev_data = history[-2] if len(history) >= 2 else None
     prev_revenue = prev_data.get("uh", {}).get("ORDERS", {}).get("day", {}).get("total", 0) if prev_data else 0
     prev_orders = prev_data.get("crm", {}).get("orders", {}).get("total", 0) if prev_data else 0
@@ -272,6 +433,14 @@ def build_daily(data, history):
         insights.append({"icon": "💎", "type": "good", "text": f"Чудовий ROAS Відгрузок: {roas_sales}× (на 1₴ реклами {roas_sales}₴ заробітку)"})
     elif roas_sales > 0 and roas_sales < 2:
         insights.append({"icon": "📉", "type": "warn", "text": f"Низький ROAS Відгрузок: {roas_sales}× — реклама працює неефективно"})
+
+    # ДРР інсайти
+    if drr_sales > 0 and drr_sales > 30:
+        insights.append({"icon": "🚨", "type": "bad", "text": f"Критична ДРР по відгрузкам: {drr_sales}% — реклама зʼїдає прибуток"})
+    elif drr_sales > 0 and drr_sales > 20:
+        insights.append({"icon": "⚠️", "type": "warn", "text": f"Висока ДРР по відгрузкам: {drr_sales}% — варто оптимізувати кампанії"})
+    elif drr_sales > 0 and drr_sales < 10:
+        insights.append({"icon": "🎯", "type": "good", "text": f"Чудова ДРР по відгрузкам: {drr_sales}% (норма 10-20%)"})
 
     managers = crm.get("managers", [])
     if managers:
@@ -358,6 +527,13 @@ def build_daily(data, history):
         # ROAS
         roas_orders=roas_orders,
         roas_sales=roas_sales,
+        # ДРР
+        drr_orders=drr_orders,
+        drr_sales=drr_sales,
+        drr_orders_cls=drr_orders_cls,
+        drr_sales_cls=drr_sales_cls,
+        total_ad_spend=money(total_ad_spend),
+        ga4_ads_cost_str=money(ga4_ads_cost),
         # GA4 / Meta
         ga4_sessions=money(ga4_sessions),
         ga4_bounce_str=pct(ga4_bounce),
@@ -488,11 +664,112 @@ def build_monthly(data, history):
         })
     sites_compare.sort(key=lambda x: x["revenue"], reverse=True)
 
+    # Multi-month trend (3 місяці назад)
+    multi_month = month_data.get("multi_month_trend", [])
+    multi_month_1c = month_data.get("multi_month_1c_uh", {}) or {}
+    mm_1c_orders = multi_month_1c.get("ORDERS", [])
+    mm_1c_sales  = multi_month_1c.get("SALES",  [])
+
+    # ── ДРР по місяцях: рекламні витрати + 1С виручка БЕЗ ШОУРУМІВ (з history) ──
+    def _is_showroom(podr_name):
+        return podr_name and "шоу" in str(podr_name).lower()
+
+    def _agg_month_ad_spend(month_str, day_limit=None):
+        """Сумує Meta + Google Ads за місяць (опційно обмежено першими N днями)."""
+        spend = 0.0
+        for h in history:
+            d_str = h.get("date", "")
+            if d_str[:7] != month_str:
+                continue
+            if day_limit:
+                try:
+                    d_num = int(d_str[8:10])
+                except Exception:
+                    continue
+                if d_num > day_limit:
+                    continue
+            meta_d   = float(h.get("meta", {}).get("total", {}).get("spend", 0) or 0)
+            ga4_cost = float(h.get("ga4", {}).get("ads_cost", 0) or 0)
+            spend += meta_d + ga4_cost   # ОБИДВА
+        return spend
+
+    def _agg_month_revenue_no_sh(month_str, key="SALES", day_limit=None):
+        """Сумує 1С виручку за місяць, виключаючи шоуруми. key='SALES' або 'ORDERS'."""
+        revenue = 0.0
+        for h in history:
+            d_str = h.get("date", "")
+            if d_str[:7] != month_str:
+                continue
+            if day_limit:
+                try:
+                    d_num = int(d_str[8:10])
+                except Exception:
+                    continue
+                if d_num > day_limit:
+                    continue
+            by_podr = h.get("uh", {}).get(key, {}).get("day", {}).get("by_podr", {}) or {}
+            day_total = h.get("uh", {}).get(key, {}).get("day", {}).get("total", 0)
+            if by_podr:
+                # Сумуємо тільки не-шоурум підрозділи
+                for podr, amt in by_podr.items():
+                    if not _is_showroom(podr):
+                        revenue += float(amt or 0)
+            else:
+                # fallback на total якщо by_podr немає у старих JSON-ах
+                revenue += float(day_total or 0)
+        return revenue
+
+    # Попередній місяць у форматі YYYY-MM
+    prev_month_str = prev_crm.get("month") if prev_crm else None
+    day_limit_for_drr = month_data.get("prev_crm_day_limit")
+
+    curr_ad_spend   = _agg_month_ad_spend(target_month)
+    prev_ad_spend   = _agg_month_ad_spend(prev_month_str, day_limit=day_limit_for_drr) if prev_month_str else 0
+
+    curr_orders_rev = _agg_month_revenue_no_sh(target_month, key="ORDERS")
+    prev_orders_rev = _agg_month_revenue_no_sh(prev_month_str, key="ORDERS", day_limit=day_limit_for_drr) if prev_month_str else 0
+
+    curr_sales_rev  = _agg_month_revenue_no_sh(target_month, key="SALES")
+    prev_sales_rev  = _agg_month_revenue_no_sh(prev_month_str, key="SALES",  day_limit=day_limit_for_drr) if prev_month_str else 0
+
+    # Розраховуємо ДРР
+    def _drr(spend, revenue):
+        if revenue <= 0:
+            return 0
+        return round(spend / revenue * 100, 2)
+
+    def _drr_class(drr):
+        if drr <= 0:        return "neu"
+        if drr < 10:        return "good"
+        if drr < 20:        return "ok"
+        if drr < 30:        return "warn"
+        return "bad"
+
+    curr_drr_orders = _drr(curr_ad_spend, curr_orders_rev)
+    prev_drr_orders = _drr(prev_ad_spend, prev_orders_rev)
+    curr_drr_sales  = _drr(curr_ad_spend, curr_sales_rev)
+    prev_drr_sales  = _drr(prev_ad_spend, prev_sales_rev)
+
+    # Дельта: ДРР що падає = добре (зелений), росте = погано (червоний)
+    # Тому інвертуємо delta_str
+    def _drr_delta(curr_d, prev_d):
+        if prev_d <= 0 or curr_d <= 0:
+            return ("neu", "—")
+        diff = curr_d - prev_d
+        if diff < 0:  return ("up", f"{diff:.1f}пп")    # ↓ ДРР = добре
+        if diff > 0:  return ("down", f"+{diff:.1f}пп") # ↑ ДРР = погано
+        return ("neu", "0пп")
+
+    drr_orders_delta_cls, drr_orders_delta_txt = _drr_delta(curr_drr_orders, prev_drr_orders)
+    drr_sales_delta_cls,  drr_sales_delta_txt  = _drr_delta(curr_drr_sales,  prev_drr_sales)
+
     chart_data = {
         "daily_dates": daily_dates,
         "daily_revenue": daily_revenue,
         "daily_orders": daily_orders,
         "daily_leads": daily_leads,
+        "multi_month": multi_month,
+        "multi_month_1c_uh": multi_month_1c,
         "managers": mgr_compare,
         "managers_shop": curr_crm.get("managers_shop", []),
         "chatters": curr_crm.get("chatters", []),
@@ -515,11 +792,25 @@ def build_monthly(data, history):
 
     timestamp = datetime.now().strftime("%d.%m.%Y %H:%M")
 
+    # Мітка діапазону для same-period порівняння
+    day_limit = month_data.get("prev_crm_day_limit") or prev_crm.get("day_limit")
+    if day_limit:
+        period_label = f"1–{day_limit:02d}"
+        compare_note = f"за {period_label} число"  # "за 1-04 число"
+    else:
+        period_label = "повний місяць"
+        compare_note = "повний місяць"
+
     return MONTHLY_TEMPLATE.format(
         target_month=target_month,
         prev_month=prev_crm.get("month", "—"),
+        period_label=period_label,
+        compare_note=compare_note,
         timestamp=timestamp,
         insights_block=insights_block,
+        multi_month_summary=build_multi_month_summary(multi_month, source_label="CRM"),
+        summary_1c_orders=build_multi_month_summary(mm_1c_orders, source_label="1С UH ORDERS"),
+        summary_1c_sales=build_multi_month_summary(mm_1c_sales,  source_label="1С UH SALES"),
         c_revenue=money(c_revenue), c_orders=c_orders, c_leads=c_leads,
         c_avg_check=money(c_avg_check), c_refused=c_refused, c_refuse_p_str=pct(c_refuse_p),
         p_revenue=money(p_revenue), p_orders=p_orders, p_leads=p_leads,
@@ -533,6 +824,14 @@ def build_monthly(data, history):
         managers_shop_count=len(curr_crm.get("managers_shop", [])),
         sites_count=len(sites),
         products_count=len(products),
+        # ДРР помісячно
+        curr_drr_orders=curr_drr_orders, prev_drr_orders=prev_drr_orders,
+        curr_drr_sales=curr_drr_sales,   prev_drr_sales=prev_drr_sales,
+        curr_drr_orders_cls=_drr_class(curr_drr_orders),
+        curr_drr_sales_cls=_drr_class(curr_drr_sales),
+        drr_orders_delta_cls=drr_orders_delta_cls, drr_orders_delta_txt=drr_orders_delta_txt,
+        drr_sales_delta_cls=drr_sales_delta_cls,   drr_sales_delta_txt=drr_sales_delta_txt,
+        curr_ad_spend=money(curr_ad_spend),
         chart_json=chart_json,
         css=SHARED_CSS,
     )
@@ -543,7 +842,8 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
 <html lang="uk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>UH — Daily Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>{css}</style></head>
 <body>
 
@@ -568,7 +868,9 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
   <div class="kpi"><div class="kl">CRM Заявки (всі)</div><div class="kv">{crm_all_req}</div><div class="ks">{crm_sum_all} ₴ · усі статуси · <span class="dlt {ord_delta_cls}">{ord_delta_txt}</span></div></div>
   <div class="kpi"><div class="kl">CRM Замовлення</div><div class="kv">{crm_orders_d}</div><div class="ks">{crm_sum_orders} ₴ · {crm_refuse_p_str} відмов · сер.чек {crm_avg_check_str}</div></div>
   <div class="kpi"><div class="kl">ROAS</div><div class="kv">{roas_sales}<span class="ku">×</span></div><div class="ks">відгрузки/реклама · замовл. {roas_orders}×</div></div>
-  <div class="kpi"><div class="kl">Meta Витрати</div><div class="kv">{meta_spend}<span class="ku">₴</span></div><div class="ks">{meta_results} результ. · GA4 {ga4_sessions} сесій</div></div>
+  <div class="kpi"><div class="kl">ДРР Відгрузки</div><div class="kv" style="color:var(--drr-{drr_sales_cls})">{drr_sales}<span class="ku">%</span></div><div class="ks">{total_ad_spend} ₴ реклами / SALES</div></div>
+  <div class="kpi"><div class="kl">ДРР Замовлення</div><div class="kv" style="color:var(--drr-{drr_orders_cls})">{drr_orders}<span class="ku">%</span></div><div class="ks">{total_ad_spend} ₴ реклами / ORDERS</div></div>
+  <div class="kpi"><div class="kl">Витрати на рекламу</div><div class="kv">{total_ad_spend}<span class="ku">₴</span></div><div class="ks">Meta {meta_spend}₴ + Google {ga4_ads_cost_str}₴</div></div>
 </div>
 
 <div class="tabs">
@@ -583,7 +885,7 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
 
 <div class="pnl on" id="p-overview"><h2 class="pnl-title">📊 Огляд</h2>
   <div class="cd">
-    <div class="ct"><span class="dot"></span>Динаміка замовлень CRM — 30 днів<span class="badge-tot" id="trend30Total"></span></div>
+    <div class="ct"><span class="dot"></span>Динаміка замовлень CRM — поточний місяць<span class="badge-tot" id="trend30Total"></span></div>
     <div class="cd-d">Сума замовлень по днях з SalesDrive (без спаму). Стовпчики — сума замовлень, лінія — ліди.</div>
     <canvas id="chTrend30"></canvas>
   </div>
@@ -693,6 +995,9 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
     <div class="mk"><div class="mk-l">CPR</div><div class="mk-v" style="color:var(--o)">{meta_cpr} ₴</div></div>
     <div class="mk"><div class="mk-l">ROAS Замовл.</div><div class="mk-v" style="color:var(--g)">{roas_orders}×</div></div>
     <div class="mk"><div class="mk-l">ROAS Відгр.</div><div class="mk-v" style="color:var(--lime)">{roas_sales}×</div></div>
+    <div class="mk"><div class="mk-l">ДРР Замовл.</div><div class="mk-v" style="color:var(--drr-{drr_orders_cls})">{drr_orders}%</div></div>
+    <div class="mk"><div class="mk-l">ДРР Відгр.</div><div class="mk-v" style="color:var(--drr-{drr_sales_cls})">{drr_sales}%</div></div>
+    <div class="mk"><div class="mk-l">Всі реклам. витрати</div><div class="mk-v" style="color:var(--ac2)">{total_ad_spend} ₴</div></div>
   </div>
   <div class="cd"><div class="ct"><span class="dot"></span>🏢 Розбивка по кабінетах</div><div id="metaAccounts"></div></div>
   <div class="cd">
@@ -786,41 +1091,116 @@ if(D.ga4_pages.length){{const max=D.ga4_pages[0].views||1;ga4P.innerHTML=D.ga4_p
 const chDev=document.getElementById('chDevices');
 if(chDev&&D.ga4_devices&&D.ga4_devices.length){{new Chart(chDev,{{type:'doughnut',data:{{labels:D.ga4_devices.map(d=>d.device),datasets:[{{data:D.ga4_devices.map(d=>d.sessions),backgroundColor:['#6c5ce7','#00d68f','#ffa94d','#339af0'],borderWidth:2,borderColor:'#151929'}}]}},options:{{...COMMON,scales:{{}},cutout:'60%'}}}});}}
 
-// === PDF EXPORT ===
+// === PDF EXPORT (по панелях, без зміщення сторінок) ===
 async function exportPDF() {{
+  console.log('[PDF] Старт експорту');
   const btn = document.getElementById('pdfBtn');
-  if (!btn) return;
+  if (!btn) {{ console.error('[PDF] Кнопка #pdfBtn не знайдена'); return; }}
+
+  // Перевірка наявності бібліотек
+  if (typeof html2canvas === 'undefined') {{
+    alert('html2canvas не завантажився. Перезавантаж сторінку (Ctrl+F5).');
+    console.error('[PDF] html2canvas undefined');
+    return;
+  }}
+  if (!window.jspdf || !window.jspdf.jsPDF) {{
+    alert('jsPDF не завантажився. Перезавантаж сторінку (Ctrl+F5).');
+    console.error('[PDF] window.jspdf undefined');
+    return;
+  }}
+
   const originalHTML = btn.innerHTML;
   btn.disabled = true;
   btn.innerHTML = '<span class="ic">⏳</span><span>Готую PDF...</span>';
 
+  // Включаємо PDF-режим — показуємо всі панелі
   document.body.classList.add('pdf-mode');
-  const firstPnl = document.querySelector('.pnl');
-  if (firstPnl) firstPnl.classList.add('pdf-first');
-
-  await new Promise(r => setTimeout(r, 400));
+  await new Promise(r => setTimeout(r, 600)); // дай чартам перерендеритись
+  console.log('[PDF] PDF-режим увімкнено');
 
   const today = new Date();
   const stamp = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
-  const fileName = (document.title.includes('Monthly') ? 'UH_Monthly_' : 'UH_Daily_') + stamp + '.pdf';
+  const isMonthly = document.title.includes('Monthly');
+  const fileName = (isMonthly ? 'UH_Monthly_' : 'UH_Daily_') + stamp + '.pdf';
 
-  const opt = {{
-    margin:       [8, 6, 8, 6],
-    filename:     fileName,
-    image:        {{ type: 'jpeg', quality: 0.95 }},
-    html2canvas:  {{ scale: 1.6, useCORS: true, backgroundColor: '#0c0f1a', logging: false, windowWidth: 1400 }},
-    jsPDF:        {{ unit: 'mm', format: 'a3', orientation: 'landscape', compress: true }},
-    pagebreak:    {{ mode: ['css', 'legacy'], avoid: ['.cd', '.kpi', 'table', 'canvas'] }}
-  }};
+  // Збираємо все що треба в PDF: шапка + KPI + всі панелі
+  const sections = [];
+  const hdr = document.querySelector('.hdr');
+  const kpiRow = document.querySelector('.kpi-row');
+  const insWrap = document.querySelector('.ins-wrap');
+
+  // Перша сторінка: шапка + інсайти + KPI
+  const firstWrap = document.createElement('div');
+  firstWrap.style.background = 'var(--bg, #0c0f1a)';
+  firstWrap.style.padding = '0';
+  if (hdr) firstWrap.appendChild(hdr.cloneNode(true));
+  if (insWrap) firstWrap.appendChild(insWrap.cloneNode(true));
+  if (kpiRow) firstWrap.appendChild(kpiRow.cloneNode(true));
+  sections.push(firstWrap);
+
+  // Кожна панель — окрема сторінка
+  document.querySelectorAll('.pnl').forEach(p => sections.push(p));
+
+  // Готуємо jsPDF (a3 landscape)
+  const {{ jsPDF }} = window.jspdf;
+  const pdf = new jsPDF({{ unit: 'mm', format: 'a3', orientation: 'landscape', compress: true }});
+  const pageW = pdf.internal.pageSize.getWidth();   // 420
+  const pageH = pdf.internal.pageSize.getHeight();  // 297
+  const margin = 8;
+  const usableW = pageW - margin * 2;
+  const usableH = pageH - margin * 2;
+
+  // Тимчасово підставимо контейнер для рендеру (поза вʼюпортом, але з фіксованою шириною)
+  const stage = document.createElement('div');
+  stage.style.position = 'fixed';
+  stage.style.left = '-99999px';
+  stage.style.top = '0';
+  stage.style.width = '1400px';
+  stage.style.background = '#0c0f1a';
+  stage.style.padding = '20px';
+  document.body.appendChild(stage);
 
   try {{
-    await html2pdf().set(opt).from(document.body).save();
+    console.log('[PDF] Рендерю ' + sections.length + ' секцій...');
+    for (let i = 0; i < sections.length; i++) {{
+      const node = sections[i].cloneNode(true);
+      stage.innerHTML = '';
+      stage.appendChild(node);
+      // Дай DOM перемалюватись
+      await new Promise(r => setTimeout(r, 80));
+      console.log('[PDF] Секція ' + (i+1) + '/' + sections.length);
+
+      const canvas = await html2canvas(stage, {{
+        scale: 1.5,
+        useCORS: true,
+        backgroundColor: '#0c0f1a',
+        logging: false,
+        windowWidth: 1440,
+      }});
+
+      const imgData = canvas.toDataURL('image/jpeg', 0.92);
+      // Скейлимо щоб влізло у сторінку зі збереженням пропорцій
+      const ratio = canvas.height / canvas.width;
+      let imgW = usableW;
+      let imgH = imgW * ratio;
+      if (imgH > usableH) {{
+        imgH = usableH;
+        imgW = imgH / ratio;
+      }}
+      const x = (pageW - imgW) / 2;
+      const y = margin;
+
+      if (i > 0) pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', x, y, imgW, imgH);
+    }}
+
+    pdf.save(fileName);
   }} catch (e) {{
     console.error('PDF export error:', e);
-    alert('Помилка експорту PDF: ' + e.message);
+    alert('Помилка експорту PDF: ' + (e.message || e));
   }} finally {{
+    stage.remove();
     document.body.classList.remove('pdf-mode');
-    if (firstPnl) firstPnl.classList.remove('pdf-first');
     btn.disabled = false;
     btn.innerHTML = originalHTML;
   }}
@@ -835,7 +1215,8 @@ MONTHLY_TEMPLATE = '''<!DOCTYPE html>
 <html lang="uk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>UH — Monthly Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>{css}</style></head>
 <body>
 
@@ -847,7 +1228,7 @@ MONTHLY_TEMPLATE = '''<!DOCTYPE html>
   </div>
   <h1>UH Monthly Dashboard</h1>
   <div class="sub">United Home · {target_month}</div>
-  <div class="stamp">Поточний: {target_month} · Порівняння з {prev_month} · оновлено {timestamp}</div>
+  <div class="stamp">Поточний: {target_month} ({compare_note}) · Порівняння з {prev_month} ({compare_note}) · оновлено {timestamp}</div>
 </div>
 
 {insights_block}
@@ -861,6 +1242,8 @@ MONTHLY_TEMPLATE = '''<!DOCTYPE html>
   <div class="kpi"><div class="kl">Менеджерів</div><div class="kv">{managers_count}</div><div class="ks">активних</div></div>
   <div class="kpi"><div class="kl">Каналів</div><div class="kv">{sites_count}</div><div class="ks">продажу</div></div>
   <div class="kpi"><div class="kl">SKU товарів</div><div class="kv">{products_count}</div><div class="ks">унікальних</div></div>
+  <div class="kpi"><div class="kl">ДРР Відгрузки</div><div class="kv" style="color:var(--drr-{curr_drr_sales_cls})">{curr_drr_sales}<span class="ku">%</span></div><div class="ks">vs {prev_drr_sales}% · <span class="dlt {drr_sales_delta_cls}">{drr_sales_delta_txt}</span></div></div>
+  <div class="kpi"><div class="kl">ДРР Замовлення</div><div class="kv" style="color:var(--drr-{curr_drr_orders_cls})">{curr_drr_orders}<span class="ku">%</span></div><div class="ks">{curr_ad_spend} ₴ реклами · <span class="dlt {drr_orders_delta_cls}">{drr_orders_delta_txt}</span></div></div>
 </div>
 
 <div class="tabs">
@@ -873,9 +1256,24 @@ MONTHLY_TEMPLATE = '''<!DOCTYPE html>
 
 <div class="pnl on" id="p-overview"><h2 class="pnl-title">📊 Огляд</h2>
   <div class="cd">
-    <div class="ct"><span class="dot"></span>📈 Динаміка по днях за {target_month}<span class="badge-tot" id="trend30Total"></span></div>
-    <div class="cd-d">Накопичена виручка з 1-го числа місяця.</div>
-    <canvas id="chDaily" style="max-height:340px"></canvas>
+    <div class="ct"><span class="dot"></span>📈 CRM SalesDrive — останні 3 місяці<span class="badge-tot" id="trend30Total"></span></div>
+    <div class="cd-d">Stacked-бар: кожен день показує всі місяці накопичено. Наведіть курсор для порівняння.</div>
+    <canvas id="chDaily" style="max-height:400px"></canvas>
+    {multi_month_summary}
+  </div>
+
+  <div class="cd" style="margin-top:14px">
+    <div class="ct"><span class="dot" style="background:var(--g)"></span>🏭 1С UH ORDERS — замовлення (всі статуси) · 3 місяці<span class="badge-tot" id="trend1cOrdTotal"></span></div>
+    <div class="cd-d">Дані з 1С: всі замовлення (включно з відмовами). Stacked по місяцях, день-в-день.</div>
+    <canvas id="ch1cOrders" style="max-height:380px"></canvas>
+    {summary_1c_orders}
+  </div>
+
+  <div class="cd" style="margin-top:14px">
+    <div class="ct"><span class="dot" style="background:var(--o)"></span>📦 1С UH SALES — фактичні відгрузки · 3 місяці<span class="badge-tot" id="trend1cSalTotal"></span></div>
+    <div class="cd-d">Реальні відгрузки за днями. Stacked по місяцях, день-в-день.</div>
+    <canvas id="ch1cSales" style="max-height:380px"></canvas>
+    {summary_1c_sales}
   </div>
 </div>
 
@@ -952,13 +1350,124 @@ const COMMON={{responsive:true,maintainAspectRatio:false,plugins:{{legend:{{labe
 const fmt=n=>(n||0).toLocaleString('uk').replace(/,/g,' ');
 const fmtK=n=>{{n=Number(n)||0;if(n>=1e6)return(n/1e6).toFixed(2)+'M';if(n>=1e3)return(n/1e3).toFixed(0)+'K';return n.toFixed(0);}};
 
-// Daily trend by month
-{{const totalRev=D.daily_revenue.reduce((a,b)=>a+b,0);document.getElementById('trend30Total').textContent='∑ '+fmtK(totalRev)+' ₴';
-new Chart(document.getElementById('chDaily'),{{type:'bar',data:{{labels:D.daily_dates,datasets:[
-{{type:'bar',label:'Замовлення ₴',data:D.daily_revenue,backgroundColor:'rgba(108,92,231,0.65)',borderColor:'#6c5ce7',borderWidth:1,borderRadius:4,yAxisID:'y1',order:2}},
-{{type:'line',label:'Замовлень',data:D.daily_orders,borderColor:'#00d68f',backgroundColor:'rgba(0,214,143,.15)',tension:.4,borderWidth:2.5,pointRadius:3,yAxisID:'y2',order:1}},
-{{type:'line',label:'Лідів',data:D.daily_leads,borderColor:'#ffa94d',tension:.4,borderWidth:2,pointRadius:2,borderDash:[5,3],yAxisID:'y2',order:0,fill:false}}]}},
-options:{{...COMMON,scales:{{x:{{...COMMON.scales.x}},y1:{{position:'left',grid:COMMON.scales.y.grid,ticks:{{...COMMON.scales.y.ticks,color:'#a29bfe'}}}},y2:{{position:'right',grid:{{display:false}},ticks:{{font:{{size:9}},color:'#00d68f'}}}}}}}}}});}}
+// === Multi-month trend chart (reusable for CRM, 1C ORDERS, 1C SALES) ===
+function renderMultiMonthChart(canvasId, mm, opts) {{
+  opts = opts || {{}};
+  const palettes = opts.palette || ['rgba(120,140,180,0.55)', 'rgba(162,155,254,0.75)', 'rgba(108,92,231,0.95)'];
+  const borders = opts.border || ['#7888b4', '#a29bfe', '#6c5ce7'];
+  const showLeads = opts.showLeads !== false;
+  const unit = opts.unit || ' ₴';
+  const totalBadgeId = opts.totalBadgeId || null;
+
+  const el = document.getElementById(canvasId);
+  if (!el || !mm || !mm.length) {{
+    if (el && el.parentElement) {{
+      el.style.display = 'none';
+      el.parentElement.insertAdjacentHTML('beforeend',
+        '<div style="text-align:center;color:var(--td);padding:30px;font-size:12px">Немає даних для побудови графіка</div>');
+    }}
+    return;
+  }}
+
+  const maxDay = 31;
+  const labels = Array.from({{length: maxDay}}, (_, i) => String(i+1).padStart(2,'0'));
+
+  const datasets = mm.map((m, idx) => {{
+    const byDay = {{}};
+    (m.days || []).forEach(d => {{ byDay[d.day] = d; }});
+    const revData = labels.map((_, i) => {{ const day = i+1; return byDay[day] ? byDay[day].revenue : 0; }});
+    const ordersData = labels.map((_, i) => {{ const day = i+1; return byDay[day] ? byDay[day].orders : 0; }});
+    const leadsData = labels.map((_, i) => {{ const day = i+1; return byDay[day] ? byDay[day].leads : 0; }});
+    return {{
+      type: 'bar', label: m.label, data: revData,
+      _orders: ordersData, _leads: leadsData, _month: m.month,
+      backgroundColor: palettes[idx] || palettes[0],
+      borderColor: borders[idx] || borders[0],
+      borderWidth: 1, borderRadius: 3,
+      stack: 'months', order: mm.length - idx,
+    }};
+  }});
+
+  const grandTotal = datasets.reduce((s, ds) => s + ds.data.reduce((a,b)=>a+b,0), 0);
+  if (totalBadgeId) {{
+    const badge = document.getElementById(totalBadgeId);
+    if (badge) badge.textContent = '∑ ' + fmtK(grandTotal) + unit;
+  }}
+
+  new Chart(el, {{
+    type: 'bar',
+    data: {{ labels, datasets }},
+    options: {{
+      ...COMMON,
+      scales: {{
+        x: {{ ...COMMON.scales.x, stacked: true, title: {{ display: true, text: 'День місяця', color: '#7c869b', font: {{size:10}} }} }},
+        y: {{ ...COMMON.scales.y, stacked: true, ticks: {{ ...COMMON.scales.y.ticks, callback: v => fmtK(v)+unit }} }}
+      }},
+      plugins: {{
+        ...COMMON.plugins,
+        legend: {{ position: 'top', labels: {{ color: '#cfd6e6', font: {{size: 11}}, usePointStyle: true, boxWidth: 10 }} }},
+        tooltip: {{
+          mode: 'index', intersect: false,
+          backgroundColor: 'rgba(20,25,40,0.96)',
+          borderColor: '#2b3247', borderWidth: 1, padding: 12,
+          titleColor: '#fff', titleFont: {{size: 13, weight: 'bold'}},
+          bodyColor: '#cfd6e6', bodyFont: {{size: 11}},
+          callbacks: {{
+            title: (items) => 'День ' + items[0].label,
+            label: (ctx) => {{
+              const ds = ctx.dataset;
+              const rev = ctx.parsed.y;
+              const orders = (ds._orders || [])[ctx.dataIndex] || 0;
+              const leads = (ds._leads || [])[ctx.dataIndex] || 0;
+              let s = ds.label + ': ' + fmtK(rev) + unit + ' · ' + orders + ' зам.';
+              if (showLeads && leads) s += ' · ' + leads + ' лід';
+              return s;
+            }},
+            afterBody: (items) => {{
+              if (items.length < 2) return '';
+              const sorted = items.slice().sort((a,b) => {{
+                const ma = a.dataset._month || ''; const mb = b.dataset._month || '';
+                return mb.localeCompare(ma);
+              }});
+              const out = ['', '— Порівняння —'];
+              const newest = sorted[0];
+              const newRev = newest.parsed.y;
+              for (let i = 1; i < sorted.length; i++) {{
+                const oldRev = sorted[i].parsed.y;
+                if (oldRev === 0 && newRev === 0) {{ out.push(newest.dataset.label + ' vs ' + sorted[i].dataset.label + ': обидва порожні'); continue; }}
+                if (oldRev === 0) {{ out.push(newest.dataset.label + ' vs ' + sorted[i].dataset.label + ': +∞ (попередній 0)'); continue; }}
+                const diff = newRev - oldRev;
+                const pct = (diff / oldRev * 100);
+                const sign = diff >= 0 ? '↑' : '↓';
+                out.push(newest.dataset.label + ' vs ' + sorted[i].dataset.label + ': ' + sign + ' ' + Math.abs(pct).toFixed(1) + '% (' + (diff>=0?'+':'') + fmtK(diff) + unit + ')');
+              }}
+              return out.join('\\n');
+            }}
+          }}
+        }}
+      }}
+    }}
+  }});
+}}
+
+// CRM (фіолетова палітра)
+renderMultiMonthChart('chDaily', D.multi_month || [], {{ totalBadgeId: 'trend30Total' }});
+
+// 1С UH ORDERS — зелена палітра
+renderMultiMonthChart('ch1cOrders', (D.multi_month_1c_uh && D.multi_month_1c_uh.ORDERS) || [], {{
+  totalBadgeId: 'trend1cOrdTotal',
+  showLeads: false,
+  palette: ['rgba(100,160,140,0.55)', 'rgba(100,200,170,0.75)', 'rgba(0,214,143,0.95)'],
+  border:  ['#64a08c', '#64c8aa', '#00d68f'],
+}});
+
+// 1С UH SALES — оранжева палітра
+renderMultiMonthChart('ch1cSales', (D.multi_month_1c_uh && D.multi_month_1c_uh.SALES) || [], {{
+  totalBadgeId: 'trend1cSalTotal',
+  showLeads: false,
+  palette: ['rgba(180,140,100,0.55)', 'rgba(220,170,120,0.75)', 'rgba(255,169,77,0.95)'],
+  border:  ['#b48c64', '#dcaa78', '#ffa94d'],
+}});
 
 // Managers
 const mgrBody=document.getElementById('mgrBody');
@@ -989,41 +1498,116 @@ if(D.sites&&D.sites.length){{sitesBody.innerHTML=D.sites.map((s,i)=>{{const dCls
 const prodBody=document.getElementById('prodBody');
 if(D.products&&D.products.length){{prodBody.innerHTML=D.products.map((p,i)=>`<tr><td class="num" style="color:var(--td)">${{i+1}}</td><td title="${{p.name}}">${{p.name.length>70?p.name.substr(0,70)+'…':p.name}}</td><td class="r num">${{p.qty||p.count}}</td><td class="r num" style="color:var(--td)">${{p.count}}</td><td class="r num" style="color:var(--g)">${{fmtK(p.revenue)}}</td></tr>`).join('');}}else{{prodBody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}}
 
-// === PDF EXPORT ===
+// === PDF EXPORT (по панелях, без зміщення сторінок) ===
 async function exportPDF() {{
+  console.log('[PDF] Старт експорту');
   const btn = document.getElementById('pdfBtn');
-  if (!btn) return;
+  if (!btn) {{ console.error('[PDF] Кнопка #pdfBtn не знайдена'); return; }}
+
+  // Перевірка наявності бібліотек
+  if (typeof html2canvas === 'undefined') {{
+    alert('html2canvas не завантажився. Перезавантаж сторінку (Ctrl+F5).');
+    console.error('[PDF] html2canvas undefined');
+    return;
+  }}
+  if (!window.jspdf || !window.jspdf.jsPDF) {{
+    alert('jsPDF не завантажився. Перезавантаж сторінку (Ctrl+F5).');
+    console.error('[PDF] window.jspdf undefined');
+    return;
+  }}
+
   const originalHTML = btn.innerHTML;
   btn.disabled = true;
   btn.innerHTML = '<span class="ic">⏳</span><span>Готую PDF...</span>';
 
+  // Включаємо PDF-режим — показуємо всі панелі
   document.body.classList.add('pdf-mode');
-  const firstPnl = document.querySelector('.pnl');
-  if (firstPnl) firstPnl.classList.add('pdf-first');
-
-  await new Promise(r => setTimeout(r, 400));
+  await new Promise(r => setTimeout(r, 600)); // дай чартам перерендеритись
+  console.log('[PDF] PDF-режим увімкнено');
 
   const today = new Date();
   const stamp = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
-  const fileName = (document.title.includes('Monthly') ? 'UH_Monthly_' : 'UH_Daily_') + stamp + '.pdf';
+  const isMonthly = document.title.includes('Monthly');
+  const fileName = (isMonthly ? 'UH_Monthly_' : 'UH_Daily_') + stamp + '.pdf';
 
-  const opt = {{
-    margin:       [8, 6, 8, 6],
-    filename:     fileName,
-    image:        {{ type: 'jpeg', quality: 0.95 }},
-    html2canvas:  {{ scale: 1.6, useCORS: true, backgroundColor: '#0c0f1a', logging: false, windowWidth: 1400 }},
-    jsPDF:        {{ unit: 'mm', format: 'a3', orientation: 'landscape', compress: true }},
-    pagebreak:    {{ mode: ['css', 'legacy'], avoid: ['.cd', '.kpi', 'table', 'canvas'] }}
-  }};
+  // Збираємо все що треба в PDF: шапка + KPI + всі панелі
+  const sections = [];
+  const hdr = document.querySelector('.hdr');
+  const kpiRow = document.querySelector('.kpi-row');
+  const insWrap = document.querySelector('.ins-wrap');
+
+  // Перша сторінка: шапка + інсайти + KPI
+  const firstWrap = document.createElement('div');
+  firstWrap.style.background = 'var(--bg, #0c0f1a)';
+  firstWrap.style.padding = '0';
+  if (hdr) firstWrap.appendChild(hdr.cloneNode(true));
+  if (insWrap) firstWrap.appendChild(insWrap.cloneNode(true));
+  if (kpiRow) firstWrap.appendChild(kpiRow.cloneNode(true));
+  sections.push(firstWrap);
+
+  // Кожна панель — окрема сторінка
+  document.querySelectorAll('.pnl').forEach(p => sections.push(p));
+
+  // Готуємо jsPDF (a3 landscape)
+  const {{ jsPDF }} = window.jspdf;
+  const pdf = new jsPDF({{ unit: 'mm', format: 'a3', orientation: 'landscape', compress: true }});
+  const pageW = pdf.internal.pageSize.getWidth();   // 420
+  const pageH = pdf.internal.pageSize.getHeight();  // 297
+  const margin = 8;
+  const usableW = pageW - margin * 2;
+  const usableH = pageH - margin * 2;
+
+  // Тимчасово підставимо контейнер для рендеру (поза вʼюпортом, але з фіксованою шириною)
+  const stage = document.createElement('div');
+  stage.style.position = 'fixed';
+  stage.style.left = '-99999px';
+  stage.style.top = '0';
+  stage.style.width = '1400px';
+  stage.style.background = '#0c0f1a';
+  stage.style.padding = '20px';
+  document.body.appendChild(stage);
 
   try {{
-    await html2pdf().set(opt).from(document.body).save();
+    console.log('[PDF] Рендерю ' + sections.length + ' секцій...');
+    for (let i = 0; i < sections.length; i++) {{
+      const node = sections[i].cloneNode(true);
+      stage.innerHTML = '';
+      stage.appendChild(node);
+      // Дай DOM перемалюватись
+      await new Promise(r => setTimeout(r, 80));
+      console.log('[PDF] Секція ' + (i+1) + '/' + sections.length);
+
+      const canvas = await html2canvas(stage, {{
+        scale: 1.5,
+        useCORS: true,
+        backgroundColor: '#0c0f1a',
+        logging: false,
+        windowWidth: 1440,
+      }});
+
+      const imgData = canvas.toDataURL('image/jpeg', 0.92);
+      // Скейлимо щоб влізло у сторінку зі збереженням пропорцій
+      const ratio = canvas.height / canvas.width;
+      let imgW = usableW;
+      let imgH = imgW * ratio;
+      if (imgH > usableH) {{
+        imgH = usableH;
+        imgW = imgH / ratio;
+      }}
+      const x = (pageW - imgW) / 2;
+      const y = margin;
+
+      if (i > 0) pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', x, y, imgW, imgH);
+    }}
+
+    pdf.save(fileName);
   }} catch (e) {{
     console.error('PDF export error:', e);
-    alert('Помилка експорту PDF: ' + e.message);
+    alert('Помилка експорту PDF: ' + (e.message || e));
   }} finally {{
+    stage.remove();
     document.body.classList.remove('pdf-mode');
-    if (firstPnl) firstPnl.classList.remove('pdf-first');
     btn.disabled = false;
     btn.innerHTML = originalHTML;
   }}
