@@ -1041,7 +1041,7 @@ const D = {chart_json};
 function sw(name, btn){{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));document.querySelectorAll('.pnl').forEach(p=>p.classList.remove('on'));btn.classList.add('on');document.getElementById('p-'+name).classList.add('on');}}
 Chart.defaults.color='#7b84a3';Chart.defaults.font.family="'DM Sans', sans-serif";Chart.defaults.font.size=10;
 const COMMON={{responsive:true,maintainAspectRatio:false,plugins:{{legend:{{labels:{{padding:10,usePointStyle:true,pointStyleWidth:8,font:{{size:10}}}}}},tooltip:{{backgroundColor:'#1c2137',borderColor:'#3a4170',borderWidth:1,padding:10}}}},scales:{{x:{{grid:{{color:'rgba(255,255,255,0.03)'}},ticks:{{maxRotation:45,font:{{size:9}}}}}},y:{{grid:{{color:'rgba(255,255,255,0.03)'}},ticks:{{font:{{size:9}},callback:v=>v>=1000?(v/1000).toFixed(0)+'K':v}}}}}}}};
-const fmt=n=>(n||0).toLocaleString('uk').replace(/,/g,' ');
+const fmt=n=>{{n=Number(n)||0;const isInt=Number.isInteger(n);return n.toLocaleString('uk',{{minimumFractionDigits:isInt?0:2,maximumFractionDigits:2}}).replace(/\u00a0/g,' ').replace(',','.');}};
 const fmtK=n=>{{n=Number(n)||0;if(n>=1e6)return(n/1e6).toFixed(2)+'M';if(n>=1e3)return(n/1e3).toFixed(0)+'K';return n.toFixed(0);}};
 
 {{const totalRev=D.trend_revenue.reduce((a,b)=>a+b,0);document.getElementById('trend30Total').textContent='∑ '+fmtK(totalRev)+' ₴';
@@ -1359,7 +1359,7 @@ const D = {chart_json};
 function sw(name, btn){{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));document.querySelectorAll('.pnl').forEach(p=>p.classList.remove('on'));btn.classList.add('on');document.getElementById('p-'+name).classList.add('on');}}
 Chart.defaults.color='#7b84a3';Chart.defaults.font.family="'DM Sans', sans-serif";Chart.defaults.font.size=10;
 const COMMON={{responsive:true,maintainAspectRatio:false,plugins:{{legend:{{labels:{{padding:10,usePointStyle:true,pointStyleWidth:8,font:{{size:10}}}}}},tooltip:{{backgroundColor:'#1c2137',borderColor:'#3a4170',borderWidth:1,padding:10}}}},scales:{{x:{{grid:{{color:'rgba(255,255,255,0.03)'}},ticks:{{maxRotation:45,font:{{size:9}}}}}},y:{{grid:{{color:'rgba(255,255,255,0.03)'}},ticks:{{font:{{size:9}},callback:v=>v>=1000?(v/1000).toFixed(0)+'K':v}}}}}}}};
-const fmt=n=>(n||0).toLocaleString('uk').replace(/,/g,' ');
+const fmt=n=>{{n=Number(n)||0;const isInt=Number.isInteger(n);return n.toLocaleString('uk',{{minimumFractionDigits:isInt?0:2,maximumFractionDigits:2}}).replace(/\u00a0/g,' ').replace(',','.');}};
 const fmtK=n=>{{n=Number(n)||0;if(n>=1e6)return(n/1e6).toFixed(2)+'M';if(n>=1e3)return(n/1e3).toFixed(0)+'K';return n.toFixed(0);}};
 
 // === Multi-month trend chart (reusable for CRM, 1C ORDERS, 1C SALES) ===
