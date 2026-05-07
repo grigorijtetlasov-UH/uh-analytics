@@ -704,18 +704,27 @@ def build_monthly(data, history):
 
     # Multi-month trend (3 місяці назад)
     multi_month = month_data.get("multi_month_trend", []) or []
-    # FALLBACK: якщо CI не сформував multi_month — беремо з найсвіжішої історії
-    if not multi_month:
+    # FALLBACK: якщо CI не сформував multi_month або всі місяці порожні — беремо з історії
+    def _has_data(mm_list):
+        return any(m.get("days") for m in (mm_list or []))
+    if not _has_data(multi_month):
         for h in reversed(history[:-1] if history else []):
             mm = h.get("month", {}).get("multi_month_trend", [])
-            if mm:
+            if _has_data(mm):
                 multi_month = mm
                 break
     multi_month_1c = month_data.get("multi_month_1c_uh", {}) or {}
-    if not multi_month_1c:
+    def _has_1c_data(mm_dict):
+        if not mm_dict:
+            return False
+        for arr in mm_dict.values():
+            if any(m.get("days") for m in (arr or [])):
+                return True
+        return False
+    if not _has_1c_data(multi_month_1c):
         for h in reversed(history[:-1] if history else []):
             mm1c = h.get("month", {}).get("multi_month_1c_uh", {})
-            if mm1c:
+            if _has_1c_data(mm1c):
                 multi_month_1c = mm1c
                 break
     mm_1c_orders = multi_month_1c.get("ORDERS", [])

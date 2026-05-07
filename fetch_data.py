@@ -2107,6 +2107,45 @@ def main(target_date=None):
 
     # ── Збереження ────────────────────────────────────────────
     out_path = HISTORY_DIR / f"{day_iso}.json"
+
+    # Захист: якщо новий JSON має збіднений CRM (CI без локальних Excel),
+    # а існуючий файл вже містить повний CRM — зберігаємо CRM-блоки зі старого.
+    # Це не дозволяє щоденному CI-запуску затирати нашу хорошу історію.
+    new_crm_empty = not data.get("crm", {}).get("orders") or data.get("crm", {}).get("error") == f"Немає файлів у {CRM_DAILY_DIR}/ (і fallback {CRM_DATA_DIR}/)"
+    new_mm_empty = not any(m.get("days") for m in (data.get("month", {}).get("multi_month_trend", []) or []))
+
+    if (new_crm_empty or new_mm_empty) and out_path.exists():
+        try:
+            with open(out_path, encoding="utf-8") as fp:
+                old_data = json.load(fp)
+            preserved = []
+            old_crm = old_data.get("crm", {}) or {}
+            if new_crm_empty and old_crm.get("orders"):
+                data["crm"] = old_crm
+                preserved.append("crm")
+            old_mm = old_data.get("month", {}).get("multi_month_trend", [])
+            if new_mm_empty and any(m.get("days") for m in (old_mm or [])):
+                data.setdefault("month", {})["multi_month_trend"] = old_mm
+                preserved.append("multi_month_trend")
+            old_mm1c = old_data.get("month", {}).get("multi_month_1c_uh", {})
+            new_mm1c_empty = not any(any(m.get("days") for m in (arr or []))
+                                     for arr in (data.get("month", {}).get("multi_month_1c_uh", {}) or {}).values())
+            if new_mm1c_empty and old_mm1c:
+                data.setdefault("month", {})["multi_month_1c_uh"] = old_mm1c
+                preserved.append("multi_month_1c_uh")
+            old_month_crm = old_data.get("month", {}).get("crm", {})
+            if not data.get("month", {}).get("crm", {}).get("orders") and old_month_crm.get("orders"):
+                data.setdefault("month", {})["crm"] = old_month_crm
+                preserved.append("month.crm")
+            old_prev_crm = old_data.get("month", {}).get("prev_crm", {})
+            if not data.get("month", {}).get("prev_crm", {}).get("orders") and old_prev_crm.get("orders"):
+                data.setdefault("month", {})["prev_crm"] = old_prev_crm
+                preserved.append("month.prev_crm")
+            if preserved:
+                print(f"\n🛡️  Збережено CRM-блоки з попередньої версії: {', '.join(preserved)}")
+        except Exception as ex:
+            print(f"   ⚠️  Не вдалось прочитати попередній JSON для захисту: {ex}")
+
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
