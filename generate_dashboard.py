@@ -499,6 +499,9 @@ def build_daily(data, history):
         "ga4_sources": ga4.get("by_source", []),
         "ga4_pages": ga4.get("by_page", []),
         "ga4_devices": ga4.get("by_device", []),
+        "ga4_properties": ga4.get("by_property", []),
+        "ga4_total_ads_cost": ga4.get("ads_cost", 0),
+        "ga4_total_ads_clicks": ga4.get("ads_clicks", 0),
     }
     chart_json = json.dumps(chart_data, ensure_ascii=False)
 
@@ -1079,6 +1082,7 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
     <div class="mk"><div class="mk-l">Сер. час</div><div class="mk-v" style="color:var(--p)">{avg_dur_str}</div></div>
     <div class="mk"><div class="mk-l">Конв. сайту</div><div class="mk-v" style="color:var(--o)">{site_conv}%</div></div>
   </div>
+  <div class="cd"><div class="ct"><span class="dot" style="background:var(--ac2)"></span>🅖 Google Ads — розбивка по сайтах</div><div id="ga4Properties"></div></div>
   <div class="g2">
     <div class="cd"><div class="ct"><span class="dot" style="background:var(--ac)"></span>🔗 Топ джерела</div><div id="ga4Sources"></div></div>
     <div class="cd"><div class="ct"><span class="dot" style="background:var(--g)"></span>📄 Топ сторінки</div><div id="ga4Pages"></div></div>
@@ -1145,6 +1149,9 @@ if(D.meta_accounts&&D.meta_accounts.length){{metaAcc.innerHTML=D.meta_accounts.m
 
 const campBody=document.getElementById('campBody');
 if(D.meta_camps&&D.meta_camps.length){{document.getElementById('campTotal').textContent=D.meta_camps.length+' активних';campBody.innerHTML=D.meta_camps.map((c,i)=>`<tr><td class="num" style="color:var(--td)">${{i+1}}</td><td title="${{c.campaign}}">${{c.campaign.length>40?c.campaign.substr(0,40)+'…':c.campaign}}</td><td><span class="badge bb">${{c.account}}</span></td><td class="r num">${{fmt(c.spend)}}</td><td class="r num">${{fmt(c.impressions)}}</td><td class="r num">${{c.clicks}}</td><td class="r num">${{c.cpc}}</td><td class="r num">${{c.ctr}}%</td><td class="r num" style="color:var(--g)">${{c.results}}</td></tr>`).join('');}}else{{campBody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:18px;color:var(--td)">Немає кампаній</td></tr>';}}
+
+const ga4Props=document.getElementById('ga4Properties');
+if(D.ga4_properties&&D.ga4_properties.length){{const totalSpend=D.ga4_total_ads_cost||0;const totalClicks=D.ga4_total_ads_clicks||0;ga4Props.innerHTML=D.ga4_properties.map(p=>{{const err=p.error?`<span class="badge br">⚠ ${{(p.error||'').substr(0,40)}}…</span>`:`<span class="badge bg">OK</span>`;const cpc=p.ads_clicks?(p.ads_cost/p.ads_clicks).toFixed(2):'0';return `<div class="bar-row" style="border-bottom:1px solid var(--brd)"><div class="bar-name" style="max-width:none;flex:none;width:170px">${{p.name||p.id}}</div><div style="flex:1;display:flex;gap:14px;flex-wrap:wrap;font-size:11px"><span>Витрати: <b style="color:var(--ac2)">${{fmt(p.ads_cost||0)}} ₴</b></span><span>Кліки: <b>${{fmt(p.ads_clicks||0)}}</b></span><span>CPC: <b>${{cpc}} ₴</b></span><span>Сесії: <b style="color:var(--g)">${{fmt(p.sessions||0)}}</b></span><span>Користувачів: <b>${{fmt(p.users||0)}}</b></span></div>${{err}}</div>`;}}).join('')+`<div style="padding:8px 0 0;font-size:11px;color:var(--td);text-align:right">∑ Всього: <b style="color:var(--ac2)">${{fmt(totalSpend)}} ₴</b> · ${{fmt(totalClicks)}} кліків</div>`;}}else{{ga4Props.innerHTML='<div style="text-align:center;color:var(--td);padding:18px">Немає даних Google Ads</div>';}}
 
 const ga4S=document.getElementById('ga4Sources');
 if(D.ga4_sources.length){{const max=D.ga4_sources[0].sessions||1;ga4S.innerHTML=D.ga4_sources.map(s=>{{const lbl=s.source+(s.medium&&s.medium!=='(none)'?' / '+s.medium:'');const p=Math.max(2,Math.round(s.sessions/max*100));return `<div class="bar-row"><div class="bar-name" title="${{lbl}}">${{lbl}}</div><div class="bar-wrap"><div class="bar-fill" style="width:${{p}}%"></div></div><div class="bar-val">${{s.sessions}}</div></div>`;}}).join('');}}else{{ga4S.innerHTML='<div style="text-align:center;color:var(--td);padding:18px">Немає даних</div>';}}
