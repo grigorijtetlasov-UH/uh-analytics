@@ -523,12 +523,22 @@ HISTORY_DIR.mkdir(exist_ok=True)
 # Сайти/підрозділи що належать до окремого бізнесу SH (Service Hub) —
 # вони мають виключатись з UH-аналітики (Розетка СХ, Епіцентр СХ і т.д.)
 def is_sh_site(name) -> bool:
-    """True якщо це сайт/канал/підрозділ SH-бізнесу (Розетка СХ, Епіцентр СХ ...)."""
+    """True якщо це сайт/канал/підрозділ SH-бізнесу (Розетка СХ, Епіцентр СХ ...).
+
+    Робастний до Excel-унікальностей: нерозривні пробіли (\\xa0), різні форми Unicode,
+    подвійні пробіли, різні регістри.
+    """
     if not name:
         return False
-    s = str(name).strip().lower()
-    # СХ-маркери: " сх", "сх ", закінчується на " сх", або дорівнює "сх"
-    return s.endswith(" сх") or " сх " in (" " + s + " ") or s == "сх"
+    import unicodedata as _u
+    s = _u.normalize("NFKC", str(name)).replace("\u00a0", " ").strip().lower()
+    # collapse multiple spaces to one
+    s = " ".join(s.split())
+    if not s:
+        return False
+    # 'сх' як окреме слово (не як частина "схема" і т.п.)
+    parts = s.split()
+    return "сх" in parts
 
 
 def is_matrasroll_podr(name) -> bool:
