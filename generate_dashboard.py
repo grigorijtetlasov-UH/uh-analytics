@@ -405,6 +405,14 @@ def build_daily(data, history):
     meta_delta_cls, meta_delta_txt = delta_str(meta_spend, prev_meta_spend)
 
     crm_trend = crm.get("trend_30d", [])
+    # FALLBACK: якщо сьогодні crm.trend_30d порожній (CI запуск без локальних Excel),
+    # беремо найсвіжіший непорожній trend_30d з історії — щоб графік не був пустий.
+    if not crm_trend:
+        for h in reversed(history[:-1] if history else []):
+            ht = h.get("crm", {}).get("trend_30d", [])
+            if ht:
+                crm_trend = ht
+                break
     trend_dates    = [t["date"][5:] for t in crm_trend]
     trend_revenue  = [t["revenue"] for t in crm_trend]
     trend_orders   = [t["orders"] for t in crm_trend]
@@ -566,11 +574,33 @@ def build_monthly(data, history):
     """Збирає month.html з порівнянням з попереднім місяцем."""
     target_month = data.get("month", {}).get("target_month", datetime.now().strftime("%Y-%m"))
     month_data = data.get("month", {})
-    curr_crm = month_data.get("crm", {})
-    prev_crm = month_data.get("prev_crm", {})
+    curr_crm = month_data.get("crm", {}) or {}
+    prev_crm = month_data.get("prev_crm", {}) or {}
 
-    if not curr_crm.get("orders"):
-        return f'<html><body style="background:#0c0f1a;color:#e4e8f7;font-family:sans-serif;padding:40px;text-align:center"><h1>Місячний дашборд</h1><p>Немає даних за {target_month}</p></body></html>'
+    # Якщо CRM зовсім немає — НЕ падаємо, а будуємо з порожніми CRM-блоками.
+    # 1С/Meta/Google Ads частина все одно буде відображатись.
+    crm_missing = not curr_crm.get("orders")
+    if crm_missing:
+        # Заповнюємо мінімальну структуру щоб шаблон зрендерився
+        curr_crm = {
+            "month": target_month,
+            "orders": {"total": 0, "revenue": 0, "refused": 0, "refuse_pct": 0, "avg_check": 0},
+            "leads": {"new_leads": 0},
+            "managers": [], "managers_shop": [], "chatters": [],
+            "statuses": {}, "sites": {}, "products": [],
+            "categories": {}, "request_types": {}, "payment_methods": {},
+            "delivery_types": {}, "carriers": {}, "warehouses": {},
+            "refuse_reasons": {}, "lead_objections": {}, "process_reasons": {},
+            "daily_trend": [],
+        }
+        if not prev_crm.get("orders"):
+            prev_crm = dict(curr_crm)
+            prev_month_dt = datetime.strptime(target_month + "-01", "%Y-%m-%d")
+            if prev_month_dt.month == 1:
+                prev_month_dt = prev_month_dt.replace(year=prev_month_dt.year-1, month=12)
+            else:
+                prev_month_dt = prev_month_dt.replace(month=prev_month_dt.month-1)
+            prev_crm["month"] = prev_month_dt.strftime("%Y-%m")
 
     # Поточні дані
     co = curr_crm.get("orders", {})
@@ -673,8 +703,21 @@ def build_monthly(data, history):
     sites_compare.sort(key=lambda x: x["revenue"], reverse=True)
 
     # Multi-month trend (3 місяці назад)
-    multi_month = month_data.get("multi_month_trend", [])
+    multi_month = month_data.get("multi_month_trend", []) or []
+    # FALLBACK: якщо CI не сформував multi_month — беремо з найсвіжішої історії
+    if not multi_month:
+        for h in reversed(history[:-1] if history else []):
+            mm = h.get("month", {}).get("multi_month_trend", [])
+            if mm:
+                multi_month = mm
+                break
     multi_month_1c = month_data.get("multi_month_1c_uh", {}) or {}
+    if not multi_month_1c:
+        for h in reversed(history[:-1] if history else []):
+            mm1c = h.get("month", {}).get("multi_month_1c_uh", {})
+            if mm1c:
+                multi_month_1c = mm1c
+                break
     mm_1c_orders = multi_month_1c.get("ORDERS", [])
     mm_1c_sales  = multi_month_1c.get("SALES",  [])
 
