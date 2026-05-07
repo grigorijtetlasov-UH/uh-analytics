@@ -1,1 +1,616 @@
-<html><body style="background:#0c0f1a;color:#e4e8f7;font-family:sans-serif;padding:40px;text-align:center"><h1>Місячний дашборд</h1><p>Немає даних за 2026-05</p></body></html>
+<!DOCTYPE html>
+<html lang="uk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>UH — Monthly Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+:root{--bg:#0c0f1a;--s:#151929;--s2:#1c2137;--s3:#242b47;--brd:#2a3050;--brd2:#3a4170;--t:#e4e8f7;--t2:#c1c7e0;--td:#7b84a3;--td2:#5a6280;--ac:#6c5ce7;--ac2:#a29bfe;--g:#00d68f;--gd:rgba(0,214,143,.15);--o:#ffa94d;--od:rgba(255,169,77,.15);--r:#ff6b6b;--rd:rgba(255,107,107,.15);--b:#339af0;--bd:rgba(51,154,240,.15);--y:#ffd43b;--p:#da77f2;--c:#66d9e8;--lime:#94d82d;--drr-good:#00d68f;--drr-ok:#94d82d;--drr-warn:#ffa94d;--drr-bad:#ff6b6b;--drr-neu:#7b84a3}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;padding:14px 18px;font-size:12px;line-height:1.4}
+.hdr{text-align:center;margin-bottom:8px;position:relative}
+.hdr h1{font-size:24px;font-weight:700;background:linear-gradient(135deg,var(--ac2),var(--g));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px}
+.hdr .sub{color:var(--td);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-top:3px}
+.hdr .stamp{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--td2);margin-top:4px;padding:2px 8px;background:var(--s);border:1px solid var(--brd);border-radius:10px}
+.view-switch{position:absolute;top:0;right:0;display:flex;gap:2px;background:var(--s);border:1px solid var(--brd);border-radius:8px;padding:3px}
+.view-switch a{padding:6px 14px;border-radius:6px;text-decoration:none;color:var(--td);font-size:11px;font-weight:500;transition:.15s}
+.view-switch a.on{background:var(--ac);color:#fff}
+.view-switch a:hover:not(.on){color:var(--t);background:var(--s2)}
+.ins-wrap{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.ins{flex:1;min-width:240px;background:var(--s);border:1px solid var(--brd);border-radius:9px;padding:8px 12px;display:flex;align-items:center;gap:8px;font-size:11px}
+.ins-ico{font-size:14px;flex-shrink:0}
+.ins-txt{color:var(--t2);line-height:1.3}
+.ins-good{border-left:3px solid var(--g)}
+.ins-warn{border-left:3px solid var(--o)}
+.ins-bad{border-left:3px solid var(--r)}
+.ins-info{border-left:3px solid var(--b)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:9px;margin-bottom:14px}
+.kpi{background:var(--s);border:1px solid var(--brd);border-radius:11px;padding:12px 11px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:11px 11px 0 0}
+.kpi:nth-child(1)::before{background:linear-gradient(90deg,var(--ac),var(--ac2))}
+.kpi:nth-child(2)::before{background:var(--g)}
+.kpi:nth-child(3)::before{background:var(--o)}
+.kpi:nth-child(4)::before{background:var(--b)}
+.kpi:nth-child(5)::before{background:var(--p)}
+.kpi:nth-child(6)::before{background:var(--c)}
+.kpi:nth-child(7)::before{background:var(--r)}
+.kpi:nth-child(8)::before{background:var(--lime)}
+.kl{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--td);margin-bottom:3px;font-weight:500}
+.kv{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:600;line-height:1.1}
+.ku{font-size:9px;color:var(--td);margin-left:3px;font-family:'DM Sans'}
+.ks{font-size:9px;color:var(--td);margin-top:3px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.dlt{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;padding:1px 5px;border-radius:4px}
+.dlt.up{background:var(--gd);color:var(--g)}
+.dlt.down{background:var(--rd);color:var(--r)}
+.dlt.neu{background:rgba(123,132,163,.15);color:var(--td)}
+.tabs{display:flex;gap:2px;margin-bottom:14px;background:var(--s);border-radius:10px;padding:3px;border:1px solid var(--brd);flex-wrap:wrap}
+.tab{flex:1;min-width:110px;padding:9px 6px;border-radius:8px;text-align:center;cursor:pointer;font-size:11px;font-weight:500;color:var(--td);border:none;background:none;transition:.15s;letter-spacing:.3px}
+.tab:hover{color:var(--t);background:var(--s2)}
+.tab.on{background:var(--ac);color:#fff}
+.pnl{display:none}
+.pnl.on{display:block;animation:fade .2s ease-in}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.cd{background:var(--s);border:1px solid var(--brd);border-radius:11px;padding:14px;margin-bottom:11px}
+.ct{font-size:12px;font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.ct .dot{width:7px;height:7px;border-radius:50%;background:var(--ac);flex-shrink:0}
+.ct .badge-tot{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:var(--td);margin-left:auto;padding:2px 8px;background:var(--s2);border-radius:5px}
+.cd-d{font-size:10px;color:var(--td);margin-bottom:11px;line-height:1.4}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:11px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:11px}
+@media(max-width:980px){.g2,.g3,.g4{grid-template-columns:1fr}}
+canvas{max-height:280px}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{background:var(--s2);padding:7px 9px;text-align:left;font-weight:600;color:var(--td);font-size:9px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;border-bottom:1px solid var(--brd)}
+th.r,td.r{text-align:right}
+td{padding:6px 9px;border-bottom:1px solid rgba(255,255,255,.04)}
+tbody tr:hover td{background:rgba(108,92,231,.06)}
+.scr{max-height:420px;overflow-y:auto}
+.scr::-webkit-scrollbar{width:5px}
+.scr::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:3px}
+.scr::-webkit-scrollbar-track{background:var(--s2)}
+.badge{display:inline-block;padding:2px 7px;border-radius:5px;font-size:9px;font-weight:600;letter-spacing:.2px}
+.bg{background:var(--gd);color:var(--g)}.bo{background:var(--od);color:var(--o)}
+.br{background:var(--rd);color:var(--r)}.bb{background:var(--bd);color:var(--b)}
+.num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500}
+.bar-row{display:flex;align-items:center;gap:9px;padding:5px 11px;border-bottom:1px solid rgba(255,255,255,.03)}
+.bar-row:last-child{border-bottom:none}
+.bar-name{font-size:11px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+.bar-wrap{flex:2;background:var(--s2);border-radius:3px;height:6px;overflow:hidden;min-width:60px}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:3px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.bar-val{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;width:90px;text-align:right;color:var(--t2)}
+.mini-kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:11px}
+.mk{background:var(--s2);border:1px solid var(--brd);border-radius:8px;padding:9px;text-align:center}
+.mk-l{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:var(--td);margin-bottom:3px}
+.mk-v{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600}
+.mk-d{font-size:8px;margin-top:2px}
+.cmp-row{display:grid;grid-template-columns:1fr 90px 90px 80px;gap:10px;padding:7px 11px;border-bottom:1px solid rgba(255,255,255,.04);align-items:center;font-size:11px}
+.cmp-row:hover{background:rgba(108,92,231,.05)}
+.cmp-name{font-weight:500}
+.cmp-val{font-family:'JetBrains Mono',monospace;text-align:right;font-weight:500}
+.ftr{text-align:center;color:var(--td2);font-size:10px;padding-top:18px;border-top:1px solid var(--brd);margin-top:24px;font-family:'JetBrains Mono',monospace}
+
+/* PDF Export Button */
+.pdf-btn{position:absolute;top:0;left:0;display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.3px;box-shadow:0 2px 8px rgba(108,92,231,.25);transition:.15s}
+.pdf-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(108,92,231,.4)}
+.pdf-btn:disabled{opacity:.6;cursor:wait;transform:none}
+.pdf-btn .ic{font-size:13px}
+
+/* PDF EXPORT MODE — show all panels (without forced page-breaks; pages added manually in JS) */
+body.pdf-mode .pnl{display:block !important;padding-top:14px;break-inside:avoid}
+body.pdf-mode .pnl.pdf-first{padding-top:0}
+body.pdf-mode .tabs{display:none !important}
+body.pdf-mode .pdf-btn{display:none !important}
+body.pdf-mode .view-switch{display:none !important}
+body.pdf-mode{padding:20px}
+body.pdf-mode .pnl-title{font-size:18px;font-weight:700;color:var(--ac2);margin:0 0 12px;border-bottom:1px solid var(--brd);padding-bottom:6px;display:block !important}
+.pnl-title{display:none}
+
+/* Multi-month summary cards */
+.mm-summary{margin-top:14px}
+.mm-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-bottom:14px}
+.mm-card{background:linear-gradient(180deg,rgba(108,92,231,.06),rgba(108,92,231,.02));border:1px solid var(--brd);border-radius:10px;padding:12px 14px}
+.mm-card.mm-empty{opacity:.5}
+.mm-h{font-size:13px;font-weight:700;color:var(--ac2);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--brd)}
+.mm-rows{display:flex;flex-direction:column;gap:5px}
+.mm-r{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;line-height:1.35}
+.mm-l{color:var(--td);flex-shrink:0}
+.mm-v{color:var(--tx);text-align:right}
+.mm-trend{margin-top:8px;padding:5px 8px;border-radius:6px;font-size:11px;font-weight:600;text-align:center}
+.mm-trend.up{background:var(--gd);color:var(--g)}
+.mm-trend.down{background:var(--rd);color:var(--r)}
+.mm-trend.neu{background:rgba(123,132,163,.12);color:var(--td)}
+.mm-empty-msg{text-align:center;color:var(--td);font-size:12px;padding:20px 0}
+.mm-cross{background:rgba(108,92,231,.05);border:1px solid var(--brd);border-radius:10px;padding:12px 14px}
+.mm-cross-h{font-size:12px;font-weight:700;color:var(--ac2);margin-bottom:10px}
+.mm-cmp{font-size:11.5px;line-height:1.7;color:var(--tx)}
+.mm-cmp-l{color:var(--td)}
+.mm-cmp-sub{color:var(--td);font-size:11px}
+</style></head>
+<body>
+
+<div class="hdr">
+  <button class="pdf-btn" id="pdfBtn" onclick="exportPDF()"><span class="ic">📄</span><span>Експорт PDF</span></button>
+  <div class="view-switch">
+    <a href="index.html">📊 День</a>
+    <a href="month.html" class="on">📅 Місяць</a>
+  </div>
+  <h1>UH Monthly Dashboard</h1>
+  <div class="sub">United Home · 2026-05</div>
+  <div class="stamp">Поточний: 2026-05 (повний місяць) · Порівняння з 2026-04 (повний місяць) · оновлено 07.05.2026 08:45</div>
+</div>
+
+
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kl">Замовлення місяць</div><div class="kv">0<span class="ku">₴</span></div><div class="ks">vs 0 ₴ · <span class="dlt neu">—</span></div></div>
+  <div class="kpi"><div class="kl">Замовлень місяць</div><div class="kv">0</div><div class="ks">vs 0 · <span class="dlt neu">—</span></div></div>
+  <div class="kpi"><div class="kl">Лідів місяць</div><div class="kv">0</div><div class="ks">vs 0 · <span class="dlt neu">—</span></div></div>
+  <div class="kpi"><div class="kl">Сер. чек</div><div class="kv">0<span class="ku">₴</span></div><div class="ks">vs 0 ₴ · <span class="dlt neu">—</span></div></div>
+  <div class="kpi"><div class="kl">Відмов</div><div class="kv">0</div><div class="ks">0.0% · vs 0.0% · <span class="dlt neu">—</span></div></div>
+  <div class="kpi"><div class="kl">Менеджерів</div><div class="kv">0</div><div class="ks">активних</div></div>
+  <div class="kpi"><div class="kl">Каналів</div><div class="kv">0</div><div class="ks">продажу</div></div>
+  <div class="kpi"><div class="kl">SKU товарів</div><div class="kv">0</div><div class="ks">унікальних</div></div>
+  <div class="kpi"><div class="kl">ДРР Відгрузки</div><div class="kv" style="color:var(--drr-good)">3.43<span class="ku">%</span></div><div class="ks">vs 0.74% · <span class="dlt down">+2.7пп</span></div></div>
+  <div class="kpi"><div class="kl">ДРР Замовлення</div><div class="kv" style="color:var(--drr-good)">2.04<span class="ku">%</span></div><div class="ks">79 706 ₴ реклами · <span class="dlt down">+1.3пп</span></div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab on" onclick="sw('overview', this)">📊 Огляд</button>
+  <button class="tab" onclick="sw('crm', this)">👥 Менеджери</button>
+  <button class="tab" onclick="sw('crmops', this)">🏭 Операції</button>
+  <button class="tab" onclick="sw('channels', this)">🌐 Канали</button>
+  <button class="tab" onclick="sw('products', this)">🛏️ Товари</button>
+</div>
+
+<div class="pnl on" id="p-overview"><h2 class="pnl-title">📊 Огляд</h2>
+  <div class="cd">
+    <div class="ct"><span class="dot"></span>📈 CRM SalesDrive — останні 3 місяці<span class="badge-tot" id="trend30Total"></span></div>
+    <div class="cd-d">Stacked-бар: кожен день показує всі місяці накопичено. Наведіть курсор для порівняння.</div>
+    <canvas id="chDaily" style="max-height:400px"></canvas>
+    
+    <div class="mm-summary">
+      <div class="mm-cards">
+            <div class="mm-card mm-empty">
+              <div class="mm-h">Березень 2026</div>
+              <div class="mm-empty-msg">немає даних</div>
+            </div>
+            <div class="mm-card mm-empty">
+              <div class="mm-h">Квітень 2026</div>
+              <div class="mm-empty-msg">немає даних</div>
+            </div>
+            <div class="mm-card mm-empty">
+              <div class="mm-h">Травень 2026</div>
+              <div class="mm-empty-msg">немає даних</div>
+            </div></div>
+      
+    </div>
+  </div>
+
+  <div class="cd" style="margin-top:14px">
+    <div class="ct"><span class="dot" style="background:var(--g)"></span>🏭 1С UH ORDERS — замовлення (всі статуси) · 3 місяці<span class="badge-tot" id="trend1cOrdTotal"></span></div>
+    <div class="cd-d">Дані з 1С: всі замовлення (включно з відмовами). Stacked по місяцях, день-в-день.</div>
+    <canvas id="ch1cOrders" style="max-height:380px"></canvas>
+    
+    <div class="mm-summary">
+      <div class="mm-cards">
+        <div class="mm-card">
+          <div class="mm-h">Березень 2026</div>
+          <div class="mm-rows">
+            <div class="mm-r"><span class="mm-l">Всього:</span><span class="mm-v"><b>17 872 302 ₴</b> · 8382 зам.</span></div>
+            <div class="mm-r"><span class="mm-l">Середнє/день:</span><span class="mm-v">595 743 ₴</span></div>
+            <div class="mm-r"><span class="mm-l">🏆 Топ-день:</span><span class="mm-v">03 — 843 217 ₴ (375 зам.)</span></div>
+            <div class="mm-r"><span class="mm-l">📉 Мін-день:</span><span class="mm-v">28 — 382 426 ₴ (208 зам.)</span></div>
+            <div class="mm-r"><span class="mm-l">Активних днів:</span><span class="mm-v">30</span></div>
+          </div>
+          <div class="mm-trend down">↘ Тренд падає: -11.6% (2-га половина vs 1-ша)</div>
+        </div>
+        <div class="mm-card">
+          <div class="mm-h">Квітень 2026</div>
+          <div class="mm-rows">
+            <div class="mm-r"><span class="mm-l">Всього:</span><span class="mm-v"><b>17 377 697 ₴</b> · 7315 зам.</span></div>
+            <div class="mm-r"><span class="mm-l">Середнє/день:</span><span class="mm-v">579 257 ₴</span></div>
+            <div class="mm-r"><span class="mm-l">🏆 Топ-день:</span><span class="mm-v">01 — 1 354 938 ₴ (332 зам.)</span></div>
+            <div class="mm-r"><span class="mm-l">📉 Мін-день:</span><span class="mm-v">12 — 266 292 ₴ (121 зам.)</span></div>
+            <div class="mm-r"><span class="mm-l">Активних днів:</span><span class="mm-v">30</span></div>
+          </div>
+          <div class="mm-trend up">↗ Тренд росте: +19.0% (2-га половина vs 1-ша)</div>
+        </div>
+        <div class="mm-card">
+          <div class="mm-h">Травень 2026</div>
+          <div class="mm-rows">
+            <div class="mm-r"><span class="mm-l">Всього:</span><span class="mm-v"><b>4 270 688 ₴</b> · 1682 зам.</span></div>
+            <div class="mm-r"><span class="mm-l">Середнє/день:</span><span class="mm-v">711 781 ₴</span></div>
+            <div class="mm-r"><span class="mm-l">🏆 Топ-день:</span><span class="mm-v">04 — 1 040 130 ₴ (353 зам.)</span></div>
+            <div class="mm-r"><span class="mm-l">📉 Мін-день:</span><span class="mm-v">03 — 516 764 ₴ (169 зам.)</span></div>
+            <div class="mm-r"><span class="mm-l">Активних днів:</span><span class="mm-v">6</span></div>
+          </div>
+          <div class="mm-trend up">↗ Тренд росте: +44.9% (2-га половина vs 1-ша)</div>
+        </div></div>
+      <div class="mm-cross"><div class="mm-cross-h">📊 Same-period порівняння (1С UH ORDERS)</div><div class="mm-cmp"><span class="mm-cmp-l">Травень 2026 vs Березень 2026 (1-06):</span> <b>4 270 688 ₴</b> vs <b>4 199 466 ₴</b> <span class="dlt up">+1.7%</span> <span class="mm-cmp-sub">· зам.: 1682 vs 1930</span></div><div class="mm-cmp"><span class="mm-cmp-l">Травень 2026 vs Квітень 2026 (1-06):</span> <b>4 270 688 ₴</b> vs <b>3 925 676 ₴</b> <span class="dlt up">+8.8%</span> <span class="mm-cmp-sub">· зам.: 1682 vs 1349</span></div></div>
+    </div>
+  </div>
+
+  <div class="cd" style="margin-top:14px">
+    <div class="ct"><span class="dot" style="background:var(--o)"></span>📦 1С UH SALES — фактичні відгрузки · 3 місяці<span class="badge-tot" id="trend1cSalTotal"></span></div>
+    <div class="cd-d">Реальні відгрузки за днями. Stacked по місяцях, день-в-день.</div>
+    <canvas id="ch1cSales" style="max-height:380px"></canvas>
+    
+    <div class="mm-summary">
+      <div class="mm-cards">
+        <div class="mm-card">
+          <div class="mm-h">Березень 2026</div>
+          <div class="mm-rows">
+            <div class="mm-r"><span class="mm-l">Всього:</span><span class="mm-v"><b>18 657 461 ₴</b> · 7179 зам.</span></div>
+            <div class="mm-r"><span class="mm-l">Середнє/день:</span><span class="mm-v">643 361 ₴</span></div>
+            <div class="mm-r"><span class="mm-l">🏆 Топ-день:</span><span class="mm-v">31 — 1 651 838 ₴ (549 зам.)</span></div>
+            <div class="mm-r"><span class="mm-l">📉 Мін-день:</span><span class="mm-v">08 — 1 360 ₴ (1 зам.)</span></div>
+            <div class="mm-r"><span class="mm-l">Активних днів:</span><span class="mm-v">29</span></div>
+          </div>
+          <div class="mm-trend up">↗ Тренд росте: +29.5% (2-га половина vs 1-ша)</div>
+        </div>
+        <div class="mm-card">
+          <div class="mm-h">Квітень 2026</div>
+          <div class="mm-rows">
+            <div class="mm-r"><span class="mm-l">Всього:</span><span class="mm-v"><b>15 068 035 ₴</b> · 5483 зам.</span></div>
+            <div class="mm-r"><span class="mm-l">Середнє/день:</span><span class="mm-v">519 587 ₴</span></div>
+            <div class="mm-r"><span class="mm-l">🏆 Топ-день:</span><span class="mm-v">30 — 1 448 828 ₴ (413 зам.)</span></div>
+            <div class="mm-r"><span class="mm-l">📉 Мін-день:</span><span class="mm-v">12 — 1 479 ₴ (1 зам.)</span></div>
+            <div class="mm-r"><span class="mm-l">Активних днів:</span><span class="mm-v">29</span></div>
+          </div>
+          <div class="mm-trend up">↗ Тренд росте: +52.3% (2-га половина vs 1-ша)</div>
+        </div>
+        <div class="mm-card">
+          <div class="mm-h">Травень 2026</div>
+          <div class="mm-rows">
+            <div class="mm-r"><span class="mm-l">Всього:</span><span class="mm-v"><b>2 386 610 ₴</b> · 821 зам.</span></div>
+            <div class="mm-r"><span class="mm-l">Середнє/день:</span><span class="mm-v">477 322 ₴</span></div>
+            <div class="mm-r"><span class="mm-l">🏆 Топ-день:</span><span class="mm-v">06 — 1 023 950 ₴ (296 зам.)</span></div>
+            <div class="mm-r"><span class="mm-l">📉 Мін-день:</span><span class="mm-v">01 — 44 152 ₴ (38 зам.)</span></div>
+            <div class="mm-r"><span class="mm-l">Активних днів:</span><span class="mm-v">5</span></div>
+          </div>
+          <div class="mm-trend up">↗ Тренд росте: +631.0% (2-га половина vs 1-ша)</div>
+        </div></div>
+      <div class="mm-cross"><div class="mm-cross-h">📊 Same-period порівняння (1С UH SALES)</div><div class="mm-cmp"><span class="mm-cmp-l">Травень 2026 vs Березень 2026 (1-05):</span> <b>2 386 610 ₴</b> vs <b>2 636 264 ₴</b> <span class="dlt down">-9.5%</span> <span class="mm-cmp-sub">· зам.: 821 vs 1060</span></div><div class="mm-cmp"><span class="mm-cmp-l">Травень 2026 vs Квітень 2026 (1-05):</span> <b>2 386 610 ₴</b> vs <b>288 264 ₴</b> <span class="dlt up">+727.9%</span> <span class="mm-cmp-sub">· зам.: 821 vs 71</span></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="pnl" id="p-crm"><h2 class="pnl-title">👥 Менеджери</h2>
+  <div class="cd">
+    <div class="ct"><span class="dot"></span>🏆 Рейтинг менеджерів за місяць<span class="badge-tot">0 активних</span></div>
+    <div class="cd-d">Дельта = зміна виручки vs попередній місяць.</div>
+    <div class="scr">
+      <table>
+        <thead><tr><th>#</th><th>Менеджер</th><th class="r">Зам.</th><th class="r">Замовлення ₴</th><th class="r">Сер.чек</th><th class="r">Поп. міс.</th><th class="r">Δ</th><th class="r">% Відм.</th></tr></thead>
+        <tbody id="mgrBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--c)"></span>🏪 Менеджери на магазині</div><div class="scr" style="max-height:300px"><table><thead><tr><th>Менеджер</th><th class="r">Зам.</th><th class="r">Замовлення ₴</th><th class="r">Сер.чек</th></tr></thead><tbody id="mgrShopBody"></tbody></table></div></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--p)"></span>💬 Чатери</div><div class="scr" style="max-height:300px"><table><thead><tr><th>Чатер</th><th class="r">Зам.</th><th class="r">Замовлення ₴</th></tr></thead><tbody id="chatterBody"></tbody></table></div></div>
+  </div>
+</div>
+
+<div class="pnl" id="p-crmops"><h2 class="pnl-title">🏭 Операції</h2>
+  <div class="g2">
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--p)"></span>📦 Категорії товарів</div><canvas id="chCategories"></canvas></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--c)"></span>📞 Тип звернення</div><canvas id="chRequestTypes"></canvas></div>
+  </div>
+  <div class="g3">
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--g)"></span>💳 Спосіб оплати</div><div id="paymentMethods"></div></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--o)"></span>🚚 Тип доставки</div><div id="deliveryTypes"></div></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--b)"></span>📮 Перевізник</div><div id="carriers"></div></div>
+  </div>
+  <div class="g2">
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--y)"></span>🏭 Склад</div><div id="warehouses"></div></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--ac2)"></span>📊 Статуси замовлень</div><canvas id="chStatuses" style="max-height:280px"></canvas></div>
+  </div>
+  <div class="g2">
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--r)"></span>🚫 Причини відмов</div><canvas id="chRefuse"></canvas></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--o)"></span>🤔 Заперечення лідів</div><canvas id="chObjections"></canvas></div>
+  </div>
+</div>
+
+<div class="pnl" id="p-channels"><h2 class="pnl-title">🌐 Канали</h2>
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--g)"></span>🌐 Канали продажу — порівняння з попереднім<span class="badge-tot">0</span></div>
+    <div class="scr">
+      <table>
+        <thead><tr><th>#</th><th>Канал</th><th class="r">Зам.</th><th class="r">Замовлення ₴</th><th class="r">Сер.чек</th><th class="r">Поп. міс.</th><th class="r">Δ</th></tr></thead>
+        <tbody id="sitesBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="cd"><div class="ct"><span class="dot"></span>📊 Графік замовлень</div><canvas id="chSites"></canvas></div>
+</div>
+
+<div class="pnl" id="p-products"><h2 class="pnl-title">🛏️ Товари</h2>
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--lime)"></span>🛏️ ТОП-50 товарів за місяць<span class="badge-tot">0 SKU</span></div>
+    <div class="scr">
+      <table>
+        <thead><tr><th>#</th><th>Товар</th><th class="r">Од.</th><th class="r">Замовл.</th><th class="r">Замовлення ₴</th></tr></thead>
+        <tbody id="prodBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="ftr">UH Analytics · monthly · 07.05.2026 08:45</div>
+
+<script>
+const D = {"daily_dates": [], "daily_revenue": [], "daily_orders": [], "daily_leads": [], "multi_month": [{"month": "2026-03", "label": "Березень 2026", "days": []}, {"month": "2026-04", "label": "Квітень 2026", "days": []}, {"month": "2026-05", "label": "Травень 2026", "days": []}], "multi_month_1c_uh": {"ORDERS": [{"month": "2026-03", "label": "Березень 2026", "days": [{"day": 1, "orders": 208, "revenue": 487665.0, "leads": 0}, {"day": 2, "orders": 330, "revenue": 685624.01, "leads": 0}, {"day": 3, "orders": 375, "revenue": 843217.0, "leads": 0}, {"day": 4, "orders": 332, "revenue": 718056.0, "leads": 0}, {"day": 5, "orders": 341, "revenue": 679369.0, "leads": 0}, {"day": 6, "orders": 344, "revenue": 785535.0, "leads": 0}, {"day": 7, "orders": 302, "revenue": 577680.0, "leads": 0}, {"day": 8, "orders": 264, "revenue": 461560.0, "leads": 0}, {"day": 9, "orders": 333, "revenue": 721796.0, "leads": 0}, {"day": 10, "orders": 327, "revenue": 711865.0, "leads": 0}, {"day": 11, "orders": 274, "revenue": 663395.0, "leads": 0}, {"day": 12, "orders": 304, "revenue": 644314.0, "leads": 0}, {"day": 13, "orders": 250, "revenue": 513702.0, "leads": 0}, {"day": 14, "orders": 210, "revenue": 442761.0, "leads": 0}, {"day": 15, "orders": 278, "revenue": 547924.0, "leads": 0}, {"day": 17, "orders": 288, "revenue": 642701.0, "leads": 0}, {"day": 18, "orders": 302, "revenue": 627458.0, "leads": 0}, {"day": 19, "orders": 284, "revenue": 594921.0, "leads": 0}, {"day": 20, "orders": 249, "revenue": 502407.0, "leads": 0}, {"day": 21, "orders": 253, "revenue": 521244.0, "leads": 0}, {"day": 22, "orders": 249, "revenue": 460451.0, "leads": 0}, {"day": 23, "orders": 287, "revenue": 703907.0, "leads": 0}, {"day": 24, "orders": 299, "revenue": 594721.0, "leads": 0}, {"day": 25, "orders": 281, "revenue": 568179.0, "leads": 0}, {"day": 26, "orders": 221, "revenue": 497292.0, "leads": 0}, {"day": 27, "orders": 225, "revenue": 541113.0, "leads": 0}, {"day": 28, "orders": 208, "revenue": 382426.0, "leads": 0}, {"day": 29, "orders": 207, "revenue": 386232.0, "leads": 0}, {"day": 30, "orders": 302, "revenue": 751912.0, "leads": 0}, {"day": 31, "orders": 255, "revenue": 612874.5, "leads": 0}]}, {"month": "2026-04", "label": "Квітень 2026", "days": [{"day": 1, "orders": 332, "revenue": 1354938.0, "leads": 0}, {"day": 2, "orders": 200, "revenue": 507496.0, "leads": 0}, {"day": 3, "orders": 258, "revenue": 629018.0, "leads": 0}, {"day": 4, "orders": 153, "revenue": 372415.0, "leads": 0}, {"day": 5, "orders": 146, "revenue": 349581.0, "leads": 0}, {"day": 6, "orders": 260, "revenue": 712228.0, "leads": 0}, {"day": 7, "orders": 197, "revenue": 438659.5, "leads": 0}, {"day": 8, "orders": 205, "revenue": 433280.0, "leads": 0}, {"day": 9, "orders": 253, "revenue": 517667.0, "leads": 0}, {"day": 10, "orders": 229, "revenue": 446151.0, "leads": 0}, {"day": 11, "orders": 144, "revenue": 318758.0, "leads": 0}, {"day": 12, "orders": 121, "revenue": 266292.0, "leads": 0}, {"day": 13, "orders": 233, "revenue": 444021.0, "leads": 0}, {"day": 14, "orders": 251, "revenue": 537243.0, "leads": 0}, {"day": 15, "orders": 269, "revenue": 606228.0, "leads": 0}, {"day": 16, "orders": 264, "revenue": 566140.16, "leads": 0}, {"day": 17, "orders": 216, "revenue": 430412.01, "leads": 0}, {"day": 18, "orders": 203, "revenue": 485236.0, "leads": 0}, {"day": 19, "orders": 177, "revenue": 395017.0, "leads": 0}, {"day": 20, "orders": 332, "revenue": 775031.0, "leads": 0}, {"day": 21, "orders": 262, "revenue": 564290.0, "leads": 0}, {"day": 22, "orders": 274, "revenue": 660805.0, "leads": 0}, {"day": 23, "orders": 278, "revenue": 595973.0, "leads": 0}, {"day": 24, "orders": 291, "revenue": 588114.0, "leads": 0}, {"day": 25, "orders": 203, "revenue": 512093.0, "leads": 0}, {"day": 26, "orders": 224, "revenue": 555465.0, "leads": 0}, {"day": 27, "orders": 404, "revenue": 1011801.0, "leads": 0}, {"day": 28, "orders": 374, "revenue": 841289.0, "leads": 0}, {"day": 29, "orders": 280, "revenue": 747462.0, "leads": 0}, {"day": 30, "orders": 282, "revenue": 714593.0, "leads": 0}]}, {"month": "2026-05", "label": "Травень 2026", "days": [{"day": 1, "orders": 312, "revenue": 706366.0, "leads": 0}, {"day": 2, "orders": 216, "revenue": 520583.0, "leads": 0}, {"day": 3, "orders": 169, "revenue": 516764.0, "leads": 0}, {"day": 4, "orders": 353, "revenue": 1040129.95, "leads": 0}, {"day": 5, "orders": 354, "revenue": 822157.0, "leads": 0}, {"day": 6, "orders": 278, "revenue": 664688.0, "leads": 0}]}], "SALES": [{"month": "2026-03", "label": "Березень 2026", "days": [{"day": 1, "orders": 6, "revenue": 24290.4, "leads": 0}, {"day": 2, "orders": 216, "revenue": 755249.2, "leads": 0}, {"day": 3, "orders": 223, "revenue": 467415.51, "leads": 0}, {"day": 4, "orders": 299, "revenue": 590112.0, "leads": 0}, {"day": 5, "orders": 316, "revenue": 799197.1, "leads": 0}, {"day": 6, "orders": 231, "revenue": 581714.0, "leads": 0}, {"day": 7, "orders": 40, "revenue": 291470.9, "leads": 0}, {"day": 8, "orders": 1, "revenue": 1360.0, "leads": 0}, {"day": 9, "orders": 373, "revenue": 882692.3, "leads": 0}, {"day": 10, "orders": 285, "revenue": 754857.2, "leads": 0}, {"day": 11, "orders": 317, "revenue": 809684.2, "leads": 0}, {"day": 12, "orders": 348, "revenue": 725856.31, "leads": 0}, {"day": 13, "orders": 298, "revenue": 915851.2, "leads": 0}, {"day": 14, "orders": 40, "revenue": 213625.1, "leads": 0}, {"day": 16, "orders": 374, "revenue": 862045.3, "leads": 0}, {"day": 17, "orders": 295, "revenue": 715031.4, "leads": 0}, {"day": 18, "orders": 369, "revenue": 906825.9, "leads": 0}, {"day": 19, "orders": 318, "revenue": 733723.7, "leads": 0}, {"day": 20, "orders": 297, "revenue": 825953.6, "leads": 0}, {"day": 21, "orders": 47, "revenue": 165100.9, "leads": 0}, {"day": 22, "orders": 14, "revenue": 66017.9, "leads": 0}, {"day": 23, "orders": 379, "revenue": 976918.3, "leads": 0}, {"day": 24, "orders": 282, "revenue": 788970.7, "leads": 0}, {"day": 25, "orders": 223, "revenue": 504432.3, "leads": 0}, {"day": 26, "orders": 259, "revenue": 620459.2, "leads": 0}, {"day": 27, "orders": 236, "revenue": 602730.5, "leads": 0}, {"day": 28, "orders": 253, "revenue": 760005.0, "leads": 0}, {"day": 30, "orders": 291, "revenue": 664032.47, "leads": 0}, {"day": 31, "orders": 549, "revenue": 1651838.5, "leads": 0}]}, {"month": "2026-04", "label": "Квітень 2026", "days": [{"day": 1, "orders": 20, "revenue": 71325.0, "leads": 0}, {"day": 3, "orders": 38, "revenue": 151758.0, "leads": 0}, {"day": 4, "orders": 11, "revenue": 61219.0, "leads": 0}, {"day": 5, "orders": 2, "revenue": 3962.0, "leads": 0}, {"day": 6, "orders": 390, "revenue": 904635.0, "leads": 0}, {"day": 7, "orders": 224, "revenue": 651444.0, "leads": 0}, {"day": 8, "orders": 225, "revenue": 697632.0, "leads": 0}, {"day": 9, "orders": 172, "revenue": 508051.0, "leads": 0}, {"day": 10, "orders": 236, "revenue": 723524.0, "leads": 0}, {"day": 11, "orders": 21, "revenue": 142276.0, "leads": 0}, {"day": 12, "orders": 1, "revenue": 1479.0, "leads": 0}, {"day": 13, "orders": 19, "revenue": 89617.0, "leads": 0}, {"day": 14, "orders": 389, "revenue": 991477.0, "leads": 0}, {"day": 15, "orders": 269, "revenue": 728131.0, "leads": 0}, {"day": 16, "orders": 323, "revenue": 731048.0, "leads": 0}, {"day": 17, "orders": 222, "revenue": 539870.01, "leads": 0}, {"day": 18, "orders": 24, "revenue": 102401.0, "leads": 0}, {"day": 19, "orders": 4, "revenue": 30075.0, "leads": 0}, {"day": 20, "orders": 399, "revenue": 817673.0, "leads": 0}, {"day": 21, "orders": 237, "revenue": 658580.0, "leads": 0}, {"day": 22, "orders": 268, "revenue": 754709.0, "leads": 0}, {"day": 23, "orders": 262, "revenue": 815755.0, "leads": 0}, {"day": 24, "orders": 344, "revenue": 991325.0, "leads": 0}, {"day": 25, "orders": 21, "revenue": 114821.0, "leads": 0}, {"day": 26, "orders": 1, "revenue": 3244.0, "leads": 0}, {"day": 27, "orders": 358, "revenue": 837156.0, "leads": 0}, {"day": 28, "orders": 299, "revenue": 755298.0, "leads": 0}, {"day": 29, "orders": 291, "revenue": 740722.0, "leads": 0}, {"day": 30, "orders": 413, "revenue": 1448828.0, "leads": 0}]}, {"month": "2026-05", "label": "Травень 2026", "days": [{"day": 1, "orders": 38, "revenue": 44152.0, "leads": 0}, {"day": 2, "orders": 26, "revenue": 155310.0, "leads": 0}, {"day": 4, "orders": 242, "revenue": 596905.0, "leads": 0}, {"day": 5, "orders": 219, "revenue": 566293.0, "leads": 0}, {"day": 6, "orders": 296, "revenue": 1023950.0, "leads": 0}]}]}, "managers": [], "managers_shop": [], "chatters": [], "sites": [], "products": [], "categories": {}, "request_types": {}, "payment_methods": {}, "delivery_types": {}, "carriers": {}, "warehouses": {}, "statuses": {}, "refuse_reasons": {}, "lead_objections": {}, "prev_revenue": 0, "prev_orders": 0};
+function sw(name, btn){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));document.querySelectorAll('.pnl').forEach(p=>p.classList.remove('on'));btn.classList.add('on');document.getElementById('p-'+name).classList.add('on');}
+Chart.defaults.color='#7b84a3';Chart.defaults.font.family="'DM Sans', sans-serif";Chart.defaults.font.size=10;
+const COMMON={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{padding:10,usePointStyle:true,pointStyleWidth:8,font:{size:10}}},tooltip:{backgroundColor:'#1c2137',borderColor:'#3a4170',borderWidth:1,padding:10}},scales:{x:{grid:{color:'rgba(255,255,255,0.03)'},ticks:{maxRotation:45,font:{size:9}}},y:{grid:{color:'rgba(255,255,255,0.03)'},ticks:{font:{size:9},callback:v=>v>=1000?(v/1000).toFixed(0)+'K':v}}}};
+const fmt=n=>{n=Number(n)||0;const isInt=Number.isInteger(n);return n.toLocaleString('uk',{minimumFractionDigits:isInt?0:2,maximumFractionDigits:2}).replace(/ /g,' ').replace(',','.');};
+const fmtK=n=>{n=Number(n)||0;if(n>=1e6)return(n/1e6).toFixed(2)+'M';if(n>=1e3)return(n/1e3).toFixed(0)+'K';return n.toFixed(0);};
+
+// === Multi-month trend chart (reusable for CRM, 1C ORDERS, 1C SALES) ===
+function renderMultiMonthChart(canvasId, mm, opts) {
+  opts = opts || {};
+  const palettes = opts.palette || ['rgba(120,140,180,0.55)', 'rgba(162,155,254,0.75)', 'rgba(108,92,231,0.95)'];
+  const borders = opts.border || ['#7888b4', '#a29bfe', '#6c5ce7'];
+  const showLeads = opts.showLeads !== false;
+  const unit = opts.unit || ' ₴';
+  const totalBadgeId = opts.totalBadgeId || null;
+
+  const el = document.getElementById(canvasId);
+  if (!el || !mm || !mm.length) {
+    if (el && el.parentElement) {
+      el.style.display = 'none';
+      el.parentElement.insertAdjacentHTML('beforeend',
+        '<div style="text-align:center;color:var(--td);padding:30px;font-size:12px">Немає даних для побудови графіка</div>');
+    }
+    return;
+  }
+
+  const maxDay = 31;
+  const labels = Array.from({length: maxDay}, (_, i) => String(i+1).padStart(2,'0'));
+
+  const datasets = mm.map((m, idx) => {
+    const byDay = {};
+    (m.days || []).forEach(d => { byDay[d.day] = d; });
+    const revData = labels.map((_, i) => { const day = i+1; return byDay[day] ? byDay[day].revenue : 0; });
+    const ordersData = labels.map((_, i) => { const day = i+1; return byDay[day] ? byDay[day].orders : 0; });
+    const leadsData = labels.map((_, i) => { const day = i+1; return byDay[day] ? byDay[day].leads : 0; });
+    return {
+      type: 'bar', label: m.label, data: revData,
+      _orders: ordersData, _leads: leadsData, _month: m.month,
+      backgroundColor: palettes[idx] || palettes[0],
+      borderColor: borders[idx] || borders[0],
+      borderWidth: 1, borderRadius: 3,
+      stack: 'months', order: mm.length - idx,
+    };
+  });
+
+  const grandTotal = datasets.reduce((s, ds) => s + ds.data.reduce((a,b)=>a+b,0), 0);
+  if (totalBadgeId) {
+    const badge = document.getElementById(totalBadgeId);
+    if (badge) badge.textContent = '∑ ' + fmtK(grandTotal) + unit;
+  }
+
+  new Chart(el, {
+    type: 'bar',
+    data: { labels, datasets },
+    options: {
+      ...COMMON,
+      scales: {
+        x: { ...COMMON.scales.x, stacked: true, title: { display: true, text: 'День місяця', color: '#7c869b', font: {size:10} } },
+        y: { ...COMMON.scales.y, stacked: true, ticks: { ...COMMON.scales.y.ticks, callback: v => fmtK(v)+unit } }
+      },
+      plugins: {
+        ...COMMON.plugins,
+        legend: { position: 'top', labels: { color: '#cfd6e6', font: {size: 11}, usePointStyle: true, boxWidth: 10 } },
+        tooltip: {
+          mode: 'index', intersect: false,
+          backgroundColor: 'rgba(20,25,40,0.96)',
+          borderColor: '#2b3247', borderWidth: 1, padding: 12,
+          titleColor: '#fff', titleFont: {size: 13, weight: 'bold'},
+          bodyColor: '#cfd6e6', bodyFont: {size: 11},
+          callbacks: {
+            title: (items) => 'День ' + items[0].label,
+            label: (ctx) => {
+              const ds = ctx.dataset;
+              const rev = ctx.parsed.y;
+              const orders = (ds._orders || [])[ctx.dataIndex] || 0;
+              const leads = (ds._leads || [])[ctx.dataIndex] || 0;
+              let s = ds.label + ': ' + fmtK(rev) + unit + ' · ' + orders + ' зам.';
+              if (showLeads && leads) s += ' · ' + leads + ' лід';
+              return s;
+            },
+            afterBody: (items) => {
+              if (items.length < 2) return '';
+              const sorted = items.slice().sort((a,b) => {
+                const ma = a.dataset._month || ''; const mb = b.dataset._month || '';
+                return mb.localeCompare(ma);
+              });
+              const out = ['', '— Порівняння —'];
+              const newest = sorted[0];
+              const newRev = newest.parsed.y;
+              for (let i = 1; i < sorted.length; i++) {
+                const oldRev = sorted[i].parsed.y;
+                if (oldRev === 0 && newRev === 0) { out.push(newest.dataset.label + ' vs ' + sorted[i].dataset.label + ': обидва порожні'); continue; }
+                if (oldRev === 0) { out.push(newest.dataset.label + ' vs ' + sorted[i].dataset.label + ': +∞ (попередній 0)'); continue; }
+                const diff = newRev - oldRev;
+                const pct = (diff / oldRev * 100);
+                const sign = diff >= 0 ? '↑' : '↓';
+                out.push(newest.dataset.label + ' vs ' + sorted[i].dataset.label + ': ' + sign + ' ' + Math.abs(pct).toFixed(1) + '% (' + (diff>=0?'+':'') + fmtK(diff) + unit + ')');
+              }
+              return out.join('\n');
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+// CRM (фіолетова палітра)
+renderMultiMonthChart('chDaily', D.multi_month || [], { totalBadgeId: 'trend30Total' });
+
+// 1С UH ORDERS — зелена палітра
+renderMultiMonthChart('ch1cOrders', (D.multi_month_1c_uh && D.multi_month_1c_uh.ORDERS) || [], {
+  totalBadgeId: 'trend1cOrdTotal',
+  showLeads: false,
+  palette: ['rgba(100,160,140,0.55)', 'rgba(100,200,170,0.75)', 'rgba(0,214,143,0.95)'],
+  border:  ['#64a08c', '#64c8aa', '#00d68f'],
+});
+
+// 1С UH SALES — оранжева палітра
+renderMultiMonthChart('ch1cSales', (D.multi_month_1c_uh && D.multi_month_1c_uh.SALES) || [], {
+  totalBadgeId: 'trend1cSalTotal',
+  showLeads: false,
+  palette: ['rgba(180,140,100,0.55)', 'rgba(220,170,120,0.75)', 'rgba(255,169,77,0.95)'],
+  border:  ['#b48c64', '#dcaa78', '#ffa94d'],
+});
+
+// Managers
+const mgrBody=document.getElementById('mgrBody');
+if(D.managers&&D.managers.length){mgrBody.innerHTML=D.managers.map((m,i)=>{const refClass=m.refuse_pct>=12?'br':m.refuse_pct>=5?'bo':'bg';const dCls=m.delta_cls||'neu';return `<tr><td class="num" style="color:var(--td)">${i+1}</td><td>${m.name}</td><td class="r num">${m.orders}</td><td class="r num" style="color:var(--g)">${fmtK(m.revenue)}</td><td class="r num">${fmt(m.avg_check||0)}</td><td class="r num" style="color:var(--td)">${fmtK(m.prev_revenue||0)}</td><td class="r"><span class="dlt ${dCls}">${m.delta_txt}</span></td><td class="r"><span class="badge ${refClass}">${(m.refuse_pct||0).toFixed(1)}%</span></td></tr>`;}).join('');}else{mgrBody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}
+
+const mgrShopBody=document.getElementById('mgrShopBody');
+if(D.managers_shop&&D.managers_shop.length){mgrShopBody.innerHTML=D.managers_shop.map(m=>`<tr><td>${m.name}</td><td class="r num">${m.orders}</td><td class="r num" style="color:var(--g)">${fmtK(m.revenue)}</td><td class="r num">${fmt(m.avg_check||0)}</td></tr>`).join('');}else{mgrShopBody.innerHTML='<tr><td colspan="4" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}
+
+const chatterBody=document.getElementById('chatterBody');
+if(D.chatters&&D.chatters.length){chatterBody.innerHTML=D.chatters.map(c=>`<tr><td>${c.name}</td><td class="r num">${c.orders}</td><td class="r num" style="color:var(--g)">${fmtK(c.revenue)}</td></tr>`).join('');}else{chatterBody.innerHTML='<tr><td colspan="3" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}
+
+// Pie charts
+function pieChart(elId,dataObj){const el=document.getElementById(elId);if(!el)return;const palette=['#6c5ce7','#a29bfe','#00d68f','#ffa94d','#339af0','#ff6b6b','#da77f2','#66d9e8','#94d82d','#ffd43b','#fd7e14','#94d2bd'];const entries=Object.entries(dataObj||{}).sort((a,b)=>b[1]-a[1]).slice(0,12);if(!entries.length){el.parentElement.insertAdjacentHTML('beforeend','<div style="text-align:center;color:var(--td);padding:18px">Немає даних</div>');el.style.display='none';return;}new Chart(el,{type:'doughnut',data:{labels:entries.map(e=>e[0]),datasets:[{data:entries.map(e=>e[1]),backgroundColor:palette,borderWidth:2,borderColor:'#151929'}]},options:{...COMMON,scales:{},cutout:'55%',plugins:{...COMMON.plugins,legend:{position:'right',labels:{font:{size:9},padding:6,usePointStyle:true,boxWidth:8}}}}});}
+pieChart('chCategories',D.categories);pieChart('chRequestTypes',D.request_types);pieChart('chStatuses',D.statuses);
+
+function listChart(elId,dataObj,color){const el=document.getElementById(elId);if(!el)return;const entries=Object.entries(dataObj||{}).sort((a,b)=>b[1]-a[1]);if(!entries.length){el.innerHTML='<div style="text-align:center;color:var(--td);padding:18px">Немає даних</div>';return;}const max=entries[0][1]||1;el.innerHTML=entries.map(([n,v])=>{const p=Math.max(2,Math.round(v/max*100));return `<div class="bar-row"><div class="bar-name" title="${n}">${n}</div><div class="bar-wrap"><div class="bar-fill" style="width:${p}%;background:${color}"></div></div><div class="bar-val">${v}</div></div>`;}).join('');}
+listChart('paymentMethods',D.payment_methods,'#00d68f');listChart('deliveryTypes',D.delivery_types,'#ffa94d');
+listChart('carriers',D.carriers,'#339af0');listChart('warehouses',D.warehouses,'#ffd43b');
+
+function barChartH(elId,dataObj,color){const el=document.getElementById(elId);if(!el)return;const entries=Object.entries(dataObj||{}).sort((a,b)=>b[1]-a[1]).slice(0,10);if(!entries.length){el.parentElement.insertAdjacentHTML('beforeend','<div style="text-align:center;color:var(--td);padding:18px">Немає даних</div>');el.style.display='none';return;}new Chart(el,{type:'bar',data:{labels:entries.map(e=>e[0].length>30?e[0].substr(0,30)+'…':e[0]),datasets:[{label:'К-сть',data:entries.map(e=>e[1]),backgroundColor:color+'aa',borderColor:color,borderWidth:1,borderRadius:4}]},options:{...COMMON,indexAxis:'y',plugins:{...COMMON.plugins,legend:{display:false}}}});}
+barChartH('chRefuse',D.refuse_reasons,'#ff6b6b');barChartH('chObjections',D.lead_objections,'#ffa94d');
+
+// Sites
+const sitesBody=document.getElementById('sitesBody');
+if(D.sites&&D.sites.length){sitesBody.innerHTML=D.sites.map((s,i)=>{const dCls=s.delta_cls||'neu';return `<tr><td class="num" style="color:var(--td)">${i+1}</td><td>${s.name}</td><td class="r num">${s.orders}</td><td class="r num" style="color:var(--g)">${fmtK(s.revenue)}</td><td class="r num">${fmt(s.avg_check||0)}</td><td class="r num" style="color:var(--td)">${fmtK(s.prev_revenue||0)}</td><td class="r"><span class="dlt ${dCls}">${s.delta_txt}</span></td></tr>`;}).join('');new Chart(document.getElementById('chSites'),{type:'bar',data:{labels:D.sites.map(s=>s.name),datasets:[{label:'Замовлення',data:D.sites.map(s=>s.revenue),backgroundColor:'rgba(0,214,143,0.7)',borderColor:'#00d68f',borderRadius:4}]},options:{...COMMON,plugins:{...COMMON.plugins,legend:{display:false}},indexAxis:'y'}});}else{sitesBody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}
+
+// Products
+const prodBody=document.getElementById('prodBody');
+if(D.products&&D.products.length){prodBody.innerHTML=D.products.map((p,i)=>`<tr><td class="num" style="color:var(--td)">${i+1}</td><td title="${p.name}">${p.name.length>70?p.name.substr(0,70)+'…':p.name}</td><td class="r num">${p.qty||p.count}</td><td class="r num" style="color:var(--td)">${p.count}</td><td class="r num" style="color:var(--g)">${fmtK(p.revenue)}</td></tr>`).join('');}else{prodBody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}
+
+// === PDF EXPORT (по панелях, без зміщення сторінок) ===
+async function exportPDF() {
+  console.log('[PDF] Старт експорту');
+  const btn = document.getElementById('pdfBtn');
+  if (!btn) { console.error('[PDF] Кнопка #pdfBtn не знайдена'); return; }
+
+  // Перевірка наявності бібліотек
+  if (typeof html2canvas === 'undefined') {
+    alert('html2canvas не завантажився. Перезавантаж сторінку (Ctrl+F5).');
+    console.error('[PDF] html2canvas undefined');
+    return;
+  }
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    alert('jsPDF не завантажився. Перезавантаж сторінку (Ctrl+F5).');
+    console.error('[PDF] window.jspdf undefined');
+    return;
+  }
+
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="ic">⏳</span><span>Готую PDF...</span>';
+
+  // Включаємо PDF-режим — показуємо всі панелі
+  document.body.classList.add('pdf-mode');
+  await new Promise(r => setTimeout(r, 600)); // дай чартам перерендеритись
+  console.log('[PDF] PDF-режим увімкнено');
+
+  const today = new Date();
+  const stamp = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+  const isMonthly = document.title.includes('Monthly');
+  const fileName = (isMonthly ? 'UH_Monthly_' : 'UH_Daily_') + stamp + '.pdf';
+
+  // Збираємо все що треба в PDF: шапка + KPI + всі панелі
+  const sections = [];
+  const hdr = document.querySelector('.hdr');
+  const kpiRow = document.querySelector('.kpi-row');
+  const insWrap = document.querySelector('.ins-wrap');
+
+  // Перша сторінка: шапка + інсайти + KPI
+  const firstWrap = document.createElement('div');
+  firstWrap.style.background = 'var(--bg, #0c0f1a)';
+  firstWrap.style.padding = '0';
+  if (hdr) firstWrap.appendChild(hdr.cloneNode(true));
+  if (insWrap) firstWrap.appendChild(insWrap.cloneNode(true));
+  if (kpiRow) firstWrap.appendChild(kpiRow.cloneNode(true));
+  sections.push(firstWrap);
+
+  // Кожна панель — окрема сторінка
+  document.querySelectorAll('.pnl').forEach(p => sections.push(p));
+
+  // Готуємо jsPDF (a3 landscape)
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ unit: 'mm', format: 'a3', orientation: 'landscape', compress: true });
+  const pageW = pdf.internal.pageSize.getWidth();   // 420
+  const pageH = pdf.internal.pageSize.getHeight();  // 297
+  const margin = 8;
+  const usableW = pageW - margin * 2;
+  const usableH = pageH - margin * 2;
+
+  // Тимчасово підставимо контейнер для рендеру (поза вʼюпортом, але з фіксованою шириною)
+  const stage = document.createElement('div');
+  stage.style.position = 'fixed';
+  stage.style.left = '-99999px';
+  stage.style.top = '0';
+  stage.style.width = '1400px';
+  stage.style.background = '#0c0f1a';
+  stage.style.padding = '20px';
+  document.body.appendChild(stage);
+
+  try {
+    console.log('[PDF] Рендерю ' + sections.length + ' секцій...');
+    for (let i = 0; i < sections.length; i++) {
+      const node = sections[i].cloneNode(true);
+      stage.innerHTML = '';
+      stage.appendChild(node);
+      // Дай DOM перемалюватись
+      await new Promise(r => setTimeout(r, 80));
+      console.log('[PDF] Секція ' + (i+1) + '/' + sections.length);
+
+      const canvas = await html2canvas(stage, {
+        scale: 1.5,
+        useCORS: true,
+        backgroundColor: '#0c0f1a',
+        logging: false,
+        windowWidth: 1440,
+      });
+
+      const imgData = canvas.toDataURL('image/jpeg', 0.92);
+      // Скейлимо щоб влізло у сторінку зі збереженням пропорцій
+      const ratio = canvas.height / canvas.width;
+      let imgW = usableW;
+      let imgH = imgW * ratio;
+      if (imgH > usableH) {
+        imgH = usableH;
+        imgW = imgH / ratio;
+      }
+      const x = (pageW - imgW) / 2;
+      const y = margin;
+
+      if (i > 0) pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', x, y, imgW, imgH);
+    }
+
+    pdf.save(fileName);
+  } catch (e) {
+    console.error('PDF export error:', e);
+    alert('Помилка експорту PDF: ' + (e.message || e));
+  } finally {
+    stage.remove();
+    document.body.classList.remove('pdf-mode');
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+}
+</script>
+</body></html>
