@@ -196,6 +196,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t);min-he
 .tab{flex:1;min-width:110px;padding:9px 6px;border-radius:8px;text-align:center;cursor:pointer;font-size:11px;font-weight:500;color:var(--td);border:none;background:none;transition:.15s;letter-spacing:.3px}
 .tab:hover{color:var(--t);background:var(--s2)}
 .tab.on{background:var(--ac);color:#fff}
+.srt-btn{padding:5px 10px;border-radius:6px;border:1px solid var(--brd);background:var(--s);color:var(--td);font-size:11px;cursor:pointer;transition:.15s}
+.srt-btn:hover{background:var(--s2);color:var(--t)}
+.srt-btn.on{background:var(--ac);color:#fff;border-color:var(--ac)}
 .pnl{display:none}
 .pnl.on{display:block;animation:fade .2s ease-in}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
@@ -393,6 +396,50 @@ def build_daily(data, history):
     drr_orders_cls = _drr_class(drr_orders)
     drr_sales_cls  = _drr_class(drr_sales)
 
+    # ── ДРР ПО ПРОЕКТАХ ─────────────────────────────────────────────
+    # Витрати: Meta-кабінети що належать до проекту + Google Ads з відповідної GA4-property
+    # Виручка: 1С SALES.by_podr відповідного підрозділу
+    def _meta_spend_by(account_pred):
+        s = 0.0
+        for a in (meta.get("accounts", []) or []):
+            if account_pred(a.get("name", "")):
+                s += float(a.get("spend", 0) or 0)
+        return s
+
+    def _google_spend_by(property_id):
+        for p in (ga4.get("by_property", []) or []):
+            if str(p.get("id")) == str(property_id):
+                return float(p.get("ads_cost", 0) or 0)
+        return 0.0
+
+    def _sales_by_project(podr_pred, by_podr_dict):
+        s = 0.0
+        for podr, amt in (by_podr_dict or {}).items():
+            if podr_pred(podr):
+                s += float(amt or 0)
+        return s
+
+    # Matrasroll
+    mr_meta   = sum(float(a.get("spend", 0) or 0) for a in (meta.get("accounts", []) or []) if str(a.get("name", "")).lower().startswith("matrasroll"))
+    mr_google = _google_spend_by("349048143")  # GA4 matrasroll.com.ua
+    mr_spend  = mr_meta + mr_google
+    mr_sales  = _sales_by_project(lambda p: "matrasroll" in str(p).lower(), sales_by_podr)
+    mr_orders = _sales_by_project(lambda p: "matrasroll" in str(p).lower(), orders_by_podr)
+    drr_mr_sales  = round(mr_spend / mr_sales  * 100, 2) if mr_sales  > 0 else 0
+    drr_mr_orders = round(mr_spend / mr_orders * 100, 2) if mr_orders > 0 else 0
+
+    # Amebli
+    am_meta   = sum(float(a.get("spend", 0) or 0) for a in (meta.get("accounts", []) or []) if str(a.get("name", "")).lower().startswith("amebli"))
+    am_google = _google_spend_by("350293168")  # GA4 amebli.com.ua
+    am_spend  = am_meta + am_google
+    am_sales  = _sales_by_project(lambda p: "a-mebli" in str(p).lower() or "amebli" in str(p).lower() or "амеблі" in str(p).lower(), sales_by_podr)
+    am_orders = _sales_by_project(lambda p: "a-mebli" in str(p).lower() or "amebli" in str(p).lower() or "амеблі" in str(p).lower(), orders_by_podr)
+    drr_am_sales  = round(am_spend / am_sales  * 100, 2) if am_sales  > 0 else 0
+    drr_am_orders = round(am_spend / am_orders * 100, 2) if am_orders > 0 else 0
+
+    drr_mr_sales_cls  = _drr_class(drr_mr_sales)
+    drr_am_sales_cls  = _drr_class(drr_am_sales)
+
     prev_data = history[-2] if len(history) >= 2 else None
     prev_revenue = prev_data.get("uh", {}).get("ORDERS", {}).get("day", {}).get("total", 0) if prev_data else 0
     prev_orders = prev_data.get("crm", {}).get("orders", {}).get("total", 0) if prev_data else 0
@@ -553,6 +600,12 @@ def build_daily(data, history):
         drr_sales_cls=drr_sales_cls,
         total_ad_spend=money(total_ad_spend),
         ga4_ads_cost_str=money(google_spend),
+        # ДРР по проектах
+        drr_mr_sales=drr_mr_sales, drr_mr_orders=drr_mr_orders,
+        drr_am_sales=drr_am_sales, drr_am_orders=drr_am_orders,
+        drr_mr_sales_cls=drr_mr_sales_cls, drr_am_sales_cls=drr_am_sales_cls,
+        mr_spend_str=money(mr_spend), am_spend_str=money(am_spend),
+        mr_sales_str=money(mr_sales), am_sales_str=money(am_sales),
         # GA4 / Meta
         ga4_sessions=money(ga4_sessions),
         ga4_bounce_str=pct(ga4_bounce),
@@ -817,6 +870,69 @@ def build_monthly(data, history):
     curr_drr_sales  = _drr(curr_ad_spend, curr_sales_rev)
     prev_drr_sales  = _drr(prev_ad_spend, prev_sales_rev)
 
+    # ── ДРР ПО ПРОЕКТАХ за місяць ──────────────────────────────────
+    def _agg_month_project_spend(month_str, meta_prefix, ga4_property_id, day_limit=None):
+        """Сумує Meta-кабінети на префікс імені + Google Ads з конкретного GA4 property."""
+        spend = 0.0
+        for h in history:
+            d_str = h.get("date", "")
+            if d_str[:7] != month_str:
+                continue
+            if day_limit:
+                try:
+                    d_num = int(d_str[8:10])
+                except Exception:
+                    continue
+                if d_num > day_limit:
+                    continue
+            # Meta — суми кабінетів за префіксом імені (matrasroll / amebli)
+            for a in (h.get("meta", {}).get("accounts", []) or []):
+                if str(a.get("name", "")).lower().startswith(meta_prefix):
+                    spend += float(a.get("spend", 0) or 0)
+            # Google — конкретна GA4 property
+            for p in (h.get("ga4", {}).get("by_property", []) or []):
+                if str(p.get("id")) == str(ga4_property_id):
+                    spend += float(p.get("ads_cost", 0) or 0)
+        return spend
+
+    def _agg_month_project_sales(month_str, podr_keywords, day_limit=None, key="SALES"):
+        """Сумує 1С SALES.by_podr для підрозділів які матчаться по списку ключових слів."""
+        revenue = 0.0
+        for h in history:
+            d_str = h.get("date", "")
+            if d_str[:7] != month_str:
+                continue
+            if day_limit:
+                try:
+                    d_num = int(d_str[8:10])
+                except Exception:
+                    continue
+                if d_num > day_limit:
+                    continue
+            by_podr = h.get("uh", {}).get(key, {}).get("day", {}).get("by_podr", {}) or {}
+            for podr, amt in by_podr.items():
+                lp = str(podr).lower()
+                if any(kw in lp for kw in podr_keywords):
+                    revenue += float(amt or 0)
+        return revenue
+
+    # Matrasroll: meta-prefix "matrasroll" + GA4 349048143 + 1С підрозділи з "matrasroll"
+    curr_mr_spend = _agg_month_project_spend(target_month,    "matrasroll", "349048143")
+    curr_mr_sales = _agg_month_project_sales(target_month,    ["matrasroll"], key="SALES")
+    prev_mr_spend = _agg_month_project_spend(prev_month_str,  "matrasroll", "349048143", day_limit=day_limit_for_drr) if prev_month_str else 0
+    prev_mr_sales = _agg_month_project_sales(prev_month_str,  ["matrasroll"], day_limit=day_limit_for_drr, key="SALES") if prev_month_str else 0
+
+    # Amebli
+    curr_am_spend = _agg_month_project_spend(target_month,    "amebli", "350293168")
+    curr_am_sales = _agg_month_project_sales(target_month,    ["a-mebli", "amebli", "амеблі"], key="SALES")
+    prev_am_spend = _agg_month_project_spend(prev_month_str,  "amebli", "350293168", day_limit=day_limit_for_drr) if prev_month_str else 0
+    prev_am_sales = _agg_month_project_sales(prev_month_str,  ["a-mebli", "amebli", "амеблі"], day_limit=day_limit_for_drr, key="SALES") if prev_month_str else 0
+
+    curr_drr_mr = _drr(curr_mr_spend, curr_mr_sales)
+    prev_drr_mr = _drr(prev_mr_spend, prev_mr_sales)
+    curr_drr_am = _drr(curr_am_spend, curr_am_sales)
+    prev_drr_am = _drr(prev_am_spend, prev_am_sales)
+
     # Дельта: ДРР що падає = добре (зелений), росте = погано (червоний)
     # Тому інвертуємо delta_str
     def _drr_delta(curr_d, prev_d):
@@ -829,6 +945,8 @@ def build_monthly(data, history):
 
     drr_orders_delta_cls, drr_orders_delta_txt = _drr_delta(curr_drr_orders, prev_drr_orders)
     drr_sales_delta_cls,  drr_sales_delta_txt  = _drr_delta(curr_drr_sales,  prev_drr_sales)
+    drr_mr_delta_cls,     drr_mr_delta_txt     = _drr_delta(curr_drr_mr, prev_drr_mr)
+    drr_am_delta_cls,     drr_am_delta_txt     = _drr_delta(curr_drr_am, prev_drr_am)
 
     chart_data = {
         "daily_dates": daily_dates,
@@ -899,6 +1017,14 @@ def build_monthly(data, history):
         drr_orders_delta_cls=drr_orders_delta_cls, drr_orders_delta_txt=drr_orders_delta_txt,
         drr_sales_delta_cls=drr_sales_delta_cls,   drr_sales_delta_txt=drr_sales_delta_txt,
         curr_ad_spend=money(curr_ad_spend),
+        # ДРР по проектах monthly
+        curr_drr_mr=curr_drr_mr, prev_drr_mr=prev_drr_mr,
+        curr_drr_am=curr_drr_am, prev_drr_am=prev_drr_am,
+        curr_drr_mr_cls=_drr_class(curr_drr_mr), curr_drr_am_cls=_drr_class(curr_drr_am),
+        drr_mr_delta_cls=drr_mr_delta_cls, drr_mr_delta_txt=drr_mr_delta_txt,
+        drr_am_delta_cls=drr_am_delta_cls, drr_am_delta_txt=drr_am_delta_txt,
+        curr_mr_spend_str=money(curr_mr_spend), curr_mr_sales_str=money(curr_mr_sales),
+        curr_am_spend_str=money(curr_am_spend), curr_am_sales_str=money(curr_am_sales),
         chart_json=chart_json,
         css=SHARED_CSS,
     )
@@ -937,6 +1063,8 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
   <div class="kpi"><div class="kl">ROAS</div><div class="kv">{roas_sales}<span class="ku">×</span></div><div class="ks">відгрузки/реклама · замовл. {roas_orders}×</div></div>
   <div class="kpi"><div class="kl">ДРР Відгрузки</div><div class="kv" style="color:var(--drr-{drr_sales_cls})">{drr_sales}<span class="ku">%</span></div><div class="ks">{total_ad_spend} ₴ реклами / SALES</div></div>
   <div class="kpi"><div class="kl">ДРР Замовлення</div><div class="kv" style="color:var(--drr-{drr_orders_cls})">{drr_orders}<span class="ku">%</span></div><div class="ks">{total_ad_spend} ₴ реклами / ORDERS</div></div>
+  <div class="kpi"><div class="kl">ДРР Matrasroll</div><div class="kv" style="color:var(--drr-{drr_mr_sales_cls})">{drr_mr_sales}<span class="ku">%</span></div><div class="ks">{mr_spend_str} ₴ / {mr_sales_str} ₴ SALES</div></div>
+  <div class="kpi"><div class="kl">ДРР Amebli</div><div class="kv" style="color:var(--drr-{drr_am_sales_cls})">{drr_am_sales}<span class="ku">%</span></div><div class="ks">{am_spend_str} ₴ / {am_sales_str} ₴ SALES</div></div>
   <div class="kpi"><div class="kl">Витрати на рекламу</div><div class="kv">{total_ad_spend}<span class="ku">₴</span></div><div class="ks">Meta {meta_spend}₴ + Google {ga4_ads_cost_str}₴</div></div>
 </div>
 
@@ -1138,7 +1266,20 @@ function barChartH(elId,dataObj,color){{const el=document.getElementById(elId);i
 barChartH('chRefuse',D.refuse_reasons,'#ff6b6b');barChartH('chObjections',D.lead_objections,'#ffa94d');
 
 const prodBody=document.getElementById('prodBody');
-if(D.products&&D.products.length){{document.getElementById('prodTotal').textContent=D.products.length+' SKU';prodBody.innerHTML=D.products.map((p,i)=>`<tr><td class="num" style="color:var(--td)">${{i+1}}</td><td title="${{p.name}}">${{p.name.length>60?p.name.substr(0,60)+'…':p.name}}</td><td class="r num">${{p.qty||p.count}}</td><td class="r num" style="color:var(--td)">${{p.count}}</td><td class="r num" style="color:var(--g)">${{fmtK(p.revenue)}}</td></tr>`).join('');}}else{{prodBody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}}
+function renderProducts(sortKey){{
+  const arr=(D.products||[]).slice().sort((a,b)=>(b[sortKey]||0)-(a[sortKey]||0)).slice(0,50);
+  if(!arr.length){{prodBody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';return;}}
+  prodBody.innerHTML=arr.map((p,i)=>{{
+    const avgPrice = p.qty ? (p.revenue/p.qty) : 0;
+    const nameShort = p.name.length>60 ? p.name.substr(0,60)+'…' : p.name;
+    const qtyHi = sortKey==='qty' ? 'style="color:var(--ac2);font-weight:600"' : '';
+    const cntHi = sortKey==='count' ? 'style="color:var(--ac2);font-weight:600"' : 'style="color:var(--td)"';
+    const revHi = sortKey==='revenue' ? 'style="color:var(--g);font-weight:600"' : 'style="color:var(--g)"';
+    return `<tr><td class="num" style="color:var(--td)">${{i+1}}</td><td title="${{p.name}}">${{nameShort}}</td><td class="r num" ${{qtyHi}}>${{p.qty||p.count}}</td><td class="r num" ${{cntHi}}>${{p.count}}</td><td class="r num">${{fmt(Math.round(avgPrice))}} ₴</td><td class="r num" ${{revHi}}>${{fmtK(p.revenue)}}</td></tr>`;
+  }}).join('');
+}}
+function sortProd(btn,key){{document.querySelectorAll('.srt-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderProducts(key);}}
+renderProducts('revenue');
 
 const sitesEntries=Object.entries(D.sites||{{}}).sort((a,b)=>b[1].revenue-a[1].revenue);
 const sitesBody=document.getElementById('sitesBody');
@@ -1315,6 +1456,8 @@ MONTHLY_TEMPLATE = '''<!DOCTYPE html>
   <div class="kpi"><div class="kl">SKU товарів</div><div class="kv">{products_count}</div><div class="ks">унікальних</div></div>
   <div class="kpi"><div class="kl">ДРР Відгрузки</div><div class="kv" style="color:var(--drr-{curr_drr_sales_cls})">{curr_drr_sales}<span class="ku">%</span></div><div class="ks">vs {prev_drr_sales}% · <span class="dlt {drr_sales_delta_cls}">{drr_sales_delta_txt}</span></div></div>
   <div class="kpi"><div class="kl">ДРР Замовлення</div><div class="kv" style="color:var(--drr-{curr_drr_orders_cls})">{curr_drr_orders}<span class="ku">%</span></div><div class="ks">{curr_ad_spend} ₴ реклами · <span class="dlt {drr_orders_delta_cls}">{drr_orders_delta_txt}</span></div></div>
+  <div class="kpi"><div class="kl">ДРР Matrasroll</div><div class="kv" style="color:var(--drr-{curr_drr_mr_cls})">{curr_drr_mr}<span class="ku">%</span></div><div class="ks">{curr_mr_spend_str} ₴ / {curr_mr_sales_str} ₴ · <span class="dlt {drr_mr_delta_cls}">{drr_mr_delta_txt}</span></div></div>
+  <div class="kpi"><div class="kl">ДРР Amebli</div><div class="kv" style="color:var(--drr-{curr_drr_am_cls})">{curr_drr_am}<span class="ku">%</span></div><div class="ks">{curr_am_spend_str} ₴ / {curr_am_sales_str} ₴ · <span class="dlt {drr_am_delta_cls}">{drr_am_delta_txt}</span></div></div>
 </div>
 
 <div class="tabs">
@@ -1402,9 +1545,15 @@ MONTHLY_TEMPLATE = '''<!DOCTYPE html>
 <div class="pnl" id="p-products"><h2 class="pnl-title">🛏️ Товари</h2>
   <div class="cd">
     <div class="ct"><span class="dot" style="background:var(--lime)"></span>🛏️ ТОП-50 товарів за місяць<span class="badge-tot">{products_count} SKU</span></div>
+    <div style="display:flex;gap:6px;margin-bottom:10px;align-items:center">
+      <span style="font-size:11px;color:var(--td);margin-right:6px">Сортувати:</span>
+      <button class="srt-btn on" data-sort="revenue" onclick="sortProd(this,'revenue')">💰 По виручці</button>
+      <button class="srt-btn" data-sort="qty" onclick="sortProd(this,'qty')">📦 По кількості</button>
+      <button class="srt-btn" data-sort="count" onclick="sortProd(this,'count')">🧾 По замовленнях</button>
+    </div>
     <div class="scr">
       <table>
-        <thead><tr><th>#</th><th>Товар</th><th class="r">Од.</th><th class="r">Замовл.</th><th class="r">Замовлення ₴</th></tr></thead>
+        <thead><tr><th>#</th><th>Товар</th><th class="r">Од.</th><th class="r">Замовл.</th><th class="r">Сер. ціна</th><th class="r">Виручка ₴</th></tr></thead>
         <tbody id="prodBody"></tbody>
       </table>
     </div>
