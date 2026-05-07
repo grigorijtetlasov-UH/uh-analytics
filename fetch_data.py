@@ -470,6 +470,18 @@ META_API_VERSION = "v19.0"
 GA4_PROPERTY_ID  = os.getenv("GA4_PROPERTY_ID", "349048143")
 GA4_CREDENTIALS  = os.getenv("GA4_CREDENTIALS", "uh-sh-analitics-c316f4cad6c0.json")
 
+# Список усіх GA4 property для агрегації (matrasroll + amebli + purple)
+# Можна задати через env GA4_PROPERTIES як CSV або підставити дефолт
+GA4_PROPERTIES = [p.strip() for p in os.getenv(
+    "GA4_PROPERTIES",
+    "349048143,350293168,418849686"  # matrasroll, amebli, purple
+).split(",") if p.strip()]
+GA4_PROPERTY_NAMES = {
+    "349048143": "matrasroll.com.ua",
+    "350293168": "amebli.com.ua",
+    "418849686": "purple.com.ua",
+}
+
 # ─── Google Ads API ───────────────────────────────────────────
 # Налаштування (env або значення за замовчуванням):
 #   GADS_DEVELOPER_TOKEN  — Developer Token з ads.google.com → Tools → API Center
@@ -1745,12 +1757,8 @@ def fetch_google_ads(date_str: str) -> dict:
 
 def fetch_ga4(date_str: str) -> dict:
     """
-    Тягне з GA4 за конкретну дату:
-      - Сесії, користувачі, нові користувачі
-      - Відмови, тривалість сесії
-      - Топ джерела трафіку
-      - Топ сторінки
-      - Розбивка по пристроях
+    Тягне з GA4 за конкретну дату — агрегує дані з усіх property у GA4_PROPERTIES.
+    Сесії, користувачі, ads_cost — сума по всіх. Топ джерела/сторінки — обʼєднує і сортує.
     """
     result = {
         "date":          date_str,
@@ -1764,6 +1772,7 @@ def fetch_ga4(date_str: str) -> dict:
         "by_source":     [],
         "by_page":       [],
         "by_device":     [],
+        "by_property":   [],     # Розбивка по сайтах
         "error":         None
     }
     try:
@@ -1773,112 +1782,164 @@ def fetch_ga4(date_str: str) -> dict:
             RunReportRequest, DateRange, Metric, Dimension, OrderBy
         )
 
-        client   = BetaAnalyticsDataClient()
-        prop     = f"properties/{GA4_PROPERTY_ID}"
-        dr       = [DateRange(start_date=date_str, end_date=date_str)]
+        client = BetaAnalyticsDataClient()
+        dr     = [DateRange(start_date=date_str, end_date=date_str)]
 
-        # ── 1. Загальні метрики ──────────────────────────────
-        req = RunReportRequest(
-            property=prop, date_ranges=dr,
-            metrics=[
-                Metric(name="sessions"),
-                Metric(name="totalUsers"),
-                Metric(name="newUsers"),
-                Metric(name="bounceRate"),
-                Metric(name="averageSessionDuration"),
-            ],
-            dimensions=[Dimension(name="date")]
-        )
-        resp = client.run_report(req)
-        if resp.rows:
-            v = resp.rows[0].metric_values
-            result["sessions"]     = int(v[0].value)
-            result["users"]        = int(v[1].value)
-            result["new_users"]    = int(v[2].value)
-            result["bounce_rate"]  = round(float(v[3].value) * 100, 1)
-            result["avg_duration"] = round(float(v[4].value), 0)
+        # Зведені дані з усіх property
+        all_sources = {}   # (source, medium) -> {sessions, conversions}
+        all_pages   = {}   # (path, title) -> {views, bounce_sum, bounce_count}
+        all_devices = {}   # device -> sessions
+        bounce_weighted = 0.0  # bounce_rate * sessions, сума
+        duration_weighted = 0.0
 
-        # ── 1.5. Google Ads витрати (через GA4 → Google Ads link) ──
-        # advertiserAdCost потребує dimension з кампанією (вимога GA4 API).
-        # Групуємо по sessionCampaignName і сумуємо. Якщо Google Ads не залінкований
-        # до цього GA4 — отримаємо порожні рядки, що нормально.
-        try:
-            req_ads = RunReportRequest(
-                property=prop, date_ranges=dr,
-                metrics=[Metric(name="advertiserAdCost"), Metric(name="advertiserAdClicks")],
-                dimensions=[Dimension(name="sessionCampaignName")],
-                limit=200
-            )
-            resp_ads = client.run_report(req_ads)
-            total_cost = 0.0
-            total_clicks = 0
-            for row in resp_ads.rows:
+        # Агрегатори ваг для усереднених метрик
+        total_sessions_for_avg = 0
+
+        for prop_id in GA4_PROPERTIES:
+            prop_name = GA4_PROPERTY_NAMES.get(prop_id, prop_id)
+            prop = f"properties/{prop_id}"
+            prop_data = {
+                "id": prop_id, "name": prop_name,
+                "sessions": 0, "users": 0, "new_users": 0,
+                "ads_cost": 0.0, "ads_clicks": 0,
+                "error": None,
+            }
+
+            try:
+                # ── 1. Загальні метрики ──
+                req = RunReportRequest(
+                    property=prop, date_ranges=dr,
+                    metrics=[
+                        Metric(name="sessions"),
+                        Metric(name="totalUsers"),
+                        Metric(name="newUsers"),
+                        Metric(name="bounceRate"),
+                        Metric(name="averageSessionDuration"),
+                    ],
+                    dimensions=[Dimension(name="date")]
+                )
+                resp = client.run_report(req)
+                if resp.rows:
+                    v = resp.rows[0].metric_values
+                    p_sessions  = int(v[0].value or 0)
+                    p_users     = int(v[1].value or 0)
+                    p_new_users = int(v[2].value or 0)
+                    p_bounce    = float(v[3].value or 0)
+                    p_duration  = float(v[4].value or 0)
+
+                    prop_data["sessions"]  = p_sessions
+                    prop_data["users"]     = p_users
+                    prop_data["new_users"] = p_new_users
+
+                    result["sessions"]  += p_sessions
+                    result["users"]     += p_users
+                    result["new_users"] += p_new_users
+                    bounce_weighted     += p_bounce * p_sessions
+                    duration_weighted   += p_duration * p_sessions
+                    total_sessions_for_avg += p_sessions
+
+                # ── 1.5. Google Ads витрати ──
                 try:
-                    total_cost   += float(row.metric_values[0].value or 0)
-                    total_clicks += int(row.metric_values[1].value or 0)
-                except Exception:
-                    continue
-            result["ads_cost"]   = round(total_cost, 2)
-            result["ads_clicks"] = total_clicks
-        except Exception as ex_ads:
-            # Не критично — Google Ads може бути не залінкований
-            print(f"   ℹ️  GA4 ads_cost недоступний: {ex_ads}")
+                    req_ads = RunReportRequest(
+                        property=prop, date_ranges=dr,
+                        metrics=[Metric(name="advertiserAdCost"), Metric(name="advertiserAdClicks")],
+                        dimensions=[Dimension(name="sessionCampaignName")],
+                        limit=200
+                    )
+                    resp_ads = client.run_report(req_ads)
+                    p_cost = 0.0
+                    p_clicks = 0
+                    for row in resp_ads.rows:
+                        try:
+                            p_cost   += float(row.metric_values[0].value or 0)
+                            p_clicks += int(row.metric_values[1].value or 0)
+                        except Exception:
+                            continue
+                    prop_data["ads_cost"]   = round(p_cost, 2)
+                    prop_data["ads_clicks"] = p_clicks
+                    result["ads_cost"]   += p_cost
+                    result["ads_clicks"] += p_clicks
+                except Exception as ex_ads:
+                    print(f"   ℹ️  [{prop_name}] ads_cost недоступний: {ex_ads}")
 
-        # ── 2. Топ джерела трафіку ───────────────────────────
-        req2 = RunReportRequest(
-            property=prop, date_ranges=dr,
-            metrics=[Metric(name="sessions"), Metric(name="conversions")],
-            dimensions=[Dimension(name="sessionSource"), Dimension(name="sessionMedium")],
-            limit=10,
-            order_bys=[OrderBy(metric=OrderBy.MetricOrderBy(metric_name="sessions"), desc=True)]
-        )
-        resp2 = client.run_report(req2)
+                # ── 2. Топ джерела ──
+                req2 = RunReportRequest(
+                    property=prop, date_ranges=dr,
+                    metrics=[Metric(name="sessions"), Metric(name="conversions")],
+                    dimensions=[Dimension(name="sessionSource"), Dimension(name="sessionMedium")],
+                    limit=15,
+                    order_bys=[OrderBy(metric=OrderBy.MetricOrderBy(metric_name="sessions"), desc=True)]
+                )
+                resp2 = client.run_report(req2)
+                for r in resp2.rows:
+                    key = (r.dimension_values[0].value, r.dimension_values[1].value)
+                    if key not in all_sources:
+                        all_sources[key] = {"sessions": 0, "conversions": 0}
+                    all_sources[key]["sessions"]    += int(r.metric_values[0].value or 0)
+                    all_sources[key]["conversions"] += int(r.metric_values[1].value or 0)
+
+                # ── 3. Топ сторінки ──
+                req3 = RunReportRequest(
+                    property=prop, date_ranges=dr,
+                    metrics=[Metric(name="screenPageViews"), Metric(name="bounceRate")],
+                    dimensions=[Dimension(name="pagePath"), Dimension(name="pageTitle")],
+                    limit=15,
+                    order_bys=[OrderBy(metric=OrderBy.MetricOrderBy(metric_name="screenPageViews"), desc=True)]
+                )
+                resp3 = client.run_report(req3)
+                for r in resp3.rows:
+                    # Префіксуємо path сайтом для ясності
+                    path_with_host = f"[{prop_name}] {r.dimension_values[0].value}"
+                    key = (path_with_host, r.dimension_values[1].value)
+                    if key not in all_pages:
+                        all_pages[key] = {"views": 0, "bounce": 0.0}
+                    all_pages[key]["views"]  += int(r.metric_values[0].value or 0)
+                    all_pages[key]["bounce"]  = round(float(r.metric_values[1].value or 0) * 100, 1)
+
+                # ── 4. Пристрої ──
+                req4 = RunReportRequest(
+                    property=prop, date_ranges=dr,
+                    metrics=[Metric(name="sessions")],
+                    dimensions=[Dimension(name="deviceCategory")],
+                )
+                resp4 = client.run_report(req4)
+                for r in resp4.rows:
+                    dev = r.dimension_values[0].value
+                    all_devices[dev] = all_devices.get(dev, 0) + int(r.metric_values[0].value or 0)
+
+            except Exception as ex_prop:
+                prop_data["error"] = str(ex_prop)
+                print(f"   ⚠️  [{prop_name}] помилка: {ex_prop}")
+
+            result["by_property"].append(prop_data)
+
+        # Зважене середнє для bounce_rate і avg_duration
+        if total_sessions_for_avg > 0:
+            result["bounce_rate"]  = round((bounce_weighted / total_sessions_for_avg) * 100, 1)
+            result["avg_duration"] = round(duration_weighted / total_sessions_for_avg, 0)
+
+        # Топ-10 джерел
+        sorted_sources = sorted(all_sources.items(), key=lambda x: -x[1]["sessions"])[:10]
         result["by_source"] = [
-            {
-                "source":      r.dimension_values[0].value,
-                "medium":      r.dimension_values[1].value,
-                "sessions":    int(r.metric_values[0].value),
-                "conversions": int(r.metric_values[1].value),
-            }
-            for r in resp2.rows
+            {"source": k[0], "medium": k[1], "sessions": v["sessions"], "conversions": v["conversions"]}
+            for k, v in sorted_sources
         ]
 
-        # ── 3. Топ сторінки ──────────────────────────────────
-        req3 = RunReportRequest(
-            property=prop, date_ranges=dr,
-            metrics=[Metric(name="screenPageViews"), Metric(name="bounceRate")],
-            dimensions=[Dimension(name="pagePath"), Dimension(name="pageTitle")],
-            limit=10,
-            order_bys=[OrderBy(metric=OrderBy.MetricOrderBy(metric_name="screenPageViews"), desc=True)]
-        )
-        resp3 = client.run_report(req3)
+        # Топ-10 сторінок
+        sorted_pages = sorted(all_pages.items(), key=lambda x: -x[1]["views"])[:10]
         result["by_page"] = [
-            {
-                "path":   r.dimension_values[0].value,
-                "title":  r.dimension_values[1].value,
-                "views":  int(r.metric_values[0].value),
-                "bounce": round(float(r.metric_values[1].value) * 100, 1),
-            }
-            for r in resp3.rows
+            {"path": k[0], "title": k[1], "views": v["views"], "bounce": v["bounce"]}
+            for k, v in sorted_pages
         ]
 
-        # ── 4. Пристрої ──────────────────────────────────────
-        req4 = RunReportRequest(
-            property=prop, date_ranges=dr,
-            metrics=[Metric(name="sessions")],
-            dimensions=[Dimension(name="deviceCategory")],
-            order_bys=[OrderBy(metric=OrderBy.MetricOrderBy(metric_name="sessions"), desc=True)]
-        )
-        resp4 = client.run_report(req4)
-        total = result["sessions"] or 1
+        # Пристрої
+        total_dev = sum(all_devices.values()) or 1
         result["by_device"] = [
-            {
-                "device":  r.dimension_values[0].value,
-                "sessions": int(r.metric_values[0].value),
-                "pct":     round(int(r.metric_values[0].value) / total * 100, 1),
-            }
-            for r in resp4.rows
+            {"device": d, "sessions": s, "pct": round(s / total_dev * 100, 1)}
+            for d, s in sorted(all_devices.items(), key=lambda x: -x[1])
         ]
+
+        result["ads_cost"] = round(result["ads_cost"], 2)
 
     except Exception as e:
         result["error"] = str(e)
@@ -2001,11 +2062,15 @@ def main(target_date=None):
     if data["ga4"]["error"]:
         print(f"   ⚠️  Помилка GA4: {data['ga4']['error']}")
     else:
-        print(f"   ✅ Сесії:        {data['ga4']['sessions']}")
+        print(f"   ✅ Сесії:        {data['ga4']['sessions']} (всі сайти)")
         print(f"   ✅ Користувачі:  {data['ga4']['users']}")
         print(f"   ✅ Відмови:      {data['ga4']['bounce_rate']}%")
+        print(f"   ✅ Ads cost:     {data['ga4']['ads_cost']} UAH (Google Ads)")
         print(f"   ✅ Топ джерел:   {len(data['ga4']['by_source'])}")
         print(f"   ✅ Топ сторінок: {len(data['ga4']['by_page'])}")
+        for p in data['ga4'].get('by_property', []):
+            err = f" ❌ {p['error']}" if p.get('error') else ""
+            print(f"      {p['name']}: {p['sessions']} сесій · {p['ads_cost']}₴ реклами{err}")
 
     # ── МІСЯЧНА АГРЕГАЦІЯ ─────────────────────────────────────
     target_month = day_iso[:7]
