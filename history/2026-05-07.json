@@ -2072,7 +2072,7 @@
       ],
       "error": null
     },
-    "prev_crm_day_limit": 7,
+    "prev_crm_day_limit": null,
     "multi_month_trend": [
       {
         "month": "2026-03",
@@ -3321,8 +3321,8 @@
             },
             {
               "day": 7,
-              "orders": 403,
-              "revenue": 1176774.0,
+              "orders": 426,
+              "revenue": 1252232.0,
               "leads": 0
             }
           ]
@@ -3330,7 +3330,7 @@
       ]
     }
   },
-  "generated": "2026-05-08T09:25:09.678517",
+  "generated": "2026-05-08T09:53:25.061205",
   "uh": {
     "label": "UH",
     "ORDERS": {
@@ -3413,8 +3413,8 @@
         }
       },
       "month": {
-        "total": 5394323.95,
-        "count": 1594
+        "total": 5397523.95,
+        "count": 1595
       }
     }
   },
@@ -4020,20 +4020,20 @@
       {
         "id": "498543759542047",
         "name": "Amebli 2024",
-        "spend": 3621.51,
-        "impressions": 16737,
+        "spend": 3621.6,
+        "impressions": 16740,
         "clicks": 804,
         "results": 24,
         "cpc": 4.5,
         "ctr": 4.8,
         "error": null,
-        "cpm": 216.38
+        "cpm": 216.34
       },
       {
         "id": "785104883775481",
         "name": "Amebli",
-        "spend": 696.98,
-        "impressions": 24641,
+        "spend": 697.02,
+        "impressions": 24644,
         "clicks": 140,
         "results": 0,
         "cpc": 4.98,
@@ -4044,9 +4044,9 @@
       {
         "id": "478301535674476",
         "name": "MatrasRoll",
-        "spend": 112.27,
-        "impressions": 38600,
-        "clicks": 971,
+        "spend": 112.3,
+        "impressions": 38603,
+        "clicks": 972,
         "results": 47,
         "cpc": 0.12,
         "ctr": 2.52,
@@ -4056,8 +4056,8 @@
       {
         "id": "1071880631226950",
         "name": "MatrasRoll 2024",
-        "spend": 1030.34,
-        "impressions": 9008,
+        "spend": 1030.42,
+        "impressions": 9009,
         "clicks": 375,
         "results": 6,
         "cpc": 2.75,
@@ -4067,21 +4067,21 @@
       }
     ],
     "total": {
-      "spend": 5461.1,
-      "impressions": 88986,
-      "clicks": 2290,
+      "spend": 5461.34,
+      "impressions": 88996,
+      "clicks": 2291,
       "cpc": 2.38,
       "cpm": 61.37,
       "ctr": 2.57,
       "results": 77,
-      "cpr": 70.92
+      "cpr": 70.93
     },
     "by_campaign": [
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії матрац ORANGE Handy",
-        "spend": 1559.04,
-        "impressions": 6906,
+        "spend": 1559.13,
+        "impressions": 6909,
         "clicks": 216,
         "cpc": 7.22,
         "ctr": 3.13,
@@ -4090,8 +4090,8 @@
       {
         "account": "MatrasRoll 2024",
         "campaign": "EW Сonversions Bionica Linen Active",
-        "spend": 1030.34,
-        "impressions": 9008,
+        "spend": 1030.42,
+        "impressions": 9009,
         "clicks": 375,
         "cpc": 2.75,
         "ctr": 4.16,
@@ -4150,8 +4150,8 @@
       {
         "account": "Amebli",
         "campaign": "EW Охват | Шоурум",
-        "spend": 272.58,
-        "impressions": 22453,
+        "spend": 272.62,
+        "impressions": 22456,
         "clicks": 51,
         "cpc": 5.35,
         "ctr": 0.23,
@@ -4181,7 +4181,7 @@
         "account": "MatrasRoll",
         "campaign": "EW матрасы | campaign",
         "spend": 20.36,
-        "impressions": 13958,
+        "impressions": 13959,
         "clicks": 136,
         "cpc": 0.15,
         "ctr": 0.97,
@@ -4200,8 +4200,8 @@
       {
         "account": "MatrasRoll",
         "campaign": "EW Динамічний ремаркетинг",
-        "spend": 13.58,
-        "impressions": 3160,
+        "spend": 13.6,
+        "impressions": 3161,
         "clicks": 157,
         "cpc": 0.09,
         "ctr": 4.97,
@@ -4212,9 +4212,9 @@
         "campaign": "EW топперы |  акция бесплатная доставка",
         "spend": 13.4,
         "impressions": 7450,
-        "clicks": 201,
+        "clicks": 202,
         "cpc": 0.07,
-        "ctr": 2.7,
+        "ctr": 2.71,
         "results": 8
       },
       {
@@ -4256,8 +4256,8 @@
     "new_users": 4126,
     "bounce_rate": 37.3,
     "avg_duration": 502.0,
-    "ads_cost": 58834.72,
-    "ads_clicks": 6400,
+    "ads_cost": 58835.33,
+    "ads_clicks": 6401,
     "by_source": [
       {
         "source": "google",
@@ -4416,8 +4416,8 @@
         "sessions": 4008,
         "users": 3625,
         "new_users": 2083,
-        "ads_cost": 34154.33,
-        "ads_clicks": 3897,
+        "ads_cost": 34154.94,
+        "ads_clicks": 3898,
         "error": null
       }
     ],
