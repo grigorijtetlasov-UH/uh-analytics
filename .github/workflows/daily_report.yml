@@ -48,14 +48,46 @@ jobs:
           GADS_MATRASROLL_ID:      ${{ secrets.GADS_MATRASROLL_ID }}
         run: python fetch_data.py
 
-      - name: Generate dashboard
-        run: python generate_dashboard.py
-
       - name: Cleanup secrets
         if: always()
         run: rm -f ga4-service-account.json
 
+      - name: Check if CRM data is present
+        id: crm_check
+        run: |
+          LATEST=$(ls -t history/*.json 2>/dev/null | head -1)
+          if [ -z "$LATEST" ]; then
+            echo "has_crm=false" >> $GITHUB_OUTPUT
+            echo "Не знайдено JSON у history/"
+            exit 0
+          fi
+          echo "Найсвіжіший JSON: $LATEST"
+          HAS_CRM=$(python -c "
+          import json
+          try:
+              d = json.load(open('$LATEST', encoding='utf-8'))
+              orders = d.get('crm', {}).get('orders', {})
+              if orders and orders.get('total', 0) > 0:
+                  print('true')
+              else:
+                  print('false')
+          except Exception:
+              print('false')
+          ")
+          echo "has_crm=$HAS_CRM" >> $GITHUB_OUTPUT
+          if [ "$HAS_CRM" = "true" ]; then
+            echo "CRM дані наявні — генеруємо дашборд і комітимо"
+          else
+            echo "CRM дані відсутні (нема локального Excel) — пропускаємо commit"
+            echo "Локальні запуски користувача не будуть конфліктувати з CI"
+          fi
+
+      - name: Generate dashboard
+        if: steps.crm_check.outputs.has_crm == 'true'
+        run: python generate_dashboard.py
+
       - name: Commit and push
+        if: steps.crm_check.outputs.has_crm == 'true'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
