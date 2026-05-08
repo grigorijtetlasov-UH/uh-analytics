@@ -52,20 +52,23 @@ jobs:
         if: always()
         run: rm -f ga4-service-account.json
 
-      - name: Check if CRM data is present
+      - name: Check if today's CRM data is present
         id: crm_check
         run: |
-          LATEST=$(ls -t history/*.json 2>/dev/null | head -1)
-          if [ -z "$LATEST" ]; then
+          # Перевіряємо JSON за СЬОГОДНІ (вчорашній CI пишеться сьогодні).
+          # Якщо його немає або CRM пустий — пропускаємо commit, щоб не плутати з локальними.
+          TODAY=$(date +%Y-%m-%d)
+          TODAY_JSON="history/${TODAY}.json"
+          if [ ! -f "$TODAY_JSON" ]; then
             echo "has_crm=false" >> $GITHUB_OUTPUT
-            echo "Не знайдено JSON у history/"
+            echo "Немає $TODAY_JSON — fetch_data.py не створив (можливо ще немає CRM Excel)"
             exit 0
           fi
-          echo "Найсвіжіший JSON: $LATEST"
+          echo "Перевіряю: $TODAY_JSON"
           HAS_CRM=$(python -c "
           import json
           try:
-              d = json.load(open('$LATEST', encoding='utf-8'))
+              d = json.load(open('$TODAY_JSON', encoding='utf-8'))
               orders = d.get('crm', {}).get('orders', {})
               if orders and orders.get('total', 0) > 0:
                   print('true')
@@ -76,10 +79,10 @@ jobs:
           ")
           echo "has_crm=$HAS_CRM" >> $GITHUB_OUTPUT
           if [ "$HAS_CRM" = "true" ]; then
-            echo "CRM дані наявні — генеруємо дашборд і комітимо"
+            echo "CRM дані за сьогодні наявні — генеруємо дашборд і комітимо"
           else
-            echo "CRM дані відсутні (нема локального Excel) — пропускаємо commit"
-            echo "Локальні запуски користувача не будуть конфліктувати з CI"
+            echo "CRM дані за сьогодні відсутні — пропускаємо commit"
+            echo "Очікуємо локального запуску fetch_data.py зі свіжою CRM-вивантажкою"
           fi
 
       - name: Generate dashboard
