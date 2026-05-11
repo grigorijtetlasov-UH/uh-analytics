@@ -23,6 +23,12 @@ import requests
 from datetime import datetime, timedelta
 from pathlib import Path
 
+# Sales KPI module (KPI відділу продажів: конверсія, крос-сейл, гарантії+чохли, відмови)
+try:
+    from sales_kpi import compute_sales_kpi
+except ImportError:
+    compute_sales_kpi = None
+
 # ─────────────────────────── CONFIG ───────────────────────────
 # Можна задати через .env або напряму тут
 
@@ -207,11 +213,6 @@ def _build_trend_30d(combined_df, categorize_fn, dedup_key_fn):
     if combined_df is None or combined_df.empty:
         return []
     df = combined_df.copy()
-    # Виключаємо SH-сайти (Розетка СХ, Епіцентр СХ — окремий бізнес)
-    if "Сайт" in df.columns:
-        df = df[~df["Сайт"].fillna("").apply(is_sh_site)]
-    if df.empty:
-        return []
     df["_категорія"] = df["Статус"].fillna("").apply(categorize_fn)
     valid = df[df["_категорія"] != "spam"]
 
@@ -405,15 +406,8 @@ def build_multi_month_trend(target_month: str, n_months: int = 3) -> list:
             out.append({"month": m, "label": _ua_month_label(m), "days": []})
             continue
 
-        # Виключаємо SH-сайти (Розетка СХ і ін.)
-        sub = sub.copy()
-        if "Сайт" in sub.columns:
-            sub = sub[~sub["Сайт"].fillna("").apply(is_sh_site)]
-        if sub.empty:
-            out.append({"month": m, "label": _ua_month_label(m), "days": []})
-            continue
-
         # Категоризація і дедуп
+        sub = sub.copy()
         sub["_категорія"] = sub["Статус"].fillna("").apply(_categorize_status)
         valid = sub[sub["_категорія"] != "spam"]
         keys = _dedup_key_cols(sub)
@@ -482,96 +476,11 @@ META_API_VERSION = "v19.0"
 GA4_PROPERTY_ID  = os.getenv("GA4_PROPERTY_ID", "349048143")
 GA4_CREDENTIALS  = os.getenv("GA4_CREDENTIALS", "uh-sh-analitics-c316f4cad6c0.json")
 
-# Список усіх GA4 property для агрегації (matrasroll + amebli)
-# Можна задати через env GA4_PROPERTIES як CSV або підставити дефолт
-GA4_PROPERTIES = [p.strip() for p in os.getenv(
-    "GA4_PROPERTIES",
-    "349048143,350293168"  # matrasroll, amebli
-).split(",") if p.strip()]
-GA4_PROPERTY_NAMES = {
-    "349048143": "matrasroll.com.ua",
-    "350293168": "amebli.com.ua",
-    "418849686": "purple.com.ua",
-}
-
-# ─── Google Ads API ───────────────────────────────────────────
-# Налаштування (env або значення за замовчуванням):
-#   GADS_DEVELOPER_TOKEN  — Developer Token з ads.google.com → Tools → API Center
-#   GADS_CLIENT_ID        — OAuth Client ID з Google Cloud Console
-#   GADS_CLIENT_SECRET    — OAuth Client Secret
-#   GADS_REFRESH_TOKEN    — Refresh Token (отримується одноразово)
-#   GADS_LOGIN_CUSTOMER_ID — MCC (manager) ID, якщо акаунти під MCC, інакше пусто
-GADS_DEVELOPER_TOKEN  = os.getenv("GADS_DEVELOPER_TOKEN", "")
-GADS_CLIENT_ID        = os.getenv("GADS_CLIENT_ID", "")
-GADS_CLIENT_SECRET    = os.getenv("GADS_CLIENT_SECRET", "")
-GADS_REFRESH_TOKEN    = os.getenv("GADS_REFRESH_TOKEN", "")
-GADS_LOGIN_CUSTOMER_ID = os.getenv("GADS_LOGIN_CUSTOMER_ID", "")
-
-# Список Google Ads клієнтських акаунтів (Customer ID з UI Google Ads — 10 цифр)
-# Знайти: правий верхній кут Google Ads → під назвою акаунта (формат XXX-XXX-XXXX)
-GADS_ACCOUNTS = [
-    {"id": os.getenv("GADS_AMEBLI_ID",     "5509417188"), "name": "amebli.com.ua"},
-    {"id": os.getenv("GADS_MATRASROLL_ID", "3965110945"), "name": "matrasroll.com.ua"},
-]
-
 # Папка для збереження історії
 HISTORY_DIR = Path("history")
 HISTORY_DIR.mkdir(exist_ok=True)
 
 # ──────────────────────── HELPERS ─────────────────────────────
-
-# Сайти/підрозділи що належать до окремого бізнесу SH (Service Hub) —
-# вони мають виключатись з UH-аналітики (Розетка СХ, Епіцентр СХ і т.д.)
-def is_sh_site(name) -> bool:
-    """True якщо це сайт/канал/підрозділ SH-бізнесу (Розетка СХ, Епіцентр СХ ...).
-
-    Робастний до Excel-унікальностей: нерозривні пробіли (\\xa0), різні форми Unicode,
-    подвійні пробіли, різні регістри.
-    """
-    if not name:
-        return False
-    import unicodedata as _u
-    s = _u.normalize("NFKC", str(name)).replace("\u00a0", " ").strip().lower()
-    # collapse multiple spaces to one
-    s = " ".join(s.split())
-    if not s:
-        return False
-    # 'сх' як окреме слово (не як частина "схема" і т.п.)
-    parts = s.split()
-    return "сх" in parts
-
-
-def is_matrasroll_podr(name) -> bool:
-    """1С підрозділ Matrasroll (всі його варіації)."""
-    if not name:
-        return False
-    s = str(name).strip().lower()
-    return "matrasroll" in s or "matras roll" in s or "матрасрол" in s
-
-
-def is_amebli_podr(name) -> bool:
-    """1С підрозділ A-mebli."""
-    if not name:
-        return False
-    s = str(name).strip().lower()
-    return "a-mebli" in s or "a mebli" in s or "amebli" in s or "амеблі" in s
-
-
-def is_matrasroll_meta(account_name) -> bool:
-    """Meta Ads кабінет MatrasRoll (всі його варіації)."""
-    if not account_name:
-        return False
-    s = str(account_name).strip().lower()
-    return s.startswith("matrasroll")
-
-
-def is_amebli_meta(account_name) -> bool:
-    """Meta Ads кабінет Amebli."""
-    if not account_name:
-        return False
-    s = str(account_name).strip().lower()
-    return s.startswith("amebli")
-
 
 def fmt_yyyymmdd(dt: datetime) -> str:
     return dt.strftime("%Y%m%d")
@@ -816,12 +725,6 @@ def fetch_salesdrive(date_str: str) -> dict:
         day_df = df[df["_день"] == date_str].copy()
         month_df = df[df["_місяць"] == target_month].copy()
 
-        # Виключаємо рядки з SH-сайтів (Розетка СХ, Епіцентр СХ — це окремий бізнес)
-        if "Сайт" in day_df.columns:
-            day_df = day_df[~day_df["Сайт"].fillna("").apply(is_sh_site)].copy()
-        if "Сайт" in month_df.columns:
-            month_df = month_df[~month_df["Сайт"].fillna("").apply(is_sh_site)].copy()
-
         if day_df.empty:
             print(f"     ⚠️  Замовлень за {date_str} немає")
             result["error"] = f"Немає рядків за {date_str}"
@@ -965,6 +868,32 @@ def fetch_salesdrive(date_str: str) -> dict:
         }
         result["leads"] = {"new_leads": int(unique_leads_count)}
 
+        # ── KPI відділу продажів (Конверсія, Крос-сейл, Гарантії+Чохли, Відмови) ──
+        # ВАЖЛИВО: compute_sales_kpi сам читає Excel-файли наново (без дедупу по контактах),
+        # бо для крос-сейлу і гарантій нам потрібні ВСІ товарні позиції замовлень,
+        # а в основному потоці day_df/month_df вже дедуплені по (Дата+Контакт+Сума+Статус).
+        if compute_sales_kpi is not None:
+            try:
+                result["sales_kpi"] = compute_sales_kpi(date_str)
+                kpi_day = result["sales_kpi"].get("day", {})
+                kpi_month = result["sales_kpi"].get("month", {})
+                conv_d = kpi_day.get("conversion", {}).get("no_spam", 0)
+                conv_m = kpi_month.get("conversion", {}).get("no_spam", 0)
+                cs_d = kpi_day.get("cross_sell", {}).get("value", 0)
+                cs_m = kpi_month.get("cross_sell", {}).get("value", 0)
+                gc_d = kpi_day.get("guarantee_cover", {}).get("value", 0)
+                gc_m = kpi_month.get("guarantee_cover", {}).get("value", 0)
+                ref_d = kpi_day.get("refuse", {}).get("of_orders", 0)
+                ref_m = kpi_month.get("refuse", {}).get("of_orders", 0)
+                print(f"   📊 KPI день:  конв {conv_d}% · крос-сейл {cs_d}% · гарант+чохли {gc_d}% · відмов {ref_d}%")
+                print(f"   📊 KPI місяць: конв {conv_m}% · крос-сейл {cs_m}% · гарант+чохли {gc_m}% · відмов {ref_m}%")
+            except Exception as e:
+                print(f"   ⚠️ KPI помилка: {e}")
+                result["sales_kpi"] = {}
+        else:
+            print("   ⚠️ sales_kpi.py не знайдено — KPI пропущено")
+            result["sales_kpi"] = {}
+
         # ── Місячний підсумок (дедупльоване) ──
         month_valid = month_df[month_df["_категорія"] != "spam"]
         month_orders = month_valid[month_valid["_категорія"].isin(["order", "refused"])]
@@ -1001,38 +930,28 @@ def fetch_salesdrive(date_str: str) -> dict:
         result["statuses"] = day_uniq["Статус"].fillna("Невідомо").value_counts().to_dict() if not day_uniq.empty else {}
 
         # ── Менеджери (онлайн) ──
-        # ВАЖЛИВО: рахуємо тільки фактичні замовлення і відмови (без лідів і other)
-        mgr_base = valid_uniq[valid_uniq["Менеджер"].notna() & valid_uniq["_категорія"].isin(["order", "refused"])]
-        if not mgr_base.empty:
-            order_rows = mgr_base[mgr_base["_категорія"] == "order"]
-            refused_rows = mgr_base[mgr_base["_категорія"] == "refused"]
-
-            order_agg = order_rows.groupby("Менеджер").agg(
+        # valid_uniq і day_uniq вже визначені вище (для статусів)
+        mgr_df = valid_uniq[valid_uniq["Менеджер"].notna()]
+        if not mgr_df.empty:
+            agg = mgr_df.groupby("Менеджер").agg(
                 orders=("Сума", "count"),
                 revenue=("Сума", lambda x: float(x.fillna(0).sum())),
             ).reset_index()
-            refused_count = refused_rows.groupby("Менеджер").size().to_dict()
-            leads_by_mgr  = day_uniq[(day_uniq["_категорія"] == "lead") & day_uniq["Менеджер"].notna()].groupby("Менеджер").size().to_dict()
-
-            all_mgrs = set(order_agg["Менеджер"].tolist()) | set(refused_count.keys())
-            rows_out = []
-            for m in all_mgrs:
-                ord_row = order_agg[order_agg["Менеджер"] == m]
-                orders   = int(ord_row["orders"].iloc[0]) if not ord_row.empty else 0
-                revenue  = float(ord_row["revenue"].iloc[0]) if not ord_row.empty else 0.0
-                refused  = int(refused_count.get(m, 0))
-                leads    = int(leads_by_mgr.get(m, 0))
-                denom = orders + refused
-                refuse_pct = round(refused / denom * 100, 1) if denom else 0.0
-                avg_check  = round(revenue / orders, 0) if orders else 0
-                conv       = round(orders / (orders + leads) * 100, 1) if (orders + leads) else 0.0
-                rows_out.append({
-                    "name": m, "orders": orders, "revenue": round(revenue, 2),
-                    "refused": refused, "refuse_pct": refuse_pct,
-                    "leads": leads, "avg_check": float(avg_check),
-                    "conv": conv,
-                })
-            result["managers"] = sorted(rows_out, key=lambda r: -r["revenue"])
+            refused_by_mgr = mgr_df[mgr_df["_категорія"] == "refused"].groupby("Менеджер").size().to_dict()
+            leads_by_mgr = day_uniq[(day_uniq["_категорія"] == "lead") & day_uniq["Менеджер"].notna()].groupby("Менеджер").size().to_dict()
+            agg["refused"] = agg["Менеджер"].map(refused_by_mgr).fillna(0).astype(int)
+            agg["leads"] = agg["Менеджер"].map(leads_by_mgr).fillna(0).astype(int)
+            agg["refuse_pct"] = (agg["refused"] / agg["orders"].replace(0, 1) * 100).round(1)
+            agg["avg_check"] = (agg["revenue"] / agg["orders"].replace(0, 1)).round(0)
+            agg["conv"] = (agg["orders"] / (agg["orders"] + agg["leads"]).replace(0, 1) * 100).round(1)
+            result["managers"] = [
+                {"name": r["Менеджер"], "orders": int(r["orders"]),
+                 "revenue": round(r["revenue"], 2),
+                 "refused": int(r["refused"]), "refuse_pct": float(r["refuse_pct"]),
+                 "leads": int(r["leads"]), "avg_check": float(r["avg_check"]),
+                 "conv": float(r["conv"])}
+                for _, r in agg.sort_values("revenue", ascending=False).iterrows()
+            ]
 
         # ── Менеджери на магазині ──
         if "Менеджер на магазині" in day_df.columns:
@@ -1066,8 +985,6 @@ def fetch_salesdrive(date_str: str) -> dict:
         # ── Сайти ──
         if "Сайт" in day_df.columns:
             sites_df = valid_uniq[valid_uniq["Сайт"].notna()]
-            # Виключаємо SH-сайти (Розетка СХ, Епіцентр СХ і т.д.)
-            sites_df = sites_df[~sites_df["Сайт"].apply(is_sh_site)]
             if not sites_df.empty:
                 agg = sites_df.groupby("Сайт").agg(
                     orders=("Сума", "count"),
@@ -1116,8 +1033,7 @@ def fetch_salesdrive(date_str: str) -> dict:
             prod_col = "Назва [Товари/Послуги]"
             sum_col  = "Сума [Товари/Послуги]" if "Сума [Товари/Послуги]" in day_df.columns else "Сума"
             qty_col  = "К-ть [Товари/Послуги]" if "К-ть [Товари/Послуги]" in day_df.columns else None
-            # Тільки фактичні замовлення (без spam, refused, lead, other)
-            prod_df = day_df[day_df[prod_col].notna() & (day_df["_категорія"] == "order")].copy()
+            prod_df = day_df[day_df[prod_col].notna() & (day_df["_категорія"] != "spam")].copy()
             # Фільтр доставок
             prod_df = prod_df[~prod_df[prod_col].str.lower().str.contains("доставка|нова пошта|укрпошт|самовивіз|сборка|занос", na=False)]
             if not prod_df.empty:
@@ -1221,10 +1137,6 @@ def aggregate_month_crm(target_month: str, day_limit: int = None) -> dict:
         print(f"     📂 Місячний CRM читаю з: {src_label}{limit_label}")
 
         month_df = df[df["_місяць"] == target_month].copy()
-
-        # Виключаємо SH-сайти
-        if "Сайт" in month_df.columns:
-            month_df = month_df[~month_df["Сайт"].fillna("").apply(is_sh_site)].copy()
 
         # Якщо задано day_limit — обрізаємо до перших N днів місяця
         if day_limit is not None and not month_df.empty:
@@ -1353,42 +1265,27 @@ def aggregate_month_crm(target_month: str, day_limit: int = None) -> dict:
         result["statuses"] = month_uniq["Статус"].fillna("Невідомо").value_counts().to_dict()
 
         # ── Менеджери ──
-        # ВАЖЛИВО: для менеджерів рахуємо тільки фактичні замовлення (категорія 'order')
-        # і відмови ('refused'). Ліди й 'other' не рахуються — бо лід це не провина менеджера.
-        mgr_base = valid_uniq_m[valid_uniq_m["Менеджер"].notna() & valid_uniq_m["_категорія"].isin(["order", "refused"])]
-        if not mgr_base.empty:
-            # Окремо рахуємо order і refused
-            order_rows = mgr_base[mgr_base["_категорія"] == "order"]
-            refused_rows = mgr_base[mgr_base["_категорія"] == "refused"]
-
-            order_agg = order_rows.groupby("Менеджер").agg(
+        mgr_df = valid_uniq_m[valid_uniq_m["Менеджер"].notna()]
+        if not mgr_df.empty:
+            agg = mgr_df.groupby("Менеджер").agg(
                 orders=("Сума", "count"),
                 revenue=("Сума", lambda x: float(x.fillna(0).sum())),
             ).reset_index()
-            refused_count = refused_rows.groupby("Менеджер").size().to_dict()
-            leads_by_mgr  = month_uniq[(month_uniq["_категорія"] == "lead") & month_uniq["Менеджер"].notna()].groupby("Менеджер").size().to_dict()
-
-            # Об'єднуємо: всі менеджери у яких хоч щось було (order або refused)
-            all_mgrs = set(order_agg["Менеджер"].tolist()) | set(refused_count.keys())
-            rows_out = []
-            for m in all_mgrs:
-                ord_row = order_agg[order_agg["Менеджер"] == m]
-                orders   = int(ord_row["orders"].iloc[0]) if not ord_row.empty else 0
-                revenue  = float(ord_row["revenue"].iloc[0]) if not ord_row.empty else 0.0
-                refused  = int(refused_count.get(m, 0))
-                leads    = int(leads_by_mgr.get(m, 0))
-                # refuse_pct = refused / (orders + refused) — частка від ОБРОБЛЕНИХ
-                denom = orders + refused
-                refuse_pct = round(refused / denom * 100, 1) if denom else 0.0
-                avg_check  = round(revenue / orders, 0) if orders else 0
-                conv       = round(orders / (orders + leads) * 100, 1) if (orders + leads) else 0.0
-                rows_out.append({
-                    "name": m, "orders": orders, "revenue": round(revenue, 2),
-                    "refused": refused, "refuse_pct": refuse_pct,
-                    "leads": leads, "avg_check": float(avg_check),
-                    "conv": conv,
-                })
-            result["managers"] = sorted(rows_out, key=lambda r: -r["revenue"])
+            refused_by_mgr = mgr_df[mgr_df["_категорія"] == "refused"].groupby("Менеджер").size().to_dict()
+            leads_by_mgr   = month_uniq[(month_uniq["_категорія"] == "lead") & month_uniq["Менеджер"].notna()].groupby("Менеджер").size().to_dict()
+            agg["refused"] = agg["Менеджер"].map(refused_by_mgr).fillna(0).astype(int)
+            agg["leads"] = agg["Менеджер"].map(leads_by_mgr).fillna(0).astype(int)
+            agg["refuse_pct"] = (agg["refused"] / agg["orders"].replace(0, 1) * 100).round(1)
+            agg["avg_check"] = (agg["revenue"] / agg["orders"].replace(0, 1)).round(0)
+            agg["conv"] = (agg["orders"] / (agg["orders"] + agg["leads"]).replace(0, 1) * 100).round(1)
+            result["managers"] = [
+                {"name": r["Менеджер"], "orders": int(r["orders"]),
+                 "revenue": round(r["revenue"], 2),
+                 "refused": int(r["refused"]), "refuse_pct": float(r["refuse_pct"]),
+                 "leads": int(r["leads"]), "avg_check": float(r["avg_check"]),
+                 "conv": float(r["conv"])}
+                for _, r in agg.sort_values("revenue", ascending=False).iterrows()
+            ]
 
         # ── Менеджери на магазині ──
         if "Менеджер на магазині" in month_df.columns:
@@ -1422,7 +1319,6 @@ def aggregate_month_crm(target_month: str, day_limit: int = None) -> dict:
         # ── Сайти ──
         if "Сайт" in month_df.columns:
             sites_df = valid_uniq_m[valid_uniq_m["Сайт"].notna()]
-            sites_df = sites_df[~sites_df["Сайт"].apply(is_sh_site)]
             if not sites_df.empty:
                 agg = sites_df.groupby("Сайт").agg(
                     orders=("Сума", "count"),
@@ -1466,14 +1362,14 @@ def aggregate_month_crm(target_month: str, day_limit: int = None) -> dict:
             wh = valid_uniq_m[valid_uniq_m["Склад"].notna()]["Склад"].value_counts().to_dict()
             result["warehouses"] = {str(k): int(v) for k, v in wh.items()}
 
-        # ── Топ товарів ──
-        # Виключаємо: spam, refused (відмови) — щоб у топі тільки реальні продажі
-        # НЕ дедуплікуємо рядки — одне замовлення може мати кілька товарів
+        # ── Топ товарів (по позиціях, не дедуплікуємо — кожен товар це окрема одиниця) ──
+        # Тут НЕ робимо дедуплікацію, бо назви товарів унікальні і кожен товар це окрема позиція.
+        # АЛЕ використовуємо "Сума [Товари/Послуги]" — там реальна сума по позиції, не дублікат.
         if "Назва [Товари/Послуги]" in month_df.columns:
             prod_col = "Назва [Товари/Послуги]"
             sum_col  = "Сума [Товари/Послуги]" if "Сума [Товари/Послуги]" in month_df.columns else "Сума"
             qty_col  = "К-ть [Товари/Послуги]" if "К-ть [Товари/Послуги]" in month_df.columns else None
-            prod_df = month_df[month_df[prod_col].notna() & (month_df["_категорія"] == "order")].copy()
+            prod_df = month_df[month_df[prod_col].notna() & (month_df["_категорія"] != "spam")].copy()
             prod_df = prod_df[~prod_df[prod_col].str.lower().str.contains("доставка|нова пошта|укрпошт|самовивіз|сборка|занос", na=False)]
             if not prod_df.empty:
                 grp = prod_df.groupby(prod_col).agg(
@@ -1483,17 +1379,11 @@ def aggregate_month_crm(target_month: str, day_limit: int = None) -> dict:
                 if qty_col and qty_col in prod_df.columns:
                     qty_grp = prod_df.groupby(prod_col)[qty_col].sum().reset_index()
                     grp = grp.merge(qty_grp, on=prod_col, how="left")
-                # Беремо top-50 ЯК по виручці, ТАК і по кількості — об'єднуємо в один список
-                top_by_rev = set(grp.sort_values("revenue", ascending=False).head(50)[prod_col])
-                top_by_qty = set(grp.sort_values(qty_col, ascending=False).head(50)[prod_col]) if qty_col else set()
-                top_by_count = set(grp.sort_values("count", ascending=False).head(50)[prod_col])
-                top_names = top_by_rev | top_by_qty | top_by_count
-                grp_top = grp[grp[prod_col].isin(top_names)].sort_values("revenue", ascending=False)
                 result["products"] = [
                     {"name": r[prod_col], "count": int(r["count"]),
                      "revenue": round(r["revenue"], 2),
                      "qty": int(r.get(qty_col, r["count"])) if qty_col else int(r["count"])}
-                    for _, r in grp_top.iterrows()
+                    for _, r in grp.sort_values("revenue", ascending=False).head(50).iterrows()
                 ]
 
         # ── Причини відмов / заперечення / обробки (дедупльовані) ──
@@ -1700,175 +1590,14 @@ def fetch_meta(date_str: str) -> dict:
 
 # ──────────────────────── GOOGLE ANALYTICS 4 ─────────────────
 
-def fetch_google_ads(date_str: str) -> dict:
-    """
-    Тягне реальні рекламні витрати з Google Ads API напряму (точні дані як в UI).
-    Якщо GADS_* змінні не налаштовані — повертає пусті значення без помилки.
-
-    Повертає:
-    {
-      "total_spend": float,
-      "total_clicks": int,
-      "total_impressions": int,
-      "total_conversions": float,
-      "by_account": [
-        {"id": ..., "name": ..., "spend": ..., "clicks": ..., "impressions": ..., "conversions": ...},
-        ...
-      ],
-      "by_campaign": [
-        {"account": ..., "campaign": ..., "spend": ..., "clicks": ..., "impressions": ...},
-        ...
-      ],
-      "error": str or None,
-    }
-    """
-    result = {
-        "total_spend":       0.0,
-        "total_clicks":      0,
-        "total_impressions": 0,
-        "total_conversions": 0.0,
-        "by_account":        [],
-        "by_campaign":       [],
-        "error":             None,
-    }
-
-    # Якщо токени не налаштовані — тихо вийти
-    if not all([GADS_DEVELOPER_TOKEN, GADS_CLIENT_ID, GADS_CLIENT_SECRET, GADS_REFRESH_TOKEN]):
-        result["error"] = "GADS токени не налаштовані (потрібно: GADS_DEVELOPER_TOKEN, GADS_CLIENT_ID, GADS_CLIENT_SECRET, GADS_REFRESH_TOKEN)"
-        return result
-
-    try:
-        # Крок 1: оновити access_token через refresh_token
-        token_resp = requests.post(
-            "https://oauth2.googleapis.com/token",
-            data={
-                "client_id":     GADS_CLIENT_ID,
-                "client_secret": GADS_CLIENT_SECRET,
-                "refresh_token": GADS_REFRESH_TOKEN,
-                "grant_type":    "refresh_token",
-            },
-            timeout=30,
-        )
-        if token_resp.status_code != 200:
-            result["error"] = f"OAuth помилка: {token_resp.status_code} — {token_resp.text[:200]}"
-            return result
-        access_token = token_resp.json().get("access_token")
-        if not access_token:
-            result["error"] = "Не вдалось отримати access_token"
-            return result
-
-        # Крок 2: для кожного customer ID — запит на витрати
-        # API: POST https://googleads.googleapis.com/v17/customers/{cid}/googleAds:search
-        api_version = "v17"
-        for acc in GADS_ACCOUNTS:
-            cid = acc["id"].replace("-", "").strip()
-            if not cid:
-                continue
-            acc_result = {
-                "id": cid, "name": acc["name"],
-                "spend": 0.0, "clicks": 0, "impressions": 0, "conversions": 0.0,
-                "error": None,
-            }
-
-            # Загальні метрики кабінету
-            headers = {
-                "Authorization":     f"Bearer {access_token}",
-                "developer-token":   GADS_DEVELOPER_TOKEN,
-                "Content-Type":      "application/json",
-            }
-            if GADS_LOGIN_CUSTOMER_ID:
-                headers["login-customer-id"] = GADS_LOGIN_CUSTOMER_ID.replace("-", "")
-
-            # GAQL запит: метрики за день
-            query_total = f"""
-                SELECT
-                  metrics.cost_micros,
-                  metrics.clicks,
-                  metrics.impressions,
-                  metrics.conversions
-                FROM customer
-                WHERE segments.date = '{date_str}'
-            """
-            try:
-                r = requests.post(
-                    f"https://googleads.googleapis.com/{api_version}/customers/{cid}/googleAds:search",
-                    headers=headers,
-                    json={"query": query_total},
-                    timeout=30,
-                )
-                if r.status_code == 200:
-                    rows = r.json().get("results", [])
-                    for row in rows:
-                        m = row.get("metrics", {})
-                        acc_result["spend"]       += float(m.get("costMicros", 0)) / 1_000_000
-                        acc_result["clicks"]      += int(m.get("clicks", 0))
-                        acc_result["impressions"] += int(m.get("impressions", 0))
-                        acc_result["conversions"] += float(m.get("conversions", 0))
-                else:
-                    acc_result["error"] = f"HTTP {r.status_code}: {r.text[:200]}"
-            except Exception as ex:
-                acc_result["error"] = str(ex)
-
-            # Топ кампанії
-            query_camp = f"""
-                SELECT
-                  campaign.name,
-                  metrics.cost_micros,
-                  metrics.clicks,
-                  metrics.impressions
-                FROM campaign
-                WHERE segments.date = '{date_str}'
-                  AND metrics.cost_micros > 0
-                ORDER BY metrics.cost_micros DESC
-                LIMIT 20
-            """
-            try:
-                r2 = requests.post(
-                    f"https://googleads.googleapis.com/{api_version}/customers/{cid}/googleAds:search",
-                    headers=headers,
-                    json={"query": query_camp},
-                    timeout=30,
-                )
-                if r2.status_code == 200:
-                    rows2 = r2.json().get("results", [])
-                    for row in rows2:
-                        camp = row.get("campaign", {})
-                        m    = row.get("metrics", {})
-                        result["by_campaign"].append({
-                            "account":     acc["name"],
-                            "campaign":    camp.get("name", ""),
-                            "spend":       round(float(m.get("costMicros", 0)) / 1_000_000, 2),
-                            "clicks":      int(m.get("clicks", 0)),
-                            "impressions": int(m.get("impressions", 0)),
-                        })
-            except Exception:
-                pass  # не критично
-
-            acc_result["spend"] = round(acc_result["spend"], 2)
-            acc_result["conversions"] = round(acc_result["conversions"], 2)
-            result["by_account"].append(acc_result)
-            result["total_spend"]       += acc_result["spend"]
-            result["total_clicks"]      += acc_result["clicks"]
-            result["total_impressions"] += acc_result["impressions"]
-            result["total_conversions"] += acc_result["conversions"]
-
-        result["total_spend"] = round(result["total_spend"], 2)
-        result["total_conversions"] = round(result["total_conversions"], 2)
-        # Сортуємо кампанії по витратам
-        result["by_campaign"].sort(key=lambda x: x["spend"], reverse=True)
-
-    except Exception as ex:
-        result["error"] = str(ex)
-        import traceback
-        traceback.print_exc()
-
-    return result
-
-
 def fetch_ga4(date_str: str) -> dict:
     """
-    Тягне з GA4 за конкретну дату — агрегує дані з усіх property у GA4_PROPERTIES.
-    Сесії, користувачі, ads_cost — сума по всіх. Топ джерела/сторінки — обʼєднує і сортує.
+    Тягне з GA4 за конкретну дату:
+      - Сесії, користувачі, нові користувачі
+      - Відмови, тривалість сесії
+      - Топ джерела трафіку
+      - Топ сторінки
+      - Розбивка по пристроях
     """
     result = {
         "date":          date_str,
@@ -1882,7 +1611,6 @@ def fetch_ga4(date_str: str) -> dict:
         "by_source":     [],
         "by_page":       [],
         "by_device":     [],
-        "by_property":   [],     # Розбивка по сайтах
         "error":         None
     }
     try:
@@ -1892,164 +1620,112 @@ def fetch_ga4(date_str: str) -> dict:
             RunReportRequest, DateRange, Metric, Dimension, OrderBy
         )
 
-        client = BetaAnalyticsDataClient()
-        dr     = [DateRange(start_date=date_str, end_date=date_str)]
+        client   = BetaAnalyticsDataClient()
+        prop     = f"properties/{GA4_PROPERTY_ID}"
+        dr       = [DateRange(start_date=date_str, end_date=date_str)]
 
-        # Зведені дані з усіх property
-        all_sources = {}   # (source, medium) -> {sessions, conversions}
-        all_pages   = {}   # (path, title) -> {views, bounce_sum, bounce_count}
-        all_devices = {}   # device -> sessions
-        bounce_weighted = 0.0  # bounce_rate * sessions, сума
-        duration_weighted = 0.0
+        # ── 1. Загальні метрики ──────────────────────────────
+        req = RunReportRequest(
+            property=prop, date_ranges=dr,
+            metrics=[
+                Metric(name="sessions"),
+                Metric(name="totalUsers"),
+                Metric(name="newUsers"),
+                Metric(name="bounceRate"),
+                Metric(name="averageSessionDuration"),
+            ],
+            dimensions=[Dimension(name="date")]
+        )
+        resp = client.run_report(req)
+        if resp.rows:
+            v = resp.rows[0].metric_values
+            result["sessions"]     = int(v[0].value)
+            result["users"]        = int(v[1].value)
+            result["new_users"]    = int(v[2].value)
+            result["bounce_rate"]  = round(float(v[3].value) * 100, 1)
+            result["avg_duration"] = round(float(v[4].value), 0)
 
-        # Агрегатори ваг для усереднених метрик
-        total_sessions_for_avg = 0
-
-        for prop_id in GA4_PROPERTIES:
-            prop_name = GA4_PROPERTY_NAMES.get(prop_id, prop_id)
-            prop = f"properties/{prop_id}"
-            prop_data = {
-                "id": prop_id, "name": prop_name,
-                "sessions": 0, "users": 0, "new_users": 0,
-                "ads_cost": 0.0, "ads_clicks": 0,
-                "error": None,
-            }
-
-            try:
-                # ── 1. Загальні метрики ──
-                req = RunReportRequest(
-                    property=prop, date_ranges=dr,
-                    metrics=[
-                        Metric(name="sessions"),
-                        Metric(name="totalUsers"),
-                        Metric(name="newUsers"),
-                        Metric(name="bounceRate"),
-                        Metric(name="averageSessionDuration"),
-                    ],
-                    dimensions=[Dimension(name="date")]
-                )
-                resp = client.run_report(req)
-                if resp.rows:
-                    v = resp.rows[0].metric_values
-                    p_sessions  = int(v[0].value or 0)
-                    p_users     = int(v[1].value or 0)
-                    p_new_users = int(v[2].value or 0)
-                    p_bounce    = float(v[3].value or 0)
-                    p_duration  = float(v[4].value or 0)
-
-                    prop_data["sessions"]  = p_sessions
-                    prop_data["users"]     = p_users
-                    prop_data["new_users"] = p_new_users
-
-                    result["sessions"]  += p_sessions
-                    result["users"]     += p_users
-                    result["new_users"] += p_new_users
-                    bounce_weighted     += p_bounce * p_sessions
-                    duration_weighted   += p_duration * p_sessions
-                    total_sessions_for_avg += p_sessions
-
-                # ── 1.5. Google Ads витрати ──
+        # ── 1.5. Google Ads витрати (через GA4 → Google Ads link) ──
+        # advertiserAdCost потребує dimension з кампанією (вимога GA4 API).
+        # Групуємо по sessionCampaignName і сумуємо. Якщо Google Ads не залінкований
+        # до цього GA4 — отримаємо порожні рядки, що нормально.
+        try:
+            req_ads = RunReportRequest(
+                property=prop, date_ranges=dr,
+                metrics=[Metric(name="advertiserAdCost"), Metric(name="advertiserAdClicks")],
+                dimensions=[Dimension(name="sessionCampaignName")],
+                limit=200
+            )
+            resp_ads = client.run_report(req_ads)
+            total_cost = 0.0
+            total_clicks = 0
+            for row in resp_ads.rows:
                 try:
-                    req_ads = RunReportRequest(
-                        property=prop, date_ranges=dr,
-                        metrics=[Metric(name="advertiserAdCost"), Metric(name="advertiserAdClicks")],
-                        dimensions=[Dimension(name="sessionCampaignName")],
-                        limit=200
-                    )
-                    resp_ads = client.run_report(req_ads)
-                    p_cost = 0.0
-                    p_clicks = 0
-                    for row in resp_ads.rows:
-                        try:
-                            p_cost   += float(row.metric_values[0].value or 0)
-                            p_clicks += int(row.metric_values[1].value or 0)
-                        except Exception:
-                            continue
-                    prop_data["ads_cost"]   = round(p_cost, 2)
-                    prop_data["ads_clicks"] = p_clicks
-                    result["ads_cost"]   += p_cost
-                    result["ads_clicks"] += p_clicks
-                except Exception as ex_ads:
-                    print(f"   ℹ️  [{prop_name}] ads_cost недоступний: {ex_ads}")
+                    total_cost   += float(row.metric_values[0].value or 0)
+                    total_clicks += int(row.metric_values[1].value or 0)
+                except Exception:
+                    continue
+            result["ads_cost"]   = round(total_cost, 2)
+            result["ads_clicks"] = total_clicks
+        except Exception as ex_ads:
+            # Не критично — Google Ads може бути не залінкований
+            print(f"   ℹ️  GA4 ads_cost недоступний: {ex_ads}")
 
-                # ── 2. Топ джерела ──
-                req2 = RunReportRequest(
-                    property=prop, date_ranges=dr,
-                    metrics=[Metric(name="sessions"), Metric(name="conversions")],
-                    dimensions=[Dimension(name="sessionSource"), Dimension(name="sessionMedium")],
-                    limit=15,
-                    order_bys=[OrderBy(metric=OrderBy.MetricOrderBy(metric_name="sessions"), desc=True)]
-                )
-                resp2 = client.run_report(req2)
-                for r in resp2.rows:
-                    key = (r.dimension_values[0].value, r.dimension_values[1].value)
-                    if key not in all_sources:
-                        all_sources[key] = {"sessions": 0, "conversions": 0}
-                    all_sources[key]["sessions"]    += int(r.metric_values[0].value or 0)
-                    all_sources[key]["conversions"] += int(r.metric_values[1].value or 0)
-
-                # ── 3. Топ сторінки ──
-                req3 = RunReportRequest(
-                    property=prop, date_ranges=dr,
-                    metrics=[Metric(name="screenPageViews"), Metric(name="bounceRate")],
-                    dimensions=[Dimension(name="pagePath"), Dimension(name="pageTitle")],
-                    limit=15,
-                    order_bys=[OrderBy(metric=OrderBy.MetricOrderBy(metric_name="screenPageViews"), desc=True)]
-                )
-                resp3 = client.run_report(req3)
-                for r in resp3.rows:
-                    # Префіксуємо path сайтом для ясності
-                    path_with_host = f"[{prop_name}] {r.dimension_values[0].value}"
-                    key = (path_with_host, r.dimension_values[1].value)
-                    if key not in all_pages:
-                        all_pages[key] = {"views": 0, "bounce": 0.0}
-                    all_pages[key]["views"]  += int(r.metric_values[0].value or 0)
-                    all_pages[key]["bounce"]  = round(float(r.metric_values[1].value or 0) * 100, 1)
-
-                # ── 4. Пристрої ──
-                req4 = RunReportRequest(
-                    property=prop, date_ranges=dr,
-                    metrics=[Metric(name="sessions")],
-                    dimensions=[Dimension(name="deviceCategory")],
-                )
-                resp4 = client.run_report(req4)
-                for r in resp4.rows:
-                    dev = r.dimension_values[0].value
-                    all_devices[dev] = all_devices.get(dev, 0) + int(r.metric_values[0].value or 0)
-
-            except Exception as ex_prop:
-                prop_data["error"] = str(ex_prop)
-                print(f"   ⚠️  [{prop_name}] помилка: {ex_prop}")
-
-            result["by_property"].append(prop_data)
-
-        # Зважене середнє для bounce_rate і avg_duration
-        if total_sessions_for_avg > 0:
-            result["bounce_rate"]  = round((bounce_weighted / total_sessions_for_avg) * 100, 1)
-            result["avg_duration"] = round(duration_weighted / total_sessions_for_avg, 0)
-
-        # Топ-10 джерел
-        sorted_sources = sorted(all_sources.items(), key=lambda x: -x[1]["sessions"])[:10]
+        # ── 2. Топ джерела трафіку ───────────────────────────
+        req2 = RunReportRequest(
+            property=prop, date_ranges=dr,
+            metrics=[Metric(name="sessions"), Metric(name="conversions")],
+            dimensions=[Dimension(name="sessionSource"), Dimension(name="sessionMedium")],
+            limit=10,
+            order_bys=[OrderBy(metric=OrderBy.MetricOrderBy(metric_name="sessions"), desc=True)]
+        )
+        resp2 = client.run_report(req2)
         result["by_source"] = [
-            {"source": k[0], "medium": k[1], "sessions": v["sessions"], "conversions": v["conversions"]}
-            for k, v in sorted_sources
+            {
+                "source":      r.dimension_values[0].value,
+                "medium":      r.dimension_values[1].value,
+                "sessions":    int(r.metric_values[0].value),
+                "conversions": int(r.metric_values[1].value),
+            }
+            for r in resp2.rows
         ]
 
-        # Топ-10 сторінок
-        sorted_pages = sorted(all_pages.items(), key=lambda x: -x[1]["views"])[:10]
+        # ── 3. Топ сторінки ──────────────────────────────────
+        req3 = RunReportRequest(
+            property=prop, date_ranges=dr,
+            metrics=[Metric(name="screenPageViews"), Metric(name="bounceRate")],
+            dimensions=[Dimension(name="pagePath"), Dimension(name="pageTitle")],
+            limit=10,
+            order_bys=[OrderBy(metric=OrderBy.MetricOrderBy(metric_name="screenPageViews"), desc=True)]
+        )
+        resp3 = client.run_report(req3)
         result["by_page"] = [
-            {"path": k[0], "title": k[1], "views": v["views"], "bounce": v["bounce"]}
-            for k, v in sorted_pages
+            {
+                "path":   r.dimension_values[0].value,
+                "title":  r.dimension_values[1].value,
+                "views":  int(r.metric_values[0].value),
+                "bounce": round(float(r.metric_values[1].value) * 100, 1),
+            }
+            for r in resp3.rows
         ]
 
-        # Пристрої
-        total_dev = sum(all_devices.values()) or 1
+        # ── 4. Пристрої ──────────────────────────────────────
+        req4 = RunReportRequest(
+            property=prop, date_ranges=dr,
+            metrics=[Metric(name="sessions")],
+            dimensions=[Dimension(name="deviceCategory")],
+            order_bys=[OrderBy(metric=OrderBy.MetricOrderBy(metric_name="sessions"), desc=True)]
+        )
+        resp4 = client.run_report(req4)
+        total = result["sessions"] or 1
         result["by_device"] = [
-            {"device": d, "sessions": s, "pct": round(s / total_dev * 100, 1)}
-            for d, s in sorted(all_devices.items(), key=lambda x: -x[1])
+            {
+                "device":  r.dimension_values[0].value,
+                "sessions": int(r.metric_values[0].value),
+                "pct":     round(int(r.metric_values[0].value) / total * 100, 1),
+            }
+            for r in resp4.rows
         ]
-
-        result["ads_cost"] = round(result["ads_cost"], 2)
 
     except Exception as e:
         result["error"] = str(e)
@@ -2151,36 +1827,17 @@ def main(target_date=None):
     print(f"   ✅ CPC:        {data['meta']['total']['cpc']} UAH")
     print(f"   ✅ Кампаній:   {len(data['meta']['by_campaign'])}")
 
-    # ── Google Ads (точні витрати з API) ─────────────────────────
-    print("\n🅖 Завантаження Google Ads...")
-    data["google_ads"] = fetch_google_ads(day_iso)
-    if data["google_ads"]["error"]:
-        print(f"   ⚠️  Google Ads: {data['google_ads']['error']}")
-    else:
-        print(f"   ✅ Витрати:     {data['google_ads']['total_spend']} UAH")
-        print(f"   ✅ Кліки:       {data['google_ads']['total_clicks']}")
-        print(f"   ✅ Покази:      {data['google_ads']['total_impressions']}")
-        print(f"   ✅ Конверсії:   {data['google_ads']['total_conversions']}")
-        print(f"   ✅ Кампаній:    {len(data['google_ads']['by_campaign'])}")
-        for acc in data["google_ads"]["by_account"]:
-            err_str = f" ❌ {acc['error']}" if acc.get('error') else ""
-            print(f"      {acc['name']}: {acc['spend']} UAH ({acc['clicks']} клк){err_str}")
-
     # ── Google Analytics 4 ───────────────────────────────────────
     print("\n📈 Завантаження Google Analytics 4...")
     data["ga4"] = fetch_ga4(day_iso)
     if data["ga4"]["error"]:
         print(f"   ⚠️  Помилка GA4: {data['ga4']['error']}")
     else:
-        print(f"   ✅ Сесії:        {data['ga4']['sessions']} (всі сайти)")
+        print(f"   ✅ Сесії:        {data['ga4']['sessions']}")
         print(f"   ✅ Користувачі:  {data['ga4']['users']}")
         print(f"   ✅ Відмови:      {data['ga4']['bounce_rate']}%")
-        print(f"   ✅ Ads cost:     {data['ga4']['ads_cost']} UAH (Google Ads)")
         print(f"   ✅ Топ джерел:   {len(data['ga4']['by_source'])}")
         print(f"   ✅ Топ сторінок: {len(data['ga4']['by_page'])}")
-        for p in data['ga4'].get('by_property', []):
-            err = f" ❌ {p['error']}" if p.get('error') else ""
-            print(f"      {p['name']}: {p['sessions']} сесій · {p['ads_cost']}₴ реклами{err}")
 
     # ── МІСЯЧНА АГРЕГАЦІЯ ─────────────────────────────────────
     target_month = day_iso[:7]
@@ -2282,45 +1939,6 @@ def main(target_date=None):
 
     # ── Збереження ────────────────────────────────────────────
     out_path = HISTORY_DIR / f"{day_iso}.json"
-
-    # Захист: якщо новий JSON має збіднений CRM (CI без локальних Excel),
-    # а існуючий файл вже містить повний CRM — зберігаємо CRM-блоки зі старого.
-    # Це не дозволяє щоденному CI-запуску затирати нашу хорошу історію.
-    new_crm_empty = not data.get("crm", {}).get("orders") or data.get("crm", {}).get("error") == f"Немає файлів у {CRM_DAILY_DIR}/ (і fallback {CRM_DATA_DIR}/)"
-    new_mm_empty = not any(m.get("days") for m in (data.get("month", {}).get("multi_month_trend", []) or []))
-
-    if (new_crm_empty or new_mm_empty) and out_path.exists():
-        try:
-            with open(out_path, encoding="utf-8") as fp:
-                old_data = json.load(fp)
-            preserved = []
-            old_crm = old_data.get("crm", {}) or {}
-            if new_crm_empty and old_crm.get("orders"):
-                data["crm"] = old_crm
-                preserved.append("crm")
-            old_mm = old_data.get("month", {}).get("multi_month_trend", [])
-            if new_mm_empty and any(m.get("days") for m in (old_mm or [])):
-                data.setdefault("month", {})["multi_month_trend"] = old_mm
-                preserved.append("multi_month_trend")
-            old_mm1c = old_data.get("month", {}).get("multi_month_1c_uh", {})
-            new_mm1c_empty = not any(any(m.get("days") for m in (arr or []))
-                                     for arr in (data.get("month", {}).get("multi_month_1c_uh", {}) or {}).values())
-            if new_mm1c_empty and old_mm1c:
-                data.setdefault("month", {})["multi_month_1c_uh"] = old_mm1c
-                preserved.append("multi_month_1c_uh")
-            old_month_crm = old_data.get("month", {}).get("crm", {})
-            if not data.get("month", {}).get("crm", {}).get("orders") and old_month_crm.get("orders"):
-                data.setdefault("month", {})["crm"] = old_month_crm
-                preserved.append("month.crm")
-            old_prev_crm = old_data.get("month", {}).get("prev_crm", {})
-            if not data.get("month", {}).get("prev_crm", {}).get("orders") and old_prev_crm.get("orders"):
-                data.setdefault("month", {})["prev_crm"] = old_prev_crm
-                preserved.append("month.prev_crm")
-            if preserved:
-                print(f"\n🛡️  Збережено CRM-блоки з попередньої версії: {', '.join(preserved)}")
-        except Exception as ex:
-            print(f"   ⚠️  Не вдалось прочитати попередній JSON для захисту: {ex}")
-
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 

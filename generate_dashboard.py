@@ -134,6 +134,164 @@ def build_multi_month_summary(multi_month: list, source_label: str = "CRM") -> s
       {cross_html}
     </div>'''
 
+
+def build_sales_kpi_block(sales_kpi: dict) -> str:
+    """
+    Будує HTML-блок KPI відділу продажів з 4 плитками:
+    Конверсія, Крос-сейл, Гарантії+Чохли, Відмови.
+    Кожна показує значення день/місяць і ціль.
+    Колір: зелений (в цілі) / помаранчевий (близько) / червоний (далеко).
+    
+    sales_kpi: {"day": {...}, "month": {...}} з 4-ма блоками всередині.
+    """
+    if not sales_kpi or not isinstance(sales_kpi, dict):
+        return ""
+    
+    day = sales_kpi.get("day", {}) or {}
+    month = sales_kpi.get("month", {}) or {}
+    
+    def cls_for(value: float, target: float, lower_is_better: bool = False) -> str:
+        """Зелений якщо в цілі, жовтий якщо в межах 80-100% цілі, червоний якщо нижче."""
+        if target == 0:
+            return "good"
+        if lower_is_better:
+            # Для відмов: чим менше — тим краще
+            if value <= target:
+                return "good"
+            if value <= target * 1.5:
+                return "warn"
+            return "bad"
+        else:
+            ratio = value / target
+            if ratio >= 1.0:
+                return "good"
+            if ratio >= 0.8:
+                return "warn"
+            return "bad"
+    
+    # ── Конверсія (вищу беремо — no_spam) ──
+    conv_d = day.get("conversion", {})
+    conv_m = month.get("conversion", {})
+    conv_d_val = conv_d.get("no_spam", 0)
+    conv_m_val = conv_m.get("no_spam", 0)
+    conv_target = conv_d.get("target", 85)
+    conv_d_cls = cls_for(conv_d_val, conv_target)
+    conv_m_cls = cls_for(conv_m_val, conv_target)
+    # Загальний клас плитки — за місяцем
+    conv_tile_cls = conv_m_cls
+    
+    # ── Крос-сейл ──
+    cs_d = day.get("cross_sell", {})
+    cs_m = month.get("cross_sell", {})
+    cs_d_val = cs_d.get("value", 0)
+    cs_m_val = cs_m.get("value", 0)
+    cs_target = cs_d.get("target", 35)
+    cs_d_cls = cls_for(cs_d_val, cs_target)
+    cs_m_cls = cls_for(cs_m_val, cs_target)
+    cs_tile_cls = cs_m_cls
+    cs_d_of = cs_d.get("orders", 0)
+    cs_d_total = cs_d.get("of", 0)
+    cs_m_of = cs_m.get("orders", 0)
+    cs_m_total = cs_m.get("of", 0)
+    
+    # ── Гарантії+Чохли ──
+    gc_d = day.get("guarantee_cover", {})
+    gc_m = month.get("guarantee_cover", {})
+    gc_d_val = gc_d.get("value", 0)
+    gc_m_val = gc_m.get("value", 0)
+    gc_target = gc_d.get("target", 35)
+    gc_d_cls = cls_for(gc_d_val, gc_target)
+    gc_m_cls = cls_for(gc_m_val, gc_target)
+    gc_tile_cls = gc_m_cls
+    gc_d_of = gc_d.get("orders", 0)
+    gc_d_total = gc_d.get("of", 0)
+    gc_m_of = gc_m.get("orders", 0)
+    gc_m_total = gc_m.get("of", 0)
+    
+    # ── Відмови (lower_is_better) ──
+    ref_d = day.get("refuse", {})
+    ref_m = month.get("refuse", {})
+    ref_d_val = ref_d.get("of_orders", 0)
+    ref_m_val = ref_m.get("of_orders", 0)
+    ref_target = ref_d.get("target", 5)
+    ref_d_cls = cls_for(ref_d_val, ref_target, lower_is_better=True)
+    ref_m_cls = cls_for(ref_m_val, ref_target, lower_is_better=True)
+    ref_tile_cls = ref_m_cls
+    ref_d_count = ref_d.get("refused", 0)
+    ref_m_count = ref_m.get("refused", 0)
+    
+    return f"""
+<div class="kpi-sales-wrap">
+  <div class="kpi-sales-head">
+    <span class="ttl">🎯 KPI відділу продажів</span>
+    <span class="sub">· цілі з контексту United Home v1.0 · колір плитки — за місяцем</span>
+  </div>
+  <div class="kpi-sales-row">
+
+    <div class="kpi-sales {conv_tile_cls}">
+      <div class="kpi-sales-label">Конверсія</div>
+      <div class="kpi-sales-vals">
+        <div class="kpi-sales-period">
+          <div class="kpi-sales-tag">день</div>
+          <div class="kpi-sales-num {conv_d_cls}">{conv_d_val}<span class="kpi-sales-pct">%</span></div>
+        </div>
+        <div class="kpi-sales-period">
+          <div class="kpi-sales-tag">місяць</div>
+          <div class="kpi-sales-num {conv_m_cls}">{conv_m_val}<span class="kpi-sales-pct">%</span></div>
+        </div>
+      </div>
+      <div class="kpi-sales-tg">ціль: <b>≥{conv_target}%</b> · замовлень/заявок (без спаму)</div>
+    </div>
+
+    <div class="kpi-sales {cs_tile_cls}">
+      <div class="kpi-sales-label">Крос-сейл</div>
+      <div class="kpi-sales-vals">
+        <div class="kpi-sales-period">
+          <div class="kpi-sales-tag">день</div>
+          <div class="kpi-sales-num {cs_d_cls}">{cs_d_val}<span class="kpi-sales-pct">%</span></div>
+        </div>
+        <div class="kpi-sales-period">
+          <div class="kpi-sales-tag">місяць</div>
+          <div class="kpi-sales-num {cs_m_cls}">{cs_m_val}<span class="kpi-sales-pct">%</span></div>
+        </div>
+      </div>
+      <div class="kpi-sales-tg">ціль: <b>≥{cs_target}%</b> · день {cs_d_of}/{cs_d_total} · місяць {cs_m_of}/{cs_m_total}</div>
+    </div>
+
+    <div class="kpi-sales {gc_tile_cls}">
+      <div class="kpi-sales-label">Гарантії + чохли</div>
+      <div class="kpi-sales-vals">
+        <div class="kpi-sales-period">
+          <div class="kpi-sales-tag">день</div>
+          <div class="kpi-sales-num {gc_d_cls}">{gc_d_val}<span class="kpi-sales-pct">%</span></div>
+        </div>
+        <div class="kpi-sales-period">
+          <div class="kpi-sales-tag">місяць</div>
+          <div class="kpi-sales-num {gc_m_cls}">{gc_m_val}<span class="kpi-sales-pct">%</span></div>
+        </div>
+      </div>
+      <div class="kpi-sales-tg">ціль: <b>≥{gc_target}%</b> · день {gc_d_of}/{gc_d_total} · місяць {gc_m_of}/{gc_m_total}</div>
+    </div>
+
+    <div class="kpi-sales {ref_tile_cls}">
+      <div class="kpi-sales-label">Відмови</div>
+      <div class="kpi-sales-vals">
+        <div class="kpi-sales-period">
+          <div class="kpi-sales-tag">день</div>
+          <div class="kpi-sales-num {ref_d_cls}">{ref_d_val}<span class="kpi-sales-pct">%</span></div>
+        </div>
+        <div class="kpi-sales-period">
+          <div class="kpi-sales-tag">місяць</div>
+          <div class="kpi-sales-num {ref_m_cls}">{ref_m_val}<span class="kpi-sales-pct">%</span></div>
+        </div>
+      </div>
+      <div class="kpi-sales-tg">ціль: <b>≤{ref_target}%</b> · день {ref_d_count} · місяць {ref_m_count}</div>
+    </div>
+
+  </div>
+</div>"""
+
+
 def load_data(date_iso):
     p = HISTORY_DIR / f"{date_iso}.json"
     if not p.exists(): return None
@@ -192,6 +350,30 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t);min-he
 .dlt.up{background:var(--gd);color:var(--g)}
 .dlt.down{background:var(--rd);color:var(--r)}
 .dlt.neu{background:rgba(123,132,163,.15);color:var(--td)}
+
+/* ── KPI відділу продажів (з контексту бізнесу) ── */
+.kpi-sales-wrap{margin-bottom:14px;padding:14px;background:var(--s);border:1px solid var(--brd);border-radius:13px}
+.kpi-sales-head{display:flex;align-items:center;gap:8px;margin-bottom:11px}
+.kpi-sales-head .ttl{font-size:12px;font-weight:600;color:var(--t);letter-spacing:.3px}
+.kpi-sales-head .sub{font-size:10px;color:var(--td)}
+.kpi-sales-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.kpi-sales{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:11px 12px;position:relative;overflow:hidden}
+.kpi-sales::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:10px 10px 0 0}
+.kpi-sales.good::before{background:linear-gradient(90deg,var(--g),#34d399)}
+.kpi-sales.warn::before{background:linear-gradient(90deg,var(--o),#fbbf24)}
+.kpi-sales.bad::before{background:linear-gradient(90deg,var(--r),#f87171)}
+.kpi-sales-label{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--td);margin-bottom:5px;font-weight:500}
+.kpi-sales-vals{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.kpi-sales-period{display:flex;flex-direction:column}
+.kpi-sales-tag{font-size:8px;color:var(--td);letter-spacing:.5px;text-transform:uppercase;margin-bottom:1px}
+.kpi-sales-num{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:600;line-height:1;color:var(--t)}
+.kpi-sales-num.good{color:var(--g)}
+.kpi-sales-num.warn{color:var(--o)}
+.kpi-sales-num.bad{color:var(--r)}
+.kpi-sales-pct{font-size:10px;color:var(--td);margin-left:2px}
+.kpi-sales-tg{font-size:9px;color:var(--td);margin-top:4px;padding-top:5px;border-top:1px solid var(--brd)}
+.kpi-sales-tg b{color:var(--t);font-weight:600}
+
 .tabs{display:flex;gap:2px;margin-bottom:14px;background:var(--s);border-radius:10px;padding:3px;border:1px solid var(--brd);flex-wrap:wrap}
 .tab{flex:1;min-width:110px;padding:9px 6px;border-radius:8px;text-align:center;cursor:pointer;font-size:11px;font-weight:500;color:var(--td);border:none;background:none;transition:.15s;letter-spacing:.3px}
 .tab:hover{color:var(--t);background:var(--s2)}
@@ -560,9 +742,13 @@ def build_daily(data, history):
     timestamp = datetime.now().strftime("%d.%m.%Y %H:%M")
     avg_dur_str = f'{int(ga4_avg_dur//60)}:{int(ga4_avg_dur%60):02d}'
 
+    # KPI відділу продажів (з контексту бізнесу UH)
+    sales_kpi_block = build_sales_kpi_block(crm.get("sales_kpi", {}))
+
     return DAILY_TEMPLATE.format(
         date_disp=date_disp, month_str=month_str, timestamp=timestamp,
         insights_block=insights_block,
+        sales_kpi_block=sales_kpi_block,
         # 1С
         total_orders_d=money(total_orders_d),
         total_sales_d=money(total_sales_d),
@@ -717,6 +903,11 @@ def build_monthly(data, history):
         for i in insights
     ])
     insights_block = f'<div class="ins-wrap">{insights_html}</div>' if insights else ""
+
+    # KPI відділу продажів (з контексту бізнесу UH)
+    # Беремо з daily-снапшоту (`data.crm.sales_kpi`), бо там вже є і `day` і `month` блоки.
+    daily_crm_for_kpi = data.get("crm", {}) or {}
+    sales_kpi_block = build_sales_kpi_block(daily_crm_for_kpi.get("sales_kpi", {}))
 
     # Daily trend
     daily = curr_crm.get("daily_trend", [])
@@ -993,6 +1184,7 @@ def build_monthly(data, history):
         compare_note=compare_note,
         timestamp=timestamp,
         insights_block=insights_block,
+        sales_kpi_block=sales_kpi_block,
         multi_month_summary=build_multi_month_summary(multi_month, source_label="CRM"),
         summary_1c_orders=build_multi_month_summary(mm_1c_orders, source_label="1С UH ORDERS"),
         summary_1c_sales=build_multi_month_summary(mm_1c_sales,  source_label="1С UH SALES"),
@@ -1052,6 +1244,8 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
 </div>
 
 {insights_block}
+
+{sales_kpi_block}
 
 <div class="kpi-row">
   <div class="kpi"><div class="kl">Замовлення день (1С)</div><div class="kv">{total_orders_d}<span class="ku">₴</span></div><div class="ks">без відмов · <span class="dlt {rev_delta_cls}">{rev_delta_txt}</span></div></div>
@@ -1444,6 +1638,8 @@ MONTHLY_TEMPLATE = '''<!DOCTYPE html>
 </div>
 
 {insights_block}
+
+{sales_kpi_block}
 
 <div class="kpi-row">
   <div class="kpi"><div class="kl">Замовлення місяць</div><div class="kv">{c_revenue}<span class="ku">₴</span></div><div class="ks">vs {p_revenue} ₴ · <span class="dlt {rev_d_cls}">{rev_d_txt}</span></div></div>
