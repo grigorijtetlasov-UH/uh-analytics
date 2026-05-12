@@ -1251,8 +1251,6 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
   <div class="stamp">Період місяця: {month_str} · оновлено {timestamp}</div>
 </div>
 
-{insights_block}
-
 {sales_kpi_block}
 
 <div class="kpi-row">
@@ -1641,8 +1639,6 @@ MONTHLY_TEMPLATE = '''<!DOCTYPE html>
   <div class="sub">United Home · {target_month}</div>
   <div class="stamp">Поточний: {target_month} ({compare_note}) · Порівняння з {prev_month} ({compare_note}) · оновлено {timestamp}</div>
 </div>
-
-{insights_block}
 
 {sales_kpi_block}
 
