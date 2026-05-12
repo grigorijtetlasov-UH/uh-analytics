@@ -5,308 +5,318 @@
     "target_month": "2026-05",
     "crm": {
       "month": "2026-05",
-      "source_file": "daily/ (57 файлів)",
+      "source_file": "daily/ (60 файлів)",
       "day_limit": null,
       "orders": {
-        "total": 1151,
-        "all_requests": 1840,
-        "sum_all": 8031239.95,
-        "sum_no_spam": 6674653.95,
-        "sum_orders": 5498561.95,
-        "revenue": 5498561.95,
-        "refused": 170,
-        "refuse_pct": 14.8,
-        "spam": 329,
-        "all_rows": 2690,
-        "avg_check": 4777.2
+        "total": 1703,
+        "all_requests": 2817,
+        "sum_all": 12504312.67,
+        "sum_no_spam": 10348349.67,
+        "sum_orders": 8352208.67,
+        "revenue": 8352208.67,
+        "refused": 242,
+        "refuse_pct": 14.2,
+        "spam": 491,
+        "all_rows": 3789,
+        "avg_check": 4904.41
       },
       "leads": {
-        "new_leads": 444
+        "new_leads": 740
       },
       "managers": [
         {
           "name": "Юлія Горбань",
-          "orders": 104,
-          "revenue": 708545.0,
-          "refused": 9,
-          "refuse_pct": 8.0,
-          "leads": 43,
-          "avg_check": 6813.0,
-          "conv": 70.7
+          "orders": 161,
+          "revenue": 1120017.0,
+          "refused": 11,
+          "refuse_pct": 6.8,
+          "leads": 51,
+          "avg_check": 6957.0,
+          "conv": 75.9
         },
         {
           "name": "Діана Дзюба",
-          "orders": 158,
-          "revenue": 506241.0,
-          "refused": 17,
-          "refuse_pct": 9.7,
-          "leads": 40,
-          "avg_check": 3204.0,
-          "conv": 79.8
-        },
-        {
-          "name": "Олена Вус",
-          "orders": 47,
-          "revenue": 340902.0,
-          "refused": 8,
-          "refuse_pct": 14.5,
-          "leads": 16,
-          "avg_check": 7253.0,
-          "conv": 74.6
-        },
-        {
-          "name": "Ростислав Куций",
-          "orders": 59,
-          "revenue": 323232.0,
-          "refused": 11,
-          "refuse_pct": 15.7,
-          "leads": 5,
-          "avg_check": 5479.0,
-          "conv": 92.2
-        },
-        {
-          "name": "Ольга Галишин",
-          "orders": 40,
-          "revenue": 322023.95,
-          "refused": 7,
-          "refuse_pct": 14.9,
-          "leads": 18,
-          "avg_check": 8051.0,
-          "conv": 69.0
+          "orders": 267,
+          "revenue": 875146.0,
+          "refused": 23,
+          "refuse_pct": 8.6,
+          "leads": 51,
+          "avg_check": 3278.0,
+          "conv": 84.0
         },
         {
           "name": "Вікторія Шегедин",
-          "orders": 85,
-          "revenue": 320135.0,
-          "refused": 7,
-          "refuse_pct": 7.6,
-          "leads": 67,
-          "avg_check": 3766.0,
-          "conv": 55.9
-        },
-        {
-          "name": "Надія Карпенко",
-          "orders": 89,
-          "revenue": 304575.0,
-          "refused": 20,
-          "refuse_pct": 18.3,
-          "leads": 54,
-          "avg_check": 3422.0,
-          "conv": 62.2
-        },
-        {
-          "name": "Ірина Молянко",
-          "orders": 40,
-          "revenue": 272490.0,
-          "refused": 5,
-          "refuse_pct": 11.1,
-          "leads": 19,
-          "avg_check": 6812.0,
-          "conv": 67.8
-        },
-        {
-          "name": "Анна Глотова",
-          "orders": 34,
-          "revenue": 263489.0,
-          "refused": 1,
-          "refuse_pct": 2.9,
-          "leads": 12,
-          "avg_check": 7750.0,
-          "conv": 73.9
-        },
-        {
-          "name": "Мария Волохата",
-          "orders": 77,
-          "revenue": 245875.0,
-          "refused": 11,
-          "refuse_pct": 12.5,
-          "leads": 14,
-          "avg_check": 3193.0,
-          "conv": 84.6
-        },
-        {
-          "name": "Вікторія Кудрицька",
-          "orders": 36,
-          "revenue": 196020.0,
+          "orders": 189,
+          "revenue": 713445.0,
           "refused": 9,
-          "refuse_pct": 20.0,
-          "leads": 29,
-          "avg_check": 5445.0,
-          "conv": 55.4
+          "refuse_pct": 4.8,
+          "leads": 98,
+          "avg_check": 3775.0,
+          "conv": 65.9
         },
         {
-          "name": "Анна Романенко",
-          "orders": 50,
-          "revenue": 183519.0,
+          "name": "Ольга Галишин",
+          "orders": 80,
+          "revenue": 666591.95,
           "refused": 8,
-          "refuse_pct": 13.8,
-          "leads": 29,
-          "avg_check": 3670.0,
-          "conv": 63.3
-        },
-        {
-          "name": "Шоу-Рум Ретровіль",
-          "orders": 8,
-          "revenue": 171886.0,
-          "refused": 0,
-          "refuse_pct": 0.0,
-          "leads": 2,
-          "avg_check": 21486.0,
-          "conv": 80.0
-        },
-        {
-          "name": "Руслан Сава",
-          "orders": 32,
-          "revenue": 159770.0,
-          "refused": 5,
-          "refuse_pct": 13.5,
-          "leads": 16,
-          "avg_check": 4993.0,
-          "conv": 66.7
-        },
-        {
-          "name": "ШоуРум ДрімТаун",
-          "orders": 8,
-          "revenue": 135422.0,
-          "refused": 0,
-          "refuse_pct": 0.0,
-          "leads": 0,
-          "avg_check": 16928.0,
-          "conv": 100.0
-        },
-        {
-          "name": "Шоу Рум Дарынок",
-          "orders": 12,
-          "revenue": 131753.0,
-          "refused": 0,
-          "refuse_pct": 0.0,
-          "leads": 2,
-          "avg_check": 10979.0,
-          "conv": 85.7
-        },
-        {
-          "name": "Марта Онищук",
-          "orders": 23,
-          "revenue": 96684.0,
-          "refused": 3,
-          "refuse_pct": 11.5,
-          "leads": 3,
-          "avg_check": 4204.0,
-          "conv": 88.5
-        },
-        {
-          "name": "Валерія Захожа",
-          "orders": 24,
-          "revenue": 87844.0,
-          "refused": 2,
-          "refuse_pct": 7.7,
-          "leads": 4,
-          "avg_check": 3660.0,
-          "conv": 85.7
+          "refuse_pct": 10.0,
+          "leads": 24,
+          "avg_check": 8332.0,
+          "conv": 76.9
         },
         {
           "name": "Катерина Мещерiна",
-          "orders": 5,
-          "revenue": 34125.0,
-          "refused": 6,
-          "refuse_pct": 54.5,
-          "leads": 2,
-          "avg_check": 6825.0,
-          "conv": 71.4
+          "orders": 119,
+          "revenue": 643925.0,
+          "refused": 18,
+          "refuse_pct": 15.1,
+          "leads": 12,
+          "avg_check": 5411.0,
+          "conv": 90.8
         },
         {
-          "name": "Вікторія Кирієнко",
-          "orders": 11,
-          "revenue": 33975.0,
-          "refused": 1,
-          "refuse_pct": 8.3,
-          "leads": 1,
-          "avg_check": 3089.0,
-          "conv": 91.7
+          "name": "Надія Карпенко",
+          "orders": 196,
+          "revenue": 617360.0,
+          "refused": 25,
+          "refuse_pct": 12.8,
+          "leads": 75,
+          "avg_check": 3150.0,
+          "conv": 72.3
         },
         {
-          "name": "Дарʼя Маменко",
-          "orders": 7,
-          "revenue": 20134.0,
-          "refused": 1,
+          "name": "Олена Вус",
+          "orders": 83,
+          "revenue": 609904.0,
+          "refused": 12,
+          "refuse_pct": 14.5,
+          "leads": 28,
+          "avg_check": 7348.0,
+          "conv": 74.8
+        },
+        {
+          "name": "Ростислав Куций",
+          "orders": 92,
+          "revenue": 542449.0,
+          "refused": 12,
+          "refuse_pct": 13.0,
+          "leads": 7,
+          "avg_check": 5896.0,
+          "conv": 92.9
+        },
+        {
+          "name": "Вікторія Кудрицька",
+          "orders": 80,
+          "revenue": 516083.0,
+          "refused": 10,
           "refuse_pct": 12.5,
-          "leads": 10,
-          "avg_check": 2876.0,
-          "conv": 41.2
+          "leads": 34,
+          "avg_check": 6451.0,
+          "conv": 70.2
+        },
+        {
+          "name": "Анна Глотова",
+          "orders": 65,
+          "revenue": 452092.0,
+          "refused": 2,
+          "refuse_pct": 3.1,
+          "leads": 18,
+          "avg_check": 6955.0,
+          "conv": 78.3
+        },
+        {
+          "name": "Анна Романенко",
+          "orders": 123,
+          "revenue": 444234.0,
+          "refused": 12,
+          "refuse_pct": 9.8,
+          "leads": 56,
+          "avg_check": 3612.0,
+          "conv": 68.7
+        },
+        {
+          "name": "Шоу Рум Дарынок",
+          "orders": 22,
+          "revenue": 408357.0,
+          "refused": 0,
+          "refuse_pct": 0.0,
+          "leads": 3,
+          "avg_check": 18562.0,
+          "conv": 88.0
+        },
+        {
+          "name": "Руслан Сава",
+          "orders": 94,
+          "revenue": 386956.0,
+          "refused": 11,
+          "refuse_pct": 11.7,
+          "leads": 25,
+          "avg_check": 4117.0,
+          "conv": 79.0
+        },
+        {
+          "name": "Мария Волохата",
+          "orders": 115,
+          "revenue": 358005.72,
+          "refused": 16,
+          "refuse_pct": 13.9,
+          "leads": 14,
+          "avg_check": 3113.0,
+          "conv": 89.1
+        },
+        {
+          "name": "Ірина Молянко",
+          "orders": 54,
+          "revenue": 343104.0,
+          "refused": 6,
+          "refuse_pct": 11.1,
+          "leads": 23,
+          "avg_check": 6354.0,
+          "conv": 70.1
+        },
+        {
+          "name": "Шоу-Рум Ретровіль",
+          "orders": 14,
+          "revenue": 323244.0,
+          "refused": 0,
+          "refuse_pct": 0.0,
+          "leads": 4,
+          "avg_check": 23089.0,
+          "conv": 77.8
+        },
+        {
+          "name": "Марта Онищук",
+          "orders": 56,
+          "revenue": 195561.0,
+          "refused": 4,
+          "refuse_pct": 7.1,
+          "leads": 11,
+          "avg_check": 3492.0,
+          "conv": 83.6
+        },
+        {
+          "name": "ШоуРум ДрімТаун",
+          "orders": 15,
+          "revenue": 175567.0,
+          "refused": 0,
+          "refuse_pct": 0.0,
+          "leads": 1,
+          "avg_check": 11704.0,
+          "conv": 93.8
+        },
+        {
+          "name": "Валерія Захожа",
+          "orders": 45,
+          "revenue": 144672.0,
+          "refused": 2,
+          "refuse_pct": 4.4,
+          "leads": 6,
+          "avg_check": 3215.0,
+          "conv": 88.2
         },
         {
           "name": "Александр Шамардин",
-          "orders": 5,
-          "revenue": 12730.0,
+          "orders": 18,
+          "revenue": 70060.0,
           "refused": 0,
           "refuse_pct": 0.0,
-          "leads": 10,
-          "avg_check": 2546.0,
-          "conv": 33.3
+          "leads": 13,
+          "avg_check": 3892.0,
+          "conv": 58.1
         },
         {
-          "name": "Едуард Бутенко",
-          "orders": 3,
-          "revenue": 9552.0,
-          "refused": 0,
-          "refuse_pct": 0.0,
-          "leads": 2,
-          "avg_check": 3184.0,
+          "name": "Дарʼя Маменко",
+          "orders": 15,
+          "revenue": 64242.0,
+          "refused": 1,
+          "refuse_pct": 6.7,
+          "leads": 10,
+          "avg_check": 4283.0,
           "conv": 60.0
         },
         {
-          "name": "Яков Маншилін",
-          "orders": 1,
-          "revenue": 3450.0,
-          "refused": 2,
-          "refuse_pct": 66.7,
+          "name": "Вікторія Кирієнко",
+          "orders": 18,
+          "revenue": 54445.0,
+          "refused": 1,
+          "refuse_pct": 5.6,
           "leads": 2,
-          "avg_check": 3450.0,
-          "conv": 33.3
+          "avg_check": 3025.0,
+          "conv": 90.0
+        },
+        {
+          "name": "Яков Маншилін",
+          "orders": 9,
+          "revenue": 42630.0,
+          "refused": 7,
+          "refuse_pct": 77.8,
+          "leads": 4,
+          "avg_check": 4737.0,
+          "conv": 69.2
+        },
+        {
+          "name": "Едуард Бутенко",
+          "orders": 5,
+          "revenue": 15959.0,
+          "refused": 0,
+          "refuse_pct": 0.0,
+          "leads": 2,
+          "avg_check": 3192.0,
+          "conv": 71.4
+        },
+        {
+          "name": "Анастасія Любарец",
+          "orders": 1,
+          "revenue": 4979.0,
+          "refused": 0,
+          "refuse_pct": 0.0,
+          "leads": 14,
+          "avg_check": 4979.0,
+          "conv": 6.7
         }
       ],
       "managers_shop": [
         {
           "name": "Кутафіна Алла",
-          "orders": 9,
-          "revenue": 155615.0,
-          "avg_check": 17291.0
-        },
-        {
-          "name": "Чернявська Таміла",
-          "orders": 4,
-          "revenue": 92321.0,
-          "avg_check": 23080.0
-        },
-        {
-          "name": "Ярмоленко Наталія",
-          "orders": 5,
-          "revenue": 70629.0,
-          "avg_check": 14126.0
+          "orders": 16,
+          "revenue": 406426.0,
+          "avg_check": 25402.0
         },
         {
           "name": "Мачула Оксана",
-          "orders": 5,
-          "revenue": 52896.0,
-          "avg_check": 10579.0
+          "orders": 9,
+          "revenue": 140211.0,
+          "avg_check": 15579.0
+        },
+        {
+          "name": "Чернявська Таміла",
+          "orders": 7,
+          "revenue": 112997.0,
+          "avg_check": 16142.0
+        },
+        {
+          "name": "Ярмоленко Наталія",
+          "orders": 8,
+          "revenue": 83298.0,
+          "avg_check": 10412.0
         },
         {
           "name": "Кучинська Еля",
-          "orders": 3,
-          "revenue": 29233.0,
-          "avg_check": 9744.0
+          "orders": 5,
+          "revenue": 55793.0,
+          "avg_check": 11159.0
         }
       ],
       "chatters": [
         {
           "name": "Марта Онищук",
-          "orders": 9,
-          "revenue": 42223.0
+          "orders": 12,
+          "revenue": 64939.0
         },
         {
           "name": "Кірієнко Вікторія",
-          "orders": 13,
-          "revenue": 40658.0
+          "orders": 20,
+          "revenue": 63878.0
         },
         {
           "name": "Калюта Анастасія",
@@ -320,66 +330,76 @@
         }
       ],
       "statuses": {
-        "Контроль оператора": 577,
-        "Спам на согласование": 292,
-        "В черзі на відправлення": 148,
-        "В обробці": 120,
-        "Лід (не купив)": 104,
-        "Недодзвон": 103,
-        "Створена ТТН": 90,
-        "Питання по замовленню": 89,
-        "Їде до клієнта": 67,
-        "Новий": 49,
-        "Повторне звернення": 46,
-        "Прибув у відділення": 22,
+        "Контроль оператора": 913,
+        "Спам на согласование": 431,
+        "В черзі на відправлення": 207,
+        "В обробці": 188,
+        "Недодзвон": 168,
+        "Лід (не купив)": 149,
+        "Новий": 148,
+        "Питання по замовленню": 121,
+        "Створена ТТН": 115,
+        "Їде до клієнта": 80,
+        "Повторне звернення": 63,
+        "Відмова (не відправлено)": 42,
+        "В виробництві": 31,
+        "Спам Дубль": 26,
+        "Прибув у відділення": 25,
+        "Відвідає шоу-рум": 23,
+        "Контроль оплати": 21,
+        "Потрібне уточнення/перезвон": 20,
         "Отримано": 20,
-        "В виробництві": 20,
-        "Відмова (не відправлено)": 17,
-        "Контроль оплати": 15,
-        "Відвідає шоу-рум": 15,
-        "Потрібне уточнення/перезвон": 14,
-        "Спам Дубль": 13,
-        "Рекламный спам": 10,
-        "Помилка менеджера": 4,
+        "Рекламный спам": 14,
+        "Помилка менеджера": 7,
         "Переадресація": 3,
         "Відмова (відправлено)": 1,
         "Відправлено": 1
       },
       "sites": {
         "matrasroll.com.ua": {
-          "orders": 783,
-          "revenue": 2561307.0,
-          "avg_check": 3271.0
+          "orders": 1131,
+          "revenue": 3657459.72,
+          "avg_check": 3234.0
         },
         "amebli.com.ua": {
-          "orders": 277,
-          "revenue": 1820947.0,
-          "avg_check": 6574.0
+          "orders": 361,
+          "revenue": 2468467.0,
+          "avg_check": 6838.0
         },
         "sofino": {
-          "orders": 190,
-          "revenue": 1445261.95,
-          "avg_check": 7607.0
+          "orders": 273,
+          "revenue": 1997559.95,
+          "avg_check": 7317.0
         },
-        "Шоу-Рум Ретровіль": {
-          "orders": 10,
-          "revenue": 227286.0,
-          "avg_check": 22729.0
+        "Розетка СХ": {
+          "orders": 166,
+          "revenue": 753734.0,
+          "avg_check": 4541.0
         },
         "Шоу-Рум Якова Гніздовського": {
-          "orders": 13,
-          "revenue": 150039.0,
-          "avg_check": 11541.0
+          "orders": 22,
+          "revenue": 408357.0,
+          "avg_check": 18562.0
         },
-        "hubstore.com.ua": {
-          "orders": 38,
-          "revenue": 134277.0,
-          "avg_check": 3534.0
+        "Шоу-Рум Ретровіль": {
+          "orders": 13,
+          "revenue": 322794.0,
+          "avg_check": 24830.0
+        },
+        "Епіцентр СХ": {
+          "orders": 29,
+          "revenue": 191849.0,
+          "avg_check": 6615.0
         },
         "Шоу-Рум Дрім Таун": {
-          "orders": 7,
-          "revenue": 129927.0,
-          "avg_check": 18561.0
+          "orders": 13,
+          "revenue": 166847.0,
+          "avg_check": 12834.0
+        },
+        "hubstore.com.ua": {
+          "orders": 46,
+          "revenue": 154576.0,
+          "avg_check": 3360.0
         },
         "Rozetka UnitedHomes": {
           "orders": 15,
@@ -395,14 +415,60 @@
           "orders": 6,
           "revenue": 12750.0,
           "avg_check": 2125.0
+        },
+        "Епіцентр ЮХ": {
+          "orders": 2,
+          "revenue": 3816.0,
+          "avg_check": 1908.0
+        },
+        "ST Даринок": {
+          "orders": 0,
+          "revenue": 0.0,
+          "avg_check": 0.0
         }
       },
       "products": [
         {
+          "name": "Ортопедичний матрац Smart Mattresses Dual 160х200",
+          "count": 21,
+          "revenue": 153759.0,
+          "qty": 21
+        },
+        {
+          "name": "Ортопедичний матрац Smart Mattresses Dual Cocos 160х200",
+          "count": 16,
+          "revenue": 117504.0,
+          "qty": 16
+        },
+        {
           "name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 160x200",
-          "count": 13,
-          "revenue": 76697.0,
-          "qty": 13
+          "count": 16,
+          "revenue": 96617.0,
+          "qty": 16
+        },
+        {
+          "name": "Ортопедичний матрац ORANGE Handy (вакуум) 160x200",
+          "count": 11,
+          "revenue": 74917.0,
+          "qty": 11
+        },
+        {
+          "name": "Топпер PURPLE Bionica Linen Active 160x200",
+          "count": 29,
+          "revenue": 64771.0,
+          "qty": 29
+        },
+        {
+          "name": "Ортопедичний матрац Chocolate (вакуум) 160x200",
+          "count": 7,
+          "revenue": 57697.0,
+          "qty": 7
+        },
+        {
+          "name": "Топпер Purple Base Plus 160x200",
+          "count": 17,
+          "revenue": 56940.0,
+          "qty": 17
         },
         {
           "name": "Топпер Purple Base Plus 140x200",
@@ -411,10 +477,40 @@
           "qty": 18
         },
         {
-          "name": "Топпер Purple Base Plus 160x200",
-          "count": 15,
-          "revenue": 50608.0,
-          "qty": 15
+          "name": "Диван \"РіднеТут\" Hardy 2500х1200 мм єврокнижка Alaska 93 Сірий",
+          "count": 2,
+          "revenue": 53480.0,
+          "qty": 2
+        },
+        {
+          "name": "Диван кутовий RidneTUT Jamison, 7 кат., кут Г",
+          "count": 1,
+          "revenue": 48787.0,
+          "qty": 1
+        },
+        {
+          "name": "Топпер PURPLE Base Lite Cocos 180x200",
+          "count": 11,
+          "revenue": 47520.0,
+          "qty": 11
+        },
+        {
+          "name": "Диван Novelty Smile / Смайл 120х200, тк.1, Exim Аляска 02",
+          "count": 1,
+          "revenue": 44900.0,
+          "qty": 3
+        },
+        {
+          "name": "Ортопедичний матрац Smart Mattresses Dual 90х190",
+          "count": 7,
+          "revenue": 43010.0,
+          "qty": 10
+        },
+        {
+          "name": "Ортопедичний матрац Chocolate (вакуум) 160x190",
+          "count": 5,
+          "revenue": 40700.0,
+          "qty": 5
         },
         {
           "name": "Диван кутовий RidneTUT Bradley XXL, 1 кат., кут Г, Делюкс Текстиль Boss 03",
@@ -423,10 +519,34 @@
           "qty": 1
         },
         {
-          "name": "Топпер PURPLE Base Lite Cocos 180x200",
-          "count": 9,
-          "revenue": 39612.0,
-          "qty": 9
+          "name": "Purple High Cocos,матрац 160x200",
+          "count": 5,
+          "revenue": 39748.0,
+          "qty": 5
+        },
+        {
+          "name": "Диван Virkoni Танго Аляска 11/ Олімп 21 (принт)",
+          "count": 3,
+          "revenue": 37028.0,
+          "qty": 4
+        },
+        {
+          "name": "Ортопедичний матрац ORANGE Handy (вакуум) 140x200",
+          "count": 6,
+          "revenue": 36258.0,
+          "qty": 6
+        },
+        {
+          "name": "Диван кутовий RidneTUT Bradley, 6 кат., кут 7, тк. Юнітекс Nuvola 02",
+          "count": 1,
+          "revenue": 35990.0,
+          "qty": 1
+        },
+        {
+          "name": "Ортопедичний матрац Smart Mattresses Dual 120х200 см",
+          "count": 6,
+          "revenue": 33974.0,
+          "qty": 6
         },
         {
           "name": "Orange Big Roll,матрац 160x200",
@@ -435,16 +555,34 @@
           "qty": 5
         },
         {
-          "name": "Ортопедичний матрац Chocolate (вакуум) 160x190",
+          "name": "Топпер PURPLE Base Lite NEW 160x200",
           "count": 4,
-          "revenue": 32500.0,
-          "qty": 4
+          "revenue": 33038.0,
+          "qty": 14
         },
         {
           "name": "Ортопедичний матрац M.Y.M Comfort Deluxe 2025 - Roll Pack 160x200",
           "count": 2,
           "revenue": 32464.0,
           "qty": 2
+        },
+        {
+          "name": "Топпер PURPLE Bionica Linen Active 140x190",
+          "count": 15,
+          "revenue": 31890.0,
+          "qty": 16
+        },
+        {
+          "name": "Orange Big Roll,матрац 90x200",
+          "count": 1,
+          "revenue": 30528.0,
+          "qty": 8
+        },
+        {
+          "name": "Ортопедичний матрац ORANGE Handy Foam 140x200",
+          "count": 5,
+          "revenue": 30036.0,
+          "qty": 5
         },
         {
           "name": "Диван прямий RidneTUT Jamison, 2 кат., тк. Deluxe textile Прайм 33",
@@ -471,6 +609,12 @@
           "qty": 3
         },
         {
+          "name": "Матрац Sofino Cocos вакуум 160x200",
+          "count": 4,
+          "revenue": 28460.0,
+          "qty": 4
+        },
+        {
           "name": "Диван прямий RidneTUT Jamison, 1 кат., тк. Дивотекс Делано 722",
           "count": 1,
           "revenue": 28400.0,
@@ -483,15 +627,45 @@
           "qty": 1
         },
         {
+          "name": "Диван Virkoni Нептун",
+          "count": 1,
+          "revenue": 28200.0,
+          "qty": 2
+        },
+        {
           "name": "Ортопедичний матрац ORANGE Sun Style 80x190",
           "count": 2,
           "revenue": 28192.0,
           "qty": 4
         },
         {
-          "name": "Ортопедичний матрац ORANGE Handy (вакуум) 160x200",
+          "name": "Ортопедичний матрац Smart Mattresses Dual 120х190",
+          "count": 5,
+          "revenue": 27976.0,
+          "qty": 5
+        },
+        {
+          "name": "Ортопедичний матрац Chocolate (вакуум) 180x200",
+          "count": 3,
+          "revenue": 27389.0,
+          "qty": 3
+        },
+        {
+          "name": "Диван Amely Смайлік 1,1",
+          "count": 1,
+          "revenue": 27200.0,
+          "qty": 2
+        },
+        {
+          "name": "Purple High,матрац 160x200",
           "count": 4,
-          "revenue": 27239.0,
+          "revenue": 26866.0,
+          "qty": 4
+        },
+        {
+          "name": "118372",
+          "count": 4,
+          "revenue": 26816.0,
           "qty": 4
         },
         {
@@ -501,22 +675,22 @@
           "qty": 3
         },
         {
-          "name": "Ортопедичний матрац Chocolate (вакуум) 160x200",
+          "name": "Ортопедичний матрац Sleep & GO Sprint 160x200 см",
           "count": 3,
-          "revenue": 24726.0,
+          "revenue": 26082.0,
           "qty": 3
         },
         {
-          "name": "Ортопедичний матрац ORANGE Handy (вакуум) 140x200",
+          "name": "Ортопедичний матрац Smart Mattresses Dual 140х190 см",
           "count": 4,
-          "revenue": 24188.0,
+          "revenue": 25329.0,
           "qty": 4
         },
         {
-          "name": "Ортопедичний матрац ORANGE Handy Foam 140x200",
-          "count": 4,
-          "revenue": 24036.0,
-          "qty": 4
+          "name": "Топпер PURPLE Base Lite NEW 140x190",
+          "count": 11,
+          "revenue": 24035.0,
+          "qty": 11
         },
         {
           "name": "Диван RidneTUT Eva 1, 3 кат. Exim Textil Х'юстон 44",
@@ -537,522 +711,192 @@
           "qty": 1
         },
         {
-          "name": "Матрац Orange Handy Linen+Комплект All Inclusive 2 подушки+наматрацник (вакуум) 160x200",
-          "count": 3,
-          "revenue": 22930.0,
-          "qty": 3
+          "name": "Топпер PURPLE Bionica Linen Active 120x190",
+          "count": 14,
+          "revenue": 23698.0,
+          "qty": 14
         },
         {
-          "name": "Ортопедичний матрац Chocolate (вакуум) 150x200",
-          "count": 3,
-          "revenue": 22902.0,
-          "qty": 3
-        },
-        {
-          "name": "Ортопедичний матрац Brownie (вакуум) 180x200",
-          "count": 2,
-          "revenue": 21840.0,
-          "qty": 2
-        },
-        {
-          "name": "Шафа-купе Віват В186 Дуб сонома 180х250х60,проф.стандарт чорний мат, фас: 2 двері СТ9.4 Дзеркало+ДСП",
+          "name": "2779677",
           "count": 1,
-          "revenue": 21735.0,
+          "revenue": 23680.0,
           "qty": 1
         },
         {
-          "name": "Шафа для одягу Doros Гелар Графіт 4 ДСП",
-          "count": 2,
-          "revenue": 20734.0,
-          "qty": 2
-        },
-        {
-          "name": "Purple High,матрац 160x190",
-          "count": 3,
-          "revenue": 20148.0,
-          "qty": 3
-        },
-        {
-          "name": "Топпер Purple Base Plus Cocos 110x200",
-          "count": 3,
-          "revenue": 19644.0,
-          "qty": 6
-        },
-        {
-          "name": "Ортопедичний матрац Caramel (вакуум) 180x200",
-          "count": 2,
-          "revenue": 19600.0,
-          "qty": 2
-        },
-        {
-          "name": "Ортопедичний матрац HighFoam BlueMarine Pasifico 180х200",
+          "name": "Ліжко з п/м Ridne TUT Емелі (преміум) 180x200, тк.1, Boss 17, ніжки бук",
           "count": 1,
-          "revenue": 19560.0,
+          "revenue": 23000.0,
           "qty": 1
-        },
-        {
-          "name": "Топпер PURPLE Base Lite Cocos 200x200",
-          "count": 3,
-          "revenue": 19452.0,
-          "qty": 3
-        },
-        {
-          "name": "Топпер Purple Base Plus 140x190",
-          "count": 7,
-          "revenue": 19196.0,
-          "qty": 7
-        },
-        {
-          "name": "Диван прямий RidneTUT Norman, 1 кат, Делюкс Текстиль Boss 04",
-          "count": 1,
-          "revenue": 18101.0,
-          "qty": 1
-        },
-        {
-          "name": "Диван прямий RidneTUT Norman, 1 кат.",
-          "count": 1,
-          "revenue": 18101.0,
-          "qty": 1
-        },
-        {
-          "name": "Диван прямий RidneTUT Norman, 1 кат, Делюкс Текстиль Boss 03",
-          "count": 1,
-          "revenue": 18100.0,
-          "qty": 1
-        },
-        {
-          "name": "Диван Virkoni Танго Аляска 11/ Олімп 21 (принт)",
-          "count": 2,
-          "revenue": 17828.0,
-          "qty": 2
-        },
-        {
-          "name": "Топпер BIONICA Linen Ultra 160x200",
-          "count": 5,
-          "revenue": 17447.0,
-          "qty": 5
-        },
-        {
-          "name": "Ліжко з п/м Ridne TUT Тейлор (євро) 140x200, тк.5, Divotex Zenit 08",
-          "count": 1,
-          "revenue": 17380.0,
-          "qty": 1
-        },
-        {
-          "name": "Ортопедичний матрац PEGASUS Atlas 160x200",
-          "count": 1,
-          "revenue": 17358.0,
-          "qty": 1
-        },
-        {
-          "name": "Ортопедичний матрац ORANGE Porto 180x200 см",
-          "count": 2,
-          "revenue": 17240.0,
-          "qty": 2
-        },
-        {
-          "name": "Диван прямий RidneTUT Norman, 1 кат, Exim Textil Lili 94",
-          "count": 1,
-          "revenue": 17195.95,
-          "qty": 1
-        },
-        {
-          "name": "Матрац Sofino Cocos вакуум 160x200",
-          "count": 2,
-          "revenue": 17080.0,
-          "qty": 2
-        },
-        {
-          "name": "2785401",
-          "count": 1,
-          "revenue": 17010.0,
-          "qty": 1
-        },
-        {
-          "name": "Топпер PURPLE Base Lite Cocos 110x190",
-          "count": 6,
-          "revenue": 16704.0,
-          "qty": 6
-        },
-        {
-          "name": "Топпер PURPLE Evolution Luxe Cocos 140x190",
-          "count": 3,
-          "revenue": 16464.0,
-          "qty": 3
-        },
-        {
-          "name": "Подушка ECO 50х70",
-          "count": 84,
-          "revenue": 16061.0,
-          "qty": 120
-        },
-        {
-          "name": "Топпер ORANGE Wonder Area 160x200",
-          "count": 4,
-          "revenue": 16000.0,
-          "qty": 4
-        },
-        {
-          "name": "Ортопедичний матрац PEGASUS Luna Cocos 180x200",
-          "count": 2,
-          "revenue": 15528.0,
-          "qty": 2
-        },
-        {
-          "name": "Покращенний чохол",
-          "count": 74,
-          "revenue": 15199.0,
-          "qty": 76
-        },
-        {
-          "name": "Топпер PURPLE Bionica Linen 150x200",
-          "count": 5,
-          "revenue": 14315.0,
-          "qty": 5
-        },
-        {
-          "name": "Топпер Purple Base Plus Cocos 120x190",
-          "count": 4,
-          "revenue": 13852.0,
-          "qty": 4
-        },
-        {
-          "name": "Гарантія Smart 10% MatrasRoll",
-          "count": 81,
-          "revenue": 12940.0,
-          "qty": 81
-        },
-        {
-          "name": "Топпер Purple Base Plus Cocos 70x190",
-          "count": 4,
-          "revenue": 12738.0,
-          "qty": 6
-        },
-        {
-          "name": "Топпер BIONICA Linen Ultra 140x190",
-          "count": 4,
-          "revenue": 12210.0,
-          "qty": 4
-        },
-        {
-          "name": "Топпер PURPLE Base Lite Cocos 80x190",
-          "count": 5,
-          "revenue": 12171.0,
-          "qty": 6
-        },
-        {
-          "name": "Топпер PURPLE Base Lite NEW 140x200",
-          "count": 5,
-          "revenue": 12075.0,
-          "qty": 5
-        },
-        {
-          "name": "Матрац Orange Fresh 80x200",
-          "count": 2,
-          "revenue": 12000.0,
-          "qty": 4
-        },
-        {
-          "name": "Топпер PURPLE Bionica Linen 160x190",
-          "count": 4,
-          "revenue": 11744.0,
-          "qty": 4
-        },
-        {
-          "name": "Топпер PURPLE Bionica Linen Cocos 140x200",
-          "count": 3,
-          "revenue": 11571.0,
-          "qty": 3
-        },
-        {
-          "name": "Топпер PURPLE Evolution Luxe Cocos 90x190",
-          "count": 3,
-          "revenue": 10800.0,
-          "qty": 3
-        },
-        {
-          "name": "Топпер Family Sleep Gray-White Sky 80х190 см",
-          "count": 4,
-          "revenue": 10456.0,
-          "qty": 4
-        },
-        {
-          "name": "Тонкий матрац-топпер Bionica Linen Active Plus 180х200 см",
-          "count": 3,
-          "revenue": 10059.0,
-          "qty": 3
-        },
-        {
-          "name": "Топпер Purple Evolution Comfort (без коробки) 65x190",
-          "count": 4,
-          "revenue": 10024.0,
-          "qty": 4
-        },
-        {
-          "name": "Наматрацник ECO стьобаний 160х200",
-          "count": 18,
-          "revenue": 9911.0,
-          "qty": 18
-        },
-        {
-          "name": "Топпер Purple Base Plus 110x190",
-          "count": 4,
-          "revenue": 8877.0,
-          "qty": 4
-        },
-        {
-          "name": "Ортопедичний матрац SOFT 80х190",
-          "count": 3,
-          "revenue": 8529.0,
-          "qty": 3
-        },
-        {
-          "name": "Топпер Purple Base Plus 70x190",
-          "count": 5,
-          "revenue": 7690.0,
-          "qty": 5
-        },
-        {
-          "name": "Топпер Purple Base Plus 120x190",
-          "count": 3,
-          "revenue": 7512.0,
-          "qty": 3
-        },
-        {
-          "name": "Топпер PURPLE Bionica Linen Luxe 80x200",
-          "count": 3,
-          "revenue": 7170.0,
-          "qty": 4
-        },
-        {
-          "name": "Топпер Purple Base Plus 110x200",
-          "count": 3,
-          "revenue": 7062.0,
-          "qty": 3
-        },
-        {
-          "name": "Наматрацник Good-Dream Bamboo De Lux Водонепроникний з резинкою по периметру 160х200 см",
-          "count": 4,
-          "revenue": 5960.0,
-          "qty": 4
-        },
-        {
-          "name": "Драбина до ліжка Софіно Лайт ЛД 029.03",
-          "count": 2,
-          "revenue": 4680.0,
-          "qty": 6
-        },
-        {
-          "name": "Подушка Eurosleep MEMORY CLASSIC",
-          "count": 3,
-          "revenue": 4602.0,
-          "qty": 3
-        },
-        {
-          "name": "Топпер PURPLE Base Lite NEW 80x190",
-          "count": 3,
-          "revenue": 4039.0,
-          "qty": 3
-        },
-        {
-          "name": "Наматрацник ECO стьобаний 150х200",
-          "count": 7,
-          "revenue": 3920.0,
-          "qty": 7
-        },
-        {
-          "name": "Наматрацник ECO стьобаний 140х200",
-          "count": 7,
-          "revenue": 3719.0,
-          "qty": 7
-        },
-        {
-          "name": "Наматрацник ECO стьобаний 80х190",
-          "count": 10,
-          "revenue": 3540.0,
-          "qty": 10
-        },
-        {
-          "name": "Наматрацник ECO стьобаний 90х190",
-          "count": 6,
-          "revenue": 3055.0,
-          "qty": 8
-        },
-        {
-          "name": "Простирадло Good-Dream Бязь Premium Grey на гумці 160х200 см",
-          "count": 3,
-          "revenue": 2964.0,
-          "qty": 3
-        },
-        {
-          "name": "Торшер підлоговий FWOOD Vezha 1.2, натуральне дерево, колір табак, дерев'яна основа",
-          "count": 3,
-          "revenue": 2523.0,
-          "qty": 3
-        },
-        {
-          "name": "Наматрацник ECO стьобаний 120х190",
-          "count": 5,
-          "revenue": 2271.0,
-          "qty": 5
-        },
-        {
-          "name": "Наматрацник ECO стьобаний 160х190",
-          "count": 3,
-          "revenue": 1680.0,
-          "qty": 3
-        },
-        {
-          "name": "Наматрацник ECO стьобаний 150х190",
-          "count": 3,
-          "revenue": 1629.0,
-          "qty": 3
         }
       ],
       "categories": {
-        "Топер": 770,
-        "Ортопедичний матрац": 399,
-        "Безпружинний матрац": 56,
-        "Дивани": 23,
-        "Ліжка": 19,
-        "Інше": 16,
-        "Корпусні меблі": 10,
-        "Шафи": 9,
-        "Аксесуари для сну": 9,
-        "Топер,\nАксесуари для сну": 5,
-        "М'які меблі": 2,
-        "Ортопедичний матрац,\nАксесуари для сну": 2,
+        "Топер": 1128,
+        "Ортопедичний матрац": 566,
+        "Безпружинний матрац": 83,
+        "Дивани": 37,
+        "Ліжка": 26,
+        "Інше": 18,
+        "Корпусні меблі": 13,
+        "Шафи": 12,
+        "Аксесуари для сну": 10,
+        "Топер,\nАксесуари для сну": 9,
+        "Ортопедичний матрац,\nАксесуари для сну": 4,
+        "Ортопедичний матрац,\nЛіжка": 4,
+        "Ортопедичний матрац,\nДивани,\nЛіжка": 2,
         "Топер,\nОртопедичний матрац": 2,
-        "Ортопедичний матрац,\nДивани,\nЛіжка": 1,
-        "Топер,\nБезпружинний матрац": 1
+        "М'які меблі": 2
       },
       "request_types": {
-        "Корзина": 663,
-        "Вхідний дзвінок": 382,
-        "GetCall": 217,
-        "Чат": 74,
-        "Шоу-рум": 15,
-        "Instagram": 5,
+        "Корзина": 1014,
+        "Вхідний дзвінок": 507,
+        "GetCall": 288,
+        "Чат": 98,
+        "Шоу-рум": 23,
+        "Месенджери": 14,
+        "Instagram": 9,
+        "GetCall,\nКорзина": 7,
         "Вхідний дзвінок,\nGetCall": 5,
-        "GetCall,\nКорзина": 4,
-        "Вхідний дзвінок,\nШоу-рум": 2,
-        "Facebook": 2
+        "Вхідний дзвінок,\nКорзина": 3
       },
       "payment_methods": {
-        "Оплата при отриманні": 951,
-        "Р/Р": 78,
-        "Р/Р + наложка": 57,
-        "Оплата частинами": 56,
-        "LiqPay": 30,
-        "ОЧ + Наложка": 25,
-        "LiqPay+наложка": 23,
-        "Готівка (для самовивозу)": 10,
-        "no_cash": 4,
-        "LiqPay + Р/Р": 4
+        "Оплата при отриманні": 1462,
+        "Р/Р": 109,
+        "Оплата частинами": 79,
+        "Р/Р + наложка": 70,
+        "LiqPay": 62,
+        "ОЧ + Наложка": 33,
+        "LiqPay+наложка": 31,
+        "part_pay": 18,
+        "google_pay": 18,
+        "Готівка (для самовивозу)": 16
       },
       "delivery_types": {
-        "На відділення": 651,
-        "Адресна": 386,
-        "Самовивіз": 45
+        "На відділення": 950,
+        "Адресна": 573,
+        "Самовивіз": 66
       },
       "carriers": {
-        "Нова Пошта": 808,
-        "Власна по Києву": 230,
-        "Самовивіз": 38,
+        "Нова Пошта": 1182,
+        "Власна по Києву": 340,
+        "Самовивіз": 58,
+        "Догруз": 3,
         "Meest Express (НЕ ПРАЦЮЄМО)": 1,
-        "Догруз": 1
+        "Meest Express (НЕ ПРАЦЮЄМО),\nВласна по Києву": 1
       },
       "warehouses": {
-        "Виробництво": 637,
-        "Склад Двушка": 289,
-        "Від постачальника": 141,
-        "Склад Шоу-Рум": 23
+        "Виробництво": 1028,
+        "Склад Двушка": 348,
+        "Від постачальника": 184,
+        "Склад Шоу-Рум": 39
       },
       "refuse_reasons": {
+        "Купив в іншому місці": 8,
+        "Інше (вказати в коментарі)": 7,
         "Змінились обставини": 6,
-        "Купив в іншому місці": 6,
-        "Інше (вказати в коментарі)": 5,
-        "Імпульсивне замовлення": 2,
+        "Імпульсивне замовлення": 3,
         "Купив в іншому місці,\nНе бере слухавку": 1,
-        "Ошибка менеджера": 1
+        "Ошибка менеджера": 1,
+        "Вказав невірні дані": 1,
+        "Не змогли доставити": 1
       },
       "lead_objections": {
-        "Інше (вказати в коментарі)": 14,
-        "Дорого": 9,
-        "Хоче лише лід-магніт": 7,
+        "Інше (вказати в коментарі)": 19,
+        "Дорого": 11,
+        "Хоче лише лід-магніт": 10,
+        "Шукав магазин в місті": 8,
         "Неактуально": 6,
-        "Шукав магазин в місті": 5,
-        "Купив в іншому місці": 3,
-        "Дорога доставка": 3,
-        "Хоче лише лід-магніт,\nІнше (вказати в коментарі)": 2,
-        "Довго чекати": 2,
+        "Купив в іншому місці": 6,
+        "Дорога доставка": 5,
+        "Хоче лише лід-магніт,\nІнше (вказати в коментарі)": 3,
+        "Немає на складі": 2,
         "Немає на складі,\nДовго чекати": 2
       },
       "process_reasons": {
-        "Подумає": 40,
-        "Порадиться": 34,
-        "Уточнить адресу доставки": 11,
-        "Оформить ОЧ": 6,
-        "Переміряє місце": 4,
-        "Подумає,\nПорадиться": 2,
+        "Подумає": 55,
+        "Порадиться": 52,
+        "Уточнить адресу доставки": 15,
+        "Оформить ОЧ": 8,
+        "Переміряє місце": 5,
+        "Подумає,\nПорадиться": 3,
         "Подумає,\nПереміряє місце": 1
       },
       "daily_trend": [
         {
           "date": "2026-05-01",
-          "orders": 144,
-          "revenue": 774524.0,
-          "leads": 37,
-          "refused": 27
+          "orders": 155,
+          "revenue": 810528.0,
+          "leads": 38,
+          "refused": 31
         },
         {
           "date": "2026-05-02",
-          "orders": 133,
-          "revenue": 697992.0,
-          "leads": 40,
-          "refused": 15
+          "orders": 152,
+          "revenue": 786879.0,
+          "leads": 47,
+          "refused": 19
         },
         {
           "date": "2026-05-03",
-          "orders": 134,
-          "revenue": 749588.0,
-          "leads": 50,
-          "refused": 7
+          "orders": 155,
+          "revenue": 859860.0,
+          "leads": 68,
+          "refused": 9
         },
         {
           "date": "2026-05-04",
-          "orders": 212,
-          "revenue": 1136642.95,
-          "leads": 86,
-          "refused": 16
+          "orders": 220,
+          "revenue": 1160300.95,
+          "leads": 89,
+          "refused": 17
         },
         {
           "date": "2026-05-05",
-          "orders": 168,
-          "revenue": 792531.0,
-          "leads": 42,
+          "orders": 180,
+          "revenue": 859078.0,
+          "leads": 46,
           "refused": 14
         },
         {
           "date": "2026-05-06",
-          "orders": 159,
-          "revenue": 728904.0,
-          "leads": 54,
-          "refused": 9
+          "orders": 185,
+          "revenue": 878461.0,
+          "leads": 56,
+          "refused": 14
         },
         {
           "date": "2026-05-07",
-          "orders": 191,
-          "revenue": 921646.0,
-          "leads": 66,
-          "refused": 24
+          "orders": 205,
+          "revenue": 1006214.0,
+          "leads": 68,
+          "refused": 25
         },
         {
           "date": "2026-05-08",
-          "orders": 203,
-          "revenue": 872826.0,
-          "leads": 61,
-          "refused": 10
+          "orders": 222,
+          "revenue": 971765.0,
+          "leads": 71,
+          "refused": 12
+        },
+        {
+          "date": "2026-05-09",
+          "orders": 152,
+          "revenue": 832890.72,
+          "leads": 52,
+          "refused": 15
+        },
+        {
+          "date": "2026-05-10",
+          "orders": 212,
+          "revenue": 999435.0,
+          "leads": 83,
+          "refused": 18
+        },
+        {
+          "date": "2026-05-11",
+          "orders": 249,
+          "revenue": 1182938.0,
+          "leads": 113,
+          "refused": 18
         }
       ],
       "error": null
@@ -1060,291 +904,291 @@
     "prev_crm": {
       "month": "2026-04",
       "source_file": "months/ (архів за 2026-04)",
-      "day_limit": 8,
+      "day_limit": 11,
       "orders": {
-        "total": 988,
-        "all_requests": 1519,
-        "sum_all": 5264940.0,
-        "sum_no_spam": 4668825.0,
-        "sum_orders": 4137465.0,
-        "revenue": 4137465.0,
-        "refused": 243,
-        "refuse_pct": 24.6,
-        "spam": 266,
-        "all_rows": 2459,
-        "avg_check": 4187.72
+        "total": 1332,
+        "all_requests": 2040,
+        "sum_all": 7128730.0,
+        "sum_no_spam": 6325019.0,
+        "sum_orders": 5619660.0,
+        "revenue": 5619660.0,
+        "refused": 313,
+        "refuse_pct": 23.5,
+        "spam": 358,
+        "all_rows": 3365,
+        "avg_check": 4218.96
       },
       "leads": {
-        "new_leads": 252
+        "new_leads": 332
       },
       "managers": [
         {
-          "name": "Вікторія Кудрицька",
-          "orders": 54,
-          "revenue": 334959.0,
-          "refused": 23,
-          "refuse_pct": 29.9,
-          "leads": 8,
-          "avg_check": 6203.0,
-          "conv": 87.1
+          "name": "Вікторія Шегедин",
+          "orders": 234,
+          "revenue": 769827.0,
+          "refused": 35,
+          "refuse_pct": 15.0,
+          "leads": 80,
+          "avg_check": 3290.0,
+          "conv": 74.5
         },
         {
           "name": "Юлія Горбань",
-          "orders": 49,
-          "revenue": 330457.0,
-          "refused": 21,
-          "refuse_pct": 30.0,
-          "leads": 7,
-          "avg_check": 6744.0,
-          "conv": 87.5
-        },
-        {
-          "name": "Вікторія Шегедин",
-          "orders": 94,
-          "revenue": 289238.0,
-          "refused": 25,
-          "refuse_pct": 21.0,
-          "leads": 55,
-          "avg_check": 3077.0,
-          "conv": 63.1
+          "orders": 95,
+          "revenue": 610856.0,
+          "refused": 27,
+          "refuse_pct": 28.4,
+          "leads": 12,
+          "avg_check": 6430.0,
+          "conv": 88.8
         },
         {
           "name": "Богдан Малик",
-          "orders": 86,
-          "revenue": 275116.0,
-          "refused": 19,
-          "refuse_pct": 18.1,
-          "leads": 37,
-          "avg_check": 3199.0,
-          "conv": 69.9
+          "orders": 156,
+          "revenue": 494232.0,
+          "refused": 27,
+          "refuse_pct": 17.3,
+          "leads": 52,
+          "avg_check": 3168.0,
+          "conv": 75.0
         },
         {
-          "name": "Діана Дзюба",
-          "orders": 75,
-          "revenue": 262410.0,
-          "refused": 14,
-          "refuse_pct": 15.7,
-          "leads": 27,
-          "avg_check": 3499.0,
-          "conv": 73.5
+          "name": "Вікторія Кудрицька",
+          "orders": 73,
+          "revenue": 453311.0,
+          "refused": 24,
+          "refuse_pct": 32.9,
+          "leads": 10,
+          "avg_check": 6210.0,
+          "conv": 88.0
         },
         {
           "name": "Тетяна Молянко",
-          "orders": 40,
-          "revenue": 252406.0,
-          "refused": 15,
-          "refuse_pct": 27.3,
-          "leads": 4,
-          "avg_check": 6310.0,
-          "conv": 90.9
+          "orders": 62,
+          "revenue": 387461.0,
+          "refused": 17,
+          "refuse_pct": 27.4,
+          "leads": 5,
+          "avg_check": 6249.0,
+          "conv": 92.5
         },
         {
-          "name": "Шоу Рум Дарынок",
-          "orders": 12,
-          "revenue": 234966.0,
-          "refused": 1,
-          "refuse_pct": 7.7,
-          "leads": 2,
-          "avg_check": 19580.0,
-          "conv": 85.7
-        },
-        {
-          "name": "Анна Романенко",
-          "orders": 59,
-          "revenue": 194936.0,
-          "refused": 20,
-          "refuse_pct": 25.3,
-          "leads": 13,
-          "avg_check": 3304.0,
-          "conv": 81.9
+          "name": "Діана Дзюба",
+          "orders": 109,
+          "revenue": 371848.0,
+          "refused": 21,
+          "refuse_pct": 19.3,
+          "leads": 28,
+          "avg_check": 3411.0,
+          "conv": 79.6
         },
         {
           "name": "Надія Карпенко",
-          "orders": 58,
-          "revenue": 170745.0,
-          "refused": 19,
-          "refuse_pct": 24.7,
-          "leads": 34,
-          "avg_check": 2944.0,
-          "conv": 63.0
-        },
-        {
-          "name": "ШоуРум ДрімТаун",
-          "orders": 11,
-          "revenue": 134478.0,
-          "refused": 1,
-          "refuse_pct": 8.3,
-          "leads": 0,
-          "avg_check": 12225.0,
-          "conv": 100.0
+          "orders": 122,
+          "revenue": 371127.0,
+          "refused": 25,
+          "refuse_pct": 20.5,
+          "leads": 38,
+          "avg_check": 3042.0,
+          "conv": 76.2
         },
         {
           "name": "Катерина Мещерiна",
-          "orders": 24,
-          "revenue": 128247.0,
-          "refused": 4,
-          "refuse_pct": 14.3,
+          "orders": 64,
+          "revenue": 358039.0,
+          "refused": 11,
+          "refuse_pct": 17.2,
           "leads": 0,
-          "avg_check": 5344.0,
+          "avg_check": 5594.0,
           "conv": 100.0
         },
         {
-          "name": "Ірина Молянко",
-          "orders": 20,
-          "revenue": 128098.0,
-          "refused": 13,
-          "refuse_pct": 39.4,
-          "leads": 3,
-          "avg_check": 6405.0,
-          "conv": 87.0
+          "name": "Анна Романенко",
+          "orders": 109,
+          "revenue": 347912.0,
+          "refused": 24,
+          "refuse_pct": 22.0,
+          "leads": 15,
+          "avg_check": 3192.0,
+          "conv": 87.9
+        },
+        {
+          "name": "Шоу Рум Дарынок",
+          "orders": 17,
+          "revenue": 297315.0,
+          "refused": 1,
+          "refuse_pct": 5.9,
+          "leads": 2,
+          "avg_check": 17489.0,
+          "conv": 89.5
         },
         {
           "name": "Анна Глотова",
-          "orders": 20,
-          "revenue": 121964.0,
-          "refused": 6,
-          "refuse_pct": 23.1,
-          "leads": 3,
-          "avg_check": 6098.0,
-          "conv": 87.0
-        },
-        {
-          "name": "Валерія Маншиліна",
-          "orders": 35,
-          "revenue": 106391.0,
-          "refused": 29,
-          "refuse_pct": 45.3,
-          "leads": 8,
-          "avg_check": 3040.0,
-          "conv": 81.4
-        },
-        {
-          "name": "Марта Онищук",
-          "orders": 19,
-          "revenue": 83320.0,
-          "refused": 1,
-          "refuse_pct": 5.0,
-          "leads": 2,
-          "avg_check": 4385.0,
-          "conv": 90.5
+          "orders": 43,
+          "revenue": 293245.0,
+          "refused": 9,
+          "refuse_pct": 20.9,
+          "leads": 4,
+          "avg_check": 6820.0,
+          "conv": 91.5
         },
         {
           "name": "Анна Карпенко",
-          "orders": 17,
-          "revenue": 82030.0,
-          "refused": 16,
-          "refuse_pct": 48.5,
-          "leads": 4,
-          "avg_check": 4825.0,
-          "conv": 81.0
+          "orders": 37,
+          "revenue": 233373.0,
+          "refused": 20,
+          "refuse_pct": 54.1,
+          "leads": 6,
+          "avg_check": 6307.0,
+          "conv": 86.0
         },
         {
-          "name": "Шоу-Рум Ретровіль",
-          "orders": 5,
-          "revenue": 71232.0,
-          "refused": 0,
-          "refuse_pct": 0.0,
-          "leads": 1,
-          "avg_check": 14246.0,
-          "conv": 83.3
+          "name": "Валерія Маншиліна",
+          "orders": 61,
+          "revenue": 184676.0,
+          "refused": 31,
+          "refuse_pct": 50.8,
+          "leads": 9,
+          "avg_check": 3027.0,
+          "conv": 87.1
         },
         {
-          "name": "Валерія Захожа",
-          "orders": 13,
-          "revenue": 66592.0,
-          "refused": 1,
-          "refuse_pct": 7.1,
-          "leads": 0,
-          "avg_check": 5122.0,
-          "conv": 100.0
-        },
-        {
-          "name": "Руслан Сава",
-          "orders": 17,
-          "revenue": 41373.0,
-          "refused": 10,
-          "refuse_pct": 37.0,
-          "leads": 1,
-          "avg_check": 2434.0,
-          "conv": 94.4
+          "name": "Ірина Молянко",
+          "orders": 30,
+          "revenue": 182284.0,
+          "refused": 13,
+          "refuse_pct": 43.3,
+          "leads": 3,
+          "avg_check": 6076.0,
+          "conv": 90.9
         },
         {
           "name": "Дарʼя Маменко",
-          "orders": 11,
-          "revenue": 37046.0,
+          "orders": 41,
+          "revenue": 152141.0,
+          "refused": 7,
+          "refuse_pct": 17.1,
+          "leads": 11,
+          "avg_check": 3711.0,
+          "conv": 78.8
+        },
+        {
+          "name": "Александр Шамардин",
+          "orders": 35,
+          "revenue": 144203.0,
+          "refused": 0,
+          "refuse_pct": 0.0,
+          "leads": 26,
+          "avg_check": 4120.0,
+          "conv": 57.4
+        },
+        {
+          "name": "ШоуРум ДрімТаун",
+          "orders": 13,
+          "revenue": 141812.0,
+          "refused": 1,
+          "refuse_pct": 7.7,
+          "leads": 1,
+          "avg_check": 10909.0,
+          "conv": 92.9
+        },
+        {
+          "name": "Марта Онищук",
+          "orders": 25,
+          "revenue": 107922.0,
+          "refused": 1,
+          "refuse_pct": 4.0,
+          "leads": 3,
+          "avg_check": 4317.0,
+          "conv": 89.3
+        },
+        {
+          "name": "Валерія Захожа",
+          "orders": 19,
+          "revenue": 91024.0,
           "refused": 2,
-          "refuse_pct": 15.4,
-          "leads": 2,
-          "avg_check": 3368.0,
-          "conv": 84.6
+          "refuse_pct": 10.5,
+          "leads": 0,
+          "avg_check": 4791.0,
+          "conv": 100.0
+        },
+        {
+          "name": "Шоу-Рум Ретровіль",
+          "orders": 6,
+          "revenue": 84792.0,
+          "refused": 0,
+          "refuse_pct": 0.0,
+          "leads": 1,
+          "avg_check": 14132.0,
+          "conv": 85.7
+        },
+        {
+          "name": "Руслан Сава",
+          "orders": 28,
+          "revenue": 77024.0,
+          "refused": 10,
+          "refuse_pct": 35.7,
+          "leads": 1,
+          "avg_check": 2751.0,
+          "conv": 96.6
         },
         {
           "name": "Ростислав Куций",
-          "orders": 13,
-          "revenue": 31040.0,
-          "refused": 2,
-          "refuse_pct": 13.3,
+          "orders": 23,
+          "revenue": 58604.0,
+          "refused": 5,
+          "refuse_pct": 21.7,
           "leads": 0,
-          "avg_check": 2388.0,
+          "avg_check": 2548.0,
           "conv": 100.0
         },
         {
           "name": "Вікторія Кирієнко",
-          "orders": 6,
-          "revenue": 29533.0,
+          "orders": 11,
+          "revenue": 43567.0,
           "refused": 0,
           "refuse_pct": 0.0,
           "leads": 1,
-          "avg_check": 4922.0,
-          "conv": 85.7
-        },
-        {
-          "name": "Александр Шамардин",
-          "orders": 5,
-          "revenue": 9832.0,
-          "refused": 0,
-          "refuse_pct": 0.0,
-          "leads": 24,
-          "avg_check": 1966.0,
-          "conv": 17.2
-        },
-        {
-          "name": "Яков Маншилін",
-          "orders": 1,
-          "revenue": 3338.0,
-          "refused": 0,
-          "refuse_pct": 0.0,
-          "leads": 1,
-          "avg_check": 3338.0,
-          "conv": 50.0
+          "avg_check": 3961.0,
+          "conv": 91.7
         },
         {
           "name": "Анастасія Любарец",
-          "orders": 1,
-          "revenue": 2.0,
+          "orders": 2,
+          "revenue": 19802.0,
           "refused": 0,
           "refuse_pct": 0.0,
           "leads": 0,
-          "avg_check": 2.0,
+          "avg_check": 9901.0,
           "conv": 100.0
         },
         {
+          "name": "Яков Маншилін",
+          "orders": 3,
+          "revenue": 10072.0,
+          "refused": 0,
+          "refuse_pct": 0.0,
+          "leads": 2,
+          "avg_check": 3357.0,
+          "conv": 60.0
+        },
+        {
           "name": "Відділ Операторів",
-          "orders": 0,
-          "revenue": 0.0,
+          "orders": 1,
+          "revenue": 6248.0,
           "refused": 1,
           "refuse_pct": 100.0,
           "leads": 1,
-          "avg_check": 0.0,
-          "conv": 0.0
+          "avg_check": 6248.0,
+          "conv": 50.0
         }
       ],
       "managers_shop": [
         {
           "name": "Кутафіна Алла",
-          "orders": 7,
-          "revenue": 126214.0,
-          "avg_check": 18031.0
+          "orders": 9,
+          "revenue": 150504.0,
+          "avg_check": 16723.0
         },
         {
           "name": "Мачула Оксана",
@@ -1354,21 +1198,21 @@
         },
         {
           "name": "Ярмоленко Наталія",
-          "orders": 8,
-          "revenue": 79829.0,
-          "avg_check": 9979.0
+          "orders": 9,
+          "revenue": 83782.0,
+          "avg_check": 9309.0
+        },
+        {
+          "name": "Кучинська Еля",
+          "orders": 3,
+          "revenue": 61999.0,
+          "avg_check": 20666.0
         },
         {
           "name": "Чернявська Таміла",
           "orders": 5,
           "revenue": 61983.0,
           "avg_check": 12397.0
-        },
-        {
-          "name": "Кучинська Еля",
-          "orders": 2,
-          "revenue": 41598.0,
-          "avg_check": 20799.0
         }
       ],
       "chatters": [
@@ -1381,133 +1225,273 @@
           "name": "Валерія Захожа",
           "orders": 3,
           "revenue": 19030.0
+        },
+        {
+          "name": "Кірієнко Вікторія",
+          "orders": 4,
+          "revenue": 11074.0
         }
       ],
       "statuses": {
-        "Отримано": 536,
-        "В черзі на відправлення": 195,
-        "Лід (не купив)": 172,
-        "Питання по замовленню": 151,
-        "Рекламный спам": 130,
-        "Спам Дубль": 121,
-        "Повторне звернення": 52,
-        "Відмова (не відправлено)": 37,
-        "В обробці": 35,
-        "Відмова (відправлено)": 34,
-        "Спам на согласование": 15,
-        "Рекламація": 12,
-        "Відвідає шоу-рум": 8,
-        "Контроль оператора": 6,
-        "Відправлено": 5,
+        "Отримано": 738,
+        "В черзі на відправлення": 260,
+        "Лід (не купив)": 220,
+        "Питання по замовленню": 201,
+        "Рекламный спам": 176,
+        "Спам Дубль": 163,
+        "Повторне звернення": 69,
+        "Відмова (відправлено)": 47,
+        "Відмова (не відправлено)": 46,
+        "В обробці": 44,
+        "Спам на согласование": 19,
+        "Рекламація": 17,
+        "Відвідає шоу-рум": 12,
+        "Контроль оператора": 10,
+        "Відправлено": 6,
         "Новий": 4,
+        "Контроль оплати": 2,
+        "Прибув у відділення": 2,
         "Лід ЧАТИ": 2,
-        "Прибув у відділення": 1,
-        "Контроль оплати": 1,
         "В виробництві": 1,
         "Помилка менеджера": 1
       },
       "sites": {
         "matrasroll.com.ua": {
-          "orders": 712,
-          "revenue": 2345120.0,
-          "avg_check": 3294.0
+          "orders": 959,
+          "revenue": 3140275.0,
+          "avg_check": 3275.0
         },
         "amebli.com.ua": {
-          "orders": 276,
-          "revenue": 1685057.0,
-          "avg_check": 6105.0
+          "orders": 355,
+          "revenue": 2227520.0,
+          "avg_check": 6275.0
         },
         "Шоу-Рум Якова Гніздовського": {
-          "orders": 15,
-          "revenue": 257609.0,
-          "avg_check": 17174.0
+          "orders": 19,
+          "revenue": 310563.0,
+          "avg_check": 16345.0
+        },
+        "Епіцентр СХ": {
+          "orders": 27,
+          "revenue": 172007.0,
+          "avg_check": 6371.0
         },
         "Розетка CХ": {
-          "orders": 28,
-          "revenue": 146795.0,
-          "avg_check": 5243.0
+          "orders": 31,
+          "revenue": 162395.0,
+          "avg_check": 5239.0
         },
         "Шоу-Рум Дрім Таун": {
-          "orders": 13,
-          "revenue": 141812.0,
-          "avg_check": 10909.0
+          "orders": 14,
+          "revenue": 145765.0,
+          "avg_check": 10412.0
         },
         "Шоу-Рум Ретровіль": {
+          "orders": 6,
+          "revenue": 84792.0,
+          "avg_check": 14132.0
+        },
+        "Розетка ЮХ": {
           "orders": 5,
-          "revenue": 71232.0,
-          "avg_check": 14246.0
+          "revenue": 24596.0,
+          "avg_check": 4919.0
+        },
+        "DR-TV": {
+          "orders": 10,
+          "revenue": 17890.0,
+          "avg_check": 1789.0
         },
         "АЛЛО UnitedHome": {
           "orders": 1,
           "revenue": 6610.0,
           "avg_check": 6610.0
         },
-        "DR-TV": {
-          "orders": 3,
-          "revenue": 3900.0,
-          "avg_check": 1300.0
+        "Епіцентр ЮХ": {
+          "orders": 1,
+          "revenue": 2116.0,
+          "avg_check": 2116.0
         }
       },
       "products": [
         {
           "name": "Ортопедичний матрац ORANGE Handy (вакуум) 160x200",
-          "count": 14,
-          "revenue": 94542.0,
-          "qty": 14
+          "count": 24,
+          "revenue": 162672.0,
+          "qty": 24
         },
         {
           "name": "Топпер PURPLE Base Lite NEW 160x200",
-          "count": 23,
-          "revenue": 72592.0,
-          "qty": 27
-        },
-        {
-          "name": "Топпер BIONICA Linen Ultra 160x200",
-          "count": 15,
-          "revenue": 52248.0,
-          "qty": 15
+          "count": 35,
+          "revenue": 113314.0,
+          "qty": 43
         },
         {
           "name": "Топпер BIONICA Linen Ultra 140x200",
-          "count": 17,
-          "revenue": 51342.0,
-          "qty": 17
+          "count": 26,
+          "revenue": 78698.0,
+          "qty": 26
         },
         {
-          "name": "Топпер BIONICA Linen Ultra 120x190",
-          "count": 14,
-          "revenue": 36031.0,
-          "qty": 14
+          "name": "Топпер BIONICA Linen Ultra 160x200",
+          "count": 21,
+          "revenue": 73230.0,
+          "qty": 21
         },
         {
           "name": "Топпер PURPLE Base Lite NEW 140x190",
-          "count": 15,
-          "revenue": 35155.0,
-          "qty": 15
+          "count": 33,
+          "revenue": 72181.0,
+          "qty": 33
         },
         {
-          "name": "Топпер PURPLE Base Lite NEW 160x190",
-          "count": 13,
-          "revenue": 34528.0,
-          "qty": 13
+          "name": "Топпер BIONICA Linen Ultra 120x190",
+          "count": 24,
+          "revenue": 61893.0,
+          "qty": 24
         },
         {
-          "name": "Топпер BIONICA Linen Ultra 140x190",
+          "name": "Ортопедичний матрац MUNO One 160х200 см",
           "count": 10,
-          "revenue": 30604.0,
+          "revenue": 61440.0,
           "qty": 10
         },
         {
-          "name": "Ортопедичний матрац ORANGE Handy (вакуум) 140x200",
-          "count": 5,
-          "revenue": 30276.0,
+          "name": "Ортопедичний матрац Cacao (вакуум) 160x200",
+          "count": 4,
+          "revenue": 54843.0,
           "qty": 5
         },
         {
-          "name": "Топпер PURPLE Base Lite NEW 120x190",
+          "name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 160x200",
+          "count": 6,
+          "revenue": 51240.0,
+          "qty": 6
+        },
+        {
+          "name": "Ортопедичний матрац ORANGE Handy (вакуум) 80x190",
+          "count": 9,
+          "revenue": 50072.0,
+          "qty": 14
+        },
+        {
+          "name": "Топпер PURPLE Base Lite NEW 160x190",
+          "count": 18,
+          "revenue": 46660.0,
+          "qty": 18
+        },
+        {
+          "name": "Топпер BIONICA Linen Ultra 140x190",
           "count": 15,
-          "revenue": 30224.0,
+          "revenue": 45575.0,
           "qty": 15
+        },
+        {
+          "name": "Топпер BIONICA Linen Ultra 160x190",
+          "count": 13,
+          "revenue": 44593.0,
+          "qty": 13
+        },
+        {
+          "name": "Ортопедичний матрац Chocolate (вакуум) 160x200",
+          "count": 6,
+          "revenue": 43525.0,
+          "qty": 6
+        },
+        {
+          "name": "Топпер BIONICA Linen Ultra 130x190",
+          "count": 15,
+          "revenue": 42471.0,
+          "qty": 15
+        },
+        {
+          "name": "Топпер PURPLE Base Lite NEW 150x190",
+          "count": 17,
+          "revenue": 41466.0,
+          "qty": 17
+        },
+        {
+          "name": "Ортопедичний матрац ORANGE Handy (вакуум) 140x190",
+          "count": 7,
+          "revenue": 41285.0,
+          "qty": 7
+        },
+        {
+          "name": "Топпер PURPLE Base Lite NEW 120x190",
+          "count": 21,
+          "revenue": 41135.0,
+          "qty": 21
+        },
+        {
+          "name": "Топпер BIONICA Linen Ultra 110x190",
+          "count": 15,
+          "revenue": 40642.0,
+          "qty": 17
+        },
+        {
+          "name": "Ортопедичний матрац ORANGE Handy (вакуум) 180x200",
+          "count": 5,
+          "revenue": 39679.0,
+          "qty": 5
+        },
+        {
+          "name": "Топпер PURPLE Base Lite NEW 110x190",
+          "count": 22,
+          "revenue": 39020.0,
+          "qty": 23
+        },
+        {
+          "name": "Топпер PURPLE Bionica Linen 140x200",
+          "count": 12,
+          "revenue": 36388.0,
+          "qty": 14
+        },
+        {
+          "name": "Ортопедичний матрац ORANGE Handy (вакуум) 140x200",
+          "count": 6,
+          "revenue": 36276.0,
+          "qty": 6
+        },
+        {
+          "name": "Ортопедичний матрац Tiramisu (вакуум) 160x200",
+          "count": 4,
+          "revenue": 35714.0,
+          "qty": 4
+        },
+        {
+          "name": "Топпер PURPLE Base Lite NEW 140x200",
+          "count": 15,
+          "revenue": 34292.0,
+          "qty": 15
+        },
+        {
+          "name": "Ортопедичний матрац Smart Mattresses Dual 160х200",
+          "count": 5,
+          "revenue": 33446.0,
+          "qty": 5
+        },
+        {
+          "name": "Ортопедичний матрац ORANGE Handy (вакуум) 110x190",
+          "count": 6,
+          "revenue": 33416.0,
+          "qty": 7
+        },
+        {
+          "name": "Топпер PURPLE Bionica Linen Cocos 110x190",
+          "count": 8,
+          "revenue": 32170.0,
+          "qty": 11
+        },
+        {
+          "name": "Топпер Purple Base Plus 140x190",
+          "count": 12,
+          "revenue": 31914.0,
+          "qty": 12
+        },
+        {
+          "name": "Топпер BIONICA Linen Ultra 150x200",
+          "count": 9,
+          "revenue": 29664.0,
+          "qty": 9
         },
         {
           "name": "Диван кутовий RidneTUT Bradley, 1 кат., кут Г, Boss 18",
@@ -1516,28 +1500,64 @@
           "qty": 1
         },
         {
-          "name": "Топпер BIONICA Linen Ultra 160x190",
+          "name": "Топпер PURPLE Base Lite NEW 180x200",
+          "count": 10,
+          "revenue": 28958.0,
+          "qty": 10
+        },
+        {
+          "name": "Ортопедичний матрац Chocolate (вакуум) 140x190",
+          "count": 4,
+          "revenue": 27576.0,
+          "qty": 4
+        },
+        {
+          "name": "Топпер BIONICA Linen Ultra 80x190",
+          "count": 14,
+          "revenue": 27529.0,
+          "qty": 15
+        },
+        {
+          "name": "Топпер BIONICA Linen Ultra 180x200",
+          "count": 7,
+          "revenue": 26983.0,
+          "qty": 7
+        },
+        {
+          "name": "Топпер Purple Base Plus 160x190",
+          "count": 10,
+          "revenue": 26928.0,
+          "qty": 10
+        },
+        {
+          "name": "Ортопедичний матрац Cacao (вакуум) 140x190",
+          "count": 3,
+          "revenue": 26854.0,
+          "qty": 3
+        },
+        {
+          "name": "Гарантія Smart 10% MatrasRoll",
+          "count": 125,
+          "revenue": 26796.0,
+          "qty": 126
+        },
+        {
+          "name": "Топпер Purple Base Plus 160x200",
           "count": 8,
-          "revenue": 27108.0,
+          "revenue": 26155.0,
           "qty": 8
         },
         {
-          "name": "Топпер BIONICA Linen Ultra 110x190",
-          "count": 10,
-          "revenue": 26533.0,
-          "qty": 11
+          "name": "Топпер PURPLE Base Lite NEW 90x190",
+          "count": 16,
+          "revenue": 26124.0,
+          "qty": 17
         },
         {
-          "name": "Топпер BIONICA Linen Ultra 130x190",
-          "count": 9,
-          "revenue": 25757.0,
-          "qty": 9
-        },
-        {
-          "name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 160x200",
-          "count": 3,
-          "revenue": 25620.0,
-          "qty": 3
+          "name": "Топпер PURPLE Bionica Linen Active 140x190",
+          "count": 13,
+          "revenue": 25873.0,
+          "qty": 13
         },
         {
           "name": "Диван кутовий RidneTUT Jamison Лайт, 1 кат., кут 7, Дивотекс Делано 722",
@@ -1546,524 +1566,234 @@
           "qty": 1
         },
         {
-          "name": "Ортопедичний матрац ORANGE Handy (вакуум) 140x190",
-          "count": 4,
-          "revenue": 23499.0,
-          "qty": 4
-        },
-        {
-          "name": "Топпер BIONICA Linen Ultra 180x200",
-          "count": 6,
-          "revenue": 23414.0,
-          "qty": 6
-        },
-        {
-          "name": "Ліжко з п/м Ridne TUT Памела (преміум) 160x200, тк.4, основа: ламелі 2,5, Divotex Delano 722",
-          "count": 1,
-          "revenue": 23298.0,
-          "qty": 1
-        },
-        {
-          "name": "Топпер BIONICA Linen Ultra 150x190",
-          "count": 7,
-          "revenue": 22872.0,
-          "qty": 7
-        },
-        {
-          "name": "Топпер PURPLE Base Lite NEW 150x190",
-          "count": 9,
-          "revenue": 22388.0,
-          "qty": 9
-        },
-        {
-          "name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 140x200",
-          "count": 3,
-          "revenue": 22352.0,
-          "qty": 3
-        },
-        {
-          "name": "Ортопедичний матрац ORANGE Handy (вакуум) 80x190",
-          "count": 4,
-          "revenue": 21915.0,
-          "qty": 6
-        },
-        {
-          "name": "Ліжко з п/м HomeFort Solomia (стандарт) 180x200, тк.1, Unitex London 06, ніжки венге",
-          "count": 1,
-          "revenue": 21850.0,
-          "qty": 1
-        },
-        {
-          "name": "Ортопедичний матрац Cacao (вакуум) 160x200",
-          "count": 2,
-          "revenue": 21328.0,
-          "qty": 2
-        },
-        {
-          "name": "Топпер PURPLE Base Lite NEW 180x200",
-          "count": 7,
-          "revenue": 21136.0,
-          "qty": 7
-        },
-        {
-          "name": "Ортопедичний матрац Chocolate (вакуум) 140x190",
-          "count": 3,
-          "revenue": 20583.0,
-          "qty": 3
-        },
-        {
-          "name": "Топпер PURPLE Base Lite NEW 90x190",
-          "count": 12,
-          "revenue": 20261.0,
-          "qty": 13
-        },
-        {
-          "name": "Ортопедичний матрац Smart Mattresses Dual 160х200",
-          "count": 3,
-          "revenue": 19820.0,
-          "qty": 3
-        },
-        {
-          "name": "Ортопедичний матрац Family Sleep Diamond 180x200",
-          "count": 1,
-          "revenue": 19137.0,
-          "qty": 1
-        },
-        {
-          "name": "Ортопедичний матрац Chocolate (вакуум) 160x200",
-          "count": 3,
-          "revenue": 18862.0,
-          "qty": 3
-        },
-        {
-          "name": "Purple High Cocos,матрац 160x200",
-          "count": 2,
-          "revenue": 18368.0,
-          "qty": 2
-        },
-        {
-          "name": "Топпер BIONICA Linen Ultra 80x190",
-          "count": 9,
-          "revenue": 18264.0,
-          "qty": 10
-        },
-        {
-          "name": "Ортопедичний матрац Chocolate (вакуум) 180x200",
-          "count": 2,
-          "revenue": 18243.0,
-          "qty": 2
-        },
-        {
-          "name": "Ортопедичний матрац Cacao (вакуум) 140x190",
-          "count": 2,
-          "revenue": 18191.0,
-          "qty": 2
-        },
-        {
-          "name": "Ортопедичний матрац MUNO One 160х200 см",
-          "count": 3,
-          "revenue": 18147.0,
-          "qty": 3
-        },
-        {
-          "name": "Топпер PURPLE Base Lite NEW 80x190",
-          "count": 13,
-          "revenue": 18115.0,
-          "qty": 13
-        },
-        {
-          "name": "Ортопедичний матрац M.Y.M Luxe Rest - Roll Pack 160x200",
-          "count": 1,
-          "revenue": 18064.0,
-          "qty": 1
-        },
-        {
-          "name": "Ортопедичний матрац Caramel (вакуум) 160x200",
-          "count": 1,
-          "revenue": 17718.0,
-          "qty": 2
+          "name": "Топпер PURPLE Bionica Linen Active 160x200",
+          "count": 11,
+          "revenue": 25189.0,
+          "qty": 11
         },
         {
           "name": "Ортопедичний матрац MUNO One 180х200 см двосторонній",
-          "count": 2,
-          "revenue": 17684.0,
-          "qty": 2
-        },
-        {
-          "name": "Ортопедичний матрац PEGASUS Atlas 80x190",
-          "count": 1,
-          "revenue": 17466.0,
-          "qty": 2
-        },
-        {
-          "name": "Ліжко з п/м Ridne TUT Тейлор (євро) 180x200, тк.1 СМТ Чікаго 18",
-          "count": 1,
-          "revenue": 17210.0,
-          "qty": 1
-        },
-        {
-          "name": "Ліжко з п/м Ridne TUT Ірис (преміум) 180x200, тк.6, ніжки бук 10 см, Юнітекс Шадов 11",
-          "count": 1,
-          "revenue": 17050.0,
-          "qty": 1
-        },
-        {
-          "name": "Ліжко з п/м Ridne TUT Едісон (євро) 180x200, тк.1, Exim Textil Lili 91",
-          "count": 1,
-          "revenue": 16896.0,
-          "qty": 1
-        },
-        {
-          "name": "Топпер PURPLE Base Lite NEW 140x200",
-          "count": 7,
-          "revenue": 16747.0,
-          "qty": 7
-        },
-        {
-          "name": "Ортопедичний матрац MUNO One 160х190 см односторонній",
           "count": 3,
-          "revenue": 16716.0,
+          "revenue": 24327.0,
           "qty": 3
         },
         {
-          "name": "Топпер Purple Base Plus 160x200",
-          "count": 5,
-          "revenue": 16670.0,
-          "qty": 5
+          "name": "Ортопедичний матрац ORANGE Handy (вакуум) 90x190",
+          "count": 6,
+          "revenue": 24260.0,
+          "qty": 6
         },
         {
-          "name": "Топпер PURPLE Base Lite NEW 110x190",
-          "count": 9,
-          "revenue": 16646.0,
-          "qty": 9
-        },
-        {
-          "name": "Топпер BIONICA Linen Ultra 150x200",
-          "count": 5,
-          "revenue": 16480.0,
-          "qty": 5
-        },
-        {
-          "name": "Ліжко з п/м Ridne TUT Naomi (євро) 160x200, тк.5, Дивотекс Зеніт 128",
-          "count": 1,
-          "revenue": 16143.0,
-          "qty": 1
-        },
-        {
-          "name": "Ортопедичний матрац MUNO One 90х190 см односторонній",
-          "count": 5,
-          "revenue": 16128.0,
-          "qty": 5
-        },
-        {
-          "name": "Топпер BIONICA Linen Ultra 130x200",
-          "count": 5,
-          "revenue": 14365.0,
-          "qty": 5
+          "name": "Топпер PURPLE Base Lite NEW 80x190",
+          "count": 18,
+          "revenue": 24230.0,
+          "qty": 18
         },
         {
           "name": "Топпер BIONICA Linen Ultra 90x190",
-          "count": 7,
-          "revenue": 14150.0,
-          "qty": 7
+          "count": 11,
+          "revenue": 24199.0,
+          "qty": 12
         },
         {
-          "name": "Гарантія Smart 10% MatrasRoll",
-          "count": 59,
-          "revenue": 13531.0,
-          "qty": 60
-        },
-        {
-          "name": "Топпер BIONICA Linen Ultra 120x200",
-          "count": 5,
-          "revenue": 13300.0,
-          "qty": 5
-        },
-        {
-          "name": "Топпер BIONICA Linen Ultra 70x190",
-          "count": 8,
-          "revenue": 13112.0,
-          "qty": 8
-        },
-        {
-          "name": "Топпер Purple Base Plus 120x190",
-          "count": 4,
-          "revenue": 12575.0,
-          "qty": 5
-        },
-        {
-          "name": "Ортопедичний матрац MUNO One 80х190 см односторонній",
-          "count": 4,
-          "revenue": 11419.0,
-          "qty": 4
-        },
-        {
-          "name": "Топпер PURPLE Base Lite NEW 130x190",
-          "count": 5,
-          "revenue": 10860.0,
-          "qty": 5
-        },
-        {
-          "name": "Топпер PURPLE Bionica Linen 140x200",
-          "count": 4,
-          "revenue": 10664.0,
-          "qty": 4
-        },
-        {
-          "name": "Топпер PURPLE Bionica Linen 90x190",
-          "count": 6,
-          "revenue": 10054.0,
-          "qty": 6
-        },
-        {
-          "name": "Топпер PURPLE Base Lite NEW 150x200",
-          "count": 4,
-          "revenue": 9875.0,
-          "qty": 4
-        },
-        {
-          "name": "Топпер PURPLE Bionica Linen Cocos 80x190",
-          "count": 4,
-          "revenue": 8828.0,
-          "qty": 4
-        },
-        {
-          "name": "Топпер Purple Base Plus 80x190",
-          "count": 4,
-          "revenue": 8620.0,
-          "qty": 5
-        },
-        {
-          "name": "Топпер PURPLE Base Lite NEW 70x190",
-          "count": 7,
-          "revenue": 8619.0,
-          "qty": 7
-        },
-        {
-          "name": "Топпер PURPLE Base Lite Cocos 80x190",
-          "count": 4,
-          "revenue": 8295.0,
-          "qty": 4
-        },
-        {
-          "name": "Топпер Purple Base Plus 90x200",
-          "count": 4,
-          "revenue": 7684.0,
-          "qty": 4
-        },
-        {
-          "name": "Топпер PURPLE Bionica Linen 70x190",
-          "count": 5,
-          "revenue": 6775.0,
-          "qty": 5
-        },
-        {
-          "name": "Топпер PURPLE Base Lite NEW 90x200",
+          "name": "Ортопедичний матрац Chocolate (вакуум) 160x190",
           "count": 3,
-          "revenue": 6284.0,
-          "qty": 4
-        },
-        {
-          "name": "Наматрацник ECO стьобаний 160х200",
-          "count": 9,
-          "revenue": 5734.0,
-          "qty": 10
-        },
-        {
-          "name": "Подушка ECO 50х70",
-          "count": 47,
-          "revenue": 3760.0,
-          "qty": 62
-        },
-        {
-          "name": "Наматрацник ECO стьобаний 80х190",
-          "count": 6,
-          "revenue": 2478.0,
-          "qty": 7
-        },
-        {
-          "name": "Наматрацник ECO стьобаний 90х200",
-          "count": 3,
-          "revenue": 2409.0,
-          "qty": 6
-        },
-        {
-          "name": "Наматрацник ECO стьобаний 150х200",
-          "count": 4,
-          "revenue": 2240.0,
-          "qty": 4
-        },
-        {
-          "name": "Наматрацник ECO стьобаний 140х190",
-          "count": 3,
-          "revenue": 1258.0,
+          "revenue": 23756.0,
           "qty": 3
         },
         {
-          "name": "Подарункова гарантія на 6 місяців",
-          "count": 6,
-          "revenue": 2.0,
-          "qty": 6
+          "name": "Топпер Purple Base Plus Cocos 160x200",
+          "count": 5,
+          "revenue": 23595.0,
+          "qty": 5
+        },
+        {
+          "name": "Топпер Purple Base Plus 150x190",
+          "count": 9,
+          "revenue": 23559.0,
+          "qty": 9
         }
       ],
       "categories": {
-        "Топер": 795,
-        "Ортопедичний матрац": 301,
-        "Аксесуари для сну": 20,
-        "Ліжка": 16,
-        "Дивани": 12,
-        "Безпружинний матрац": 10,
-        "Корпусні меблі": 9,
-        "Топер,\nАксесуари для сну": 5,
-        "Ортопедичний матрац,\nАксесуари для сну": 2,
-        "Інше": 2,
-        "Ортопедичний матрац,\nЛіжка": 1,
-        "Топер,\nОртопедичний матрац": 1,
+        "Топер": 1056,
+        "Ортопедичний матрац": 387,
+        "Аксесуари для сну": 32,
+        "Ліжка": 29,
+        "Безпружинний матрац": 14,
+        "Дивани": 14,
+        "Корпусні меблі": 11,
+        "Топер,\nАксесуари для сну": 9,
+        "Ортопедичний матрац,\nАксесуари для сну": 4,
+        "Інше": 3,
+        "Топер,\nОртопедичний матрац": 2,
+        "Ортопедичний матрац,\nЛіжка": 2,
         "Дивани,\nКорпусні меблі": 1,
         "Топер,\nКорпусні меблі": 1,
         "Ортопедичний матрац,\nДивани,\nЛіжка": 1
       },
       "request_types": {
-        "Корзина": 608,
-        "Вхідний дзвінок": 314,
-        "GetCall": 237,
-        "Чат": 51,
-        "Шоу-рум": 11,
-        "Instagram": 3,
-        "Facebook": 2,
+        "Корзина": 811,
+        "Вхідний дзвінок": 439,
+        "GetCall": 309,
+        "Чат": 67,
+        "Шоу-рум": 16,
+        "Instagram": 4,
+        "Facebook": 3,
         "Вхідний дзвінок,\nGetCall": 1,
-        "Вхідний дзвінок,\nКорзина": 1,
-        "Вхідний дзвінок,\nЧат": 1
+        "Вхідний дзвінок,\nЧат": 1,
+        "Вхідний дзвінок,\nКорзина": 1
       },
       "payment_methods": {
-        "Оплата при отриманні": 766,
-        "Р/Р": 66,
-        "Р/Р + наложка": 50,
-        "LiqPay": 31,
-        "Оплата частинами": 29,
-        "ОЧ + Наложка": 19,
-        "LiqPay+наложка": 19,
-        "LiqPay + Р/Р": 7,
-        "apple_pay": 3,
-        "credit": 2
+        "Оплата при отриманні": 1052,
+        "Р/Р": 84,
+        "Р/Р + наложка": 67,
+        "Оплата частинами": 36,
+        "LiqPay": 36,
+        "ОЧ + Наложка": 28,
+        "LiqPay+наложка": 27,
+        "LiqPay + Р/Р": 8,
+        "Готівка (для самовивозу)": 5,
+        "google_pay": 4
       },
       "delivery_types": {
-        "На відділення": 566,
-        "Адресна": 315,
-        "Самовивіз": 45,
+        "На відділення": 781,
+        "Адресна": 418,
+        "Самовивіз": 59,
         "Адресна,\nНа відділення": 2
       },
       "carriers": {
-        "Нова Пошта": 675,
-        "Власна по Києву": 206,
-        "Самовивіз": 39,
+        "Нова Пошта": 923,
+        "Власна по Києву": 275,
+        "Самовивіз": 54,
         "Meest Express (НЕ ПРАЦЮЄМО)": 1,
-        "Нова Пошта,\nВласна по Києву": 1
+        "Нова Пошта,\nВласна по Києву": 1,
+        "Догруз": 1
       },
       "warehouses": {
-        "Виробництво": 524,
-        "Склад Двушка": 284,
-        "Від постачальника": 96,
-        "Склад Шоу-Рум": 30
+        "Виробництво": 685,
+        "Склад Двушка": 393,
+        "Від постачальника": 156,
+        "Склад Шоу-Рум": 33
       },
       "refuse_reasons": {
-        "Не бере слухавку": 24,
+        "Не бере слухавку": 30,
+        "Змінились обставини": 23,
         "Імпульсивне замовлення": 19,
-        "Змінились обставини": 16,
-        "Інше (вказати в коментарі)": 16,
-        "Купив в іншому місці": 15,
-        "Не те що очікував": 7,
-        "Довго очікував / затримка доставки": 5,
-        "Незадоволені якістю": 4,
+        "Купив в іншому місці": 18,
+        "Інше (вказати в коментарі)": 17,
+        "Не те що очікував": 8,
+        "Довго очікував / затримка доставки": 6,
+        "Ошибка менеджера": 5,
+        "Незадоволені якістю": 5,
         "Знайшов дешевше": 4,
-        "Ошибка менеджера": 3,
+        "Клієнт не відмовлявся": 3,
         "Купив в іншому місці,\nІнше (вказати в коментарі)": 2,
-        "Клієнт не відмовлявся": 2,
-        "Не змогли доставити": 1,
-        "Змінились обставини,\nІнше (вказати в коментарі)": 1,
-        "Імпульсивне замовлення,\nІнше (вказати в коментарі)": 1
+        "Вказав невірні дані": 2,
+        "Не змогли доставити,\nІнше (вказати в коментарі)": 1,
+        "Не змогли доставити": 1
       },
       "lead_objections": {
-        "Дорого": 40,
-        "Неактуально": 34,
-        "Інше (вказати в коментарі)": 20,
-        "Купив в іншому місці": 13,
-        "Хоче лише лід-магніт": 7,
-        "Немає на складі": 6,
-        "Довго чекати": 6,
-        "Регіон доставки": 6,
-        "Недостача асортименту": 5,
-        "Шукав магазин в місті": 4
+        "Дорого": 45,
+        "Неактуально": 44,
+        "Інше (вказати в коментарі)": 22,
+        "Купив в іншому місці": 18,
+        "Хоче лише лід-магніт": 12,
+        "Немає на складі": 9,
+        "Регіон доставки": 8,
+        "Довго чекати": 8,
+        "Недостача асортименту": 6,
+        "Дорога доставка": 5
       },
       "process_reasons": {
-        "Подумає": 40,
-        "Порадиться": 38,
-        "Оформить ОЧ": 6,
-        "Подумає,\nПорадиться": 5,
-        "Переміряє місце": 4,
-        "Уточнить адресу доставки": 3
+        "Порадиться": 49,
+        "Подумає": 46,
+        "Подумає,\nПорадиться": 8,
+        "Оформить ОЧ": 8,
+        "Переміряє місце": 7,
+        "Уточнить адресу доставки": 5
       },
       "daily_trend": [
         {
           "date": "2026-04-01",
-          "orders": 179,
-          "revenue": 802202.0,
+          "orders": 180,
+          "revenue": 804212.0,
           "leads": 49,
           "refused": 40
         },
         {
           "date": "2026-04-02",
-          "orders": 120,
-          "revenue": 577095.0,
+          "orders": 122,
+          "revenue": 581157.0,
           "leads": 27,
           "refused": 35
         },
         {
           "date": "2026-04-03",
-          "orders": 154,
-          "revenue": 734791.0,
+          "orders": 156,
+          "revenue": 768342.0,
           "leads": 33,
-          "refused": 37
+          "refused": 38
         },
         {
           "date": "2026-04-04",
-          "orders": 92,
-          "revenue": 429031.0,
+          "orders": 96,
+          "revenue": 439844.0,
           "leads": 19,
           "refused": 18
         },
         {
           "date": "2026-04-05",
-          "orders": 98,
-          "revenue": 414918.0,
+          "orders": 100,
+          "revenue": 431768.0,
           "leads": 16,
-          "refused": 20
+          "refused": 21
         },
         {
           "date": "2026-04-06",
-          "orders": 170,
-          "revenue": 743196.0,
+          "orders": 174,
+          "revenue": 791614.0,
           "leads": 58,
-          "refused": 35
+          "refused": 38
         },
         {
           "date": "2026-04-07",
-          "orders": 126,
-          "revenue": 503108.0,
+          "orders": 127,
+          "revenue": 506454.0,
           "leads": 22,
           "refused": 30
         },
         {
           "date": "2026-04-08",
-          "orders": 116,
-          "revenue": 464484.0,
+          "orders": 119,
+          "revenue": 477112.0,
           "leads": 28,
           "refused": 28
+        },
+        {
+          "date": "2026-04-09",
+          "orders": 130,
+          "revenue": 561913.0,
+          "leads": 40,
+          "refused": 21
+        },
+        {
+          "date": "2026-04-10",
+          "orders": 135,
+          "revenue": 554569.0,
+          "leads": 30,
+          "refused": 27
+        },
+        {
+          "date": "2026-04-11",
+          "orders": 92,
+          "revenue": 408034.0,
+          "leads": 10,
+          "refused": 17
         }
       ],
       "error": null
     },
-    "prev_crm_day_limit": 8,
+    "prev_crm_day_limit": 11,
     "multi_month_trend": [
       {
         "month": "2026-03",
@@ -2137,32 +1867,32 @@
           },
           {
             "day": 12,
-            "orders": 189,
-            "revenue": 756349.0,
+            "orders": 191,
+            "revenue": 761638.0,
             "leads": 55
           },
           {
             "day": 13,
-            "orders": 189,
-            "revenue": 764648.0,
+            "orders": 215,
+            "revenue": 916798.0,
             "leads": 63
           },
           {
             "day": 14,
-            "orders": 151,
-            "revenue": 568338.0,
+            "orders": 153,
+            "revenue": 573526.0,
             "leads": 55
           },
           {
             "day": 15,
-            "orders": 166,
-            "revenue": 660574.0,
+            "orders": 167,
+            "revenue": 670497.0,
             "leads": 21
           },
           {
             "day": 16,
-            "orders": 236,
-            "revenue": 936892.0,
+            "orders": 239,
+            "revenue": 942820.0,
             "leads": 65
           },
           {
@@ -2173,86 +1903,86 @@
           },
           {
             "day": 18,
-            "orders": 190,
-            "revenue": 820007.0,
+            "orders": 193,
+            "revenue": 841489.0,
             "leads": 51
           },
           {
             "day": 19,
-            "orders": 189,
-            "revenue": 847488.0,
+            "orders": 192,
+            "revenue": 862558.0,
             "leads": 54
           },
           {
             "day": 20,
-            "orders": 206,
-            "revenue": 864560.0,
+            "orders": 210,
+            "revenue": 899792.0,
             "leads": 66
           },
           {
             "day": 21,
-            "orders": 165,
-            "revenue": 702429.0,
+            "orders": 169,
+            "revenue": 721154.0,
             "leads": 23
           },
           {
             "day": 22,
-            "orders": 145,
-            "revenue": 589242.0,
+            "orders": 148,
+            "revenue": 609743.0,
             "leads": 24
           },
           {
             "day": 23,
-            "orders": 156,
-            "revenue": 698663.0,
+            "orders": 161,
+            "revenue": 737643.0,
             "leads": 39
           },
           {
             "day": 24,
-            "orders": 174,
-            "revenue": 649750.0,
+            "orders": 177,
+            "revenue": 662518.0,
             "leads": 43
           },
           {
             "day": 25,
-            "orders": 162,
-            "revenue": 603752.0,
+            "orders": 166,
+            "revenue": 629655.0,
             "leads": 47
           },
           {
             "day": 26,
-            "orders": 161,
-            "revenue": 698868.0,
+            "orders": 164,
+            "revenue": 716487.0,
             "leads": 37
           },
           {
             "day": 27,
-            "orders": 137,
-            "revenue": 660231.0,
+            "orders": 141,
+            "revenue": 669650.0,
             "leads": 32
           },
           {
             "day": 28,
-            "orders": 125,
-            "revenue": 490973.0,
+            "orders": 127,
+            "revenue": 501264.0,
             "leads": 22
           },
           {
             "day": 29,
-            "orders": 132,
-            "revenue": 536537.0,
+            "orders": 136,
+            "revenue": 551915.0,
             "leads": 17
           },
           {
             "day": 30,
-            "orders": 177,
-            "revenue": 920851.0,
+            "orders": 180,
+            "revenue": 933351.0,
             "leads": 34
           },
           {
             "day": 31,
-            "orders": 178,
-            "revenue": 824867.0,
+            "orders": 181,
+            "revenue": 832554.0,
             "leads": 47
           }
         ]
@@ -2263,68 +1993,68 @@
         "days": [
           {
             "day": 1,
-            "orders": 179,
-            "revenue": 802202.0,
+            "orders": 180,
+            "revenue": 804212.0,
             "leads": 48
           },
           {
             "day": 2,
-            "orders": 120,
-            "revenue": 577095.0,
+            "orders": 122,
+            "revenue": 581157.0,
             "leads": 27
           },
           {
             "day": 3,
-            "orders": 154,
-            "revenue": 734791.0,
+            "orders": 156,
+            "revenue": 768342.0,
             "leads": 32
           },
           {
             "day": 4,
-            "orders": 92,
-            "revenue": 429031.0,
+            "orders": 96,
+            "revenue": 439844.0,
             "leads": 19
           },
           {
             "day": 5,
-            "orders": 98,
-            "revenue": 414918.0,
+            "orders": 100,
+            "revenue": 431768.0,
             "leads": 16
           },
           {
             "day": 6,
-            "orders": 170,
-            "revenue": 743196.0,
+            "orders": 174,
+            "revenue": 791614.0,
             "leads": 56
           },
           {
             "day": 7,
-            "orders": 126,
-            "revenue": 503108.0,
+            "orders": 127,
+            "revenue": 506454.0,
             "leads": 20
           },
           {
             "day": 8,
-            "orders": 116,
-            "revenue": 464484.0,
+            "orders": 119,
+            "revenue": 477112.0,
             "leads": 26
           },
           {
             "day": 9,
-            "orders": 127,
-            "revenue": 549633.0,
+            "orders": 130,
+            "revenue": 561913.0,
             "leads": 39
           },
           {
             "day": 10,
-            "orders": 132,
-            "revenue": 538094.0,
+            "orders": 135,
+            "revenue": 554569.0,
             "leads": 28
           },
           {
             "day": 11,
-            "orders": 90,
-            "revenue": 396460.0,
+            "orders": 92,
+            "revenue": 408034.0,
             "leads": 9
           },
           {
@@ -2341,104 +2071,104 @@
           },
           {
             "day": 14,
-            "orders": 142,
-            "revenue": 590499.0,
+            "orders": 147,
+            "revenue": 607087.0,
             "leads": 42
           },
           {
             "day": 15,
-            "orders": 148,
-            "revenue": 688717.0,
+            "orders": 149,
+            "revenue": 692719.0,
             "leads": 20
           },
           {
             "day": 16,
-            "orders": 140,
-            "revenue": 639524.0,
+            "orders": 146,
+            "revenue": 692864.0,
             "leads": 21
           },
           {
             "day": 17,
-            "orders": 132,
-            "revenue": 496865.0,
+            "orders": 135,
+            "revenue": 507280.0,
             "leads": 36
           },
           {
             "day": 18,
-            "orders": 129,
-            "revenue": 628984.0,
+            "orders": 136,
+            "revenue": 657240.0,
             "leads": 24
           },
           {
             "day": 19,
-            "orders": 119,
-            "revenue": 538213.0,
+            "orders": 122,
+            "revenue": 552448.0,
             "leads": 15
           },
           {
             "day": 20,
-            "orders": 164,
-            "revenue": 703872.0,
+            "orders": 175,
+            "revenue": 745758.0,
             "leads": 24
           },
           {
             "day": 21,
-            "orders": 136,
-            "revenue": 617612.0,
+            "orders": 141,
+            "revenue": 630994.0,
             "leads": 35
           },
           {
             "day": 22,
-            "orders": 165,
-            "revenue": 785981.0,
+            "orders": 166,
+            "revenue": 789667.0,
             "leads": 39
           },
           {
             "day": 23,
-            "orders": 149,
-            "revenue": 654114.0,
+            "orders": 151,
+            "revenue": 659112.0,
             "leads": 24
           },
           {
             "day": 24,
-            "orders": 153,
-            "revenue": 623365.0,
+            "orders": 158,
+            "revenue": 664573.0,
             "leads": 23
           },
           {
             "day": 25,
-            "orders": 140,
-            "revenue": 685298.0,
+            "orders": 145,
+            "revenue": 693084.0,
             "leads": 36
           },
           {
             "day": 26,
-            "orders": 160,
-            "revenue": 757999.0,
+            "orders": 162,
+            "revenue": 767427.0,
             "leads": 30
           },
           {
             "day": 27,
-            "orders": 210,
-            "revenue": 1045758.0,
+            "orders": 215,
+            "revenue": 1059257.0,
             "leads": 33
           },
           {
             "day": 28,
-            "orders": 172,
-            "revenue": 929211.0,
+            "orders": 189,
+            "revenue": 983273.0,
             "leads": 43
           },
           {
             "day": 29,
-            "orders": 179,
-            "revenue": 788062.15,
+            "orders": 204,
+            "revenue": 903411.15,
             "leads": 63
           },
           {
             "day": 30,
-            "orders": 160,
-            "revenue": 760775.0,
+            "orders": 184,
+            "revenue": 840284.0,
             "leads": 51
           }
         ]
@@ -2449,51 +2179,69 @@
         "days": [
           {
             "day": 1,
-            "orders": 144,
-            "revenue": 774524.0,
-            "leads": 33
+            "orders": 155,
+            "revenue": 810528.0,
+            "leads": 34
           },
           {
             "day": 2,
-            "orders": 133,
-            "revenue": 697992.0,
-            "leads": 36
+            "orders": 152,
+            "revenue": 786879.0,
+            "leads": 43
           },
           {
             "day": 3,
-            "orders": 134,
-            "revenue": 749588.0,
-            "leads": 44
+            "orders": 155,
+            "revenue": 859860.0,
+            "leads": 62
           },
           {
             "day": 4,
-            "orders": 212,
-            "revenue": 1136642.95,
-            "leads": 80
+            "orders": 220,
+            "revenue": 1160300.95,
+            "leads": 83
           },
           {
             "day": 5,
-            "orders": 168,
-            "revenue": 792531.0,
-            "leads": 42
+            "orders": 180,
+            "revenue": 859078.0,
+            "leads": 46
           },
           {
             "day": 6,
-            "orders": 159,
-            "revenue": 728904.0,
-            "leads": 51
+            "orders": 185,
+            "revenue": 878461.0,
+            "leads": 53
           },
           {
             "day": 7,
-            "orders": 191,
-            "revenue": 921646.0,
-            "leads": 64
+            "orders": 205,
+            "revenue": 1006214.0,
+            "leads": 66
           },
           {
             "day": 8,
-            "orders": 203,
-            "revenue": 872826.0,
-            "leads": 57
+            "orders": 222,
+            "revenue": 971765.0,
+            "leads": 67
+          },
+          {
+            "day": 9,
+            "orders": 152,
+            "revenue": 832890.72,
+            "leads": 51
+          },
+          {
+            "day": 10,
+            "orders": 212,
+            "revenue": 999435.0,
+            "leads": 78
+          },
+          {
+            "day": 11,
+            "orders": 249,
+            "revenue": 1182938.0,
+            "leads": 105
           }
         ]
       }
@@ -2923,6 +2671,24 @@
               "orders": 335,
               "revenue": 769034.0,
               "leads": 0
+            },
+            {
+              "day": 9,
+              "orders": 229,
+              "revenue": 691947.0,
+              "leads": 0
+            },
+            {
+              "day": 10,
+              "orders": 243,
+              "revenue": 648720.0,
+              "leads": 0
+            },
+            {
+              "day": 11,
+              "orders": 427,
+              "revenue": 1151838.0,
+              "leads": 0
             }
           ]
         }
@@ -3333,87 +3099,113 @@
               "orders": 2,
               "revenue": -15595.0,
               "leads": 0
+            },
+            {
+              "day": 9,
+              "orders": 12,
+              "revenue": 110633.0,
+              "leads": 0
+            },
+            {
+              "day": 10,
+              "orders": 3,
+              "revenue": 24799.0,
+              "leads": 0
+            },
+            {
+              "day": 11,
+              "orders": 331,
+              "revenue": 1040654.0,
+              "leads": 0
             }
           ]
         }
       ]
     }
   },
-  "generated": "2026-05-09T16:57:03.777246",
+  "generated": "2026-05-12T13:51:29.978321",
   "uh": {
     "label": "UH",
     "ORDERS": {
       "day": {
-        "total": 769034.0,
+        "total": 828657.0,
         "count": 335,
         "by_podr": {
-          "Matrasroll": 305525.0,
-          "A-mebli": 231722.0,
+          "Matrasroll": 301542.0,
+          "A-mebli": 242165.0,
           "Sofino": 97457.0,
-          "МР Розетка (Мережі)": 64852.0,
+          "МР Розетка (Мережі)": 70751.0,
+          "Шоу-Рум Ретровіль": 36202.0,
+          "ОПТ": 29181.0,
           "Администрация": 27500.0,
-          "Шоу-Рум Ретровіль": 18100.0,
           "HabStor": 17911.0,
-          "ДРОП": 5948.0,
-          "ОПТ": 19.0
+          "ДРОП": 5948.0
         }
       },
       "day_refused": {
-        "total": 0.0,
-        "count": 0,
-        "by_podr": {}
+        "total": 8757.0,
+        "count": 4,
+        "by_podr": {
+          "Matrasroll": 8757.0
+        }
       },
       "month": {
-        "total": 5933128.95,
-        "count": 2326
+        "total": 5900393.95,
+        "count": 2246
       },
       "month_refused": {
-        "total": 0,
-        "count": 0
+        "total": 252574.0,
+        "count": 90
       }
     },
     "ORDERSWD": {
       "day": {
-        "total": 712954.0,
-        "count": 230,
+        "total": 772047.0,
+        "count": 229,
         "by_podr": {
-          "Matrasroll": 276495.0,
-          "A-mebli": 214172.0,
+          "Matrasroll": 273032.0,
+          "A-mebli": 223565.0,
           "Sofino": 89507.0,
-          "МР Розетка (Мережі)": 64852.0,
+          "МР Розетка (Мережі)": 70751.0,
+          "Шоу-Рум Ретровіль": 36202.0,
+          "ОПТ": 29181.0,
           "Администрация": 27500.0,
-          "Шоу-Рум Ретровіль": 18100.0,
           "HabStor": 16361.0,
-          "ДРОП": 5948.0,
-          "ОПТ": 19.0
+          "ДРОП": 5948.0
         }
       },
       "day_refused": {
-        "total": 0.0,
-        "count": 0,
-        "by_podr": {}
+        "total": 7857.0,
+        "count": 2,
+        "by_podr": {
+          "Matrasroll": 7857.0
+        }
       },
       "month": {
-        "total": 5623051.95,
-        "count": 1731
+        "total": 5601636.95,
+        "count": 1672
       },
       "month_refused": {
-        "total": 0,
-        "count": 0
+        "total": 240324.0,
+        "count": 66
       }
     },
     "SALES": {
       "day": {
-        "total": -15595.0,
-        "count": 2,
+        "total": 41279.95,
+        "count": 6,
         "by_podr": {
+          "Шоу-Рум Дрим": 20800.0,
+          "Шоу-Рум Ретровіль": 18101.0,
+          "Sofino": 17195.95,
+          "МР Розетка (Мережі)": 778.0,
           "Шоу-Рум Дарынок": -6455.0,
           "A-mebli": -9140.0
         }
       },
       "month": {
-        "total": 5808186.95,
-        "count": 1672
+        "total": 7183661.95,
+        "count": 2057
       }
     }
   },
@@ -3469,83 +3261,103 @@
   },
   "crm": {
     "date": "2026-05-08",
-    "source_file": "daily/ (57 файлів)",
+    "source_file": "daily/ (60 файлів)",
     "orders": {
-      "total": 169,
-      "all_requests": 296,
-      "sum_all": 1179871.0,
-      "sum_no_spam": 872826.0,
-      "sum_orders": 729625.0,
-      "revenue": 729625.0,
-      "refused": 10,
-      "refuse_pct": 5.9,
+      "total": 178,
+      "all_requests": 315,
+      "sum_all": 1278810.0,
+      "sum_no_spam": 971765.0,
+      "sum_orders": 782302.0,
+      "revenue": 782302.0,
+      "refused": 12,
+      "refuse_pct": 6.7,
       "spam": 66,
-      "all_rows": 296,
-      "avg_check": 4317.31
+      "all_rows": 315,
+      "avg_check": 4394.96
     },
     "leads": {
-      "new_leads": 61
+      "new_leads": 71
     },
     "managers": [
       {
         "name": "Юлія Горбань",
-        "orders": 25,
-        "revenue": 181415.0,
+        "orders": 27,
+        "revenue": 194729.0,
         "refused": 0,
         "refuse_pct": 0.0,
         "leads": 5,
-        "avg_check": 7257.0,
-        "conv": 83.3
+        "avg_check": 7212.0,
+        "conv": 84.4
       },
       {
         "name": "Мария Волохата",
-        "orders": 30,
-        "revenue": 93925.0,
+        "orders": 35,
+        "revenue": 107827.0,
         "refused": 4,
-        "refuse_pct": 11.8,
+        "refuse_pct": 11.4,
         "leads": 1,
-        "avg_check": 3131.0,
-        "conv": 96.8
-      },
-      {
-        "name": "Діана Дзюба",
-        "orders": 24,
-        "revenue": 79171.0,
-        "refused": 1,
-        "refuse_pct": 4.0,
-        "leads": 3,
-        "avg_check": 3299.0,
-        "conv": 88.9
+        "avg_check": 3081.0,
+        "conv": 97.2
       },
       {
         "name": "Вікторія Шегедин",
-        "orders": 28,
-        "revenue": 71917.0,
+        "orders": 38,
+        "revenue": 100886.0,
         "refused": 0,
         "refuse_pct": 0.0,
         "leads": 18,
-        "avg_check": 2568.0,
-        "conv": 60.9
+        "avg_check": 2655.0,
+        "conv": 67.9
       },
       {
-        "name": "Руслан Сава",
-        "orders": 11,
-        "revenue": 54778.0,
+        "name": "Діана Дзюба",
+        "orders": 28,
+        "revenue": 87332.0,
         "refused": 1,
-        "refuse_pct": 8.3,
+        "refuse_pct": 3.6,
+        "leads": 3,
+        "avg_check": 3119.0,
+        "conv": 90.3
+      },
+      {
+        "name": "Катерина Мещерiна",
+        "orders": 12,
+        "revenue": 70084.0,
+        "refused": 2,
+        "refuse_pct": 16.7,
         "leads": 2,
-        "avg_check": 4980.0,
-        "conv": 84.6
+        "avg_check": 5840.0,
+        "conv": 85.7
       },
       {
         "name": "Ольга Галишин",
-        "orders": 5,
-        "revenue": 39995.0,
+        "orders": 8,
+        "revenue": 66739.0,
         "refused": 0,
         "refuse_pct": 0.0,
         "leads": 4,
-        "avg_check": 7999.0,
-        "conv": 55.6
+        "avg_check": 8342.0,
+        "conv": 66.7
+      },
+      {
+        "name": "Руслан Сава",
+        "orders": 14,
+        "revenue": 62048.0,
+        "refused": 1,
+        "refuse_pct": 7.1,
+        "leads": 2,
+        "avg_check": 4432.0,
+        "conv": 87.5
+      },
+      {
+        "name": "Ірина Молянко",
+        "orders": 8,
+        "revenue": 44512.0,
+        "refused": 1,
+        "refuse_pct": 12.5,
+        "leads": 8,
+        "avg_check": 5564.0,
+        "conv": 50.0
       },
       {
         "name": "Шоу-Рум Ретровіль",
@@ -3559,33 +3371,23 @@
       },
       {
         "name": "Марта Онищук",
-        "orders": 5,
-        "revenue": 31004.0,
+        "orders": 6,
+        "revenue": 33254.0,
         "refused": 2,
-        "refuse_pct": 28.6,
+        "refuse_pct": 33.3,
         "leads": 1,
-        "avg_check": 6201.0,
-        "conv": 83.3
-      },
-      {
-        "name": "Ірина Молянко",
-        "orders": 5,
-        "revenue": 28378.0,
-        "refused": 1,
-        "refuse_pct": 16.7,
-        "leads": 8,
-        "avg_check": 5676.0,
-        "conv": 38.5
+        "avg_check": 5542.0,
+        "conv": 85.7
       },
       {
         "name": "Олена Вус",
-        "orders": 1,
-        "revenue": 18108.0,
+        "orders": 2,
+        "revenue": 23798.0,
         "refused": 0,
         "refuse_pct": 0.0,
         "leads": 1,
-        "avg_check": 18108.0,
-        "conv": 50.0
+        "avg_check": 11899.0,
+        "conv": 66.7
       },
       {
         "name": "Ростислав Куций",
@@ -3598,6 +3400,16 @@
         "conv": 100.0
       },
       {
+        "name": "Александр Шамардин",
+        "orders": 4,
+        "revenue": 15891.0,
+        "refused": 0,
+        "refuse_pct": 0.0,
+        "leads": 3,
+        "avg_check": 3973.0,
+        "conv": 57.1
+      },
+      {
         "name": "Анна Романенко",
         "orders": 4,
         "revenue": 15145.0,
@@ -3606,6 +3418,16 @@
         "leads": 0,
         "avg_check": 3786.0,
         "conv": 100.0
+      },
+      {
+        "name": "Надія Карпенко",
+        "orders": 4,
+        "revenue": 13907.0,
+        "refused": 0,
+        "refuse_pct": 0.0,
+        "leads": 1,
+        "avg_check": 3477.0,
+        "conv": 80.0
       },
       {
         "name": "Вікторія Кирієнко",
@@ -3628,34 +3450,24 @@
         "conv": 50.0
       },
       {
-        "name": "Надія Карпенко",
-        "orders": 3,
-        "revenue": 8834.0,
-        "refused": 0,
-        "refuse_pct": 0.0,
-        "leads": 1,
-        "avg_check": 2945.0,
-        "conv": 75.0
-      },
-      {
-        "name": "Катерина Мещерiна",
-        "orders": 1,
-        "revenue": 8088.0,
-        "refused": 0,
-        "refuse_pct": 0.0,
-        "leads": 0,
-        "avg_check": 8088.0,
-        "conv": 100.0
-      },
-      {
         "name": "Дарʼя Маменко",
-        "orders": 1,
-        "revenue": 2487.0,
+        "orders": 3,
+        "revenue": 7157.0,
         "refused": 0,
         "refuse_pct": 0.0,
         "leads": 3,
-        "avg_check": 2487.0,
-        "conv": 25.0
+        "avg_check": 2386.0,
+        "conv": 50.0
+      },
+      {
+        "name": "Едуард Бутенко",
+        "orders": 1,
+        "revenue": 2731.0,
+        "refused": 0,
+        "refuse_pct": 0.0,
+        "leads": 2,
+        "avg_check": 2731.0,
+        "conv": 33.3
       },
       {
         "name": "Валерія Захожа",
@@ -3668,14 +3480,14 @@
         "conv": 100.0
       },
       {
-        "name": "Александр Шамардин",
-        "orders": 1,
-        "revenue": 1.0,
+        "name": "Яков Маншилін",
+        "orders": 0,
+        "revenue": 0.0,
         "refused": 0,
         "refuse_pct": 0.0,
-        "leads": 3,
-        "avg_check": 1.0,
-        "conv": 25.0
+        "leads": 1,
+        "avg_check": 0.0,
+        "conv": 0.0
       }
     ],
     "managers_shop": [
@@ -3699,19 +3511,21 @@
       }
     ],
     "statuses": {
-      "Контроль оператора": 131,
+      "Контроль оператора": 135,
       "Спам на согласование": 66,
-      "В черзі на відправлення": 25,
+      "В черзі на відправлення": 27,
       "Питання по замовленню": 22,
+      "Недодзвон": 15,
       "В обробці": 13,
-      "Недодзвон": 12,
+      "Новий": 12,
       "Лід (не купив)": 10,
       "Повторне звернення": 5,
-      "Новий": 5,
       "Відвідає шоу-рум": 3,
+      "Відмова (не відправлено)": 2,
       "Контроль оплати": 2,
       "Відправлено": 1,
-      "Потрібне уточнення/перезвон": 1
+      "Потрібне уточнення/перезвон": 1,
+      "В виробництві": 1
     },
     "sites": {
       "matrasroll.com.ua": {
@@ -3728,6 +3542,11 @@
         "orders": 19,
         "revenue": 139565.0,
         "avg_check": 7346.0
+      },
+      "Розетка СХ": {
+        "orders": 19,
+        "revenue": 98939.0,
+        "avg_check": 5207.0
       },
       "Шоу-Рум Ретровіль": {
         "orders": 2,
@@ -3770,6 +3589,30 @@
         "qty": 1
       },
       {
+        "name": "Ліжко SMART TRAMONTO , 2160х1100х1700 мм, (сп.м. 1600х2000), підйомниймех-м тк-нь Lili 94",
+        "count": 1,
+        "revenue": 15610.0,
+        "qty": 1
+      },
+      {
+        "name": "Ортопедичний матрац Smart Mattresses Dual Cocos 160х200",
+        "count": 2,
+        "revenue": 14740.0,
+        "qty": 2
+      },
+      {
+        "name": "Диван Virkoni Браво (без кольору)",
+        "count": 1,
+        "revenue": 12229.0,
+        "qty": 1
+      },
+      {
+        "name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 90x190",
+        "count": 1,
+        "revenue": 10122.0,
+        "qty": 2
+      },
+      {
         "name": "Ортопедичний матрац Chocolate (вакуум) 180x200",
         "count": 1,
         "revenue": 9143.0,
@@ -3806,10 +3649,22 @@
         "qty": 2
       },
       {
+        "name": "Ортопедичний матрац Smart Mattresses SpringFoam Cocos NEW 160x200 см",
+        "count": 1,
+        "revenue": 7780.0,
+        "qty": 1
+      },
+      {
         "name": "Матрац Orange Handy Linen+Комплект All Inclusive 2 подушки+наматрацник (вакуум) 160x200",
         "count": 1,
         "revenue": 7600.0,
         "qty": 1
+      },
+      {
+        "name": "Ортопедичний матрац Purple Base Promo New 80x200",
+        "count": 1,
+        "revenue": 7482.0,
+        "qty": 2
       },
       {
         "name": "Ортопедичний матрац ORANGE Porto 160x200 см",
@@ -3824,10 +3679,34 @@
         "qty": 1
       },
       {
+        "name": "Ортопедичний матрац Smart Mattresses Dual 160х200",
+        "count": 1,
+        "revenue": 6909.0,
+        "qty": 1
+      },
+      {
+        "name": "Ортопедичний матрац Smart Mattresses Dual 160х190",
+        "count": 1,
+        "revenue": 6842.0,
+        "qty": 1
+      },
+      {
         "name": "Тонкий матрац-топпер Bionica Linen Active Plus 180х200 см",
         "count": 2,
         "revenue": 6706.0,
         "qty": 2
+      },
+      {
+        "name": "1107791",
+        "count": 1,
+        "revenue": 6563.0,
+        "qty": 1
+      },
+      {
+        "name": "Комод Doros Hugo Тахо/Білий гладкий ДСП/дзеркало",
+        "count": 1,
+        "revenue": 6499.0,
+        "qty": 1
       },
       {
         "name": "Ортопедичний матрац ORANGE Porto 140x190 см",
@@ -3842,107 +3721,48 @@
         "qty": 1
       },
       {
+        "name": "Ортопедичний матрац Smart Mattresses Dual 140х200 см",
+        "count": 1,
+        "revenue": 6172.0,
+        "qty": 1
+      },
+      {
+        "name": "Ортопедичний матрац Smart Mattresses Dual 140х190 см",
+        "count": 1,
+        "revenue": 6072.0,
+        "qty": 1
+      },
+      {
+        "name": "Orange Fine Roll Cocos,матрац 160x200",
+        "count": 1,
+        "revenue": 5731.0,
+        "qty": 1
+      },
+      {
+        "name": "Матрац Sofino Cocos вакуум 160x200",
+        "count": 1,
+        "revenue": 5690.0,
+        "qty": 1
+      },
+      {
         "name": "Тонкий матрац-топпер Bionica Linen Active Plus 150х190 см",
         "count": 2,
         "revenue": 5664.0,
         "qty": 2
-      },
-      {
-        "name": "Purple Medial,матрац 160x200",
-        "count": 1,
-        "revenue": 5617.0,
-        "qty": 1
-      },
-      {
-        "name": "Топпер Purple Base Plus 80x200",
-        "count": 3,
-        "revenue": 4611.0,
-        "qty": 3
-      },
-      {
-        "name": "Тонкий матрац-топпер Bionica Linen Active Plus 120х190 см",
-        "count": 2,
-        "revenue": 4594.0,
-        "qty": 2
-      },
-      {
-        "name": "Топпер Purple Evolution Luxe cocos 110x190",
-        "count": 1,
-        "revenue": 4357.0,
-        "qty": 1
-      },
-      {
-        "name": "Ортопедичний матрац Chocolate (вакуум) 80x190",
-        "count": 1,
-        "revenue": 4230.0,
-        "qty": 1
-      },
-      {
-        "name": "Orange Big Roll Cocos,матрац 80x190",
-        "count": 1,
-        "revenue": 4119.0,
-        "qty": 1
-      },
-      {
-        "name": "Ортопедичний матрац Chocolate 70x170",
-        "count": 1,
-        "revenue": 3840.0,
-        "qty": 1
-      },
-      {
-        "name": "Orange Fine Roll Cocos,матрац 90x200",
-        "count": 1,
-        "revenue": 3624.0,
-        "qty": 1
-      },
-      {
-        "name": "Топпер Orange Wonder Plus Cocos 120x190",
-        "count": 1,
-        "revenue": 3450.0,
-        "qty": 1
-      },
-      {
-        "name": "Тонкий матрац-топпер Bionica Linen Active Plus 80х190 см",
-        "count": 2,
-        "revenue": 3252.0,
-        "qty": 2
-      },
-      {
-        "name": "Топпер PURPLE Evolution Luxe Cocos 80x190",
-        "count": 1,
-        "revenue": 3164.0,
-        "qty": 1
-      },
-      {
-        "name": "Orange Medium Roll,матрац 80x200",
-        "count": 1,
-        "revenue": 3100.0,
-        "qty": 1
-      },
-      {
-        "name": "Тонкий матрац-топпер Bionica Linen Active Plus 160х200 см",
-        "count": 1,
-        "revenue": 2999.0,
-        "qty": 1
-      },
-      {
-        "name": "Топпер PURPLE Base Lite Cocos 130x200",
-        "count": 1,
-        "revenue": 2897.0,
-        "qty": 1
       }
     ],
     "categories": {
-      "Топер": 130,
-      "Ортопедичний матрац": 54,
+      "Топер": 132,
+      "Ортопедичний матрац": 59,
       "Дивани": 5,
       "Безпружинний матрац": 4,
       "Ліжка": 2,
       "Аксесуари для сну": 2,
-      "Шафи": 1
+      "Шафи": 1,
+      "Інше": 1
     },
     "request_types": {
-      "Корзина": 86,
+      "Корзина": 93,
       "Вхідний дзвінок": 73,
       "GetCall": 25,
       "Чат": 16,
@@ -3954,27 +3774,29 @@
       "Facebook": 1
     },
     "payment_methods": {
-      "Оплата при отриманні": 147,
+      "Оплата при отриманні": 158,
       "Р/Р": 18,
+      "LiqPay": 9,
       "Р/Р + наложка": 8,
-      "LiqPay": 6,
       "Оплата частинами": 6,
       "LiqPay+наложка": 4,
       "ОЧ + Наложка": 3,
-      "LiqPay + Р/Р": 3
+      "LiqPay + Р/Р": 3,
+      "part_pay": 2,
+      "google_pay": 2
     },
     "delivery_types": {
-      "На відділення": 110,
-      "Адресна": 60,
+      "На відділення": 114,
+      "Адресна": 63,
       "Самовивіз": 6
     },
     "carriers": {
-      "Нова Пошта": 135,
+      "Нова Пошта": 142,
       "Власна по Києву": 35,
       "Самовивіз": 5
     },
     "warehouses": {
-      "Виробництво": 121,
+      "Виробництво": 128,
       "Склад Двушка": 32,
       "Від постачальника": 20,
       "Склад Шоу-Рум": 3
@@ -3994,68 +3816,149 @@
     "trend_30d": [
       {
         "date": "2026-05-01",
-        "orders": 144,
-        "revenue": 774524.0,
-        "leads": 37,
-        "refused": 27
+        "orders": 155,
+        "revenue": 810528.0,
+        "leads": 38,
+        "refused": 31
       },
       {
         "date": "2026-05-02",
-        "orders": 133,
-        "revenue": 697992.0,
-        "leads": 40,
-        "refused": 15
+        "orders": 152,
+        "revenue": 786879.0,
+        "leads": 47,
+        "refused": 19
       },
       {
         "date": "2026-05-03",
-        "orders": 134,
-        "revenue": 749588.0,
-        "leads": 50,
-        "refused": 7
+        "orders": 155,
+        "revenue": 859860.0,
+        "leads": 68,
+        "refused": 9
       },
       {
         "date": "2026-05-04",
-        "orders": 212,
-        "revenue": 1136642.95,
-        "leads": 86,
-        "refused": 16
+        "orders": 220,
+        "revenue": 1160300.95,
+        "leads": 89,
+        "refused": 17
       },
       {
         "date": "2026-05-05",
-        "orders": 168,
-        "revenue": 792531.0,
-        "leads": 42,
+        "orders": 180,
+        "revenue": 859078.0,
+        "leads": 46,
         "refused": 14
       },
       {
         "date": "2026-05-06",
-        "orders": 159,
-        "revenue": 728904.0,
-        "leads": 54,
-        "refused": 9
+        "orders": 185,
+        "revenue": 878461.0,
+        "leads": 56,
+        "refused": 14
       },
       {
         "date": "2026-05-07",
-        "orders": 191,
-        "revenue": 921646.0,
-        "leads": 66,
-        "refused": 24
+        "orders": 205,
+        "revenue": 1006214.0,
+        "leads": 68,
+        "refused": 25
       },
       {
         "date": "2026-05-08",
-        "orders": 203,
-        "revenue": 872826.0,
-        "leads": 61,
-        "refused": 10
+        "orders": 222,
+        "revenue": 971765.0,
+        "leads": 71,
+        "refused": 12
+      },
+      {
+        "date": "2026-05-09",
+        "orders": 152,
+        "revenue": 832890.72,
+        "leads": 52,
+        "refused": 15
+      },
+      {
+        "date": "2026-05-10",
+        "orders": 212,
+        "revenue": 999435.0,
+        "leads": 83,
+        "refused": 18
+      },
+      {
+        "date": "2026-05-11",
+        "orders": 249,
+        "revenue": 1182938.0,
+        "leads": 113,
+        "refused": 18
       }
     ],
     "month_total": {
-      "orders": 1151,
-      "revenue": 5498561.95,
-      "leads": 436,
-      "refused": 122
+      "orders": 1703,
+      "revenue": 8352208.67,
+      "leads": 731,
+      "refused": 192
     },
-    "error": null
+    "error": null,
+    "sales_kpi": {
+      "day": {
+        "conversion": {
+          "with_spam": 94.2,
+          "no_spam": 94.2,
+          "target": 85,
+          "orders": 161,
+          "all": 171,
+          "no_spam_count": 171
+        },
+        "cross_sell": {
+          "value": 13.7,
+          "orders": 22,
+          "of": 161,
+          "target": 35
+        },
+        "guarantee_cover": {
+          "value": 12.4,
+          "orders": 20,
+          "of": 161,
+          "target": 35
+        },
+        "refuse": {
+          "of_orders": 0.0,
+          "of_requests_no_spam": 0.0,
+          "target": 5,
+          "refused": 0,
+          "active": 161
+        }
+      },
+      "month": {
+        "conversion": {
+          "with_spam": 92.7,
+          "no_spam": 92.8,
+          "target": 85,
+          "orders": 1397,
+          "all": 1507,
+          "no_spam_count": 1505
+        },
+        "cross_sell": {
+          "value": 17.5,
+          "orders": 245,
+          "of": 1397,
+          "target": 35
+        },
+        "guarantee_cover": {
+          "value": 12.7,
+          "orders": 177,
+          "of": 1397,
+          "target": 35
+        },
+        "refuse": {
+          "of_orders": 2.2,
+          "of_requests_no_spam": 2.1,
+          "target": 5,
+          "refused": 32,
+          "active": 1429
+        }
+      }
+    }
   },
   "meta": {
     "date": "2026-05-08",
@@ -4063,23 +3966,23 @@
       {
         "id": "498543759542047",
         "name": "Amebli 2024",
-        "spend": 3898.32,
-        "impressions": 18545,
+        "spend": 3904.0,
+        "impressions": 18561,
         "clicks": 917,
         "results": 12,
-        "cpc": 4.25,
+        "cpc": 4.26,
         "ctr": 4.94,
         "error": null,
-        "cpm": 210.21
+        "cpm": 210.33
       },
       {
         "id": "785104883775481",
         "name": "Amebli",
-        "spend": 629.37,
-        "impressions": 23809,
-        "clicks": 80,
+        "spend": 629.53,
+        "impressions": 23816,
+        "clicks": 81,
         "results": 0,
-        "cpc": 7.87,
+        "cpc": 7.77,
         "ctr": 0.34,
         "error": null,
         "cpm": 26.43
@@ -4087,9 +3990,9 @@
       {
         "id": "478301535674476",
         "name": "MatrasRoll",
-        "spend": 140.89,
-        "impressions": 44787,
-        "clicks": 1080,
+        "spend": 140.99,
+        "impressions": 44811,
+        "clicks": 1081,
         "results": 50,
         "cpc": 0.13,
         "ctr": 2.41,
@@ -4099,42 +4002,42 @@
       {
         "id": "1071880631226950",
         "name": "MatrasRoll 2024",
-        "spend": 977.93,
-        "impressions": 8317,
+        "spend": 979.53,
+        "impressions": 8321,
         "clicks": 352,
         "results": 8,
         "cpc": 2.78,
         "ctr": 4.23,
         "error": null,
-        "cpm": 117.58
+        "cpm": 117.72
       }
     ],
     "total": {
-      "spend": 5646.51,
-      "impressions": 95458,
-      "clicks": 2429,
-      "cpc": 2.32,
-      "cpm": 59.15,
-      "ctr": 2.54,
+      "spend": 5654.05,
+      "impressions": 95509,
+      "clicks": 2431,
+      "cpc": 2.33,
+      "cpm": 59.2,
+      "ctr": 2.55,
       "results": 70,
-      "cpr": 80.66
+      "cpr": 80.77
     },
     "by_campaign": [
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії матрац ORANGE Handy",
-        "spend": 1835.54,
-        "impressions": 8071,
+        "spend": 1840.66,
+        "impressions": 8080,
         "clicks": 322,
-        "cpc": 5.7,
+        "cpc": 5.72,
         "ctr": 3.99,
         "results": 4
       },
       {
         "account": "MatrasRoll 2024",
         "campaign": "EW Сonversions Bionica Linen Active",
-        "spend": 977.93,
-        "impressions": 8317,
+        "spend": 979.53,
+        "impressions": 8321,
         "clicks": 352,
         "cpc": 2.78,
         "ctr": 4.23,
@@ -4143,38 +4046,38 @@
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії матрац  Porto Cocos LAL",
-        "spend": 578.76,
-        "impressions": 2727,
+        "spend": 578.81,
+        "impressions": 2729,
         "clicks": 97,
         "cpc": 5.97,
-        "ctr": 3.56,
+        "ctr": 3.55,
         "results": 2
       },
       {
         "account": "Amebli 2024",
         "campaign": "EW Динамічний ремаркетинг",
-        "spend": 548.15,
-        "impressions": 2916,
+        "spend": 548.21,
+        "impressions": 2918,
         "clicks": 300,
         "cpc": 1.83,
-        "ctr": 10.29,
+        "ctr": 10.28,
         "results": 6
       },
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії матрац ORANGE Handy Cocos 2026",
-        "spend": 542.65,
-        "impressions": 2974,
+        "spend": 543.08,
+        "impressions": 2976,
         "clicks": 65,
-        "cpc": 8.35,
-        "ctr": 2.19,
+        "cpc": 8.36,
+        "ctr": 2.18,
         "results": 0
       },
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії топери 2026",
-        "spend": 393.22,
-        "impressions": 1857,
+        "spend": 393.24,
+        "impressions": 1858,
         "clicks": 133,
         "cpc": 2.96,
         "ctr": 7.16,
@@ -4183,8 +4086,8 @@
       {
         "account": "Amebli",
         "campaign": "EW Конверсии | Диваны 2026",
-        "spend": 350.77,
-        "impressions": 1563,
+        "spend": 350.85,
+        "impressions": 1564,
         "clicks": 38,
         "cpc": 9.23,
         "ctr": 2.43,
@@ -4193,10 +4096,10 @@
       {
         "account": "Amebli",
         "campaign": "EW Охват | Шоурум",
-        "spend": 278.6,
-        "impressions": 22246,
-        "clicks": 42,
-        "cpc": 6.63,
+        "spend": 278.68,
+        "impressions": 22252,
+        "clicks": 43,
+        "cpc": 6.48,
         "ctr": 0.19,
         "results": 0
       },
@@ -4204,7 +4107,7 @@
         "account": "MatrasRoll",
         "campaign": "EW топперы | весна 2026",
         "spend": 25.25,
-        "impressions": 5893,
+        "impressions": 5895,
         "clicks": 171,
         "cpc": 0.15,
         "ctr": 2.9,
@@ -4214,27 +4117,27 @@
         "account": "MatrasRoll",
         "campaign": "EW топер PURPLE Bionica Linen Active",
         "spend": 23.26,
-        "impressions": 3902,
+        "impressions": 3905,
         "clicks": 213,
         "cpc": 0.11,
-        "ctr": 5.46,
+        "ctr": 5.45,
         "results": 9
       },
       {
         "account": "MatrasRoll",
         "campaign": "EW топперы | Acquisition",
-        "spend": 21.22,
-        "impressions": 5471,
+        "spend": 21.23,
+        "impressions": 5472,
         "clicks": 90,
         "cpc": 0.24,
-        "ctr": 1.65,
+        "ctr": 1.64,
         "results": 4
       },
       {
         "account": "MatrasRoll",
         "campaign": "EW топперы | campaign 1",
-        "spend": 20.26,
-        "impressions": 4025,
+        "spend": 20.33,
+        "impressions": 4033,
         "clicks": 106,
         "cpc": 0.19,
         "ctr": 2.63,
@@ -4243,8 +4146,8 @@
       {
         "account": "MatrasRoll",
         "campaign": "EW матрасы | campaign",
-        "spend": 19.76,
-        "impressions": 15579,
+        "spend": 19.77,
+        "impressions": 15586,
         "clicks": 132,
         "cpc": 0.15,
         "ctr": 0.85,
@@ -4253,18 +4156,18 @@
       {
         "account": "MatrasRoll",
         "campaign": "EW Динамічний ремаркетинг",
-        "spend": 17.02,
-        "impressions": 3312,
-        "clicks": 141,
+        "spend": 17.03,
+        "impressions": 3314,
+        "clicks": 142,
         "cpc": 0.12,
-        "ctr": 4.26,
+        "ctr": 4.28,
         "results": 4
       },
       {
         "account": "MatrasRoll",
         "campaign": "EW топперы |  акция бесплатная доставка",
         "spend": 14.12,
-        "impressions": 6605,
+        "impressions": 6606,
         "clicks": 227,
         "cpc": 0.06,
         "ctr": 3.44,
@@ -4293,54 +4196,45 @@
     ],
     "error": null
   },
-  "google_ads": {
-    "total_spend": 0.0,
-    "total_clicks": 0,
-    "total_impressions": 0,
-    "total_conversions": 0.0,
-    "by_account": [],
-    "by_campaign": [],
-    "error": "GADS токени не налаштовані (потрібно: GADS_DEVELOPER_TOKEN, GADS_CLIENT_ID, GADS_CLIENT_SECRET, GADS_REFRESH_TOKEN)"
-  },
   "ga4": {
     "date": "2026-05-08",
-    "sessions": 8101,
-    "users": 7220,
-    "new_users": 4219,
-    "bounce_rate": 38.5,
-    "avg_duration": 518.0,
-    "ads_cost": 31936.54,
-    "ads_clicks": 3945,
+    "sessions": 4045,
+    "users": 3599,
+    "new_users": 2189,
+    "bounce_rate": 37.5,
+    "avg_duration": 553.0,
+    "ads_cost": 28702.09,
+    "ads_clicks": 3009,
     "by_source": [
       {
         "source": "google",
         "medium": "cpc",
-        "sessions": 5039,
-        "conversions": 124
+        "sessions": 2115,
+        "conversions": 93
       },
       {
         "source": "facebook",
         "medium": "cpc",
-        "sessions": 1219,
-        "conversions": 26
+        "sessions": 565,
+        "conversions": 21
       },
       {
         "source": "(direct)",
         "medium": "(none)",
-        "sessions": 673,
-        "conversions": 18
-      },
-      {
-        "source": "google",
-        "medium": "organic",
-        "sessions": 378,
-        "conversions": 24
+        "sessions": 463,
+        "conversions": 14
       },
       {
         "source": "facebook-rk2",
         "medium": "cpc",
         "sessions": 268,
         "conversions": 5
+      },
+      {
+        "source": "google",
+        "medium": "organic",
+        "sessions": 254,
+        "conversions": 22
       },
       {
         "source": "facebook",
@@ -4351,105 +4245,105 @@
       {
         "source": "(not set)",
         "medium": "(not set)",
-        "sessions": 64,
-        "conversions": 2
-      },
-      {
-        "source": "(data not available)",
-        "medium": "(data not available)",
-        "sessions": 52,
+        "sessions": 58,
         "conversions": 2
       },
       {
         "source": "facebook.com",
         "medium": "referral",
-        "sessions": 51,
+        "sessions": 46,
         "conversions": 0
       },
       {
         "source": "fb",
         "medium": "paid",
-        "sessions": 25,
+        "sessions": 19,
+        "conversions": 1
+      },
+      {
+        "source": "(data not available)",
+        "medium": "(data not available)",
+        "sessions": 18,
         "conversions": 1
       }
     ],
     "by_page": [
       {
-        "path": "[matrasroll.com.ua] /tonkyi-matrats-toper-purple-bionica-linen-active/",
+        "path": "/tonkyi-matrats-toper-purple-bionica-linen-active/",
         "title": "Тонкий матрац-топер Bionica Linen Active Цена от 865 грн в Україні",
         "views": 769,
         "bounce": 23.7
       },
       {
-        "path": "[matrasroll.com.ua] /toppery/",
+        "path": "/toppery/",
         "title": "Топери - Офіційний представник виробника матраців та топерів SleepTech",
         "views": 683,
         "bounce": 27.0
       },
       {
-        "path": "[matrasroll.com.ua] /tonkyi-matrats-toper-purple-bionica-linen-active/",
+        "path": "/tonkyi-matrats-toper-purple-bionica-linen-active/",
         "title": "Тонкий матрац-топер Bionica Linen Active",
         "views": 678,
         "bounce": 2.3
       },
       {
-        "path": "[amebli.com.ua] /matrasy-ortopedicheskie/",
-        "title": "Ортопедичні матраци - aMebli - Інтернет-магазин - купити в Києві, Україні. Ціни",
-        "views": 632,
-        "bounce": 27.4
-      },
-      {
-        "path": "[matrasroll.com.ua] /toppery-purple/",
+        "path": "/toppery-purple/",
         "title": "Топери Purple - Офіційний представник виробника матраців та топерів SleepTech",
         "views": 396,
         "bounce": 22.6
       },
       {
-        "path": "[amebli.com.ua] /ortopedychnyi-matrats-orange-handy-cocos/",
-        "title": "Ортопедичний матрац ORANGE Handy Cocos купити в Києві, Україні за ціною 3 469 грн | AMebli",
-        "views": 349,
-        "bounce": 29.0
-      },
-      {
-        "path": "[matrasroll.com.ua] /",
+        "path": "/",
         "title": "Офіційний гуртовий магазин Purple, Eurosleep і MatroLuxe",
         "views": 271,
         "bounce": 20.3
       },
       {
-        "path": "[amebli.com.ua] /matroroll/",
-        "title": "Матраци топери - aMebli - Інтернет-магазин - купити в Києві, Україні. Ціни",
-        "views": 246,
-        "bounce": 21.4
-      },
-      {
-        "path": "[amebli.com.ua] /ortopedychnyi-matrats-orange-handy/",
-        "title": "Ортопедичний матрац Orange Handy купити в Києві, Україні за ціною 2 431 грн | AMebli",
-        "views": 222,
-        "bounce": 25.8
-      },
-      {
-        "path": "[matrasroll.com.ua] /tonkyi-matrats-toper-purple-bionica-linen-active-160x200/",
+        "path": "/tonkyi-matrats-toper-purple-bionica-linen-active-160x200/",
         "title": "Тонкий матрац-топер Bionica Linen Active",
         "views": 206,
         "bounce": 6.7
+      },
+      {
+        "path": "/tonkyi-matrats-toper-purple-bionica-linen-active-140x190/",
+        "title": "Тонкий матрац-топер Bionica Linen Active",
+        "views": 173,
+        "bounce": 5.3
+      },
+      {
+        "path": "/checkout/",
+        "title": "Оформлення замовлення - Офіційний представник виробника матраців та топерів SleepTech",
+        "views": 170,
+        "bounce": 7.5
+      },
+      {
+        "path": "/tonkyi-matrats-toper-purple-base-lite/",
+        "title": "Тонкий матрац-топер Base Lite",
+        "views": 166,
+        "bounce": 3.2
+      },
+      {
+        "path": "/tonkyi-matrats-toper-purple-bionica-mini/",
+        "title": "Тонкий матрац-топер Purple Bionica Mini Цена от 623 грн в Україні",
+        "views": 164,
+        "bounce": 8.8
       }
     ],
     "by_device": [
       {
         "device": "mobile",
-        "sessions": 6817,
-        "pct": 84.1
+        "sessions": 3255,
+        "pct": 80.5
       },
       {
         "device": "desktop",
-        "sessions": 1220,
-        "pct": 15.0
+        "sessions": 786,
+        "pct": 19.4
       },
       {
         "device": "tablet",
-        "sessions": 70,
-        "pct": 0.9
+        "sessions": 42,
+        "pct": 1.0
       }
     ],
     "by_property": [
@@ -4458,9 +4352,8 @@
         "name": "matrasroll.com.ua",
         "sessions": 4045,
         "users": 3599,
-        "new_users": 2189,
-        "ads_cost": 0.0,
-        "ads_clicks": 0,
+        "ads_cost": 28702.09,
+        "ads_clicks": 3009,
         "error": null
       },
       {
@@ -4468,9 +4361,17 @@
         "name": "amebli.com.ua",
         "sessions": 4056,
         "users": 3621,
-        "new_users": 2030,
-        "ads_cost": 31936.54,
-        "ads_clicks": 3945,
+        "ads_cost": 31779.65,
+        "ads_clicks": 3927,
+        "error": null
+      },
+      {
+        "id": "418849686",
+        "name": "purple.com.ua",
+        "sessions": 0,
+        "users": 0,
+        "ads_cost": 0.0,
+        "ads_clicks": 0,
         "error": null
       }
     ],
