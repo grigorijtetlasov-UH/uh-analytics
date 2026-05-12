@@ -1259,7 +1259,6 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
   <div class="kpi"><div class="kl">Замовлення місяць</div><div class="kv">{total_orders_m}<span class="ku">₴</span></div><div class="ks">сум. з 1-го числа</div></div>
   <div class="kpi"><div class="kl">CRM Заявки (всі)</div><div class="kv">{crm_all_req}</div><div class="ks">{crm_sum_all} ₴ · усі статуси · <span class="dlt {ord_delta_cls}">{ord_delta_txt}</span></div></div>
   <div class="kpi"><div class="kl">CRM Замовлення</div><div class="kv">{crm_orders_d}</div><div class="ks">{crm_sum_orders} ₴ · сер.чек {crm_avg_check_str}</div></div>
-  <div class="kpi"><div class="kl">ДРР Замовлення</div><div class="kv" style="color:var(--drr-{drr_orders_cls})">{drr_orders}<span class="ku">%</span></div><div class="ks">{total_ad_spend} ₴ реклами / ORDERS</div></div>
   <div class="kpi"><div class="kl">ДРР Matrasroll</div><div class="kv" style="color:var(--drr-{drr_mr_sales_cls})">{drr_mr_sales}<span class="ku">%</span></div><div class="ks">{mr_spend_str} ₴ / {mr_sales_str} ₴ SALES</div></div>
   <div class="kpi"><div class="kl">ДРР Amebli</div><div class="kv" style="color:var(--drr-{drr_am_sales_cls})">{drr_am_sales}<span class="ku">%</span></div><div class="ks">{am_spend_str} ₴ / {am_sales_str} ₴ SALES</div></div>
   <div class="kpi"><div class="kl">Витрати на рекламу</div><div class="kv">{total_ad_spend}<span class="ku">₴</span></div><div class="ks">Meta {meta_spend}₴ + Google {ga4_ads_cost_str}₴</div></div>
