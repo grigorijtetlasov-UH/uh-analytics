@@ -1612,6 +1612,7 @@ def fetch_ga4(date_str: str) -> dict:
         "by_source":     [],
         "by_page":       [],
         "by_device":     [],
+        "by_property":   [],     # Розбивка по сайтах (matrasroll, amebli, purple)
         "error":         None
     }
     try:
@@ -1727,6 +1728,76 @@ def fetch_ga4(date_str: str) -> dict:
             }
             for r in resp4.rows
         ]
+
+        # ── 5. РОЗБИВКА ПО САЙТАХ (matrasroll, amebli, purple) ────
+        # Збираємо окремо для кожного GA4 property:
+        # sessions, users, ads_cost, ads_clicks — для розрахунку ДРР по проектах.
+        GA4_PROPERTIES = [
+            {"id": "349048143", "name": "matrasroll.com.ua"},
+            {"id": "350293168", "name": "amebli.com.ua"},
+            {"id": "418849686", "name": "purple.com.ua"},
+        ]
+        for p in GA4_PROPERTIES:
+            p_result = {
+                "id":          p["id"],
+                "name":        p["name"],
+                "sessions":    0,
+                "users":       0,
+                "ads_cost":    0.0,
+                "ads_clicks":  0,
+                "error":       None,
+            }
+            try:
+                p_prop = f"properties/{p['id']}"
+                # Основні метрики
+                req_p = RunReportRequest(
+                    property=p_prop, date_ranges=dr,
+                    metrics=[
+                        Metric(name="sessions"),
+                        Metric(name="totalUsers"),
+                    ],
+                    dimensions=[Dimension(name="date")]
+                )
+                resp_p = client.run_report(req_p)
+                if resp_p.rows:
+                    v = resp_p.rows[0].metric_values
+                    p_result["sessions"] = int(v[0].value)
+                    p_result["users"]    = int(v[1].value)
+
+                # Google Ads витрати по сайту
+                try:
+                    req_p_ads = RunReportRequest(
+                        property=p_prop, date_ranges=dr,
+                        metrics=[Metric(name="advertiserAdCost"), Metric(name="advertiserAdClicks")],
+                        dimensions=[Dimension(name="sessionCampaignName")],
+                        limit=200
+                    )
+                    resp_p_ads = client.run_report(req_p_ads)
+                    p_cost = 0.0
+                    p_clicks = 0
+                    for row in resp_p_ads.rows:
+                        try:
+                            p_cost   += float(row.metric_values[0].value or 0)
+                            p_clicks += int(row.metric_values[1].value or 0)
+                        except Exception:
+                            continue
+                    p_result["ads_cost"]   = round(p_cost, 2)
+                    p_result["ads_clicks"] = p_clicks
+                except Exception as ex_p_ads:
+                    # Google Ads може бути не залінкований до конкретного property
+                    pass
+
+            except Exception as ex_p:
+                p_result["error"] = str(ex_p)
+
+            result["by_property"].append(p_result)
+
+        # Лог per-property
+        if result["by_property"]:
+            print(f"   📊 Розбивка по сайтах:")
+            for p in result["by_property"]:
+                err_str = f" ⚠️ {p['error'][:50]}" if p.get("error") else ""
+                print(f"      {p['name']:25} · сесій {p['sessions']:6} · ads {p['ads_cost']:8.2f} ₴{err_str}")
 
     except Exception as e:
         result["error"] = str(e)
