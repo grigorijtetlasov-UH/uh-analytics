@@ -169,11 +169,11 @@ def build_sales_kpi_block(sales_kpi: dict) -> str:
                 return "warn"
             return "bad"
     
-    # ── Конверсія (вищу беремо — no_spam) ──
+    # ── Конверсія (з усіма заявками, включаючи спам) ──
     conv_d = day.get("conversion", {})
     conv_m = month.get("conversion", {})
-    conv_d_val = conv_d.get("no_spam", 0)
-    conv_m_val = conv_m.get("no_spam", 0)
+    conv_d_val = conv_d.get("with_spam", 0)
+    conv_m_val = conv_m.get("with_spam", 0)
     conv_target = conv_d.get("target", 85)
     conv_d_cls = cls_for(conv_d_val, conv_target)
     conv_m_cls = cls_for(conv_m_val, conv_target)
@@ -240,7 +240,7 @@ def build_sales_kpi_block(sales_kpi: dict) -> str:
           <div class="kpi-sales-num {conv_m_cls}">{conv_m_val}<span class="kpi-sales-pct">%</span></div>
         </div>
       </div>
-      <div class="kpi-sales-tg">ціль: <b>≥{conv_target}%</b> · замовлень/заявок (без спаму)</div>
+      <div class="kpi-sales-tg">ціль: <b>≥{conv_target}%</b> · замовлень/всіх заявок</div>
     </div>
 
     <div class="kpi-sales {cs_tile_cls}">
