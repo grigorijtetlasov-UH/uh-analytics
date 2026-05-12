@@ -3117,12 +3117,12 @@
       ]
     }
   },
-  "generated": "2026-05-12T11:20:03.058458",
+  "generated": "2026-05-12T12:16:51.003742",
   "uh": {
     "label": "UH",
     "ORDERS": {
       "day": {
-        "total": 1156277.0,
+        "total": 1167379.0,
         "count": 431,
         "by_podr": {
           "Matrasroll": 279968.0,
@@ -3132,10 +3132,9 @@
           "ДРОП": 180795.0,
           "МР Эпицентр (Мережі)": 61326.0,
           "Шоу-Рум Дарынок": 27929.0,
-          "Шоу-Рум Дрим": 4796.0,
-          "Невідомо": 3225.0,
-          "Алло (Мережі)": 778.0,
-          "ОПТ": 52.0
+          "ОПТ": 11154.0,
+          "Шоу-Рум Дрим": 8021.0,
+          "Алло (Мережі)": 778.0
         }
       },
       "day_refused": {
@@ -3144,7 +3143,7 @@
         "by_podr": {}
       },
       "month": {
-        "total": 8658171.95,
+        "total": 8669283.95,
         "count": 3244
       },
       "month_refused": {
@@ -3154,7 +3153,7 @@
     },
     "ORDERSWD": {
       "day": {
-        "total": 1101447.0,
+        "total": 1112549.0,
         "count": 329,
         "by_podr": {
           "Matrasroll": 251688.0,
@@ -3164,10 +3163,9 @@
           "Sofino": 173278.0,
           "МР Эпицентр (Мережі)": 61326.0,
           "Шоу-Рум Дарынок": 27929.0,
-          "Шоу-Рум Дрим": 4796.0,
-          "Невідомо": 3225.0,
-          "Алло (Мережі)": 778.0,
-          "ОПТ": 52.0
+          "ОПТ": 11154.0,
+          "Шоу-Рум Дрим": 8021.0,
+          "Алло (Мережі)": 778.0
         }
       },
       "day_refused": {
@@ -3176,7 +3174,7 @@
         "by_podr": {}
       },
       "month": {
-        "total": 8207634.95,
+        "total": 8218746.95,
         "count": 2378
       },
       "month_refused": {
@@ -3185,7 +3183,24 @@
       }
     },
     "SALES": {
-      "error": "500 Server Error: Internal server error for url: http://142.132.252.184:58300/ST_UNF/ws/request.1cws"
+      "day": {
+        "total": 1040654.0,
+        "count": 331,
+        "by_podr": {
+          "Matrasroll": 393329.0,
+          "A-mebli": 228500.0,
+          "ДРОП": 181837.0,
+          "Sofino": 133496.0,
+          "МР Розетка (Мережі)": 56937.0,
+          "ОПТ": 32100.0,
+          "МР Эпицентр (Мережі)": 10213.0,
+          "HabStor": 4242.0
+        }
+      },
+      "month": {
+        "total": 7162056.95,
+        "count": 2050
+      }
     }
   },
   "sh": {
@@ -3940,20 +3955,20 @@
       {
         "id": "498543759542047",
         "name": "Amebli 2024",
-        "spend": 2845.93,
-        "impressions": 14187,
+        "spend": 2847.19,
+        "impressions": 14193,
         "clicks": 766,
         "results": 12,
         "cpc": 3.72,
         "ctr": 5.4,
         "error": null,
-        "cpm": 200.6
+        "cpm": 200.61
       },
       {
         "id": "785104883775481",
         "name": "Amebli",
-        "spend": 614.65,
-        "impressions": 24157,
+        "spend": 614.73,
+        "impressions": 24163,
         "clicks": 96,
         "results": 0,
         "cpc": 6.4,
@@ -3964,8 +3979,8 @@
       {
         "id": "478301535674476",
         "name": "MatrasRoll",
-        "spend": 120.87,
-        "impressions": 40330,
+        "spend": 120.88,
+        "impressions": 40339,
         "clicks": 988,
         "results": 54,
         "cpc": 0.12,
@@ -3976,8 +3991,8 @@
       {
         "id": "1071880631226950",
         "name": "MatrasRoll 2024",
-        "spend": 970.97,
-        "impressions": 9034,
+        "spend": 971.04,
+        "impressions": 9035,
         "clicks": 427,
         "results": 24,
         "cpc": 2.27,
@@ -3987,21 +4002,21 @@
       }
     ],
     "total": {
-      "spend": 4552.42,
-      "impressions": 87708,
+      "spend": 4553.84,
+      "impressions": 87730,
       "clicks": 2277,
       "cpc": 2.0,
-      "cpm": 51.9,
+      "cpm": 51.91,
       "ctr": 2.6,
       "results": 90,
-      "cpr": 50.58
+      "cpr": 50.6
     },
     "by_campaign": [
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії матрац ORANGE Handy",
-        "spend": 1041.41,
-        "impressions": 5714,
+        "spend": 1041.67,
+        "impressions": 5716,
         "clicks": 213,
         "cpc": 4.89,
         "ctr": 3.73,
@@ -4010,8 +4025,8 @@
       {
         "account": "MatrasRoll 2024",
         "campaign": "EW Сonversions Bionica Linen Active",
-        "spend": 970.97,
-        "impressions": 9034,
+        "spend": 971.04,
+        "impressions": 9035,
         "clicks": 427,
         "cpc": 2.27,
         "ctr": 4.73,
@@ -4020,8 +4035,8 @@
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії матрац ORANGE Handy Cocos 2026",
-        "spend": 604.34,
-        "impressions": 2762,
+        "spend": 604.66,
+        "impressions": 2764,
         "clicks": 65,
         "cpc": 9.3,
         "ctr": 2.35,
@@ -4040,11 +4055,11 @@
       {
         "account": "Amebli 2024",
         "campaign": "EW Динамічний ремаркетинг",
-        "spend": 396.12,
-        "impressions": 2118,
+        "spend": 396.8,
+        "impressions": 2120,
         "clicks": 247,
-        "cpc": 1.6,
-        "ctr": 11.66,
+        "cpc": 1.61,
+        "ctr": 11.65,
         "results": 4
       },
       {
@@ -4070,8 +4085,8 @@
       {
         "account": "Amebli",
         "campaign": "EW Охват | Шоурум",
-        "spend": 256.98,
-        "impressions": 22884,
+        "spend": 257.06,
+        "impressions": 22890,
         "clicks": 50,
         "cpc": 5.14,
         "ctr": 0.22,
@@ -4081,7 +4096,7 @@
         "account": "MatrasRoll",
         "campaign": "EW топер PURPLE Bionica Linen Active",
         "spend": 27.06,
-        "impressions": 6273,
+        "impressions": 6274,
         "clicks": 257,
         "cpc": 0.11,
         "ctr": 4.1,
@@ -4091,7 +4106,7 @@
         "account": "MatrasRoll",
         "campaign": "EW топперы | весна 2026",
         "spend": 23.52,
-        "impressions": 4342,
+        "impressions": 4345,
         "clicks": 204,
         "cpc": 0.12,
         "ctr": 4.7,
@@ -4100,8 +4115,8 @@
       {
         "account": "MatrasRoll",
         "campaign": "EW матрасы | campaign",
-        "spend": 21.74,
-        "impressions": 18010,
+        "spend": 21.75,
+        "impressions": 18012,
         "clicks": 155,
         "cpc": 0.14,
         "ctr": 0.86,
@@ -4121,10 +4136,10 @@
         "account": "MatrasRoll",
         "campaign": "EW топперы | Acquisition",
         "spend": 15.88,
-        "impressions": 5652,
+        "impressions": 5655,
         "clicks": 80,
         "cpc": 0.2,
-        "ctr": 1.42,
+        "ctr": 1.41,
         "results": 4
       },
       {
