@@ -666,10 +666,15 @@ def build_daily(data, history):
     elif rev_delta_cls == "down":
         insights.append({"icon": "⚠️", "type": "warn", "text": f"Замовлення впали на {rev_delta_txt} — варто розібратись"})
 
-    if crm_refuse_p > 8:
-        insights.append({"icon": "🔴", "type": "bad", "text": f"Висока частка відмов CRM: {crm_refuse_p}% (норма <5%)"})
-    elif crm_refuse_p < 3 and crm_orders_d > 0:
-        insights.append({"icon": "✅", "type": "good", "text": f"Відмінні відмови CRM: лише {crm_refuse_p}%"})
+    # Відмови — беремо з KPI-блоку (синхронізовано з контекстом бізнесу UH: ≤5%)
+    # Формула: refused / (orders + refused) — частка серед активних замовлень,
+    # БЕЗ лідів в обробці і БЕЗ спаму. Це і є точна метрика з документа керівника.
+    _kpi_refuse_d = (crm.get("sales_kpi", {}) or {}).get("day", {}).get("refuse", {})
+    kpi_refuse_d_val = _kpi_refuse_d.get("of_orders", crm_refuse_p)  # fallback на стару метрику
+    if kpi_refuse_d_val > 5:
+        insights.append({"icon": "🔴", "type": "bad", "text": f"Висока частка відмов CRM: {kpi_refuse_d_val}% (ціль ≤5%)"})
+    elif kpi_refuse_d_val < 3 and crm_orders_d > 0:
+        insights.append({"icon": "✅", "type": "good", "text": f"Відмінні відмови CRM: лише {kpi_refuse_d_val}% (ціль ≤5%)"})
 
     if total_refused_d > 0:
         insights.append({"icon": "⚠️", "type": "warn", "text": f"Відмови 1С за день: {money(total_refused_d)} ₴"})
@@ -878,8 +883,11 @@ def build_monthly(data, history):
     elif rev_d_cls == "down":
         insights.append({"icon": "📉", "type": "warn", "text": f"Замовлення впали на {rev_d_txt} vs попередній місяць"})
 
-    if c_refuse_p > 8:
-        insights.append({"icon": "🔴", "type": "bad", "text": f"Висока частка відмов за місяць: {c_refuse_p}%"})
+    # Відмови за місяць — з KPI (синхронізовано з контекстом UH: ≤5%)
+    _kpi_refuse_m = (data.get("crm", {}) or {}).get("sales_kpi", {}).get("month", {}).get("refuse", {})
+    kpi_refuse_m_val = _kpi_refuse_m.get("of_orders", c_refuse_p)  # fallback
+    if kpi_refuse_m_val > 5:
+        insights.append({"icon": "🔴", "type": "bad", "text": f"Висока частка відмов за місяць: {kpi_refuse_m_val}% (ціль ≤5%)"})
 
     mgrs = curr_crm.get("managers", [])
     if mgrs:
