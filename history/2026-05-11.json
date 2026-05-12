@@ -2687,7 +2687,7 @@
             {
               "day": 11,
               "orders": 431,
-              "revenue": 1156277.0,
+              "revenue": 1167379.0,
               "leads": 0
             }
           ]
@@ -3111,75 +3111,89 @@
               "orders": 3,
               "revenue": 24799.0,
               "leads": 0
+            },
+            {
+              "day": 11,
+              "orders": 331,
+              "revenue": 1040654.0,
+              "leads": 0
             }
           ]
         }
       ]
     }
   },
-  "generated": "2026-05-12T12:16:51.003742",
+  "generated": "2026-05-12T12:44:37.830066",
   "uh": {
     "label": "UH",
     "ORDERS": {
       "day": {
-        "total": 1167379.0,
-        "count": 431,
+        "total": 1151838.0,
+        "count": 427,
         "by_podr": {
-          "Matrasroll": 279968.0,
-          "A-mebli": 211070.0,
-          "МР Розетка (Мережі)": 196160.0,
+          "Matrasroll": 273208.0,
+          "A-mebli": 204257.0,
+          "МР Розетка (Мережі)": 192222.0,
           "Sofino": 190178.0,
           "ДРОП": 180795.0,
           "МР Эпицентр (Мережі)": 61326.0,
           "Шоу-Рум Дарынок": 27929.0,
-          "ОПТ": 11154.0,
+          "ОПТ": 13124.0,
           "Шоу-Рум Дрим": 8021.0,
           "Алло (Мережі)": 778.0
         }
       },
       "day_refused": {
-        "total": 0.0,
-        "count": 0,
-        "by_podr": {}
+        "total": 17511.0,
+        "count": 4,
+        "by_podr": {
+          "A-mebli": 6813.0,
+          "Matrasroll": 6760.0,
+          "МР Розетка (Мережі)": 3938.0
+        }
       },
       "month": {
-        "total": 8669283.95,
-        "count": 3244
+        "total": 8392898.95,
+        "count": 3145
       },
       "month_refused": {
-        "total": 0,
-        "count": 0
+        "total": 278356.0,
+        "count": 99
       }
     },
     "ORDERSWD": {
       "day": {
-        "total": 1112549.0,
-        "count": 329,
+        "total": 1097758.0,
+        "count": 326,
         "by_podr": {
-          "Matrasroll": 251688.0,
-          "A-mebli": 201420.0,
-          "МР Розетка (Мережі)": 196160.0,
+          "Matrasroll": 245678.0,
+          "A-mebli": 194607.0,
+          "МР Розетка (Мережі)": 192222.0,
           "ДРОП": 180795.0,
           "Sofino": 173278.0,
           "МР Эпицентр (Мережі)": 61326.0,
           "Шоу-Рум Дарынок": 27929.0,
-          "ОПТ": 11154.0,
+          "ОПТ": 13124.0,
           "Шоу-Рум Дрим": 8021.0,
           "Алло (Мережі)": 778.0
         }
       },
       "day_refused": {
-        "total": 0.0,
-        "count": 0,
-        "by_podr": {}
+        "total": 16761.0,
+        "count": 3,
+        "by_podr": {
+          "A-mebli": 6813.0,
+          "Matrasroll": 6010.0,
+          "МР Розетка (Мережі)": 3938.0
+        }
       },
       "month": {
-        "total": 8218746.95,
-        "count": 2378
+        "total": 7956041.95,
+        "count": 2306
       },
       "month_refused": {
-        "total": 0,
-        "count": 0
+        "total": 264676.0,
+        "count": 72
       }
     },
     "SALES": {
@@ -3198,8 +3212,8 @@
         }
       },
       "month": {
-        "total": 7162056.95,
-        "count": 2050
+        "total": 7178877.95,
+        "count": 2055
       }
     }
   },
@@ -3955,20 +3969,20 @@
       {
         "id": "498543759542047",
         "name": "Amebli 2024",
-        "spend": 2847.19,
-        "impressions": 14193,
+        "spend": 2848.07,
+        "impressions": 14199,
         "clicks": 766,
         "results": 12,
         "cpc": 3.72,
-        "ctr": 5.4,
+        "ctr": 5.39,
         "error": null,
-        "cpm": 200.61
+        "cpm": 200.58
       },
       {
         "id": "785104883775481",
         "name": "Amebli",
-        "spend": 614.73,
-        "impressions": 24163,
+        "spend": 614.76,
+        "impressions": 24165,
         "clicks": 96,
         "results": 0,
         "cpc": 6.4,
@@ -3980,7 +3994,7 @@
         "id": "478301535674476",
         "name": "MatrasRoll",
         "spend": 120.88,
-        "impressions": 40339,
+        "impressions": 40340,
         "clicks": 988,
         "results": 54,
         "cpc": 0.12,
@@ -4002,24 +4016,24 @@
       }
     ],
     "total": {
-      "spend": 4553.84,
-      "impressions": 87730,
+      "spend": 4554.75,
+      "impressions": 87739,
       "clicks": 2277,
       "cpc": 2.0,
       "cpm": 51.91,
       "ctr": 2.6,
       "results": 90,
-      "cpr": 50.6
+      "cpr": 50.61
     },
     "by_campaign": [
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії матрац ORANGE Handy",
-        "spend": 1041.67,
-        "impressions": 5716,
+        "spend": 1041.79,
+        "impressions": 5719,
         "clicks": 213,
         "cpc": 4.89,
-        "ctr": 3.73,
+        "ctr": 3.72,
         "results": 2
       },
       {
@@ -4035,8 +4049,8 @@
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії матрац ORANGE Handy Cocos 2026",
-        "spend": 604.66,
-        "impressions": 2764,
+        "spend": 604.76,
+        "impressions": 2765,
         "clicks": 65,
         "cpc": 9.3,
         "ctr": 2.35,
@@ -4055,8 +4069,8 @@
       {
         "account": "Amebli 2024",
         "campaign": "EW Динамічний ремаркетинг",
-        "spend": 396.8,
-        "impressions": 2120,
+        "spend": 397.44,
+        "impressions": 2121,
         "clicks": 247,
         "cpc": 1.61,
         "ctr": 11.65,
@@ -4065,8 +4079,8 @@
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії топери 2026",
-        "spend": 386.43,
-        "impressions": 2232,
+        "spend": 386.45,
+        "impressions": 2233,
         "clicks": 192,
         "cpc": 2.01,
         "ctr": 8.6,
@@ -4085,8 +4099,8 @@
       {
         "account": "Amebli",
         "campaign": "EW Охват | Шоурум",
-        "spend": 257.06,
-        "impressions": 22890,
+        "spend": 257.09,
+        "impressions": 22892,
         "clicks": 50,
         "cpc": 5.14,
         "ctr": 0.22,
@@ -4136,7 +4150,7 @@
         "account": "MatrasRoll",
         "campaign": "EW топперы | Acquisition",
         "spend": 15.88,
-        "impressions": 5655,
+        "impressions": 5656,
         "clicks": 80,
         "cpc": 0.2,
         "ctr": 1.41,
