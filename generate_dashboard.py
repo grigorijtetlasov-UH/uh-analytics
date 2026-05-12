@@ -1258,10 +1258,9 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
 <div class="kpi-row">
   <div class="kpi"><div class="kl">Замовлення день (1С)</div><div class="kv">{total_orders_d}<span class="ku">₴</span></div><div class="ks">без відмов · <span class="dlt {rev_delta_cls}">{rev_delta_txt}</span></div></div>
   <div class="kpi"><div class="kl">Відгрузки день (1С)</div><div class="kv">{total_sales_d}<span class="ku">₴</span></div><div class="ks">фактичний заробіток</div></div>
-  <div class="kpi"><div class="kl">Відмови день (1С)</div><div class="kv">{total_refused_d}<span class="ku">₴</span></div><div class="ks">Отказ Не/Відправлений</div></div>
   <div class="kpi"><div class="kl">Замовлення місяць</div><div class="kv">{total_orders_m}<span class="ku">₴</span></div><div class="ks">сум. з 1-го числа</div></div>
   <div class="kpi"><div class="kl">CRM Заявки (всі)</div><div class="kv">{crm_all_req}</div><div class="ks">{crm_sum_all} ₴ · усі статуси · <span class="dlt {ord_delta_cls}">{ord_delta_txt}</span></div></div>
-  <div class="kpi"><div class="kl">CRM Замовлення</div><div class="kv">{crm_orders_d}</div><div class="ks">{crm_sum_orders} ₴ · {crm_refuse_p_str} відмов · сер.чек {crm_avg_check_str}</div></div>
+  <div class="kpi"><div class="kl">CRM Замовлення</div><div class="kv">{crm_orders_d}</div><div class="ks">{crm_sum_orders} ₴ · сер.чек {crm_avg_check_str}</div></div>
   <div class="kpi"><div class="kl">ROAS</div><div class="kv">{roas_sales}<span class="ku">×</span></div><div class="ks">відгрузки/реклама · замовл. {roas_orders}×</div></div>
   <div class="kpi"><div class="kl">ДРР Відгрузки</div><div class="kv" style="color:var(--drr-{drr_sales_cls})">{drr_sales}<span class="ku">%</span></div><div class="ks">{total_ad_spend} ₴ реклами / SALES</div></div>
   <div class="kpi"><div class="kl">ДРР Замовлення</div><div class="kv" style="color:var(--drr-{drr_orders_cls})">{drr_orders}<span class="ku">%</span></div><div class="ks">{total_ad_spend} ₴ реклами / ORDERS</div></div>
