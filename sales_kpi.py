@@ -150,38 +150,55 @@ def _empty_kpi() -> dict:
 
 
 def _kpi_for_period(df: pd.DataFrame) -> dict:
-    """Розраховує 4 KPI для df з усіма позиціями (НЕ дедуплений по замовленнях)."""
+    """Розраховує 4 KPI для df з усіма позиціями (НЕ дедуплений по замовленнях).
+
+    ВАЖЛИВО: для лідів/відмов/спаму використовуємо ВСІ рядки (з номером 1С і без),
+    бо у "Лід (не купив)" часто немає номера 1С — це нерозписані заявки.
+    Тільки для замовлень (orders), крос-сейлу і гарантій потрібен номер 1С
+    (щоб дивитись позиції товарів).
+    """
     if df is None or df.empty:
         return _empty_kpi()
 
     if "Номер 1С" not in df.columns:
         return _empty_kpi()
 
-    # Заявки без NaN-номера. Категорія однакова для всіх позицій 1 замовлення —
-    # тому беремо першу.
+    # ── ЗАМОВЛЕННЯ (потрібен Номер 1С — щоб дивитись позиції товарів) ──
     orders_df = df.dropna(subset=["Номер 1С"]).copy()
-    if orders_df.empty:
-        return _empty_kpi()
+    if not orders_df.empty:
+        order_cats_num = orders_df.groupby("Номер 1С")["_категорія"].first()
+        n_orders = int((order_cats_num == "order").sum())
+    else:
+        order_cats_num = pd.Series(dtype=str)
+        n_orders = 0
 
-    order_cats = orders_df.groupby("Номер 1С")["_категорія"].first()
+    # ── ЛІДИ / ВІДМОВИ / СПАМ (рахуємо ВСІ заявки, в т.ч. без номера 1С) ──
+    # Для заявок без номера — кожен рядок це окрема заявка
+    # (бо там нема як їх дедупити, а вони унікальні події в CRM).
+    no_num_df = df[df["Номер 1С"].isna()]
+    n_leads_with_num = int((order_cats_num == "lead").sum())
+    n_refused_with_num = int((order_cats_num == "refused").sum())
+    n_spam_with_num = int((order_cats_num == "spam").sum())
+    n_leads_no_num = int((no_num_df["_категорія"] == "lead").sum())
+    n_refused_no_num = int((no_num_df["_категорія"] == "refused").sum())
+    n_spam_no_num = int((no_num_df["_категорія"] == "spam").sum())
 
-    n_all = len(order_cats)
-    n_orders = int((order_cats == "order").sum())
-    n_refused = int((order_cats == "refused").sum())
-    n_leads = int((order_cats == "lead").sum())
-    n_spam = int((order_cats == "spam").sum())
+    n_leads = n_leads_with_num + n_leads_no_num
+    n_refused = n_refused_with_num + n_refused_no_num
+    n_spam = n_spam_with_num + n_spam_no_num
+
+    n_all = n_orders + n_leads + n_refused + n_spam
     n_no_spam = n_all - n_spam
 
     # ── 1. КОНВЕРСІЯ (за еталоном) ──
-    # Формула: замовлення / (замовлення + ліди). Спам та pending виключені.
-    # "with_spam" зберігаємо як sanity-check (orders / all_requests).
+    # Формула: замовлення / (замовлення + ліди). Спам, refused, pending виключені.
     conv_denom = n_orders + n_leads
     conv_value = (n_orders / conv_denom * 100) if conv_denom else 0.0
     conv_with_spam = (n_orders / n_all * 100) if n_all else 0.0  # для довідки
 
     # ── 2 + 3. Крос-сейл і гарантії+чохли (тільки на замовленнях зі статусом order) ──
-    order_ids = order_cats[order_cats == "order"].index
-    items = orders_df[orders_df["Номер 1С"].isin(order_ids)].copy()
+    order_ids = order_cats_num[order_cats_num == "order"].index
+    items = orders_df[orders_df["Номер 1С"].isin(order_ids)].copy() if not orders_df.empty else pd.DataFrame()
 
     cross_sell_orders = 0
     gc_orders = 0
@@ -201,8 +218,7 @@ def _kpi_for_period(df: pd.DataFrame) -> dict:
     gc_pct = (gc_orders / n_orders * 100) if n_orders else 0.0
 
     # ── 4. ВІДМОВИ (за еталоном) ──
-    # Формула: Відмова(відпр) + Відмова(не відпр) як % від замовлень
-    # Знаменник = тільки замовлення (order), без refused.
+    # Формула: refused / orders як %.
     refuse_of_orders = (n_refused / n_orders * 100) if n_orders else 0.0
     refuse_of_requests = (n_refused / n_no_spam * 100) if n_no_spam else 0.0
 
