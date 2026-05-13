@@ -248,12 +248,13 @@ _ORDER_STATUSES = {
     "контроль оплати", "відправлено", "отримано", "повернення",
 }
 _REFUSED_STATUSES = {
-    "відмова (відправлено)", "відмова (не відправлено)", "відмова", "лід (не купив)",
+    "відмова (відправлено)", "відмова (не відправлено)", "відмова",
 }
 _LEAD_STATUSES = {
     "новий", "недодзвон", "автовідповідач", "повторне звернення",
     "перепродзвон", "прозвон обробки", "питання по замовленню",
     "йде на шоу-рум", "в обробці",
+    "лід (не купив)",
 }
 _SPAM_STATUSES = {"спам", "дублікат", "тест"}
 
@@ -761,7 +762,6 @@ def fetch_salesdrive(date_str: str) -> dict:
             "відмова (відправлено)",
             "відмова (не відправлено)",
             "відмова",
-            "лід (не купив)",
         }
         # Ліди (на стадії обробки, ще не замовлення)
         LEAD_STATUSES = {
@@ -773,6 +773,7 @@ def fetch_salesdrive(date_str: str) -> dict:
             "питання по замовленню",
             "в обробці",
             "відвідає шоу-рум",
+            "лід (не купив)",  # ← це ЛІД, НЕ ВІДМОВА (за еталоном)
         }
         # Спам / технічні (повністю виключаються з продажів)
         SPAM_STATUSES = {
@@ -986,6 +987,8 @@ def fetch_salesdrive(date_str: str) -> dict:
         # ── Сайти ──
         if "Сайт" in day_df.columns:
             sites_df = valid_uniq[valid_uniq["Сайт"].notna()]
+            # Виключаємо SH-сайти ("СХ" в назві = мережі SH що виключені з фільтра)
+            sites_df = sites_df[~sites_df["Сайт"].astype(str).str.contains(r"\bСХ\b", regex=True, na=False)]
             if not sites_df.empty:
                 agg = sites_df.groupby("Сайт").agg(
                     orders=("Сума", "count"),
@@ -1168,7 +1171,6 @@ def aggregate_month_crm(target_month: str, day_limit: int = None) -> dict:
             "відмова (відправлено)",
             "відмова (не відправлено)",
             "відмова",
-            "лід (не купив)",
         }
         # Ліди (на стадії обробки, ще не замовлення)
         LEAD_STATUSES = {
@@ -1180,6 +1182,7 @@ def aggregate_month_crm(target_month: str, day_limit: int = None) -> dict:
             "питання по замовленню",
             "в обробці",
             "відвідає шоу-рум",
+            "лід (не купив)",  # ← це ЛІД, НЕ ВІДМОВА (за еталоном)
         }
         # Спам / технічні (повністю виключаються з продажів)
         SPAM_STATUSES = {
@@ -1320,6 +1323,8 @@ def aggregate_month_crm(target_month: str, day_limit: int = None) -> dict:
         # ── Сайти ──
         if "Сайт" in month_df.columns:
             sites_df = valid_uniq_m[valid_uniq_m["Сайт"].notna()]
+            # Виключаємо SH-сайти ("СХ" в назві)
+            sites_df = sites_df[~sites_df["Сайт"].astype(str).str.contains(r"\bСХ\b", regex=True, na=False)]
             if not sites_df.empty:
                 agg = sites_df.groupby("Сайт").agg(
                     orders=("Сума", "count"),
