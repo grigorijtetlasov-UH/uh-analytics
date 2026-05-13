@@ -37,12 +37,12 @@ ORDER_STATUSES = {
 }
 REFUSED_STATUSES = {
     "відмова (відправлено)", "відмова (не відправлено)", "відмова",
-    "лід (не купив)",
 }
 LEAD_STATUSES = {
     "новий", "недодзвон", "автовідповідач", "повторне звернення",
     "потрібне уточнення/перезвон", "питання по замовленню",
     "в обробці", "відвідає шоу-рум",
+    "лід (не купив)",  # ← це ЛІД (не дійшов до замовлення), не ВІДМОВА
 }
 SPAM_STATUSES = {
     "спам на согласовании", "рекламный спам", "спам", "видалений", "дубль",
@@ -140,8 +140,8 @@ def _load_raw_excel(target_month: str) -> Optional[pd.DataFrame]:
 # ── Розрахунок KPI ─────────────────────────────────────────────────
 def _empty_kpi() -> dict:
     return {
-        "conversion": {"with_spam": 0.0, "no_spam": 0.0, "target": 85,
-                       "orders": 0, "all": 0, "no_spam_count": 0},
+        "conversion": {"value": 0.0, "with_spam": 0.0, "no_spam": 0.0, "target": 85,
+                       "orders": 0, "leads": 0, "all": 0, "no_spam_count": 0},
         "cross_sell": {"value": 0.0, "orders": 0, "of": 0, "target": 35},
         "guarantee_cover": {"value": 0.0, "orders": 0, "of": 0, "target": 35},
         "refuse": {"of_orders": 0.0, "of_requests_no_spam": 0.0, "target": 5,
@@ -168,12 +168,16 @@ def _kpi_for_period(df: pd.DataFrame) -> dict:
     n_all = len(order_cats)
     n_orders = int((order_cats == "order").sum())
     n_refused = int((order_cats == "refused").sum())
+    n_leads = int((order_cats == "lead").sum())
     n_spam = int((order_cats == "spam").sum())
     n_no_spam = n_all - n_spam
 
-    # ── 1. КОНВЕРСІЯ ──
-    conv_with_spam = (n_orders / n_all * 100) if n_all else 0.0
-    conv_no_spam = (n_orders / n_no_spam * 100) if n_no_spam else 0.0
+    # ── 1. КОНВЕРСІЯ (за еталоном) ──
+    # Формула: замовлення / (замовлення + ліди). Спам та pending виключені.
+    # "with_spam" зберігаємо як sanity-check (orders / all_requests).
+    conv_denom = n_orders + n_leads
+    conv_value = (n_orders / conv_denom * 100) if conv_denom else 0.0
+    conv_with_spam = (n_orders / n_all * 100) if n_all else 0.0  # для довідки
 
     # ── 2 + 3. Крос-сейл і гарантії+чохли (тільки на замовленнях зі статусом order) ──
     order_ids = order_cats[order_cats == "order"].index
@@ -196,17 +200,20 @@ def _kpi_for_period(df: pd.DataFrame) -> dict:
     cross_sell_pct = (cross_sell_orders / n_orders * 100) if n_orders else 0.0
     gc_pct = (gc_orders / n_orders * 100) if n_orders else 0.0
 
-    # ── 4. ВІДМОВИ ──
-    n_active = n_orders + n_refused
-    refuse_of_orders = (n_refused / n_active * 100) if n_active else 0.0
+    # ── 4. ВІДМОВИ (за еталоном) ──
+    # Формула: Відмова(відпр) + Відмова(не відпр) як % від замовлень
+    # Знаменник = тільки замовлення (order), без refused.
+    refuse_of_orders = (n_refused / n_orders * 100) if n_orders else 0.0
     refuse_of_requests = (n_refused / n_no_spam * 100) if n_no_spam else 0.0
 
     return {
         "conversion": {
-            "with_spam": round(conv_with_spam, 1),
-            "no_spam":   round(conv_no_spam, 1),
+            "value":     round(conv_value, 1),       # ← головне значення (за еталоном)
+            "with_spam": round(conv_with_spam, 1),   # для довідки
+            "no_spam":   round(conv_value, 1),       # alias щоб дашборд продовжував працювати
             "target":    85,
             "orders":    n_orders,
+            "leads":     n_leads,
             "all":       n_all,
             "no_spam_count": n_no_spam,
         },
@@ -227,7 +234,7 @@ def _kpi_for_period(df: pd.DataFrame) -> dict:
             "of_requests_no_spam": round(refuse_of_requests, 1),
             "target":              5,
             "refused":             n_refused,
-            "active":              n_active,
+            "active":              n_orders,  # знаменник = замовлення (як в еталоні)
         },
     }
 
