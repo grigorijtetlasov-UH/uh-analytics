@@ -1916,7 +1916,20 @@ if(D.sites&&D.sites.length){{sitesBody.innerHTML=D.sites.map((s,i)=>{{const dCls
 
 // Products
 const prodBody=document.getElementById('prodBody');
-if(D.products&&D.products.length){{prodBody.innerHTML=D.products.map((p,i)=>`<tr><td class="num" style="color:var(--td)">${{i+1}}</td><td title="${{p.name}}">${{p.name.length>70?p.name.substr(0,70)+'…':p.name}}</td><td class="r num">${{p.qty||p.count}}</td><td class="r num" style="color:var(--td)">${{p.count}}</td><td class="r num" style="color:var(--g)">${{fmtK(p.revenue)}}</td></tr>`).join('');}}else{{prodBody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';}}
+function renderProducts(sortKey){{
+  const arr=(D.products||[]).slice().sort((a,b)=>(b[sortKey]||0)-(a[sortKey]||0)).slice(0,50);
+  if(!arr.length){{prodBody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';return;}}
+  prodBody.innerHTML=arr.map((p,i)=>{{
+    const avgPrice = p.qty ? (p.revenue/p.qty) : 0;
+    const nameShort = p.name.length>70 ? p.name.substr(0,70)+'…' : p.name;
+    const qtyHi = sortKey==='qty' ? 'style="color:var(--ac2);font-weight:600"' : '';
+    const cntHi = sortKey==='count' ? 'style="color:var(--ac2);font-weight:600"' : 'style="color:var(--td)"';
+    const revHi = sortKey==='revenue' ? 'style="color:var(--g);font-weight:600"' : 'style="color:var(--g)"';
+    return `<tr><td class="num" style="color:var(--td)">${{i+1}}</td><td title="${{p.name}}">${{nameShort}}</td><td class="r num" ${{qtyHi}}>${{p.qty||p.count}}</td><td class="r num" ${{cntHi}}>${{p.count}}</td><td class="r num">${{fmt(Math.round(avgPrice))}} ₴</td><td class="r num" ${{revHi}}>${{fmtK(p.revenue)}}</td></tr>`;
+  }}).join('');
+}}
+function sortProd(btn,key){{document.querySelectorAll('.srt-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderProducts(key);}}
+renderProducts('revenue');
 
 // === PDF EXPORT (по панелях, без зміщення сторінок) ===
 async function exportPDF() {{
