@@ -249,7 +249,10 @@ _ORDER_STATUSES = {
 }
 _REFUSED_STATUSES = {
     "відмова (відправлено)", "відмова (не відправлено)", "відмова",
-    "лід (не купив)",  # ← в наш процес: лід що відмовився купувати = відмова
+}
+_LOST_LEAD_STATUSES = {
+    # "Лід (не купив)" — окрема категорія: лід що не дійшов до замовлення
+    "лід (не купив)",
 }
 _LEAD_STATUSES = {
     "новий", "недодзвон", "автовідповідач", "повторне звернення",
@@ -261,12 +264,14 @@ _SPAM_STATUSES = {"спам", "дублікат", "тест"}
 
 def _categorize_status(s):
     sl = str(s).strip().lower()
-    if sl in _ORDER_STATUSES:   return "order"
-    if sl in _REFUSED_STATUSES: return "refused"
-    if sl in _LEAD_STATUSES:    return "lead"
-    if sl in _SPAM_STATUSES:    return "spam"
+    if sl in _ORDER_STATUSES:     return "order"
+    if sl in _REFUSED_STATUSES:   return "refused"
+    if sl in _LOST_LEAD_STATUSES: return "lost"     # ← "Лід (не купив)"
+    if sl in _LEAD_STATUSES:      return "lead"
+    if sl in _SPAM_STATUSES:      return "spam"
     if "відмов" in sl: return "refused"
     if "спам" in sl:   return "spam"
+    if "не купив" in sl: return "lost"
     if "лід" in sl:    return "lead"
     return "other"
 
@@ -762,7 +767,10 @@ def fetch_salesdrive(date_str: str) -> dict:
             "відмова (відправлено)",
             "відмова (не відправлено)",
             "відмова",
-            "лід (не купив)",  # ← в наш процес: лід що відмовився купувати = відмова
+        }
+        # "Лід (не купив)" — окрема категорія "lost": лід що не дійшов до замовлення
+        LOST_LEAD_STATUSES = {
+            "лід (не купив)",
         }
         # Ліди (на стадії обробки, ще не замовлення)
         LEAD_STATUSES = {
@@ -786,13 +794,15 @@ def fetch_salesdrive(date_str: str) -> dict:
 
         def categorize(s):
             sl = str(s).strip().lower()
-            if sl in ORDER_STATUSES:   return "order"
-            if sl in REFUSED_STATUSES: return "refused"
-            if sl in LEAD_STATUSES:    return "lead"
-            if sl in SPAM_STATUSES:    return "spam"
+            if sl in ORDER_STATUSES:     return "order"
+            if sl in REFUSED_STATUSES:   return "refused"
+            if sl in LOST_LEAD_STATUSES: return "lost"
+            if sl in LEAD_STATUSES:      return "lead"
+            if sl in SPAM_STATUSES:      return "spam"
             # fallback на ключові слова для невідомих
             if "відмов" in sl: return "refused"
             if "спам" in sl:   return "spam"
+            if "не купив" in sl: return "lost"
             if "лід" in sl:    return "lead"
             return "other"
 
@@ -1171,7 +1181,10 @@ def aggregate_month_crm(target_month: str, day_limit: int = None) -> dict:
             "відмова (відправлено)",
             "відмова (не відправлено)",
             "відмова",
-            "лід (не купив)",  # ← в наш процес: лід що відмовився купувати = відмова
+        }
+        # "Лід (не купив)" — окрема категорія "lost": лід що не дійшов до замовлення
+        LOST_LEAD_STATUSES = {
+            "лід (не купив)",
         }
         # Ліди (на стадії обробки, ще не замовлення)
         LEAD_STATUSES = {
@@ -1195,13 +1208,15 @@ def aggregate_month_crm(target_month: str, day_limit: int = None) -> dict:
 
         def categorize(s):
             sl = str(s).strip().lower()
-            if sl in ORDER_STATUSES:   return "order"
-            if sl in REFUSED_STATUSES: return "refused"
-            if sl in LEAD_STATUSES:    return "lead"
-            if sl in SPAM_STATUSES:    return "spam"
+            if sl in ORDER_STATUSES:     return "order"
+            if sl in REFUSED_STATUSES:   return "refused"
+            if sl in LOST_LEAD_STATUSES: return "lost"
+            if sl in LEAD_STATUSES:      return "lead"
+            if sl in SPAM_STATUSES:      return "spam"
             # fallback на ключові слова для невідомих
             if "відмов" in sl: return "refused"
             if "спам" in sl:   return "spam"
+            if "не купив" in sl: return "lost"
             if "лід" in sl:    return "lead"
             return "other"
 

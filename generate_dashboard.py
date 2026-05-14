@@ -172,8 +172,10 @@ def build_sales_kpi_block(sales_kpi: dict) -> str:
     # ── Конверсія (з усіма заявками, включаючи спам) ──
     conv_d = day.get("conversion", {})
     conv_m = month.get("conversion", {})
-    conv_d_val = conv_d.get("with_spam", 0)
-    conv_m_val = conv_m.get("with_spam", 0)
+    # Беремо "value" (sold / (sold+lost)) — головне за еталоном
+    # Fallback на "no_spam" для старих JSON
+    conv_d_val = conv_d.get("value", conv_d.get("no_spam", 0))
+    conv_m_val = conv_m.get("value", conv_m.get("no_spam", 0))
     conv_target = conv_d.get("target", 85)
     conv_d_cls = cls_for(conv_d_val, conv_target)
     conv_m_cls = cls_for(conv_m_val, conv_target)
