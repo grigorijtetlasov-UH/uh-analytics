@@ -687,7 +687,7 @@ def sd_get(endpoint: str, params: dict = None) -> dict:
     r.raise_for_status()
     return r.json()
 
-def fetch_salesdrive(date_str: str) -> dict:
+def fetch_salesdrive(date_str: str, uh_1c_data: dict = None) -> dict:
     """
     Розширений збір з Excel SalesDrive — всі ключові поля для дашборду.
     """
@@ -886,7 +886,7 @@ def fetch_salesdrive(date_str: str) -> dict:
         # а в основному потоці day_df/month_df вже дедуплені по (Дата+Контакт+Сума+Статус).
         if compute_sales_kpi is not None:
             try:
-                result["sales_kpi"] = compute_sales_kpi(date_str)
+                result["sales_kpi"] = compute_sales_kpi(date_str, uh_1c_data=uh_1c_data)
                 kpi_day = result["sales_kpi"].get("day", {})
                 kpi_month = result["sales_kpi"].get("month", {})
                 conv_d = kpi_day.get("conversion", {}).get("no_spam", 0)
@@ -1891,7 +1891,7 @@ def main(target_date=None):
 
     # ── SalesDrive CRM ────────────────────────────────────────
     print("\n🎯 Завантаження SalesDrive CRM (Excel)...")
-    data["crm"] = fetch_salesdrive(day_iso)
+    data["crm"] = fetch_salesdrive(day_iso, uh_1c_data=data.get("uh"))
     crm = data["crm"]
     if crm["error"] and not crm["orders"]:
         print(f"   ⚠️  Помилка CRM: {crm['error']}")

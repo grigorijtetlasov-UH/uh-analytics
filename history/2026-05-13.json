@@ -3194,7 +3194,7 @@
       ]
     }
   },
-  "generated": "2026-05-14T11:21:26.190967",
+  "generated": "2026-05-14T12:05:05.375813",
   "uh": {
     "label": "UH",
     "ORDERS": {
@@ -3223,7 +3223,7 @@
         }
       },
       "month": {
-        "total": 10158731.95,
+        "total": 10163896.95,
         "count": 3800
       },
       "month_refused": {
@@ -3257,7 +3257,7 @@
         }
       },
       "month": {
-        "total": 9640623.95,
+        "total": 9645788.95,
         "count": 2794
       },
       "month_refused": {
@@ -3282,8 +3282,8 @@
         }
       },
       "month": {
-        "total": 9055779.95,
-        "count": 2650
+        "total": 9076828.95,
+        "count": 2661
       }
     }
   },
@@ -3979,11 +3979,14 @@
           "target": 35
         },
         "refuse": {
-          "of_orders": 0.0,
-          "of_requests_no_spam": 0.0,
+          "of_orders": 1.6,
+          "of_requests_no_spam": 1.6,
           "target": 5,
-          "refused": 0,
-          "active": 128
+          "refused": 5,
+          "active": 309,
+          "source": "1C",
+          "sum_refused": 7024.0,
+          "sum_orders": 796050.0
         }
       },
       "month": {
@@ -4012,11 +4015,14 @@
           "target": 35
         },
         "refuse": {
-          "of_orders": 2.6,
-          "of_requests_no_spam": 2.1,
+          "of_orders": 3.6,
+          "of_requests_no_spam": 3.6,
           "target": 5,
-          "refused": 44,
-          "active": 1715
+          "refused": 142,
+          "active": 3942,
+          "source": "1C",
+          "sum_refused": 365704.0,
+          "sum_orders": 10163897.0
         }
       }
     }
@@ -4027,20 +4033,20 @@
       {
         "id": "498543759542047",
         "name": "Amebli 2024",
-        "spend": 4321.23,
-        "impressions": 22888,
+        "spend": 4321.72,
+        "impressions": 22893,
         "clicks": 1154,
         "results": 16,
         "cpc": 3.74,
         "ctr": 5.04,
         "error": null,
-        "cpm": 188.8
+        "cpm": 188.78
       },
       {
         "id": "785104883775481",
         "name": "Amebli",
-        "spend": 688.87,
-        "impressions": 21346,
+        "spend": 688.98,
+        "impressions": 21351,
         "clicks": 121,
         "results": 4,
         "cpc": 5.69,
@@ -4051,8 +4057,8 @@
       {
         "id": "478301535674476",
         "name": "MatrasRoll",
-        "spend": 124.13,
-        "impressions": 52327,
+        "spend": 124.14,
+        "impressions": 52339,
         "clicks": 1090,
         "results": 54,
         "cpc": 0.11,
@@ -4063,22 +4069,22 @@
       {
         "id": "1071880631226950",
         "name": "MatrasRoll 2024",
-        "spend": 1022.81,
-        "impressions": 10256,
+        "spend": 1022.82,
+        "impressions": 10257,
         "clicks": 402,
         "results": 14,
         "cpc": 2.54,
         "ctr": 3.92,
         "error": null,
-        "cpm": 99.73
+        "cpm": 99.72
       }
     ],
     "total": {
-      "spend": 6157.04,
-      "impressions": 106817,
+      "spend": 6157.66,
+      "impressions": 106840,
       "clicks": 2767,
       "cpc": 2.23,
-      "cpm": 57.64,
+      "cpm": 57.63,
       "ctr": 2.59,
       "results": 88,
       "cpr": 69.97
@@ -4087,11 +4093,11 @@
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії матрац ORANGE Handy",
-        "spend": 1373.02,
-        "impressions": 6588,
+        "spend": 1373.39,
+        "impressions": 6591,
         "clicks": 229,
         "cpc": 6.0,
-        "ctr": 3.48,
+        "ctr": 3.47,
         "results": 4
       },
       {
@@ -4107,8 +4113,8 @@
       {
         "account": "MatrasRoll 2024",
         "campaign": "EW Сonversions Bionica Linen Active",
-        "spend": 1022.81,
-        "impressions": 10256,
+        "spend": 1022.82,
+        "impressions": 10257,
         "clicks": 402,
         "cpc": 2.54,
         "ctr": 3.92,
@@ -4127,8 +4133,8 @@
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії матрац відео ORANGE Handy",
-        "spend": 632.62,
-        "impressions": 3968,
+        "spend": 632.71,
+        "impressions": 3969,
         "clicks": 123,
         "cpc": 5.14,
         "ctr": 3.1,
@@ -4137,8 +4143,8 @@
       {
         "account": "Amebli 2024",
         "campaign": "EW Динамічний ремаркетинг",
-        "spend": 572.81,
-        "impressions": 3391,
+        "spend": 572.84,
+        "impressions": 3392,
         "clicks": 372,
         "cpc": 1.54,
         "ctr": 10.97,
@@ -4147,8 +4153,8 @@
       {
         "account": "Amebli",
         "campaign": "EW Конверсии | Диваны 2026",
-        "spend": 472.49,
-        "impressions": 2761,
+        "spend": 472.57,
+        "impressions": 2763,
         "clicks": 77,
         "cpc": 6.14,
         "ctr": 2.79,
@@ -4157,8 +4163,8 @@
       {
         "account": "Amebli",
         "campaign": "EW Охват | Шоурум",
-        "spend": 216.38,
-        "impressions": 18585,
+        "spend": 216.41,
+        "impressions": 18588,
         "clicks": 44,
         "cpc": 4.92,
         "ctr": 0.24,
@@ -4168,7 +4174,7 @@
         "account": "MatrasRoll",
         "campaign": "EW топперы | весна 2026",
         "spend": 25.46,
-        "impressions": 6525,
+        "impressions": 6527,
         "clicks": 194,
         "cpc": 0.13,
         "ctr": 2.97,
@@ -4178,7 +4184,7 @@
         "account": "MatrasRoll",
         "campaign": "EW топер PURPLE Bionica Linen Active",
         "spend": 24.9,
-        "impressions": 4708,
+        "impressions": 4710,
         "clicks": 252,
         "cpc": 0.1,
         "ctr": 5.35,
@@ -4188,7 +4194,7 @@
         "account": "MatrasRoll",
         "campaign": "EW матрасы | campaign",
         "spend": 21.5,
-        "impressions": 26789,
+        "impressions": 26790,
         "clicks": 190,
         "cpc": 0.11,
         "ctr": 0.71,
@@ -4197,18 +4203,18 @@
       {
         "account": "MatrasRoll",
         "campaign": "EW топперы | campaign 1",
-        "spend": 19.67,
-        "impressions": 4865,
+        "spend": 19.68,
+        "impressions": 4869,
         "clicks": 138,
         "cpc": 0.14,
-        "ctr": 2.84,
+        "ctr": 2.83,
         "results": 4
       },
       {
         "account": "MatrasRoll",
         "campaign": "EW Динамічний ремаркетинг",
         "spend": 17.45,
-        "impressions": 3726,
+        "impressions": 3728,
         "clicks": 230,
         "cpc": 0.08,
         "ctr": 6.17,
@@ -4218,10 +4224,10 @@
         "account": "MatrasRoll",
         "campaign": "EW топперы | Acquisition",
         "spend": 15.15,
-        "impressions": 5714,
+        "impressions": 5715,
         "clicks": 86,
         "cpc": 0.18,
-        "ctr": 1.51,
+        "ctr": 1.5,
         "results": 0
       },
       {
@@ -4412,8 +4418,8 @@
         "name": "amebli.com.ua",
         "sessions": 5004,
         "users": 4556,
-        "ads_cost": 35828.6,
-        "ads_clicks": 5158,
+        "ads_cost": 35828.66,
+        "ads_clicks": 5157,
         "error": null
       },
       {

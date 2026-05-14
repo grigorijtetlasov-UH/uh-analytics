@@ -283,10 +283,18 @@ def _kpi_for_period(df: pd.DataFrame) -> dict:
 
 
 # ── Публічна функція ───────────────────────────────────────────────
-def compute_sales_kpi(date_str: str) -> dict:
+def compute_sales_kpi(date_str: str, uh_1c_data: dict = None) -> dict:
     """
     Головна функція. Викликається з fetch_data.py:
-        result["sales_kpi"] = compute_sales_kpi(date_str)
+        result["sales_kpi"] = compute_sales_kpi(date_str, uh_1c_data=...)
+
+    Параметри:
+        date_str — день у форматі 'YYYY-MM-DD'
+        uh_1c_data — dict з даними 1С (опціонально), якщо є — відмови
+                     перерахуються з 1С, а не з CRM. Очікувана структура:
+                     {"ORDERS": {"day": {"count": N, "total": X},
+                                 "day_refused": {"count": M, "total": Y},
+                                 "month": {...}, "month_refused": {...}}}
 
     Повертає:
         {"day": {... 4 метрики ...}, "month": {... 4 метрики ...}}
@@ -300,7 +308,45 @@ def compute_sales_kpi(date_str: str) -> dict:
     day_df = df[df["_день"] == date_str]
     month_df = df[df["_місяць"] == target_month]
 
-    return {
+    result = {
         "day":   _kpi_for_period(day_df),
         "month": _kpi_for_period(month_df),
     }
+
+    # ── ВІДМОВИ з 1С (як вимагає керівник) ──
+    # У 1С відмова = "Отказ (Не отправлен)" + "Отказ (Отправлен)" — це коли клієнт
+    # купив і потім відмовився. Це точніше ніж CRM, де "Лід (не купив)" плутається.
+    if uh_1c_data and isinstance(uh_1c_data, dict):
+        ord_block = uh_1c_data.get("ORDERS", {}) or {}
+
+        for period_key, refused_key, total_key in [
+            ("day",   "day_refused",   "day"),
+            ("month", "month_refused", "month"),
+        ]:
+            refused_data = ord_block.get(refused_key, {}) or {}
+            total_data = ord_block.get(total_key, {}) or {}
+
+            n_refused_1c = int(refused_data.get("count", 0) or 0)
+            n_orders_1c = int(total_data.get("count", 0) or 0)
+
+            # 1С total в "day" це АКТИВНІ (без відмов). Тому sold = active + refused.
+            n_sold_1c = n_orders_1c + n_refused_1c
+
+            if n_sold_1c > 0:
+                refuse_pct = round(n_refused_1c / n_sold_1c * 100, 1)
+            else:
+                refuse_pct = 0.0
+
+            # Замінюємо КОЛИШНІЙ блок refuse (який був з CRM) на 1С-значення
+            result[period_key]["refuse"] = {
+                "of_orders":           refuse_pct,
+                "of_requests_no_spam": refuse_pct,
+                "target":              5,
+                "refused":             n_refused_1c,
+                "active":              n_sold_1c,
+                "source":              "1C",  # вказуємо джерело
+                "sum_refused":         round(float(refused_data.get("total", 0) or 0), 0),
+                "sum_orders":          round(float(total_data.get("total", 0) or 0), 0),
+            }
+
+    return result
