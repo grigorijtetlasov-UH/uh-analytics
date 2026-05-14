@@ -1467,7 +1467,7 @@ donutChart('chObjections',D.lead_objections,['#ffa94d','#ffb677','#ffc78f','#ffd
 
 const prodBody=document.getElementById('prodBody');
 function renderProducts(sortKey){{
-  const arr=(D.products||[]).slice().sort((a,b)=>(b[sortKey]||0)-(a[sortKey]||0)).slice(0,50);
+  const arr=(D.products||[]).filter(p=>p.name && !/^[0-9]+$/.test(p.name.trim())).slice().sort((a,b)=>(b[sortKey]||0)-(a[sortKey]||0)).slice(0,50);
   if(!arr.length){{prodBody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';return;}}
   prodBody.innerHTML=arr.map((p,i)=>{{
     const avgPrice = p.qty ? (p.revenue/p.qty) : 0;
@@ -1919,7 +1919,7 @@ if(D.sites&&D.sites.length){{sitesBody.innerHTML=D.sites.map((s,i)=>{{const dCls
 // Products
 const prodBody=document.getElementById('prodBody');
 function renderProducts(sortKey){{
-  const arr=(D.products||[]).slice().sort((a,b)=>(b[sortKey]||0)-(a[sortKey]||0)).slice(0,50);
+  const arr=(D.products||[]).filter(p=>p.name && !/^[0-9]+$/.test(p.name.trim())).slice().sort((a,b)=>(b[sortKey]||0)-(a[sortKey]||0)).slice(0,50);
   if(!arr.length){{prodBody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:18px;color:var(--td)">Немає даних</td></tr>';return;}}
   prodBody.innerHTML=arr.map((p,i)=>{{
     const avgPrice = p.qty ? (p.revenue/p.qty) : 0;
