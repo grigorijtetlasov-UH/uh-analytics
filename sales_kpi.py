@@ -37,9 +37,13 @@ ORDER_STATUSES = {
 }
 REFUSED_STATUSES = {
     "відмова (відправлено)", "відмова (не відправлено)", "відмова",
-    "лід (не купив)",  # ← в наш процес: лід що відмовився купувати = відмова
+}
+LOST_LEAD_STATUSES = {
+    # Втрачені ліди (заявки які не дійшли до замовлення)
+    "лід (не купив)",
 }
 LEAD_STATUSES = {
+    # Активні ліди (в обробці, ще можуть стати замовленнями)
     "новий", "недодзвон", "автовідповідач", "повторне звернення",
     "потрібне уточнення/перезвон", "питання по замовленню",
     "в обробці", "відвідає шоу-рум",
@@ -51,12 +55,14 @@ SPAM_STATUSES = {
 
 def _categorize_status(s) -> str:
     sl = str(s).strip().lower()
-    if sl in ORDER_STATUSES:   return "order"
-    if sl in REFUSED_STATUSES: return "refused"
-    if sl in LEAD_STATUSES:    return "lead"
-    if sl in SPAM_STATUSES:    return "spam"
+    if sl in ORDER_STATUSES:        return "order"
+    if sl in REFUSED_STATUSES:      return "refused"
+    if sl in LOST_LEAD_STATUSES:    return "lost"        # ← новий: втрачений лід
+    if sl in LEAD_STATUSES:         return "lead"
+    if sl in SPAM_STATUSES:         return "spam"
     if "відмов" in sl: return "refused"
     if "спам" in sl:   return "spam"
+    if "не купив" in sl: return "lost"
     if "лід" in sl:    return "lead"
     return "other"
 
@@ -150,12 +156,22 @@ def _empty_kpi() -> dict:
 
 
 def _kpi_for_period(df: pd.DataFrame) -> dict:
-    """Розраховує 4 KPI для df з усіма позиціями (НЕ дедуплений по замовленнях).
+    """Розраховує 4 KPI за логікою еталонного дашборду (uh_sellers_dashboard).
 
-    ВАЖЛИВО: для лідів/відмов/спаму використовуємо ВСІ рядки (з номером 1С і без),
-    бо у "Лід (не купив)" часто немає номера 1С — це нерозписані заявки.
-    Тільки для замовлень (orders), крос-сейлу і гарантій потрібен номер 1С
-    (щоб дивитись позиції товарів).
+    Базова модель воронки:
+      Заявка → Лід (активний) → ПРОДАЖ (order або refused) АБО ЛІД-НЕ-КУПИВ (lost)
+
+    Формули:
+      - sold  = orders + refused       (все що дійшло до замовлення)
+      - lost  = "Лід (не купив)"       (втрачені перед оформленням)
+      - dec   = sold + lost            (знаменник конверсії)
+      - КОНВЕРСІЯ = sold / dec * 100
+      - ВІДМОВИ   = refused / sold * 100
+
+    Підрахунок:
+      - Замовлення (orders + refused) — мають Номер 1С, дедуп по ньому
+      - Втрачені ліди (lost) — мають Статус "Лід (не купив)", часто БЕЗ Номера 1С,
+        тому рахуємо КОЖЕН РЯДОК як окрему заявку
     """
     if df is None or df.empty:
         return _empty_kpi()
@@ -163,38 +179,47 @@ def _kpi_for_period(df: pd.DataFrame) -> dict:
     if "Номер 1С" not in df.columns:
         return _empty_kpi()
 
-    # ── ЗАМОВЛЕННЯ (потрібен Номер 1С — щоб дивитись позиції товарів) ──
+    # ── ЗАМОВЛЕННЯ та ВІДМОВИ (потрібен Номер 1С — дивимось позиції товарів) ──
     orders_df = df.dropna(subset=["Номер 1С"]).copy()
     if not orders_df.empty:
         order_cats_num = orders_df.groupby("Номер 1С")["_категорія"].first()
         n_orders = int((order_cats_num == "order").sum())
+        n_refused = int((order_cats_num == "refused").sum())
     else:
         order_cats_num = pd.Series(dtype=str)
         n_orders = 0
+        n_refused = 0
 
-    # ── ЛІДИ / ВІДМОВИ / СПАМ (рахуємо ВСІ заявки, в т.ч. без номера 1С) ──
-    # Для заявок без номера — кожен рядок це окрема заявка
-    # (бо там нема як їх дедупити, а вони унікальні події в CRM).
+    # ── ВТРАЧЕНІ ЛІДИ "Лід (не купив)" ──
+    # Беремо ВСІ рядки з категорією "lost" (з номером 1С і без)
+    n_lost_with_num = int((order_cats_num == "lost").sum())
     no_num_df = df[df["Номер 1С"].isna()]
-    n_leads_with_num = int((order_cats_num == "lead").sum())
-    n_refused_with_num = int((order_cats_num == "refused").sum())
-    n_spam_with_num = int((order_cats_num == "spam").sum())
-    n_leads_no_num = int((no_num_df["_категорія"] == "lead").sum())
-    n_refused_no_num = int((no_num_df["_категорія"] == "refused").sum())
-    n_spam_no_num = int((no_num_df["_категорія"] == "spam").sum())
+    n_lost_no_num = int((no_num_df["_категорія"] == "lost").sum())
+    n_lost = n_lost_with_num + n_lost_no_num
 
-    n_leads = n_leads_with_num + n_leads_no_num
-    n_refused = n_refused_with_num + n_refused_no_num
+    # ── ВТРАЧЕНІ ВІДМОВИ БЕЗ НОМЕРА (рідко але можливо) ──
+    n_refused_no_num = int((no_num_df["_категорія"] == "refused").sum())
+    n_refused += n_refused_no_num
+
+    # ── АКТИВНІ ЛІДИ і СПАМ (для довідки) ──
+    n_leads_active_with_num = int((order_cats_num == "lead").sum())
+    n_leads_active_no_num = int((no_num_df["_категорія"] == "lead").sum())
+    n_leads_active = n_leads_active_with_num + n_leads_active_no_num
+    n_spam_with_num = int((order_cats_num == "spam").sum())
+    n_spam_no_num = int((no_num_df["_категорія"] == "spam").sum())
     n_spam = n_spam_with_num + n_spam_no_num
 
-    n_all = n_orders + n_leads + n_refused + n_spam
-    n_no_spam = n_all - n_spam
-
     # ── 1. КОНВЕРСІЯ (за еталоном) ──
-    # Формула: замовлення / (замовлення + ліди). Спам, refused, pending виключені.
-    conv_denom = n_orders + n_leads
-    conv_value = (n_orders / conv_denom * 100) if conv_denom else 0.0
-    conv_with_spam = (n_orders / n_all * 100) if n_all else 0.0  # для довідки
+    # sold = orders + refused (все що дійшло до замовлення)
+    # dec  = sold + lost
+    # КОНВЕРСІЯ = sold / dec * 100
+    n_sold = n_orders + n_refused
+    conv_denom = n_sold + n_lost
+    conv_value = (n_sold / conv_denom * 100) if conv_denom else 0.0
+
+    # Загальна довідкова конверсія (з усіма заявками)
+    n_all = n_orders + n_refused + n_lost + n_leads_active + n_spam
+    conv_with_spam = (n_orders / n_all * 100) if n_all else 0.0
 
     # ── 2 + 3. Крос-сейл і гарантії+чохли (тільки на замовленнях зі статусом order) ──
     order_ids = order_cats_num[order_cats_num == "order"].index
@@ -218,20 +243,22 @@ def _kpi_for_period(df: pd.DataFrame) -> dict:
     gc_pct = (gc_orders / n_orders * 100) if n_orders else 0.0
 
     # ── 4. ВІДМОВИ (за еталоном) ──
-    # Формула: refused / orders як %.
-    refuse_of_orders = (n_refused / n_orders * 100) if n_orders else 0.0
-    refuse_of_requests = (n_refused / n_no_spam * 100) if n_no_spam else 0.0
+    # ВІДМОВИ = refused / sold * 100  (тільки серед проданих)
+    refuse_of_orders = (n_refused / n_sold * 100) if n_sold else 0.0
+    refuse_of_requests = (n_refused / (n_all - n_spam) * 100) if (n_all - n_spam) else 0.0
 
     return {
         "conversion": {
-            "value":     round(conv_value, 1),       # ← головне значення (за еталоном)
+            "value":     round(conv_value, 1),       # ← головне (sold/(sold+lost))
             "with_spam": round(conv_with_spam, 1),   # для довідки
-            "no_spam":   round(conv_value, 1),       # alias щоб дашборд продовжував працювати
+            "no_spam":   round(conv_value, 1),       # alias
             "target":    85,
             "orders":    n_orders,
-            "leads":     n_leads,
+            "sold":      n_sold,            # orders + refused
+            "lost":      n_lost,            # "Лід (не купив)"
+            "leads":     n_leads_active,    # активні ліди (для довідки)
             "all":       n_all,
-            "no_spam_count": n_no_spam,
+            "no_spam_count": n_all - n_spam,
         },
         "cross_sell": {
             "value":  round(cross_sell_pct, 1),
@@ -246,11 +273,11 @@ def _kpi_for_period(df: pd.DataFrame) -> dict:
             "target": 35,
         },
         "refuse": {
-            "of_orders":           round(refuse_of_orders, 1),
+            "of_orders":           round(refuse_of_orders, 1),  # refused/sold (як в еталоні)
             "of_requests_no_spam": round(refuse_of_requests, 1),
             "target":              5,
             "refused":             n_refused,
-            "active":              n_orders,  # знаменник = замовлення (як в еталоні)
+            "active":              n_sold,  # знаменник = sold (orders+refused)
         },
     }
 
