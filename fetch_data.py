@@ -652,25 +652,16 @@ def fetch_1c_block(label: str, api_url: str, day: str,
                 m_refused    = [r for r in rows_m if is_refused_1c(r)]
 
                 result[type_key] = {
-                    "day":          agg_by_podr(day_active, sum_key),
-                    "day_refused":  agg_by_podr(day_refused, sum_key),
-                    "month": {
-                        "total": round(sum(safe_float(r.get(sum_key)) for r in m_active), 2),
-                        "count": len(m_active)
-                    },
-                    "month_refused": {
-                        "total": round(sum(safe_float(r.get(sum_key)) for r in m_refused), 2),
-                        "count": len(m_refused)
-                    }
+                    "day":           agg_by_podr(day_active, sum_key),
+                    "day_refused":   agg_by_podr(day_refused, sum_key),
+                    "month":         agg_by_podr(m_active, sum_key),
+                    "month_refused": agg_by_podr(m_refused, sum_key),
                 }
             else:
                 # SALES — без розділення (там немає "Отказ")
                 result[type_key] = {
                     "day":   agg_by_podr(rows_day, sum_key),
-                    "month": {
-                        "total": round(sum(safe_float(r.get(sum_key)) for r in rows_m), 2),
-                        "count": len(rows_m)
-                    }
+                    "month": agg_by_podr(rows_m, sum_key),
                 }
         except Exception as e:
             result[type_key] = {"error": str(e)}
