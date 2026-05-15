@@ -2773,8 +2773,8 @@
             },
             {
               "day": 14,
-              "orders": 331,
-              "revenue": 905438.0,
+              "orders": 332,
+              "revenue": 920997.0,
               "leads": 0
             }
           ]
@@ -3228,17 +3228,17 @@
       ]
     }
   },
-  "generated": "2026-05-15T11:19:18.513799",
+  "generated": "2026-05-15T11:52:36.550339",
   "uh": {
     "label": "UH",
     "ORDERS": {
       "day": {
-        "total": 920997.0,
+        "total": 920797.0,
         "count": 332,
         "by_podr": {
           "Matrasroll": 301856.0,
           "Sofino": 170781.0,
-          "A-mebli": 165954.0,
+          "A-mebli": 165754.0,
           "Шоу-Рум Дарынок": 141227.0,
           "МР Розетка (Мережі)": 53033.0,
           "DR-TV": 38229.0,
@@ -3246,6 +3246,18 @@
           "МР Эпицентр (Мережі)": 16554.0,
           "ОПТ": 8759.0,
           "HabStor": 2338.0
+        },
+        "by_podr_count": {
+          "ДРОП": 17,
+          "A-mebli": 57,
+          "Sofino": 51,
+          "Matrasroll": 154,
+          "МР Розетка (Мережі)": 12,
+          "МР Эпицентр (Мережі)": 6,
+          "ОПТ": 17,
+          "Шоу-Рум Дарынок": 12,
+          "DR-TV": 4,
+          "HabStor": 2
         }
       },
       "day_refused": {
@@ -3254,25 +3266,29 @@
         "by_podr": {
           "МР Розетка (Мережі)": 6842.0,
           "Matrasroll": 5441.0
+        },
+        "by_podr_count": {
+          "Matrasroll": 4,
+          "МР Розетка (Мережі)": 1
         }
       },
       "month": {
-        "total": 11119412.95,
-        "count": 4108
+        "total": 11116962.95,
+        "count": 4106
       },
       "month_refused": {
-        "total": 422744.0,
-        "count": 173
+        "total": 424994.0,
+        "count": 175
       }
     },
     "ORDERSWD": {
       "day": {
-        "total": 868637.0,
+        "total": 868437.0,
         "count": 244,
         "by_podr": {
           "Matrasroll": 278726.0,
           "Sofino": 158051.0,
-          "A-mebli": 154654.0,
+          "A-mebli": 154454.0,
           "Шоу-Рум Дарынок": 141227.0,
           "МР Розетка (Мережі)": 53033.0,
           "DR-TV": 33229.0,
@@ -3280,6 +3296,18 @@
           "МР Эпицентр (Мережі)": 16554.0,
           "ОПТ": 8759.0,
           "HabStor": 2138.0
+        },
+        "by_podr_count": {
+          "ДРОП": 17,
+          "A-mebli": 40,
+          "Sofino": 33,
+          "Matrasroll": 103,
+          "МР Розетка (Мережі)": 12,
+          "МР Эпицентр (Мережі)": 6,
+          "ОПТ": 17,
+          "Шоу-Рум Дарынок": 12,
+          "DR-TV": 3,
+          "HabStor": 1
         }
       },
       "day_refused": {
@@ -3288,15 +3316,19 @@
         "by_podr": {
           "МР Розетка (Мережі)": 6842.0,
           "Matrasroll": 4761.0
+        },
+        "by_podr_count": {
+          "Matrasroll": 2,
+          "МР Розетка (Мережі)": 1
         }
       },
       "month": {
-        "total": 10555184.95,
-        "count": 3025
+        "total": 10552984.95,
+        "count": 3024
       },
       "month_refused": {
-        "total": 394354.0,
-        "count": 116
+        "total": 396354.0,
+        "count": 117
       }
     },
     "SALES": {
@@ -3315,11 +3347,24 @@
           "Шоу-Рум Дрим": 3225.0,
           "HabStor": 3143.0,
           "DR-TV": 1399.0
+        },
+        "by_podr_count": {
+          "Шоу-Рум Дарынок": 7,
+          "Sofino": 45,
+          "МР Розетка (Мережі)": 46,
+          "Matrasroll": 101,
+          "A-mebli": 44,
+          "ДРОП": 12,
+          "Шоу-Рум Дрим": 1,
+          "DR-TV": 1,
+          "МР Эпицентр (Мережі)": 10,
+          "ОПТ": 33,
+          "HabStor": 1
         }
       },
       "month": {
-        "total": 10063039.95,
-        "count": 2953
+        "total": 10109682.95,
+        "count": 2963
       }
     }
   },
@@ -4045,7 +4090,7 @@
           "active": 337,
           "source": "1C",
           "sum_refused": 12283.0,
-          "sum_orders": 920997.0
+          "sum_orders": 920797.0
         }
       },
       "month": {
@@ -4074,14 +4119,166 @@
           "target": 35
         },
         "refuse": {
-          "of_orders": 4.0,
-          "of_requests_no_spam": 4.0,
+          "of_orders": 4.1,
+          "of_requests_no_spam": 4.1,
           "target": 5,
-          "refused": 173,
+          "refused": 175,
           "active": 4281,
           "source": "1C",
-          "sum_refused": 422744.0,
-          "sum_orders": 11119413.0
+          "sum_refused": 424994.0,
+          "sum_orders": 11116963.0
+        }
+      },
+      "by_project": {
+        "matrasroll": {
+          "label": "Matrasroll",
+          "day": {
+            "conversion": {
+              "value": 82.4,
+              "with_spam": 60.0,
+              "no_spam": 82.4,
+              "target": 85,
+              "orders": 69,
+              "sold": 70,
+              "lost": 15,
+              "leads": 27,
+              "all": 115,
+              "no_spam_count": 112
+            },
+            "cross_sell": {
+              "value": 20.3,
+              "orders": 14,
+              "of": 69,
+              "target": 35
+            },
+            "guarantee_cover": {
+              "value": 26.1,
+              "orders": 18,
+              "of": 69,
+              "target": 35
+            },
+            "refuse": {
+              "of_orders": 2.5,
+              "of_requests_no_spam": 2.5,
+              "target": 5,
+              "refused": 4,
+              "active": 158,
+              "source": "1C",
+              "sum_refused": 5441.0,
+              "sum_orders": 301856.0
+            }
+          },
+          "month": {
+            "conversion": {
+              "value": 94.1,
+              "with_spam": 76.3,
+              "no_spam": 94.1,
+              "target": 85,
+              "orders": 915,
+              "sold": 933,
+              "lost": 58,
+              "leads": 169,
+              "all": 1199,
+              "no_spam_count": 1160
+            },
+            "cross_sell": {
+              "value": 11.9,
+              "orders": 109,
+              "of": 915,
+              "target": 35
+            },
+            "guarantee_cover": {
+              "value": 18.0,
+              "orders": 165,
+              "of": 915,
+              "target": 35
+            },
+            "refuse": {
+              "of_orders": 0.0,
+              "of_requests_no_spam": 0.0,
+              "target": 5,
+              "refused": 0,
+              "active": 0,
+              "source": "1C",
+              "sum_refused": 0.0,
+              "sum_orders": 0.0
+            }
+          }
+        },
+        "amebli": {
+          "label": "Amebli",
+          "day": {
+            "conversion": {
+              "value": 100.0,
+              "with_spam": 76.5,
+              "no_spam": 100.0,
+              "target": 85,
+              "orders": 26,
+              "sold": 26,
+              "lost": 0,
+              "leads": 3,
+              "all": 34,
+              "no_spam_count": 29
+            },
+            "cross_sell": {
+              "value": 50.0,
+              "orders": 13,
+              "of": 26,
+              "target": 35
+            },
+            "guarantee_cover": {
+              "value": 30.8,
+              "orders": 8,
+              "of": 26,
+              "target": 35
+            },
+            "refuse": {
+              "of_orders": 0.0,
+              "of_requests_no_spam": 0.0,
+              "target": 5,
+              "refused": 0,
+              "active": 57,
+              "source": "1C",
+              "sum_refused": 0.0,
+              "sum_orders": 165754.0
+            }
+          },
+          "month": {
+            "conversion": {
+              "value": 97.1,
+              "with_spam": 75.4,
+              "no_spam": 97.1,
+              "target": 85,
+              "orders": 370,
+              "sold": 372,
+              "lost": 11,
+              "leads": 46,
+              "all": 491,
+              "no_spam_count": 429
+            },
+            "cross_sell": {
+              "value": 37.6,
+              "orders": 139,
+              "of": 370,
+              "target": 35
+            },
+            "guarantee_cover": {
+              "value": 17.3,
+              "orders": 64,
+              "of": 370,
+              "target": 35
+            },
+            "refuse": {
+              "of_orders": 0.0,
+              "of_requests_no_spam": 0.0,
+              "target": 5,
+              "refused": 0,
+              "active": 0,
+              "source": "1C",
+              "sum_refused": 0.0,
+              "sum_orders": 0.0
+            }
+          }
         }
       }
     }
@@ -4092,20 +4289,20 @@
       {
         "id": "498543759542047",
         "name": "Amebli 2024",
-        "spend": 3780.16,
-        "impressions": 20951,
+        "spend": 3780.57,
+        "impressions": 20956,
         "clicks": 1126,
         "results": 24,
         "cpc": 3.36,
         "ctr": 5.37,
         "error": null,
-        "cpm": 180.43
+        "cpm": 180.41
       },
       {
         "id": "785104883775481",
         "name": "Amebli",
-        "spend": 653.04,
-        "impressions": 25659,
+        "spend": 653.07,
+        "impressions": 25661,
         "clicks": 123,
         "results": 0,
         "cpc": 5.31,
@@ -4116,8 +4313,8 @@
       {
         "id": "478301535674476",
         "name": "MatrasRoll",
-        "spend": 108.79,
-        "impressions": 39028,
+        "spend": 108.81,
+        "impressions": 39032,
         "clicks": 958,
         "results": 42,
         "cpc": 0.11,
@@ -4128,8 +4325,8 @@
       {
         "id": "1071880631226950",
         "name": "MatrasRoll 2024",
-        "spend": 941.02,
-        "impressions": 9983,
+        "spend": 941.05,
+        "impressions": 9984,
         "clicks": 368,
         "results": 14,
         "cpc": 2.56,
@@ -4139,8 +4336,8 @@
       }
     ],
     "total": {
-      "spend": 5483.01,
-      "impressions": 95621,
+      "spend": 5483.5,
+      "impressions": 95633,
       "clicks": 2575,
       "cpc": 2.13,
       "cpm": 57.34,
@@ -4152,8 +4349,8 @@
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії матрац ORANGE Handy",
-        "spend": 1196.22,
-        "impressions": 6393,
+        "spend": 1196.34,
+        "impressions": 6395,
         "clicks": 243,
         "cpc": 4.92,
         "ctr": 3.8,
@@ -4162,8 +4359,8 @@
       {
         "account": "MatrasRoll 2024",
         "campaign": "EW Сonversions Bionica Linen Active",
-        "spend": 941.02,
-        "impressions": 9983,
+        "spend": 941.05,
+        "impressions": 9984,
         "clicks": 368,
         "cpc": 2.56,
         "ctr": 3.69,
@@ -4172,8 +4369,8 @@
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії топери 2026",
-        "spend": 817.52,
-        "impressions": 3993,
+        "spend": 817.8,
+        "impressions": 3995,
         "clicks": 324,
         "cpc": 2.52,
         "ctr": 8.11,
@@ -4202,11 +4399,11 @@
       {
         "account": "Amebli 2024",
         "campaign": "EW Динамічний ремаркетинг",
-        "spend": 535.73,
-        "impressions": 2950,
+        "spend": 535.74,
+        "impressions": 2951,
         "clicks": 358,
         "cpc": 1.5,
-        "ctr": 12.14,
+        "ctr": 12.13,
         "results": 2
       },
       {
@@ -4222,8 +4419,8 @@
       {
         "account": "Amebli",
         "campaign": "EW Охват | Шоурум",
-        "spend": 311.3,
-        "impressions": 23288,
+        "spend": 311.33,
+        "impressions": 23290,
         "clicks": 57,
         "cpc": 5.46,
         "ctr": 0.24,
@@ -4272,8 +4469,8 @@
       {
         "account": "MatrasRoll",
         "campaign": "EW матрасы | campaign",
-        "spend": 17.32,
-        "impressions": 16731,
+        "spend": 17.33,
+        "impressions": 16734,
         "clicks": 153,
         "cpc": 0.11,
         "ctr": 0.91,
@@ -4292,8 +4489,8 @@
       {
         "account": "MatrasRoll",
         "campaign": "EW топперы | Acquisition",
-        "spend": 13.17,
-        "impressions": 4935,
+        "spend": 13.18,
+        "impressions": 4936,
         "clicks": 79,
         "cpc": 0.17,
         "ctr": 1.6,
@@ -4487,7 +4684,7 @@
         "name": "amebli.com.ua",
         "sessions": 4448,
         "users": 3960,
-        "ads_cost": 38809.07,
+        "ads_cost": 38815.15,
         "ads_clicks": 4239,
         "error": null
       },

@@ -283,70 +283,160 @@ def _kpi_for_period(df: pd.DataFrame) -> dict:
 
 
 # ── Публічна функція ───────────────────────────────────────────────
+
+# Мапа проектів: CRM "Сайт" → 1С "Подразделение"
+PROJECTS = {
+    "matrasroll": {
+        "label":     "Matrasroll",
+        "crm_site":  "matrasroll.com.ua",
+        "uh_podr":   "Matrasroll",
+    },
+    "amebli": {
+        "label":     "Amebli",
+        "crm_site":  "amebli.com.ua",
+        "uh_podr":   "A-mebli",
+    },
+}
+
+
+def _apply_1c_refuse(period_block: dict, refused_data: dict, total_data: dict) -> None:
+    """Замінює період_block['refuse'] на цифри з 1С (НЕ з CRM)."""
+    n_refused_1c = int(refused_data.get("count", 0) or 0)
+    n_orders_1c = int(total_data.get("count", 0) or 0)
+    n_sold_1c = n_orders_1c + n_refused_1c
+
+    refuse_pct = round(n_refused_1c / n_sold_1c * 100, 1) if n_sold_1c > 0 else 0.0
+
+    period_block["refuse"] = {
+        "of_orders":           refuse_pct,
+        "of_requests_no_spam": refuse_pct,
+        "target":              5,
+        "refused":             n_refused_1c,
+        "active":              n_sold_1c,
+        "source":              "1C",
+        "sum_refused":         round(float(refused_data.get("total", 0) or 0), 0),
+        "sum_orders":          round(float(total_data.get("total", 0) or 0), 0),
+    }
+
+
+def _by_podr_count_and_total(by_podr: dict) -> tuple:
+    """Допоміжна: у block.by_podr може бути {назва: сума} або {назва: {total, count}}.
+    Повертає (count, total) для одного підрозділу."""
+    if isinstance(by_podr, dict):
+        # формат {назва: {total, count}}
+        if "total" in by_podr or "count" in by_podr:
+            return int(by_podr.get("count", 0) or 0), float(by_podr.get("total", 0) or 0)
+        # формат {назва: сума}
+        return 0, float(by_podr or 0)
+    if isinstance(by_podr, (int, float)):
+        return 0, float(by_podr)
+    return 0, 0.0
+
+
+def _project_1c_data(uh_1c_data: dict, podr_name: str) -> dict:
+    """Витягує з uh_1c_data ORDERS блок саме для одного підрозділу.
+    Повертає структуру така ж як ORDERS: {day, day_refused, month, month_refused}."""
+    if not uh_1c_data or not isinstance(uh_1c_data, dict):
+        return {}
+    ord_block = uh_1c_data.get("ORDERS", {}) or {}
+    result = {}
+    for period_key in ("day", "day_refused", "month", "month_refused"):
+        block = ord_block.get(period_key, {}) or {}
+        by_podr = block.get("by_podr", {}) or {}
+        by_podr_count = block.get("by_podr_count", {}) or {}
+
+        # Знайти підрозділ (case-insensitive)
+        match_total = 0.0
+        match_count = 0
+        for name in by_podr.keys():
+            if str(name).strip().lower() == podr_name.strip().lower():
+                match_total = float(by_podr.get(name, 0) or 0)
+                match_count = int(by_podr_count.get(name, 0) or 0)
+                break
+
+        result[period_key] = {"count": match_count, "total": match_total}
+    return {"ORDERS": result}
+
+
+def _filter_by_crm_site(df, site_name: str):
+    """Фільтрує DataFrame по полю Сайт (case-insensitive, точне співпадіння)."""
+    if df is None or df.empty or "Сайт" not in df.columns:
+        return df.iloc[0:0] if df is not None else df
+    return df[df["Сайт"].astype(str).str.strip().str.lower() == site_name.strip().lower()]
+
+
 def compute_sales_kpi(date_str: str, uh_1c_data: dict = None) -> dict:
     """
     Головна функція. Викликається з fetch_data.py:
         result["sales_kpi"] = compute_sales_kpi(date_str, uh_1c_data=...)
 
-    Параметри:
-        date_str — день у форматі 'YYYY-MM-DD'
-        uh_1c_data — dict з даними 1С (опціонально), якщо є — відмови
-                     перерахуються з 1С, а не з CRM. Очікувана структура:
-                     {"ORDERS": {"day": {"count": N, "total": X},
-                                 "day_refused": {"count": M, "total": Y},
-                                 "month": {...}, "month_refused": {...}}}
-
     Повертає:
-        {"day": {... 4 метрики ...}, "month": {... 4 метрики ...}}
+        {
+            "day":   {... 4 метрики, загалом ...},
+            "month": {... 4 метрики, загалом ...},
+            "by_project": {
+                "matrasroll": {"day": {...}, "month": {...}, "label": "Matrasroll"},
+                "amebli":     {"day": {...}, "month": {...}, "label": "Amebli"}
+            }
+        }
     """
     target_month = date_str[:7]
 
     df = _load_raw_excel(target_month)
     if df is None:
-        return {"day": _empty_kpi(), "month": _empty_kpi()}
+        empty_kpi = _empty_kpi()
+        return {
+            "day": empty_kpi,
+            "month": empty_kpi,
+            "by_project": {
+                key: {"day": empty_kpi, "month": empty_kpi, "label": p["label"]}
+                for key, p in PROJECTS.items()
+            }
+        }
 
     day_df = df[df["_день"] == date_str]
     month_df = df[df["_місяць"] == target_month]
 
+    # ── 1. ЗАГАЛЬНІ KPI ──
     result = {
         "day":   _kpi_for_period(day_df),
         "month": _kpi_for_period(month_df),
     }
 
-    # ── ВІДМОВИ з 1С (як вимагає керівник) ──
-    # У 1С відмова = "Отказ (Не отправлен)" + "Отказ (Отправлен)" — це коли клієнт
-    # купив і потім відмовився. Це точніше ніж CRM, де "Лід (не купив)" плутається.
+    # Заміняємо refuse на 1С (якщо є дані 1С)
     if uh_1c_data and isinstance(uh_1c_data, dict):
         ord_block = uh_1c_data.get("ORDERS", {}) or {}
+        _apply_1c_refuse(result["day"],
+                         ord_block.get("day_refused", {}) or {},
+                         ord_block.get("day", {}) or {})
+        _apply_1c_refuse(result["month"],
+                         ord_block.get("month_refused", {}) or {},
+                         ord_block.get("month", {}) or {})
 
-        for period_key, refused_key, total_key in [
-            ("day",   "day_refused",   "day"),
-            ("month", "month_refused", "month"),
-        ]:
-            refused_data = ord_block.get(refused_key, {}) or {}
-            total_data = ord_block.get(total_key, {}) or {}
+    # ── 2. KPI ПО ПРОЕКТАХ ──
+    result["by_project"] = {}
+    for key, p in PROJECTS.items():
+        # Фільтруємо CRM по сайту
+        day_p = _filter_by_crm_site(day_df, p["crm_site"])
+        month_p = _filter_by_crm_site(month_df, p["crm_site"])
 
-            n_refused_1c = int(refused_data.get("count", 0) or 0)
-            n_orders_1c = int(total_data.get("count", 0) or 0)
+        project_kpi = {
+            "label": p["label"],
+            "day":   _kpi_for_period(day_p),
+            "month": _kpi_for_period(month_p),
+        }
 
-            # 1С total в "day" це АКТИВНІ (без відмов). Тому sold = active + refused.
-            n_sold_1c = n_orders_1c + n_refused_1c
+        # Заміняємо refuse на 1С (по підрозділу)
+        project_1c = _project_1c_data(uh_1c_data, p["uh_podr"])
+        if project_1c:
+            p_ord = project_1c.get("ORDERS", {}) or {}
+            _apply_1c_refuse(project_kpi["day"],
+                             p_ord.get("day_refused", {}) or {},
+                             p_ord.get("day", {}) or {})
+            _apply_1c_refuse(project_kpi["month"],
+                             p_ord.get("month_refused", {}) or {},
+                             p_ord.get("month", {}) or {})
 
-            if n_sold_1c > 0:
-                refuse_pct = round(n_refused_1c / n_sold_1c * 100, 1)
-            else:
-                refuse_pct = 0.0
-
-            # Замінюємо КОЛИШНІЙ блок refuse (який був з CRM) на 1С-значення
-            result[period_key]["refuse"] = {
-                "of_orders":           refuse_pct,
-                "of_requests_no_spam": refuse_pct,
-                "target":              5,
-                "refused":             n_refused_1c,
-                "active":              n_sold_1c,
-                "source":              "1C",  # вказуємо джерело
-                "sum_refused":         round(float(refused_data.get("total", 0) or 0), 0),
-                "sum_orders":          round(float(total_data.get("total", 0) or 0), 0),
-            }
+        result["by_project"][key] = project_kpi
 
     return result

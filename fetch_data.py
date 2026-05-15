@@ -602,17 +602,20 @@ def is_refused_1c(r: dict) -> bool:
 
 def agg_by_podr(rows: list, sum_key: str) -> dict:
     total = 0.0
-    by_podr = {}
+    by_podr = {}        # {podr: sum}
+    by_podr_count = {}  # {podr: count}
     for r in rows:
         s = safe_float(r.get(sum_key))
         total += s
         podr = get_podr(r)
         by_podr[podr] = by_podr.get(podr, 0.0) + s
+        by_podr_count[podr] = by_podr_count.get(podr, 0) + 1
     return {
         "total": round(total, 2),
         "count": len(rows),
         "by_podr": {k: round(v, 2) for k, v in
-                    sorted(by_podr.items(), key=lambda x: x[1], reverse=True)}
+                    sorted(by_podr.items(), key=lambda x: x[1], reverse=True)},
+        "by_podr_count": dict(by_podr_count),
     }
 
 def fetch_1c_block(label: str, api_url: str, day: str,

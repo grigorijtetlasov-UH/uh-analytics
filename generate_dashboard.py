@@ -135,14 +135,17 @@ def build_multi_month_summary(multi_month: list, source_label: str = "CRM") -> s
     </div>'''
 
 
-def build_sales_kpi_block(sales_kpi: dict) -> str:
+def build_sales_kpi_block(sales_kpi: dict, title: str = "🎯 KPI відділу продажів",
+                          subtitle: str = "· цілі з контексту United Home v1.0 · колір плитки — за місяцем") -> str:
     """
     Будує HTML-блок KPI відділу продажів з 4 плитками:
     Конверсія, Крос-сейл, Гарантії+Чохли, Відмови.
     Кожна показує значення день/місяць і ціль.
     Колір: зелений (в цілі) / помаранчевий (близько) / червоний (далеко).
-    
+
     sales_kpi: {"day": {...}, "month": {...}} з 4-ма блоками всередині.
+    title:     заголовок блоку (за замовчуванням "🎯 KPI відділу продажів")
+    subtitle:  підпис під заголовком
     """
     if not sales_kpi or not isinstance(sales_kpi, dict):
         return ""
@@ -225,8 +228,8 @@ def build_sales_kpi_block(sales_kpi: dict) -> str:
     return f"""
 <div class="kpi-sales-wrap">
   <div class="kpi-sales-head">
-    <span class="ttl">🎯 KPI відділу продажів</span>
-    <span class="sub">· цілі з контексту United Home v1.0 · колір плитки — за місяцем</span>
+    <span class="ttl">{title}</span>
+    <span class="sub">{subtitle}</span>
   </div>
   <div class="kpi-sales-row">
 
@@ -292,6 +295,47 @@ def build_sales_kpi_block(sales_kpi: dict) -> str:
 
   </div>
 </div>"""
+
+
+def build_all_sales_kpi_blocks(sales_kpi: dict) -> str:
+    """
+    Будує комплекс блоків KPI:
+      1. Загальний "🎯 KPI відділу продажів" (всі канали)
+      2. "🟢 Matrasroll" (тільки matrasroll.com.ua / 1С Matrasroll)
+      3. "🟡 Amebli" (тільки amebli.com.ua / 1С A-mebli)
+
+    Якщо by_project немає (старий JSON) — будує тільки загальний блок.
+    """
+    if not sales_kpi or not isinstance(sales_kpi, dict):
+        return ""
+
+    blocks = []
+    # 1. Загальний блок
+    blocks.append(build_sales_kpi_block(
+        sales_kpi,
+        title="🎯 KPI відділу продажів",
+        subtitle="· усі канали · цілі з контексту United Home v1.0 · колір — за місяцем",
+    ))
+
+    # 2. По проектах
+    by_project = sales_kpi.get("by_project", {}) or {}
+    project_styles = {
+        "matrasroll": "🟢 Matrasroll",
+        "amebli":     "🟡 Amebli",
+    }
+    for key, title in project_styles.items():
+        proj_data = by_project.get(key, {}) or {}
+        if not proj_data:
+            continue
+        # передаємо тільки day/month структуру (build_sales_kpi_block очікує саме її)
+        proj_kpi = {"day": proj_data.get("day", {}), "month": proj_data.get("month", {})}
+        blocks.append(build_sales_kpi_block(
+            proj_kpi,
+            title=title,
+            subtitle=f"· окремий канал · ті ж цілі",
+        ))
+
+    return "\n".join(blocks)
 
 
 def load_data(date_iso):
@@ -750,7 +794,7 @@ def build_daily(data, history):
     avg_dur_str = f'{int(ga4_avg_dur//60)}:{int(ga4_avg_dur%60):02d}'
 
     # KPI відділу продажів (з контексту бізнесу UH)
-    sales_kpi_block = build_sales_kpi_block(crm.get("sales_kpi", {}))
+    sales_kpi_block = build_all_sales_kpi_blocks(crm.get("sales_kpi", {}))
 
     return DAILY_TEMPLATE.format(
         date_disp=date_disp, month_str=month_str, timestamp=timestamp,
@@ -917,7 +961,7 @@ def build_monthly(data, history):
     # KPI відділу продажів (з контексту бізнесу UH)
     # Беремо з daily-снапшоту (`data.crm.sales_kpi`), бо там вже є і `day` і `month` блоки.
     daily_crm_for_kpi = data.get("crm", {}) or {}
-    sales_kpi_block = build_sales_kpi_block(daily_crm_for_kpi.get("sales_kpi", {}))
+    sales_kpi_block = build_all_sales_kpi_blocks(daily_crm_for_kpi.get("sales_kpi", {}))
 
     # Daily trend
     daily = curr_crm.get("daily_trend", [])
