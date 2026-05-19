@@ -1,0 +1,102 @@
+ 
+============================================================ 
+ RUN: 19.05.2026 15:12:24,53 
+============================================================ 
+Already up to date.
+D:\uh-analytics-NEW\fetch_data.py:85: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  combined = pd.concat(frames, ignore_index=True, sort=False)
+D:\uh-analytics-NEW\sales_kpi.py:128: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat(frames, ignore_index=True, sort=False)
+D:\uh-analytics-NEW\fetch_data.py:85: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  combined = pd.concat(frames, ignore_index=True, sort=False)
+D:\uh-analytics-NEW\fetch_data.py:85: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  combined = pd.concat(frames, ignore_index=True, sort=False)
+
+==================================================
+  UH Analytics — збір даних за 18.05.2026
+==================================================
+
+📦 Завантаження 1С UH...
+   ✅ UH ORDERS день:  1127135.0
+   ✅ UH SALES  день:  1242637.0
+
+🎯 Завантаження SalesDrive CRM (Excel)...
+     ℹ️  Дедуп daily/: 551668 → 77489 рядків
+     📂 Читаю: daily/ (67 файлів), всього 77489 рядків
+   📊 KPI день:  конв 93.5% · крос-сейл 22.7% · гарант+чохли 14.0% · відмов 0.2%
+   📊 KPI місяць: конв 95.0% · крос-сейл 18.3% · гарант+чохли 14.2% · відмов 4.6%
+     ✅ Тренд поточного місяця: 18 точок
+   ✅ Файл:        daily/ (67 файлів)
+   ✅ Замовлень:   175 (всього 361 рядків)
+   ✅ Лідів:       102
+   ✅ Виручка:     938,592 ₴ | сер. чек: 5,363
+   ✅ Відмови:     1 (0.6%)
+   ✅ Місяць:      2505 зам. | 13,133,737 ₴
+   ✅ Менеджерів:  17
+   ✅ Сайтів:      10
+   ✅ Товарів:     30
+   ✅ Категорій:   11 | Типів звернень: 8
+   ✅ Тренд 30 дн: 18 точок
+
+📱 Завантаження Meta Ads...
+   ✅ Витрати:    5901.67 UAH
+   ✅ Кліки:      2972
+   ✅ Результати: 72
+   ✅ CPC:        1.99 UAH
+   ✅ Кампаній:   15
+
+📈 Завантаження Google Analytics 4...
+   📊 Розбивка по сайтах:
+      matrasroll.com.ua         · сесій   4212 · ads 29391.52 ₴
+      amebli.com.ua             · сесій   4397 · ads 39701.11 ₴
+      purple.com.ua             · сесій      0 · ads     0.00 ₴
+   ✅ Сесії:        4212
+   ✅ Користувачі:  3726
+   ✅ Відмови:      35.7%
+   ✅ Топ джерел:   10
+   ✅ Топ сторінок: 10
+
+📅 Збір місячних даних за 2026-05...
+     ℹ️  Дедуп daily/: 551668 → 77489 рядків
+     📂 Місячний CRM читаю з: daily/ (67 файлів)
+   ✅ Поточний міс (2026-05): 2505 зам. | 13,133,737 ₴ | сер. чек 5,243
+   ✅ Менеджерів:  27
+   ✅ Товарів:     50
+
+📅 CRM за попередній місяць (2026-04), same-period 1..18...
+     📂 Місячний CRM читаю з: months/ (архів за 2026-04), обмеження днів 1..18
+   ✅ Прев. місяць (1..18): 1866 зам. | 8,362,781 ₴
+
+📊 Будую multi-month trend (3 місяці назад)...
+     ℹ️  Дедуп daily/: 551668 → 77489 рядків
+   CRM Березень 2026: 31 днів
+   CRM Квітень 2026: 30 днів
+   CRM Травень 2026: 18 днів
+
+📊 Будую 1С UH multi-month (ORDERS + SALES)...
+   1С UH ORDERS Березень 2026: 30 днів
+   1С UH ORDERS Квітень 2026: 30 днів
+   1С UH ORDERS Травень 2026: 17 днів
+   1С UH SALES Березень 2026: 29 днів
+   1С UH SALES Квітень 2026: 29 днів
+   1С UH SALES Травень 2026: 16 днів
+
+✅ Збережено: history\2026-05-18.json
+==================================================
+
+
+📊 Генерація дашбордів за 2026-05-18
+   📂 Завантажено історію: 30 днів
+
+   📊 Генерація index.html (денний)...
+   📅 Генерація month.html (місячний)...
+
+✅ Згенеровано:
+   → docs/index.html (день)
+   → docs/month.html (місяць)
+   → docs/archive/2026-05-18.html
+   → docs/archive/month-2026-05.html
+
+🌐 День:   https://grigorijtetlasov-uh.github.io/uh-analytics/
+🌐 Місяць: https://grigorijtetlasov-uh.github.io/uh-analytics/month.html
+
