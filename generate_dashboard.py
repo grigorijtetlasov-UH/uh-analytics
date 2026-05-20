@@ -136,7 +136,8 @@ def build_multi_month_summary(multi_month: list, source_label: str = "CRM") -> s
 
 
 def build_sales_kpi_block(sales_kpi: dict, title: str = "🎯 KPI відділу продажів",
-                          subtitle: str = "· цілі з контексту United Home v1.0 · колір плитки — за місяцем") -> str:
+                          subtitle: str = "· цілі з контексту United Home v1.0 · колір плитки — за місяцем",
+                          uh_refuse_override: dict = None) -> str:
     """
     Будує HTML-блок KPI відділу продажів з 4 плитками:
     Конверсія, Крос-сейл, Гарантії+Чохли, Відмови.
@@ -146,6 +147,10 @@ def build_sales_kpi_block(sales_kpi: dict, title: str = "🎯 KPI відділу
     sales_kpi: {"day": {...}, "month": {...}} з 4-ма блоками всередині.
     title:     заголовок блоку (за замовчуванням "🎯 KPI відділу продажів")
     subtitle:  підпис під заголовком
+    uh_refuse_override: якщо передано, плитка "Відмови" рахується з 1С ORDERS
+                        (а не з CRM SalesDrive). Формат:
+                        {"day_pct": 0.28, "month_pct": 3.80,
+                         "day_amount": 2725, "month_amount": 623839}
     """
     if not sales_kpi or not isinstance(sales_kpi, dict):
         return ""
@@ -214,16 +219,41 @@ def build_sales_kpi_block(sales_kpi: dict, title: str = "🎯 KPI відділу
     gc_m_total = gc_m.get("of", 0)
     
     # ── Відмови (lower_is_better) ──
+    # За замовчуванням з CRM (sales_kpi), але якщо переданий uh_refuse_override —
+    # беремо з 1С ORDERS (замовлення зі статусом "відмова").
     ref_d = day.get("refuse", {})
     ref_m = month.get("refuse", {})
-    ref_d_val = ref_d.get("of_orders", 0)
-    ref_m_val = ref_m.get("of_orders", 0)
+    if uh_refuse_override and isinstance(uh_refuse_override, dict):
+        ref_d_val = round(float(uh_refuse_override.get("day_pct", 0) or 0), 2)
+        ref_m_val = round(float(uh_refuse_override.get("month_pct", 0) or 0), 2)
+        ref_d_count = uh_refuse_override.get("day_amount", 0)
+        ref_m_count = uh_refuse_override.get("month_amount", 0)
+        ref_source = "1С ORDERS"
+    else:
+        ref_d_val = ref_d.get("of_orders", 0)
+        ref_m_val = ref_m.get("of_orders", 0)
+        ref_d_count = ref_d.get("refused", 0)
+        ref_m_count = ref_m.get("refused", 0)
+        ref_source = "CRM"
     ref_target = ref_d.get("target", 5)
     ref_d_cls = cls_for(ref_d_val, ref_target, lower_is_better=True)
     ref_m_cls = cls_for(ref_m_val, ref_target, lower_is_better=True)
     ref_tile_cls = ref_m_cls
-    ref_d_count = ref_d.get("refused", 0)
-    ref_m_count = ref_m.get("refused", 0)
+
+    # Підпис плитки — формат залежить від джерела
+    if ref_source == "1С ORDERS":
+        # Для 1С — суми у гривнях
+        def _fmt_uah(v):
+            try:
+                return f"{int(round(float(v))):,}".replace(",", " ") + " ₴"
+            except Exception:
+                return "0 ₴"
+        ref_subtitle = (f"ціль: <b>≤{ref_target}%</b> · "
+                        f"день {_fmt_uah(ref_d_count)} · місяць {_fmt_uah(ref_m_count)} · 1С")
+    else:
+        # Для CRM — кількість заявок
+        ref_subtitle = (f"ціль: <b>≤{ref_target}%</b> · "
+                        f"день {ref_d_count} · місяць {ref_m_count}")
     
     return f"""
 <div class="kpi-sales-wrap">
@@ -290,14 +320,14 @@ def build_sales_kpi_block(sales_kpi: dict, title: str = "🎯 KPI відділу
           <div class="kpi-sales-num {ref_m_cls}">{ref_m_val}<span class="kpi-sales-pct">%</span></div>
         </div>
       </div>
-      <div class="kpi-sales-tg">ціль: <b>≤{ref_target}%</b> · день {ref_d_count} · місяць {ref_m_count}</div>
+      <div class="kpi-sales-tg">{ref_subtitle}</div>
     </div>
 
   </div>
 </div>"""
 
 
-def build_all_sales_kpi_blocks(sales_kpi: dict) -> str:
+def build_all_sales_kpi_blocks(sales_kpi: dict, uh_refuse_override: dict = None) -> str:
     """
     Будує комплекс блоків KPI:
       1. Загальний "🎯 KPI відділу продажів" (всі канали)
@@ -305,16 +335,21 @@ def build_all_sales_kpi_blocks(sales_kpi: dict) -> str:
       3. "🟡 Amebli" (тільки amebli.com.ua / 1С A-mebli)
 
     Якщо by_project немає (старий JSON) — будує тільки загальний блок.
+
+    uh_refuse_override: якщо передано, плитка "Відмови" в ЗАГАЛЬНОМУ блоці
+                        береться з 1С ORDERS, а не з CRM. У проектні блоки
+                        не прокидається (там 1С розбивки по проектах поки немає).
     """
     if not sales_kpi or not isinstance(sales_kpi, dict):
         return ""
 
     blocks = []
-    # 1. Загальний блок
+    # 1. Загальний блок — тут override застосовуємо
     blocks.append(build_sales_kpi_block(
         sales_kpi,
         title="🎯 KPI відділу продажів",
         subtitle="· усі канали · цілі з контексту United Home v1.0 · колір — за місяцем",
+        uh_refuse_override=uh_refuse_override,
     ))
 
     # 2. По проектах
@@ -575,16 +610,22 @@ def build_daily(data, history):
     site_conv = round(crm_orders_d / max(ga4_sessions, 1) * 100, 2) if ga4_sessions > 0 else 0
 
     # ── ДРР (Доля Рекламних Витрат) ──
-    # Чисельник: Meta Ads + Google Ads
-    # Пріоритет джерела Google: точний Google Ads API → fallback на GA4 ads_cost
+    # Чисельник: Meta Ads + Google Ads (СУМА по всіх сайтах)
+    # Пріоритет джерела Google: точний Google Ads API → fallback на GA4 ads_cost (сума по всіх properties)
     gads_block = data.get("google_ads", {}) or {}
     gads_spend = float(gads_block.get("total_spend", 0) or 0)
     if gads_spend > 0:
         google_spend = gads_spend
         google_source = "Google Ads API"
     else:
-        google_spend = float(ga4.get("ads_cost", 0) or 0)
-        google_source = "GA4 (приблизно)"
+        # Сумуємо ads_cost по ВСІХ properties (matrasroll + amebli + purple),
+        # бо ga4.ads_cost містить тільки головну property
+        ga4_props = ga4.get("by_property", []) or []
+        if ga4_props:
+            google_spend = sum(float(p.get("ads_cost", 0) or 0) for p in ga4_props)
+        else:
+            google_spend = float(ga4.get("ads_cost", 0) or 0)
+        google_source = "GA4 (всі сайти)"
 
     total_ad_spend = meta_spend + google_spend
 
@@ -794,7 +835,18 @@ def build_daily(data, history):
     avg_dur_str = f'{int(ga4_avg_dur//60)}:{int(ga4_avg_dur%60):02d}'
 
     # KPI відділу продажів (з контексту бізнесу UH)
-    sales_kpi_block = build_all_sales_kpi_blocks(crm.get("sales_kpi", {}))
+    # Плитка "Відмови" тягне з 1С ORDERS (refused / (orders + refused)),
+    # а не з CRM SalesDrive (рішення власника, 20.05.2026).
+    _ref_d_pct = round(uh_refused_d / (total_orders_d + uh_refused_d) * 100, 2) if (total_orders_d + uh_refused_d) > 0 else 0.0
+    _ref_m_pct = round(uh_refused_m / (total_orders_m + uh_refused_m) * 100, 2) if (total_orders_m + uh_refused_m) > 0 else 0.0
+    uh_refuse_for_kpi = {
+        "day_pct":      _ref_d_pct,
+        "month_pct":    _ref_m_pct,
+        "day_amount":   uh_refused_d,
+        "month_amount": uh_refused_m,
+    }
+    sales_kpi_block = build_all_sales_kpi_blocks(crm.get("sales_kpi", {}),
+                                                 uh_refuse_override=uh_refuse_for_kpi)
 
     return DAILY_TEMPLATE.format(
         date_disp=date_disp, month_str=month_str, timestamp=timestamp,
@@ -960,8 +1012,23 @@ def build_monthly(data, history):
 
     # KPI відділу продажів (з контексту бізнесу UH)
     # Беремо з daily-снапшоту (`data.crm.sales_kpi`), бо там вже є і `day` і `month` блоки.
+    # Плитка "Відмови" тягне з 1С ORDERS (рішення власника, 20.05.2026).
     daily_crm_for_kpi = data.get("crm", {}) or {}
-    sales_kpi_block = build_all_sales_kpi_blocks(daily_crm_for_kpi.get("sales_kpi", {}))
+    _uh_orders = (data.get("uh", {}) or {}).get("ORDERS", {}) or {}
+    _orders_d = float((_uh_orders.get("day", {}) or {}).get("total", 0) or 0)
+    _orders_m = float((_uh_orders.get("month", {}) or {}).get("total", 0) or 0)
+    _refused_d = float((_uh_orders.get("day_refused", {}) or {}).get("total", 0) or 0)
+    _refused_m = float((_uh_orders.get("month_refused", {}) or {}).get("total", 0) or 0)
+    _ref_d_pct = round(_refused_d / (_orders_d + _refused_d) * 100, 2) if (_orders_d + _refused_d) > 0 else 0.0
+    _ref_m_pct = round(_refused_m / (_orders_m + _refused_m) * 100, 2) if (_orders_m + _refused_m) > 0 else 0.0
+    uh_refuse_for_kpi = {
+        "day_pct":      _ref_d_pct,
+        "month_pct":    _ref_m_pct,
+        "day_amount":   _refused_d,
+        "month_amount": _refused_m,
+    }
+    sales_kpi_block = build_all_sales_kpi_blocks(daily_crm_for_kpi.get("sales_kpi", {}),
+                                                 uh_refuse_override=uh_refuse_for_kpi)
 
     # Daily trend
     daily = curr_crm.get("daily_trend", [])
