@@ -721,12 +721,18 @@ def fetch_salesdrive(date_str: str, uh_1c_data: dict = None) -> dict:
     try:
         import pandas as pd
 
-        df, src_label = _crm_load_all_daily()
+        # ── Єдине джерело CRM — місячний знімок з data/crm/months/ ──
+        # Daily-файли більше не використовуються: статуси в них "застиглі" на
+        # момент вивантаження і не відображають дозрілий стан заявок.
+        # Місячний файл оновлюється вручну (раз на день кладеться свіжа вивантажка
+        # SalesDrive за поточний місяць у data/crm/months/).
+        df = _crm_load_all_months()
         if df is None or df.empty:
-            result["error"] = f"Немає файлів у {CRM_DAILY_DIR}/ (і fallback {CRM_DATA_DIR}/)"
+            result["error"] = f"Немає файлів у {CRM_MONTHS_DIR}/"
             print(f"  ⚠️  CRM Excel: {result['error']}")
             return result
 
+        src_label = f"months/ (єдине джерело)"
         result["source_file"] = src_label
         print(f"     📂 Читаю: {src_label}, всього {len(df)} рядків")
 
@@ -1142,11 +1148,11 @@ def aggregate_month_crm(target_month: str, day_limit: int = None) -> dict:
                 df = all_months_df  # повний DataFrame, фільтр за місяцем нижче
                 src_label = f"months/ (архів за {target_month})"
 
-        if df is None:
-            df, src_label = _crm_load_all_daily()
-
+        # Daily fallback видалено: months/ — єдине джерело правди.
+        # Якщо за поточний місяць немає файлу в months/ — це помилка налаштування,
+        # треба покласти свіжу вивантажку SalesDrive вручну.
         if df is None or df.empty:
-            result["error"] = f"Немає файлів ні в {CRM_MONTHS_DIR}/, ні в {CRM_DAILY_DIR}/, ні в {CRM_DATA_DIR}/"
+            result["error"] = f"Немає файлу за {target_month} у {CRM_MONTHS_DIR}/"
             return result
 
         result["source_file"] = src_label

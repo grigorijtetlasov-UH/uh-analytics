@@ -115,50 +115,59 @@ def classify_item(name) -> str:
     return "main"
 
 
-# ── Читання сирих Excel (без агресивного дедупу) ───────────────────
+# ── Читання сирих Excel (єдине джерело — data/crm/months/) ─────────
 def _load_raw_excel(target_month: str) -> Optional[pd.DataFrame]:
     """
-    Читає всі Excel-файли з daily/ БЕЗ дедупу по заявках.
-    Залишає всі товарні позиції цілими — дедупимо тільки по (Номер 1С + Назва товару)
-    щоб прибрати дублі історії змін статусу.
+    Читає Excel-файли ТІЛЬКИ з data/crm/months/.
+
+    Чому тільки months: daily-файли SalesDrive містять заявки за один день
+    зі статусами "заморожені" на момент вивантаження (15:00). Для KPI потрібні
+    "дозрілі" статуси — а вони є тільки в свіжому місячному знімку SalesDrive.
+
+    Місячний файл оновлюється вручну (раз на день кидається свіжа вивантажка
+    SalesDrive за поточний місяць у data/crm/months/, замінює попередній).
+
+    Старі архівні файли в months/ для попередніх місяців (наприклад
+    salesdrive_order3.matrasroll_2026-04-01_*.xlsx) теж читаються — вони
+    потрібні для відображення трендів та архівних періодів.
     """
     frames = []
 
-    for d in (CRM_DAILY_DIR, CRM_FLAT_DIR):
-        files = sorted(d.glob("*.xlsx"), key=lambda f: f.stat().st_mtime)
-        for f in files:
+    if CRM_MONTHS_DIR.exists():
+        for f in sorted(CRM_MONTHS_DIR.glob("*.xlsx")):
             try:
                 df = pd.read_excel(f)
                 if "Дата" in df.columns:
                     frames.append(df)
             except Exception:
                 continue
-        if frames:
-            break
-
-    if CRM_MONTHS_DIR.exists():
-        month_files = sorted(CRM_MONTHS_DIR.glob("*.xlsx"))
-        for f in month_files:
-            if target_month in f.name:
-                try:
-                    df = pd.read_excel(f)
-                    if "Дата" in df.columns:
-                        frames.append(df)
-                except Exception:
-                    continue
 
     if not frames:
         return None
 
     df = pd.concat(frames, ignore_index=True, sort=False)
 
-    # Дедуп: тільки дублі ІСТОРІЇ (один Номер 1С + одна Назва товару).
-    # Залишає всі окремі позиції в межах одного замовлення.
+    # ── Дедуп ──
+    # Дедуплити можна тільки рядки з Номер 1С (це замовлення з продуктовими
+    # позиціями, у яких можуть бути дублі історії — кілька знімків одного
+    # замовлення з різних місячних файлів).
+    #
+    # Рядки БЕЗ Номер 1С (це ліди — "Лід (не купив)", "Новий", "Недодзвон" тощо)
+    # дедуплити по (Дата + Телефон), бо у них немає унікального ID, але кожен
+    # рядок — це окрема заявка від клієнта. Якщо дедуплити їх по назві товару
+    # (як замовлення), то всі ліди з однаковою "Доставка Нова Пошта" зливаються
+    # в один рядок — і втрачається ~95% статистики lost.
     if "Номер 1С" in df.columns and "Назва [Товари/Послуги]" in df.columns:
-        df = df.drop_duplicates(
+        with_num = df[df["Номер 1С"].notna()].drop_duplicates(
             subset=["Номер 1С", "Назва [Товари/Послуги]", "Сума [Товари/Послуги]"],
             keep="last"
         )
+        no_num = df[df["Номер 1С"].isna()]
+        # Ліди без номера: дедуп по (Дата + Телефон) якщо є, інакше залишаємо як є
+        dedup_cols = [c for c in ["Дата", "Телефон [Контакт]", "Статус"] if c in no_num.columns]
+        if dedup_cols:
+            no_num = no_num.drop_duplicates(subset=dedup_cols, keep="last")
+        df = pd.concat([with_num, no_num], ignore_index=True, sort=False)
 
     df["_дата"] = pd.to_datetime(df["Дата"], errors="coerce")
     df["_день"] = df["_дата"].dt.strftime("%Y-%m-%d")
