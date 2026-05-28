@@ -779,7 +779,14 @@ def build_daily(data, history):
         "ga4_sources": ga4.get("by_source", []),
         "ga4_pages": ga4.get("by_page", []),
         "ga4_devices": ga4.get("by_device", []),
-        "ga4_properties": ga4.get("by_property", []),
+        # Прибираємо purple.com.ua з розбивки (поки немає трафіку/витрат по ньому)
+        "ga4_properties": [
+            p for p in (ga4.get("by_property", []) or [])
+            if "purple" not in (
+                str(p.get("name", "")) + str(p.get("domain", "")) +
+                str(p.get("hostname", "")) + str(p.get("property", ""))
+            ).lower()
+        ],
         "ga4_total_ads_cost": ga4.get("ads_cost", 0),
         "ga4_total_ads_clicks": ga4.get("ads_clicks", 0),
     }
