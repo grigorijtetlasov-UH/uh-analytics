@@ -575,22 +575,16 @@ def build_daily(data, history):
     site_conv = round(crm_orders_d / max(ga4_sessions, 1) * 100, 2) if ga4_sessions > 0 else 0
 
     # ── ДРР (Доля Рекламних Витрат) ──
-    # Чисельник: Meta Ads + Google Ads (СУМА по всіх сайтах)
-    # Пріоритет джерела Google: точний Google Ads API → fallback на GA4 ads_cost (сума по всіх properties)
+    # Чисельник: Meta Ads + Google Ads
+    # Пріоритет джерела Google: точний Google Ads API → fallback на GA4 ads_cost
     gads_block = data.get("google_ads", {}) or {}
     gads_spend = float(gads_block.get("total_spend", 0) or 0)
     if gads_spend > 0:
         google_spend = gads_spend
         google_source = "Google Ads API"
     else:
-        # Сумуємо ads_cost по ВСІХ properties (matrasroll + amebli + purple),
-        # бо ga4.ads_cost містить тільки головну property
-        ga4_props = ga4.get("by_property", []) or []
-        if ga4_props:
-            google_spend = sum(float(p.get("ads_cost", 0) or 0) for p in ga4_props)
-        else:
-            google_spend = float(ga4.get("ads_cost", 0) or 0)
-        google_source = "GA4 (всі сайти)"
+        google_spend = float(ga4.get("ads_cost", 0) or 0)
+        google_source = "GA4 (приблизно)"
 
     total_ad_spend = meta_spend + google_spend
 
@@ -1295,7 +1289,7 @@ DAILY_TEMPLATE = '''<!DOCTYPE html>
 <div class="hdr">
   <button class="pdf-btn" id="pdfBtn" onclick="exportPDF()"><span class="ic">📄</span><span>Експорт PDF</span></button>
   <div class="view-switch">
-    <a href="index.html" class="on">📊 День</a>
+    <a href="day.html" class="on">📊 День</a>
     <a href="month.html">📅 Місяць</a>
   </div>
   <h1>UH Executive Dashboard</h1>
@@ -1685,7 +1679,7 @@ MONTHLY_TEMPLATE = '''<!DOCTYPE html>
 <div class="hdr">
   <button class="pdf-btn" id="pdfBtn" onclick="exportPDF()"><span class="ic">📄</span><span>Експорт PDF</span></button>
   <div class="view-switch">
-    <a href="index.html">📊 День</a>
+    <a href="day.html">📊 День</a>
     <a href="month.html" class="on">📅 Місяць</a>
   </div>
   <h1>UH Monthly Dashboard</h1>
@@ -2115,10 +2109,25 @@ def main():
     history = load_history(30)
     print(f"   📂 Завантажено історію: {len(history)} днів")
 
-    # Денний дашборд
-    print(f"\n   📊 Генерація index.html (денний)...")
-    daily_html = build_daily(data, history)
-    with open(DOCS_DIR / "index.html", "w", encoding="utf-8") as f:
+    # Guard-скрипт: якщо користувач не пройшов замок (index.html) — кидаємо назад.
+    # sessionStorage ключ виставляється на сторінці index.html після вводу пароля.
+    AUTH_GUARD = (
+        '<script>'
+        'if(sessionStorage.getItem("uh_auth_ok")!=="1"){'
+        'location.replace("index.html");}'
+        '</script>'
+    )
+
+    def _inject_guard(html: str) -> str:
+        # Вставляємо одразу після <head> щоб гард спрацював до рендеру вмісту
+        if "<head>" in html:
+            return html.replace("<head>", "<head>" + AUTH_GUARD, 1)
+        return AUTH_GUARD + html
+
+    # Денний дашборд → day.html (index.html зайнятий замком-сторінкою)
+    print(f"\n   📊 Генерація day.html (денний)...")
+    daily_html = _inject_guard(build_daily(data, history))
+    with open(DOCS_DIR / "day.html", "w", encoding="utf-8") as f:
         f.write(daily_html)
 
     # Архів денного
@@ -2129,7 +2138,7 @@ def main():
 
     # Місячний дашборд
     print(f"   📅 Генерація month.html (місячний)...")
-    monthly_html = build_monthly(data, history)
+    monthly_html = _inject_guard(build_monthly(data, history))
     with open(DOCS_DIR / "month.html", "w", encoding="utf-8") as f:
         f.write(monthly_html)
 
@@ -2140,12 +2149,12 @@ def main():
         f.write(monthly_html)
 
     print(f"\n✅ Згенеровано:")
-    print(f"   → docs/index.html (день)")
-    print(f"   → docs/month.html (місяць)")
+    print(f"   → docs/day.html (день, захищено)")
+    print(f"   → docs/month.html (місяць, захищено)")
+    print(f"   → docs/index.html (замок-пароль, статичний)")
     print(f"   → docs/archive/{yesterday}.html")
     print(f"   → docs/archive/month-{target_month}.html\n")
-    print(f"🌐 День:   https://grigorijtetlasov-uh.github.io/uh-analytics/")
-    print(f"🌐 Місяць: https://grigorijtetlasov-uh.github.io/uh-analytics/month.html\n")
+    print(f"🌐 Дашборд: https://unitedhome.digital/  (через пароль)\n")
 
 
 if __name__ == "__main__":
