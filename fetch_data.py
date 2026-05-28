@@ -101,18 +101,44 @@ def _crm_load_all_daily():
 
 def _crm_load_all_months():
     """
-    Читає ВСІ xlsx з months/. Дата визначається з вмісту (колонки 'Дата'), не з імені файлу.
+    Читає xlsx з months/. Дата визначається з вмісту (колонки 'Дата'), не з імені файлу.
     Повертає DataFrame з усіма архівами склеєними і додатковими колонками _дата/_день/_місяць.
+
+    ВАЖЛИВО: коли в межах одного місяця є і *_api.xlsx (з SalesDrive API) і *_full.xlsx
+    (ручна вивантажка) — беремо ТІЛЬКИ _api.xlsx, щоб уникнути дублів замовлень.
+    Це визначається по 'YYYY-MM' токену в імені файлу.
     """
     import pandas as pd
+    import re as _re
 
     if not CRM_MONTHS_DIR.exists():
         return None
-    files = sorted(CRM_MONTHS_DIR.glob("*.xlsx"))
-    if not files:
+    all_files = sorted(CRM_MONTHS_DIR.glob("*.xlsx"))
+    if not all_files:
         return None
+
+    # Групуємо файли по YYYY-MM з імені
+    files_by_month: dict[str, list] = {}
+    files_no_month: list = []
+    for f in all_files:
+        m = _re.search(r"(\d{4}-\d{2})", f.name)
+        if m:
+            files_by_month.setdefault(m.group(1), []).append(f)
+        else:
+            files_no_month.append(f)
+
+    # Для кожного місяця: якщо є _api — беремо тільки _api, інакше всі файли цього місяця
+    files_to_load: list = []
+    for month_str, fs in sorted(files_by_month.items()):
+        api_files = [f for f in fs if "_api" in f.name.lower()]
+        if api_files:
+            files_to_load.extend(api_files)
+        else:
+            files_to_load.extend(fs)
+    files_to_load.extend(files_no_month)
+
     frames = []
-    for f in files:
+    for f in files_to_load:
         try:
             df = pd.read_excel(f)
             if "Дата" not in df.columns:

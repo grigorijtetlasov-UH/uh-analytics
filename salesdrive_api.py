@@ -85,7 +85,7 @@ STATUS_ID_TO_NAME = {
     71:  "В виробництві",
     72:  "В черзі на відправлення",
     73:  "Рекламація",
-    74:  "Спам на согласовании",
+    74:  "Спам на согласование",
     76:  "Рекламный спам",
     78:  "Створена з телеграму",
     81:  "НЕОБРОБЛЕНІ",
@@ -164,7 +164,11 @@ USER_ID_TO_NAME = {
 }
 
 # Колонки, які чекає sales_kpi._load_raw_excel().
-# Порядок збережено для зручності перегляду xlsx людиною.
+# КРИТИЧНО: імена мають точно збігатися з тими, що зчитує fetch_data.py і sales_kpi.py
+# з ручної xlsx-вивантажки SalesDrive. Зокрема:
+#   "Сума"           — сума замовлення (НЕ "Сума замовлення"!)
+#   "К-ть [Товари/Послуги]"   — кількість (НЕ "Кількість")
+#   "Ціна за од. [Товари/Послуги]" — ціна (НЕ "Ціна")
 OUTPUT_COLUMNS = [
     "Дата",
     "Номер 1С",
@@ -173,12 +177,12 @@ OUTPUT_COLUMNS = [
     "Менеджер",
     "ID замовлення",
     "Назва [Товари/Послуги]",
-    "Кількість [Товари/Послуги]",
-    "Ціна [Товари/Послуги]",
+    "К-ть [Товари/Послуги]",
+    "Ціна за од. [Товари/Послуги]",
     "Сума [Товари/Послуги]",
     "Собівартість [Товари/Послуги]",
     "Знижка [Товари/Послуги]",
-    "Сума замовлення",
+    "Сума",
     "Прибуток",
     "Оплачено",
     "Спосіб оплати",
@@ -349,6 +353,28 @@ def _safe_float(v) -> float:
         return 0.0
 
 
+# Маркери позицій-доставок (рядки в назві товару, регістр не важливий).
+# Такі позиції приходять з SalesDrive API, але в ручній xlsx-вивантажці їх немає.
+# Якщо їх не відфільтрувати — псуються розрахунки крос-сейлу, гарантій+чохлів і виручки.
+_DELIVERY_MARKERS = (
+    "оплата послуги доставка",   # точна назва зі SalesDrive
+    "оплата послуги",
+    "плата за доставку",
+    "вартість доставки",
+    "доставка нова пошта",
+    "доставка укрпошта",
+    "доставка meest",
+    "доставка rozetka",
+)
+
+
+def _is_delivery_position(name_lower: str) -> bool:
+    """Перевіряє чи це службова позиція-доставка (а не товар)."""
+    if not name_lower:
+        return False
+    return any(m in name_lower for m in _DELIVERY_MARKERS)
+
+
 def _parse_order_to_rows(o: dict) -> list[dict]:
     """
     Розгортає одне замовлення в N рядків (по одному на кожну товарну позицію).
@@ -357,9 +383,17 @@ def _parse_order_to_rows(o: dict) -> list[dict]:
     order_time = o.get("orderTime") or ""
     # API повертає дату в форматі "2026-05-20 14:32:11" — це підхопить pandas
 
-    status_id = o.get("statusId")
-    sajt_id = o.get("sajt")
-    user_id = o.get("userId")
+    # ВАЖЛИВО: SalesDrive API повертає id як string ("72") у JSON.
+    # Словники мають int ключі — треба явне приведення, інакше .get() поверне None.
+    def _to_int(v):
+        try:
+            return int(v) if v is not None and v != "" else None
+        except (ValueError, TypeError):
+            return None
+
+    status_id = _to_int(o.get("statusId"))
+    sajt_id = _to_int(o.get("sajt"))
+    user_id = _to_int(o.get("userId"))
 
     # Базові поля рядка (повторюються для кожної позиції)
     base = {
@@ -369,7 +403,7 @@ def _parse_order_to_rows(o: dict) -> list[dict]:
         "Сайт":                    SAJT_ID_TO_NAME.get(sajt_id, f"id={sajt_id}" if sajt_id else ""),
         "Менеджер":                USER_ID_TO_NAME.get(user_id, f"id={user_id}" if user_id else ""),
         "ID замовлення":           o.get("id"),
-        "Сума замовлення":         _safe_float(o.get("paymentAmount")),
+        "Сума":                    _safe_float(o.get("paymentAmount")),
         "Прибуток":                _safe_float(o.get("profitAmount")),
         "Оплачено":                _safe_float(o.get("payedAmount")),
         "Спосіб оплати":           _safe_str(o.get("payment_method")),
@@ -393,27 +427,46 @@ def _parse_order_to_rows(o: dict) -> list[dict]:
     if not products:
         # Замовлення без товарних позицій (буває для лідів)
         row = dict(base)
-        row["Назва [Товари/Послуги]"]        = ""
-        row["Кількість [Товари/Послуги]"]    = 0.0
-        row["Ціна [Товари/Послуги]"]         = 0.0
-        row["Сума [Товари/Послуги]"]         = 0.0
-        row["Собівартість [Товари/Послуги]"] = 0.0
-        row["Знижка [Товари/Послуги]"]       = 0.0
+        row["Назва [Товари/Послуги]"]            = ""
+        row["К-ть [Товари/Послуги]"]             = 0.0
+        row["Ціна за од. [Товари/Послуги]"]      = 0.0
+        row["Сума [Товари/Послуги]"]             = 0.0
+        row["Собівартість [Товари/Послуги]"]     = 0.0
+        row["Знижка [Товари/Послуги]"]           = 0.0
         return [row]
 
     rows = []
     for p in products:
+        # Назва: пріоритет UA-перекладу, фолбек на основну
+        name = p.get("nameTranslate") or p.get("name") or p.get("documentName") or ""
+        name_str = _safe_str(name).lower()
+
+        # ПРОПУСКАЄМО позиції-доставки: API повертає їх як окремий рядок у products[],
+        # але в ручній xlsx-вивантажці їх немає. Якщо не відфільтрувати — псує крос-сейл,
+        # гарантії+чохли і суму замовлень.
+        if _is_delivery_position(name_str):
+            continue
+
         row = dict(base)
         amount = _safe_float(p.get("amount"))
         price = _safe_float(p.get("price"))
-        # Назва: пріоритет UA-перекладу, фолбек на основну
-        name = p.get("nameTranslate") or p.get("name") or p.get("documentName") or ""
-        row["Назва [Товари/Послуги]"]        = _safe_str(name)
-        row["Кількість [Товари/Послуги]"]    = amount
-        row["Ціна [Товари/Послуги]"]         = price
-        row["Сума [Товари/Послуги]"]         = amount * price
-        row["Собівартість [Товари/Послуги]"] = _safe_float(p.get("costPrice"))
-        row["Знижка [Товари/Послуги]"]       = _safe_float(p.get("discount"))
+        row["Назва [Товари/Послуги]"]            = _safe_str(name)
+        row["К-ть [Товари/Послуги]"]             = amount
+        row["Ціна за од. [Товари/Послуги]"]      = price
+        row["Сума [Товари/Послуги]"]             = amount * price
+        row["Собівартість [Товари/Послуги]"]     = _safe_float(p.get("costPrice"))
+        row["Знижка [Товари/Послуги]"]           = _safe_float(p.get("discount"))
+        rows.append(row)
+
+    # Якщо ВСІ позиції були доставкою — повертаємо порожній рядок-замовлення (як лід)
+    if not rows:
+        row = dict(base)
+        row["Назва [Товари/Послуги]"]            = ""
+        row["К-ть [Товари/Послуги]"]             = 0.0
+        row["Ціна за од. [Товари/Послуги]"]      = 0.0
+        row["Сума [Товари/Послуги]"]             = 0.0
+        row["Собівартість [Товари/Послуги]"]     = 0.0
+        row["Знижка [Товари/Послуги]"]           = 0.0
         rows.append(row)
 
     return rows
