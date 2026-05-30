@@ -5,15 +5,17 @@ REM  Run by Windows Task Scheduler at 15:00
 REM  Or manually by double-click
 REM ============================================================
 
-REM Force Python to use UTF-8 for stdout/stderr
-REM (needed because Python's default encoding on Windows is cp1251
-REM  which cannot handle emoji and Ukrainian characters in print)
+REM Force Python to use UTF-8
 set PYTHONIOENCODING=utf-8
 set PYTHONUTF8=1
 
 cd /d D:\uh-analytics-NEW
 
-REM Log file with date
+REM API key ?????? SalesDrive
+if exist .secrets\sd_api_key.txt (
+    for /f "delims=" %%K in (.secrets\sd_api_key.txt) do set SD_API_KEY=%%K
+)
+
 set LOG=logs\daily_%date:~6,4%-%date:~3,2%-%date:~0,2%.log
 if not exist logs mkdir logs
 
@@ -30,7 +32,7 @@ echo ============================================================
 echo.
 
 REM Step 1: git pull
-echo [1/5] git pull...
+echo [1/6] git pull...
 git pull --rebase >> %LOG% 2>&1
 if errorlevel 1 (
     echo   FAIL git pull. See %LOG%
@@ -38,8 +40,18 @@ if errorlevel 1 (
 )
 echo   OK
 
-REM Step 2: fetch_data.py (without arg = yesterday)
-echo [2/5] python fetch_data.py...
+REM Step 2: SalesDrive API incremental
+echo [2/6] python salesdrive_api.py --incremental...
+python salesdrive_api.py --incremental --inc-days 14 >> %LOG% 2>&1
+if errorlevel 1 (
+    echo   WARN API incremental failed, continuing with cached data
+    echo   WARN salesdrive_api.py failed, continuing >> %LOG%
+) else (
+    echo   OK
+)
+
+REM Step 3: fetch_data.py
+echo [3/6] python fetch_data.py...
 python fetch_data.py >> %LOG% 2>&1
 if errorlevel 1 (
     echo   FAIL fetch_data.py. See %LOG%
@@ -47,8 +59,8 @@ if errorlevel 1 (
 )
 echo   OK
 
-REM Step 3: generate_dashboard.py
-echo [3/5] python generate_dashboard.py...
+REM Step 4: generate_dashboard.py
+echo [4/6] python generate_dashboard.py...
 python generate_dashboard.py >> %LOG% 2>&1
 if errorlevel 1 (
     echo   FAIL generate_dashboard.py. See %LOG%
@@ -56,14 +68,11 @@ if errorlevel 1 (
 )
 echo   OK
 
-REM Step 4: git add + commit (if changes)
-echo [4/5] git commit...
+REM Step 5: git add + commit
+echo [5/6] git commit...
 git add . >> %LOG% 2>&1
-
-REM Check if there are staged changes
 git diff --cached --quiet
 if errorlevel 1 (
-    REM There are changes
     git commit -m "Daily auto-report %date:~6,4%-%date:~3,2%-%date:~0,2%" >> %LOG% 2>&1
     if errorlevel 1 (
         echo   FAIL git commit. See %LOG%
@@ -71,14 +80,13 @@ if errorlevel 1 (
     )
     echo   OK committed
 ) else (
-    REM No changes
     echo   SKIP no changes to commit
     echo  No changes to commit >> %LOG%
     goto :done
 )
 
-REM Step 5: git push
-echo [5/5] git push...
+REM Step 6: git push
+echo [6/6] git push...
 git push >> %LOG% 2>&1
 if errorlevel 1 (
     echo   FAIL git push. See %LOG%
@@ -92,7 +100,7 @@ echo ============================================================
 echo  SUCCESS: %date% %time%
 echo ============================================================
 echo  Log: %LOG%
-echo  Dashboard: https://grigorijtetlasov-uh.github.io/uh-analytics/
+echo  Dashboard: https://unitedhome.digital/
 echo ============================================================
 echo  SUCCESS >> %LOG%
 exit /b 0
