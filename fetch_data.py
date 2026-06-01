@@ -36,7 +36,7 @@ API_URL_UH  = os.getenv("API_URL",    "http://142.132.252.184:58300/ST_UNF/ws/re
 API_URL_SH  = os.getenv("API_URL_SH", "https://saleshub1.apic.com.ua:8443/mtrs/ws/request.1cws")
 API_URL_SH_WD = os.getenv("API_URL_SH_WD", "https://saleshub1.apic.com.ua:8443/mtrs/ws/request.1cws")
 API_SH_USER = os.getenv("API_SH_USER", "WS")
-API_SH_PASS = os.getenv("API_SH_PASS", "q1w2E#")
+API_SH_PASS = os.getenv("API_SH_PASS")
 
 # SalesDrive CRM (Excel-вигрузка)
 CRM_DATA_DIR   = Path("data/crm")           # legacy fallback (плоска папка)
@@ -493,7 +493,7 @@ def _ua_month_label(month_str: str) -> str:
 
 
 # (deprecated) SalesDrive API
-SD_API_KEY  = os.getenv("SD_API_KEY", "l-gTmE_eWopdwozFM9AW78imyzIMOErc52dBd8tTCGXBeTE_TeFvcs6AhjHC4A2kKTVCoL3ufp5fZ7xhRIZ1pU-rpD1GckOAkHEq")
+SD_API_KEY  = os.getenv("SD_API_KEY")
 SD_BASE_URL = "https://matrasroll.salesdrive.me"
 
 # Google Sheets (GA4 + Meta)
@@ -502,8 +502,8 @@ GSHEET_URL = f"https://docs.google.com/spreadsheets/d/{GSHEET_ID}/export?format=
 
 
 # Meta Ads
-META_TOKEN_BM1 = os.getenv("META_TOKEN_BM1", "EAAOJViuNgBgBRZArQ2iCiHZCHNj0YGRZCL5LOH0GYDQczs63XLz88BZBDR6wpxNbYfOy7mpHOZCAfHBtltbIVZBwkV9zbqOBTVObYTkPN6WlsOAUgvDPL1evn3eNskpL4n47aQOHRqqtRzkZCPZBDTZAHZBA4MsVzPZA2IaIRXFuhgfijXkE9ZAea57tUZCVIxFNe7UIzOgZDZD")
-META_TOKEN_BM2 = os.getenv("META_TOKEN_BM2", "EAAyQRTaR3igBRT9cEqsf4uBeNNAa8uPnaGnKkEDQdp01JxAPBOLgY3TWZBrdOmUBYdwv1lIQ3jqlyfQEO5VInfE0utqKCLkJs091QEmAli5EbbvkC05GOxeYCLsrIefhZCLm3L8aEsWRQMk28lS9CIFJp2cOWKPKVDKo60BFYQ7gWzELgWTbB8SSmMfGCgVC4tC8rPCW9M7iZBXZApm0ZCQqUCRs3SeU4aPmN530M")
+META_TOKEN_BM1 = os.getenv("META_TOKEN_BM1")
+META_TOKEN_BM2 = os.getenv("META_TOKEN_BM2")
 
 META_ACCOUNTS = [
     {"id": "498543759542047",  "name": "Amebli 2024",     "token": META_TOKEN_BM1},
