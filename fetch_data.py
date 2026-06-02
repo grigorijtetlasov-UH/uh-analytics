@@ -230,7 +230,7 @@ def _crm_build_combined_df(daily_df, end_date_str: str, days_back: int = 29):
     return combined
 
 
-def _build_trend_30d(combined_df, categorize_fn, dedup_key_fn):
+def _build_trend_30d(combined_df, categorize_fn, dedup_key_fn, max_date_str=None):
     """
     Будує список dict-ів trend_30d з вже зібраного combined_df.
     categorize_fn(status) → 'order'/'refused'/'lead'/'spam'/'other'
@@ -239,6 +239,8 @@ def _build_trend_30d(combined_df, categorize_fn, dedup_key_fn):
     if combined_df is None or combined_df.empty:
         return []
     df = combined_df.copy()
+    if max_date_str:
+        df = df[df["_день"] <= max_date_str]
     df["_категорія"] = df["Статус"].fillna("").apply(categorize_fn)
     valid = df[df["_категорія"] != "spam"]
 
@@ -406,7 +408,7 @@ def build_1c_multi_month_trend(target_month: str, n_months: int = 3,
     return out
 
 
-def build_multi_month_trend(target_month: str, n_months: int = 3) -> list:
+def build_multi_month_trend(target_month: str, n_months: int = 3, max_date_str: str = None) -> list:
     """
     Будує дані для multi-month chart: останніх n_months місяців (включно з target_month),
     для кожного дня (1..31) — orders/revenue/leads.
@@ -445,6 +447,13 @@ def build_multi_month_trend(target_month: str, n_months: int = 3) -> list:
         if sub is None or sub.empty:
             out.append({"month": m, "label": _ua_month_label(m), "days": []})
             continue
+
+        # Якщо це поточний місяць і вказана дата — обмежуємо
+        if max_date_str and m == target_month:
+            sub = sub[sub["_день"] <= max_date_str]
+            if sub.empty:
+                out.append({"month": m, "label": _ua_month_label(m), "days": []})
+                continue
 
         # Категоризація і дедуп
         sub = sub.copy()
@@ -773,7 +782,7 @@ def fetch_salesdrive(date_str: str, uh_1c_data: dict = None) -> dict:
             # ── Тренд по днях поточного місяця (навіть якщо за поточний день нема) ──
             try:
                 cur_month_df = df[df["_місяць"] == target_month].copy()
-                result["trend_30d"] = _build_trend_30d(cur_month_df, _categorize_status, _dedup_key_cols)
+                result["trend_30d"] = _build_trend_30d(cur_month_df, _categorize_status, _dedup_key_cols, max_date_str=date_str)
                 print(f"     ℹ️  Тренд поточного місяця: {len(result['trend_30d'])} точок")
             except Exception as ex:
                 print(f"     ⚠️  Не вдалось зібрати тренд поточного місяця у fallback: {ex}")
@@ -963,7 +972,7 @@ def fetch_salesdrive(date_str: str, uh_1c_data: dict = None) -> dict:
         # тільки дні target_month (не склейка минулих місяців).
         try:
             cur_month_df = df[df["_місяць"] == target_month].copy()
-            result["trend_30d"] = _build_trend_30d(cur_month_df, categorize, dedup_key_cols)
+            result["trend_30d"] = _build_trend_30d(cur_month_df, categorize, dedup_key_cols, max_date_str=date_str)
             print(f"     ✅ Тренд поточного місяця: {len(result['trend_30d'])} точок")
         except Exception as ex:
             print(f"     ⚠️  Не вдалось зібрати тренд поточного місяця: {ex}")
@@ -2045,7 +2054,7 @@ def main(target_date=None):
     # ── Multi-month trend (останні 3 місяці включно з поточним) ──
     print(f"\n📊 Будую multi-month trend (3 місяці назад)...")
     try:
-        data["month"]["multi_month_trend"] = build_multi_month_trend(target_month, n_months=3)
+        data["month"]["multi_month_trend"] = build_multi_month_trend(target_month, n_months=3, max_date_str=day_iso)
         for mm in data["month"]["multi_month_trend"]:
             print(f"   CRM {mm['label']}: {len(mm['days'])} днів")
     except Exception as ex:
