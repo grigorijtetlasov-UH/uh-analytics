@@ -528,7 +528,7 @@ def fetch_orders_to_dataframe(api_key: Optional[str] = None,
             else:
                 # Кінець місяця: пара хитрих рядків без зайвих залежностей
                 next_month = month_dt.replace(day=28) + pd.Timedelta(days=4)
-                last_day = (next_month - pd.Timedelta(days=next_month.day)).date()
+                last_day = (pd.Timestamp(next_month) - pd.Timedelta(days=next_month.day)).date()
                 date_to = last_day.strftime("%Y-%m-%d")
 
     if not date_from or not date_to:
