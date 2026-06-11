@@ -86,7 +86,22 @@ def main():
 
     # 4d) реальні категорії/маржа з 1С → REAL_CATS + перемикаємо джерело cats
     if g:
-        real_cats = {gk: gv["cats"] for gk, gv in g.items() if gv.get("cats")}
+        real_cats = {}
+        for gk, gv in g.items():
+            cs = gv.get("cats")
+            if not cs:
+                continue
+            fixed = []
+            for c in cs:
+                c = dict(c)
+                cov = c.get("cov", 1)
+                if c.get("m") is None:          # зовсім нема собівартості → маржа невідома
+                    c["m"] = c["mp"] = 0
+                    c["n"] = c["n"] + " ⚠нд"
+                elif cov < 0.7:                 # часткова собівартість → маржі не вірити
+                    c["n"] = c["n"] + " ⚠"
+                fixed.append(c)
+            real_cats[gk] = fixed
         if real_cats:
             html = html.replace(
                 "window._brandProd={};",
@@ -135,6 +150,9 @@ def main():
     print("  D: channels", len(D["channels"]), "managers", len(D["managers"]), "products", len(D["products"]))
     if g:
         print("  CH груп:", list(g.keys()), "| план-лінію прибрано:", not any(v.get("plan") for v in g.values()))
+        print("  маржа/coverage:", {k: (v.get("margin"), f"{int((v.get('coverage') or 0) * 100)}%",
+                                        "ok" if v.get("reliable") else "⚠")
+                                    for k, v in g.items() if "coverage" in v})
     print("  MCI:", score, label, "| corr:", corr, "| днів:", m["days"])
     if rf.get("active"):
         print("  відмови 1С влито:", rf["of_orders"], "% (", rf["refused"], "з", rf["active"],

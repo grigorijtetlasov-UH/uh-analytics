@@ -85,34 +85,43 @@ def _fetch_1c_sales(cur_month):
 
 
 def fetch_1c_margin(rows):
-    """Реальна маржа з 1С SALES (відгрузки): по групах + категоріях. rows — чисті рядки."""
-    agg = {gk: {"rev": 0.0, "cost": 0.0, "cats": {}} for gk in GROUP_META}
+    """Маржа з 1С SALES. rows — чисті рядки.
+    Маржа рахується ЛИШЕ по рядках із заповненою собівартістю (cost>0).
+    coverage = частка виручки, підкріпленої собівартістю; низьке → маржі не вірити."""
+    agg = {gk: {"rev": 0.0, "cats": {}} for gk in GROUP_META}
     for r in rows:
         gk = _subdiv_group(r.get("Подразделение"))
         rev = _num1c(r.get("СуммаПродажи")); cost = _num1c(r.get("СебестоимостьПродажи"))
         qty = _num1c(r.get("КоличествоПродажи"))
         b = _cat_bucket(r.get("КатегорияНоменклатуры"))
-        agg[gk]["rev"] += rev; agg[gk]["cost"] += cost
-        cb = agg[gk]["cats"].setdefault(b, {"rev": 0.0, "cost": 0.0, "qty": 0.0})
-        cb["rev"] += rev; cb["cost"] += cost; cb["qty"] += qty
+        agg[gk]["rev"] += rev
+        cb = agg[gk]["cats"].setdefault(b, {"rev": 0.0, "qty": 0.0, "rcov": 0.0, "ccov": 0.0})
+        cb["rev"] += rev; cb["qty"] += qty
+        if cost > 0:                      # маржу рахуємо лише з реальною собівартістю
+            cb["rcov"] += rev; cb["ccov"] += cost
 
     out = {}
     for gk, gv in agg.items():
-        rev = gv["rev"]
-        if rev <= 0:
+        grev = gv["rev"]
+        if grev <= 0:
             continue
+        grcov = gccov = 0.0
         cats = []
         for n, cb in gv["cats"].items():
             cr = cb["rev"]
             if cr <= 0:
                 continue
-            m = round((cr - cb["cost"]) / cr * 100, 1)
+            rc, cc = cb["rcov"], cb["ccov"]
+            m = round((rc - cc) / rc * 100, 1) if rc > 0 else None
             ac = round(cr / cb["qty"]) if cb["qty"] else 0
-            cats.append({"n": n, "share": round(cr / rev, 4), "m": m, "mp": m,
-                         "ac": ac, "acp": ac, "rev": round(cr)})
+            grcov += rc; gccov += cc
+            cats.append({"n": n, "share": round(cr / grev, 4), "m": m, "mp": m,
+                         "ac": ac, "acp": ac, "rev": round(cr), "cov": round(rc / cr, 2)})
         cats.sort(key=lambda x: -x["rev"])
-        out[gk] = {"rev": round(rev), "cost": round(gv["cost"]),
-                   "margin": round((rev - gv["cost"]) / rev * 100, 1), "cats": cats}
+        gm = round((grcov - gccov) / grcov * 100, 1) if grcov > 0 else None
+        gcov = round(grcov / grev, 2) if grev > 0 else 0.0
+        out[gk] = {"rev": round(grev), "margin": gm, "coverage": gcov,
+                   "reliable": gcov >= 0.7, "cats": cats}
     return out
 
 
@@ -303,6 +312,8 @@ def main():
     for gk in grp:
         if gk in m1c:
             grp[gk]["margin"] = m1c[gk]["margin"]
+            grp[gk]["coverage"] = m1c[gk]["coverage"]
+            grp[gk]["reliable"] = m1c[gk]["reliable"]
             grp[gk]["cats"] = m1c[gk]["cats"]
 
     # ── KPI: конверсія з CRM, ВІДМОВИ — канонічні з 1С (СостояниеЗаказа) ──
@@ -341,7 +352,10 @@ def main():
     print("  групи:", {k: round(sum(v["june"]) / 1000) for k, v in data["groups"].items()}, "K (факт міс.)")
     print("  плани:", {k: round(v["plan"] / 1000) for k, v in data["groups"].items()}, "K |",
           "затрати задано:" , bool(costs))
-    print("  маржа 1С:", {k: v["margin"] for k, v in data["groups"].items() if "margin" in v}, "%")
+    print("  маржа 1С:", {k: v.get("margin") for k, v in data["groups"].items()
+                          if v.get("margin") is not None})
+    print("  coverage собівартості:", {k: f"{int((v.get('coverage') or 0) * 100)}%"
+                                       for k, v in data["groups"].items() if "coverage" in v})
     k = data["kpi"]
     print("  конверсія:", k["conversion"]["value"], "% (CRM) | відмови:",
           k["refuse"]["of_orders"], "% (" + k["refuse"].get("source", "CRM") + ":",
