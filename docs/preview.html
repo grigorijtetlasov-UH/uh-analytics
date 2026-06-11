@@ -910,6 +910,7 @@ function _baseName(name){
   return n.split(' ').slice(0,3).join(' ')||name;
 }
 window._brandProd={};
+const REAL_CATS = {"roll": [{"n": "Топери", "share": 0.773, "m": 55.3, "mp": 55.3, "ac": 2543, "acp": 2543, "rev": 1970888}, {"n": "Матраци", "share": 0.1104, "m": 53.7, "mp": 53.7, "ac": 6254, "acp": 6254, "rev": 281426}, {"n": "Послуги/Доставка", "share": 0.1011, "m": 99.9, "mp": 99.9, "ac": 301, "acp": 301, "rev": 257773}, {"n": "Інше", "share": 0.0155, "m": 59.2, "mp": 59.2, "ac": 550, "acp": 550, "rev": 39610}], "amebli": [{"n": "Матраци", "share": 0.7477, "m": 54.4, "mp": 54.4, "ac": 6338, "acp": 6338, "rev": 1413419}, {"n": "Топери", "share": 0.1221, "m": 56.3, "mp": 56.3, "ac": 3079, "acp": 3079, "rev": 230891}, {"n": "Послуги/Доставка", "share": 0.065, "m": 99.7, "mp": 99.7, "ac": 415, "acp": 415, "rev": 122850}, {"n": "Інше", "share": 0.0307, "m": 48.8, "mp": 48.8, "ac": 369, "acp": 369, "rev": 57941}, {"n": "Корпусні", "share": 0.025, "m": 65.9, "mp": 65.9, "ac": 9438, "acp": 9438, "rev": 47188}, {"n": "М'які меблі", "share": 0.0096, "m": 30.6, "mp": 30.6, "ac": 18101, "acp": 18101, "rev": 18101}], "seti": [{"n": "Матраци", "share": 0.5546, "m": 46.2, "mp": 46.2, "ac": 5143, "acp": 5143, "rev": 1563363}, {"n": "Топери", "share": 0.2433, "m": 40.4, "mp": 40.4, "ac": 1916, "acp": 1916, "rev": 685980}, {"n": "Корпусні", "share": 0.073, "m": 59.0, "mp": 59.0, "ac": 9350, "acp": 9350, "rev": 205701}, {"n": "М'які меблі", "share": 0.0674, "m": 40.3, "mp": 40.3, "ac": 9998, "acp": 9998, "rev": 189956}, {"n": "Послуги/Доставка", "share": 0.0478, "m": 100.0, "mp": 100.0, "ac": 427, "acp": 427, "rev": 134821}, {"n": "Інше", "share": 0.0139, "m": 53.1, "mp": 53.1, "ac": 516, "acp": 516, "rev": 39183}], "roznica": [{"n": "М'які меблі", "share": 0.402, "m": 86.3, "mp": 86.3, "ac": 26124, "acp": 26124, "rev": 496352}, {"n": "Корпусні", "share": 0.3245, "m": 72.8, "mp": 72.8, "ac": 14838, "acp": 14838, "rev": 400633}, {"n": "Матраци", "share": 0.237, "m": 72.5, "mp": 72.5, "ac": 8865, "acp": 8865, "rev": 292530}, {"n": "Топери", "share": 0.0256, "m": 59.9, "mp": 59.9, "ac": 3944, "acp": 3944, "rev": 31551}, {"n": "Інше", "share": 0.0106, "m": 47.8, "mp": 47.8, "ac": 1091, "acp": 1091, "rev": 13093}, {"n": "Послуги/Доставка", "share": 0.0003, "m": 100.0, "mp": 100.0, "ac": 36, "acp": 36, "rev": 400}]};
 
 function renderBrand(key){
   const b=BRANDS[key]; if(!b)return;
@@ -925,7 +926,7 @@ function renderBrand(key){
   const orders=Math.round(actual/b.avg);
   const allActual=Object.values(CH).reduce((s,c)=>s+c.june.reduce((a,x)=>a+x,0),0);
   const frac=actual/allActual;
-  const cats=b.cats.map(c=>({...c,rev:Math.round(actual*c.share)}));
+  const cats=(window.REAL_CATS&&REAL_CATS[b.ch]&&REAL_CATS[b.ch].length)?REAL_CATS[b.ch]:b.cats.map(c=>({...c,rev:Math.round(actual*c.share)}));
   const catTot=cats.reduce((s,c)=>s+c.rev,0);
   let prods=D.products.filter(p=>_prodClass(p.name)===b.prodFilter);
   if(prods.length<3) prods=D.products.slice();
@@ -994,7 +995,7 @@ function renderBrand(key){
   // top10 grouped
   const groups={};prods.forEach(p=>{const k=_baseName(p.name);if(!groups[k])groups[k]={name:k,qty:0,count:0,revenue:0};groups[k].qty+=p.qty;groups[k].count+=p.count;groups[k].revenue+=p.revenue;});
   const top10=Object.values(groups).sort((x,y)=>y.revenue-x.revenue).slice(0,10);
-  const dom=b.cats[0].m;
+  const dom=cats[0].m;
   document.getElementById(P+'-top10').innerHTML=top10.map((g,i)=>{const ap=g.qty?Math.round(g.revenue/g.qty):0;return `<tr><td class="num" style="color:var(--td)">${i+1}</td><td><b>${g.name}</b></td><td class="r num" style="color:var(--ac2)">${g.qty}</td><td class="r num" style="color:var(--td)">${g.count}</td><td class="r num">${fmtN(ap)} ₴</td><td class="r num" style="color:var(--g)">${fmtK(g.revenue)}</td><td class="r num" style="color:var(--o)">${dom}%</td></tr>`;}).join('');
 
   // sellers scaled to brand
