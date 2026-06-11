@@ -144,6 +144,45 @@ def main():
             + str(pa) + '<span class="ku">%</span></div><div class="ks">'
             + str(ra) + ' з ' + str(sa) + ' зам.</div></div>')
 
+    # 7) Відгрузки (Секція 4) з 1С SALES → реальні shipJune / shipMay / shipPlan
+    sh = data.get("shipments") or {}
+    if sh.get("june"):
+        html = re.sub(r"const shipJune=\[[^\]]*\];",
+                      "const shipJune=" + json.dumps(sh["june"]) + ";", html, count=1)
+        html = re.sub(r"const shipMay=rampDaily\(\d+\),",
+                      "const shipMay=rampDaily(" + str(sh.get("may_total", 0)) + "),", html, count=1)
+        plan = int(sh.get("plan", 0) or 0)
+        html = re.sub(r"const shipPlan=\d+,", "const shipPlan=" + str(plan) + ",", html, count=1)
+        html = html.replace("const shipPlanPct=((shipProj/shipPlan)*100).toFixed(0);",
+                            "const shipPlanPct=(shipPlan>0?((shipProj/shipPlan)*100).toFixed(0):'—');")
+        if plan <= 0:   # плану нема → ховаємо лінію плану
+            html = re.sub(r"\s*\{label:'План',data:shipLabels\.map\(\(\)=>shipPlanDaily\),[^}]*\},",
+                          "", html, count=1)
+
+    # 8) Ховаємо Секцію 2 (Маркетинг/ДРР) — джерела рекламних витрат поки нема
+    html = re.sub(r"<!-- ═══ SECTION 2 — MARKETING ═══ -->.*?(?=<!-- ═══ SECTION 3)",
+                  "", html, count=1, flags=re.DOTALL)
+
+    # 9) Секція 3 — реальні лічильники з CRM (спам / недодзвон / втрачені ліди)
+    fn = data.get("funnel") or {}
+    if fn:
+        html = html.replace(
+            '<div class="kpi c3"><div class="kl">Повернення</div><div class="kv">~1.8<span class="ku">%</span></div><div class="ks">оцінка по відгрузках</div></div>',
+            '<div class="kpi c3"><div class="kl">Втрачені ліди</div><div class="kv">'
+            + str(fn.get("lost", 0)) + '</div><div class="ks">«Лід (не купив)»</div></div>')
+        html = html.replace(
+            '<div class="kpi c7"><div class="kl">Спам / дублі</div><div class="kv">236</div><div class="ks">221 спам + 15 дублів</div></div>',
+            '<div class="kpi c7"><div class="kl">Спам / дублі</div><div class="kv">'
+            + str(fn.get("spam_total", 0)) + '</div><div class="ks">'
+            + str(fn.get("spam", 0)) + ' спам + ' + str(fn.get("dubli", 0)) + ' дублі</div></div>')
+        html = html.replace(
+            '<div class="kpi c4"><div class="kl">Недодзвон</div><div class="kv">51</div><div class="ks">потребує обробки</div></div>',
+            '<div class="kpi c4"><div class="kl">Недодзвон</div><div class="kv">'
+            + str(fn.get("nedodzvon", 0)) + '</div><div class="ks">потребує обробки</div></div>')
+
+    # 10) Ховаємо статичні AI-висновки (повернемо реальними на Етапі 2)
+    html = html.replace("</head>", "<style>.ai-block{display:none}</style>\n</head>", 1)
+
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(html, encoding="utf-8")
     print("preview.html:", OUT, "|", len(html), "симв")
@@ -157,6 +196,14 @@ def main():
     if rf.get("active"):
         print("  відмови 1С влито:", rf["of_orders"], "% (", rf["refused"], "з", rf["active"],
               ") | roll", _gref("roll")[0], "% amebli", _gref("amebli")[0], "%")
+    if sh.get("june"):
+        print("  відгрузки влито: факт", round(sum(sh["june"]) / 1000), "K | травень",
+              round(sh.get("may_total", 0) / 1000), "K | план", round(sh.get("plan", 0) / 1000), "K")
+    print("  Секцію 2 (Маркетинг) приховано:", "SECTION 2 — MARKETING" not in html)
+    if fn:
+        print("  Секція 3 з CRM: спам", fn.get("spam_total"), "| недодзвон", fn.get("nedodzvon"),
+              "| втрачені ліди", fn.get("lost"))
+    print("  AI-висновки приховано:", ".ai-block{display:none}" in html)
 
 
 if __name__ == "__main__":

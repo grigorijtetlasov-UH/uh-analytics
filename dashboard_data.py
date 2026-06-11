@@ -231,10 +231,49 @@ def products(df, top=50):
     return res[:top]
 
 
+def crm_funnel(df):
+    """Лічильники Секції 3 з CRM (унікальні ліди за ID замовлення)."""
+    oid = C_OID if C_OID in df.columns else None
+    scol = "Статус"
+
+    def cnt(statuses):
+        if scol not in df.columns:
+            return 0
+        d = df[df[scol].isin(statuses)]
+        return int(d[oid].nunique()) if (oid and oid in d.columns) else int(len(d))
+
+    spam = cnt(["Спам на согласование", "Рекламный спам"])
+    dubli = cnt(["Спам Дубль"])
+    nedodzvon = cnt(["Недодзвон"])
+    lost = cnt(["Лід (не купив)"])
+    return {"spam": spam, "dubli": dubli, "spam_total": spam + dubli,
+            "nedodzvon": nedodzvon, "lost": lost}
+
+
 def daily(df):
     o = _orders(df); o = o[o["_категорія"] == "order"]
     s = o.groupby("_день")[C_SUM].sum().sort_index()
     return {str(k): round(float(v)) for k, v in s.items()}
+
+
+def shipments(rows_cur, rows_prev, day_count):
+    """Денні відгрузки з 1С SALES (СуммаПродажи по днях поточного місяця) + сума минулого."""
+    def by_day(rows):
+        d = {}
+        for r in rows:
+            dd = str(r.get("Дата", "")).strip().split(".")
+            if len(dd) != 3:
+                continue
+            try:
+                day = int(dd[0])
+            except ValueError:
+                continue
+            d[day] = d.get(day, 0.0) + _num1c(r.get("СуммаПродажи"))
+        return d
+    cur = by_day(rows_cur)
+    june = [round(cur.get(d, 0)) for d in range(1, day_count + 1)]
+    may_total = round(sum(_num1c(r.get("СуммаПродажи")) for r in rows_prev)) if rows_prev else 0
+    return {"june": june, "may_total": may_total, "plan": 0}
 
 
 def groups(df, prev, day_count):
@@ -308,6 +347,7 @@ def main():
             grp[gk]["plan"] = int(plans[gk])
 
     m1c_rows = _fetch_1c_sales(cur_month)
+    pm_rows = _fetch_1c_sales(pm)                       # відгрузки минулого місяця (для порівняння)
     m1c = fetch_1c_margin(m1c_rows)
     for gk in grp:
         if gk in m1c:
@@ -328,6 +368,13 @@ def main():
     for gk in grp:
         grp[gk]["refuse"] = ref["by_group"].get(gk, {"refused": 0, "sold": 0, "pct": 0.0})
 
+    # ── відгрузки з 1С (Секція 4) ──
+    ship = shipments(m1c_rows, pm_rows, today.day)
+    ship["plan"] = int((cfg.get("shipments_plan", {}) or {}).get(cur_month, 0) or 0)
+
+    # ── лічильники Секції 3 з CRM ──
+    funnel = crm_funnel(df)
+
     data = {
         "month": cur_month,
         "generated": datetime.now().strftime("%d.%m.%Y %H:%M"),
@@ -339,6 +386,8 @@ def main():
         "groups": grp,
         "costs": costs,
         "kpi": kpi,
+        "shipments": ship,
+        "funnel": funnel,
         "mci": mci_bar(ds),
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
@@ -362,6 +411,12 @@ def main():
           k["refuse"].get("refused", 0), "з", k["refuse"].get("active", 0), ")")
     print("  відмови по групах:",
           {gk: gv.get("refuse", {}).get("pct") for gk, gv in data["groups"].items()})
+    sp = data["shipments"]
+    print("  відгрузки 1С: факт міс.", round(sum(sp["june"]) / 1000), "K | травень",
+          round(sp["may_total"] / 1000), "K | план", round(sp["plan"] / 1000), "K")
+    fn = data["funnel"]
+    print("  CRM Секція3: спам", fn["spam_total"], "(", fn["spam"], "+", fn["dubli"],
+          "дублі) | недодзвон", fn["nedodzvon"], "| втрачені ліди", fn["lost"])
     m = data["mci"]
     print("  MCI:", m["score"], m["label"], "| днів історії:", m["days"], "| кореляція:", m["corr"])
 
