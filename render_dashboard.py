@@ -112,10 +112,16 @@ def main():
                 "?REAL_CATS[b.ch]:b.cats.map(c=>({...c,rev:Math.round(actual*c.share)}));")
             html = html.replace("const dom=b.cats[0].m;", "const dom=cats[0].m;")
 
-    # 5) hide Marketing + Finance tabs
-    lines = [ln for ln in html.split("\n")
-             if "swMain('marketing'" not in ln and "swMain('finance'" not in ln]
-    html = "\n".join(lines)
+    # 5) Позначаємо ненаповнені вкладки «в розробці» (наповнюємо по черзі реальними даними)
+    wip_tabs = [
+        ">📣 Маркетинг</button>",
+        ">🛒 Корзина & ціноутворення</button>",
+        ">⭐ Репутація</button>",
+        ">🧠 IRIS</button>",
+        ">📈 Фінанси P&L</button>",
+    ]
+    for t in wip_tabs:
+        html = html.replace(t, t.replace("</button>", '<sup class="wip">в розробці</sup></button>'), 1)
 
     # 6) Канонічні відмови з 1С → Секція 3 (всього + Matrasroll + Amebli)
     rf = (data.get("kpi") or {}).get("refuse") or {}
@@ -180,8 +186,49 @@ def main():
             '<div class="kpi c4"><div class="kl">Недодзвон</div><div class="kv">'
             + str(fn.get("nedodzvon", 0)) + '</div><div class="ks">потребує обробки</div></div>')
 
-    # 10) Ховаємо статичні AI-висновки (повернемо реальними на Етапі 2)
-    html = html.replace("</head>", "<style>.ai-block{display:none}</style>\n</head>", 1)
+    # 10) Стилі: ховаємо статичні AI-висновки + бейдж «в розробці»
+    html = html.replace(
+        "</head>",
+        "<style>.ai-block{display:none}"
+        ".wip{font-size:7px;color:#ffa94d;vertical-align:super;margin-left:4px;"
+        "opacity:.85;letter-spacing:.2px;font-weight:700;text-transform:uppercase}"
+        "</style>\n</head>", 1)
+
+    # 11) Продажі — реальний headline KPI-рядок (панель «Всі»)
+    import calendar as _cal
+    gg = data.get("groups") or {}
+    kp = data.get("kpi") or {}
+    if gg:
+        obsyag = sum(sum(v.get("june", [])) for v in gg.values())
+        orders = sum(v.get("orders", 0) for v in gg.values())
+        avg = round(obsyag / orders) if orders else 0
+        mnum = sum(sum(v.get("june", [])) * v["margin"] for v in gg.values() if v.get("margin") is not None)
+        mden = sum(sum(v.get("june", [])) for v in gg.values() if v.get("margin") is not None)
+        margin = round(mnum / mden) if mden else 0
+        dc = data.get("day_count", 1) or 1
+        try:
+            yy, mm = data.get("month", "2026-06").split("-")
+            dim = _cal.monthrange(int(yy), int(mm))[1]
+        except Exception:
+            dim = 30
+        proj = round(obsyag / dc * dim) if dc else obsyag
+        conv = (kp.get("conversion") or {}).get("value", 0)
+
+        def _sp(n):
+            return f"{int(n):,}".replace(",", " ")
+
+        def _kv(label_pat, value, tail):
+            nonlocal html
+            html = re.sub(label_pat + r'(<div class="kv"[^>]*>)[^<]*(' + tail + r')',
+                          r'\g<1>\g<2>' + str(value) + r'\g<3>', html, count=1)
+
+        _kv(r'(<div class="kl">Обсяг продажів[^<]*</div>)', f"{obsyag / 1e6:.1f}M", r'<span class="ku">')
+        _kv(r'(<div class="kl">Замовлень</div>)', _sp(orders), r'</div>')
+        _kv(r'(<div class="kl">Середній чек</div>)', _sp(avg), r'<span class="ku">')
+        _kv(r'(<div class="kl">Маржинальність</div>)', margin, r'<span class="ku">')
+        _kv(r'(<div class="kl">Прогноз місяць</div>)', f"{proj / 1e6:.1f}M", r'<span class="ku">')
+        _kv(r'(<div class="kl">Конверсія лід→зам</div>)', conv, r'<span class="ku">')
+        html = html.replace("Обсяг продажів (1–25)", "Обсяг продажів", 1)
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(html, encoding="utf-8")
@@ -199,7 +246,8 @@ def main():
     if sh.get("june"):
         print("  відгрузки влито: факт", round(sum(sh["june"]) / 1000), "K | травень",
               round(sh.get("may_total", 0) / 1000), "K | план", round(sh.get("plan", 0) / 1000), "K")
-    print("  Секцію 2 (Маркетинг) приховано:", "SECTION 2 — MARKETING" not in html)
+    print("  Секцію 2 (Маркетинг в Огляді) приховано:", "SECTION 2 — MARKETING" not in html)
+    print("  бейджі «в розробці»:", html.count('class="wip"'), "вкладок")
     if fn:
         print("  Секція 3 з CRM: спам", fn.get("spam_total"), "| недодзвон", fn.get("nedodzvon"),
               "| втрачені ліди", fn.get("lost"))
