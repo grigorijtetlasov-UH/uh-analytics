@@ -886,13 +886,13 @@ function swSales(name, btn) {
 
 // ═══════════ BRAND PANELS (same structure as "Всі") ═══════════
 const BRANDS={
-  matrasroll:{name:'Matrasroll',color:'#00d68f',ch:'roll',avg:2913,prodFilter:'mattress',
+  matrasroll:{name:'Matrasroll',color:'#00d68f',ch:'roll',avg:3277,prodFilter:'mattress',
     cats:[{n:'Матраци',share:0.82,m:46,mp:47,ac:3100,acp:3250},{n:'Топери',share:0.14,m:42,mp:40,ac:1900,acp:1850},{n:'Інше',share:0.04,m:30,mp:31,ac:2500,acp:2400}]},
-  amebli:{name:'Amebli',color:'#a29bfe',ch:'amebli',avg:5678,prodFilter:'premium',
+  amebli:{name:'Amebli',color:'#a29bfe',ch:'amebli',avg:6559,prodFilter:'premium',
     cats:[{n:'Матраци',share:0.50,m:44,mp:46,ac:6200,acp:6500},{n:'Топери',share:0.18,m:40,mp:39,ac:2300,acp:2250},{n:"М'які меблі",share:0.20,m:33,mp:31,ac:24000,acp:23000},{n:'Корпусні',share:0.08,m:29,mp:30,ac:19000,acp:18500},{n:'Інше',share:0.04,m:27,mp:28,ac:8000,acp:7800}]},
-  sofino:{name:'Sofino',color:'#339af0',ch:'seti',avg:5728,prodFilter:'furniture',
+  sofino:{name:'Sofino',color:'#339af0',ch:'seti',avg:7228,prodFilter:'furniture',
     cats:[{n:"М'які меблі",share:0.42,m:34,mp:32,ac:33000,acp:31000},{n:'Корпусні',share:0.40,m:28,mp:29,ac:21000,acp:20500},{n:'Матраци',share:0.13,m:43,mp:45,ac:5000,acp:5200},{n:'Інше',share:0.05,m:26,mp:27,ac:9000,acp:8800}]},
-  showrooms:{name:'Шоу-руми',color:'#ffa94d',ch:'roznica',avg:18525,prodFilter:'furniture',
+  showrooms:{name:'Шоу-руми',color:'#ffa94d',ch:'roznica',avg:17766,prodFilter:'furniture',
     cats:[{n:"М'які меблі",share:0.40,m:35,mp:33,ac:42000,acp:40000},{n:'Корпусні',share:0.35,m:30,mp:31,ac:28000,acp:27000},{n:'Матраци',share:0.20,m:45,mp:46,ac:12000,acp:12500},{n:'Інше',share:0.05,m:28,mp:29,ac:15000,acp:14500}]}
 };
 function _prodClass(name){
@@ -939,7 +939,7 @@ function renderBrand(key){
       <div class="kpi c3"><div class="kl">Середній чек</div><div class="kv">${fmtN(b.avg)}<span class="ku">₴</span></div></div>
       <div class="kpi c5"><div class="kl">Прогноз місяць</div><div class="kv" style="color:var(--g)">${fmtK(proj)}<span class="ku">₴</span></div></div>
       <div class="kpi c4"><div class="kl">Частка в компанії</div><div class="kv">${(frac*100).toFixed(0)}<span class="ku">%</span></div></div>
-      <div class="kpi c6"><div class="kl">Виконання плану</div><div class="kv">${(proj/planTotal*100).toFixed(0)}<span class="ku">%</span></div></div>
+      <div class="kpi c6"><div class="kl">Виконання плану</div><div class="kv">${(planTotal>0?(proj/planTotal*100).toFixed(0):'—')}<span class="ku">%</span></div></div>
     </div>
     <div class="cd"><div class="ct"><span class="dot"></span>Продажі по днях — план / факт / тренд<span class="btot">vs минулий місяць</span></div>
       <canvas id="${P}-ch-daily" style="max-height:280px"></canvas>
@@ -977,7 +977,7 @@ function renderBrand(key){
     `<div class="forecast-box" style="border-color:#66d9e8"><div class="forecast-label">План місяць</div><div class="forecast-val" style="color:#66d9e8;font-size:19px">${fmtK(planTotal)}₴</div></div>
      <div class="forecast-box" style="border-color:${b.color}"><div class="forecast-label">Факт + прогноз</div><div class="forecast-val" style="color:${b.color};font-size:19px">${fmtK(proj)}₴</div><div class="forecast-sub">факт 1–25: ${fmtK(actual)}₴</div></div>
      <div class="forecast-box"><div class="forecast-label">Минулий місяць</div><div class="forecast-val" style="color:#7b84a3;font-size:19px">${fmtK(mayTot)}₴</div></div>
-     <div class="forecast-box" style="border-color:var(--g);background:rgba(0,214,143,0.05)"><div class="forecast-label">Виконання плану</div><div class="forecast-val" style="color:var(--g);font-size:22px">${(proj/planTotal*100).toFixed(0)}%</div><div class="forecast-sub" style="color:var(--g)">+${((proj-mayTot)/mayTot*100).toFixed(0)}% vs міс.</div></div>`;
+     <div class="forecast-box" style="border-color:var(--g);background:rgba(0,214,143,0.05)"><div class="forecast-label">Виконання плану</div><div class="forecast-val" style="color:var(--g);font-size:22px">${(planTotal>0?(proj/planTotal*100).toFixed(0):'—')}%</div><div class="forecast-sub" style="color:var(--g)">+${((proj-mayTot)/mayTot*100).toFixed(0)}% vs міс.</div></div>`;
 
   // daily table
   document.getElementById(P+'-day').innerHTML=daily.map((v,i)=>{const ord=Math.round(v/b.avg);const ac=ord?Math.round(v/ord):0;const mv=mayArr[i];const d=mv?((v-mv)/mv*100):0;return `<tr><td class="num" style="color:var(--td)">${i+1}</td><td class="r num" style="color:${b.color}">${fmtN(v)}</td><td class="r num">${ord}</td><td class="r num">${fmtN(ac)} ₴</td><td class="r num" style="color:var(--td)">${fmtN(mv)}</td><td class="r"><span class="dlt ${d>=0?'up':'down'}">${d>=0?'+':''}${d.toFixed(0)}%</span></td></tr>`;}).join('');
@@ -1021,7 +1021,7 @@ function sortBrandProd(btn,key,k){const p=btn.parentElement;p.querySelectorAll('
 
 // ═══════════ OVERVIEW CHARTS ═══════════
 // ═══════════ OVERVIEW: MCI + 4 SECTIONS ═══════════
-const CH = {"roll": {"name": "Ролл", "color": "#00d68f", "june": [220364, 287426, 242750, 207406, 222216, 216151, 244895, 301149, 298666, 66288], "may": 7067358, "plan": 0}, "amebli": {"name": "Амебли", "color": "#a29bfe", "june": [286994, 123367, 260605, 166282, 161903, 188971, 272664, 380850, 377497, 96128], "may": 5599263, "plan": 0}, "seti": {"name": "Сети", "color": "#339af0", "june": [148608, 268148, 253456, 119706, 82392, 166873, 167885, 140405, 167940, 96334], "may": 4963314, "plan": 0}, "roznica": {"name": "Розниця", "color": "#ffa94d", "june": [268062, 152072, 51288, 38757, 34600, 77822, 131091, 132552, 25886, 11711], "may": 2610650, "plan": 0}};
+const CH = {"roll": {"name": "Ролл", "color": "#00d68f", "june": [220364, 287426, 242750, 207406, 222216, 216151, 244895, 301149, 298666, 66288, 0], "may": 7067358, "plan": 8100000}, "amebli": {"name": "Амебли", "color": "#a29bfe", "june": [286994, 123367, 260605, 166282, 161903, 188971, 272664, 380850, 377497, 96128, 0], "may": 5599263, "plan": 7400000}, "seti": {"name": "Сети", "color": "#339af0", "june": [148608, 268148, 253456, 119706, 82392, 166873, 167885, 140405, 167940, 96334, 0], "may": 4963314, "plan": 3300000}, "roznica": {"name": "Розниця", "color": "#ffa94d", "june": [268062, 152072, 51288, 38757, 34600, 77822, 131091, 132552, 25886, 11711, 0], "may": 2610650, "plan": 2900000}};
 const O_DIM=30, O_ACT=4, O_FULL=3;
 function rampDaily(monthly){
   const w=Array.from({length:O_DIM},(_,i)=>0.55+0.9*(i/(O_DIM-1)));
@@ -1052,6 +1052,7 @@ function renderSec1(key, btn){
   const planLine=labels.map(()=>planDaily);
   const datasets=[
     {label:'Минулий місяць (факт)',data:mayArr,borderColor:'#7b84a3',backgroundColor:'rgba(123,132,163,0.08)',borderWidth:1.5,tension:0.4,pointRadius:0,fill:true},
+    {label:'План',data:planLine,borderColor:'#66d9e8',borderDash:[2,3],backgroundColor:'transparent',borderWidth:1.5,tension:0,pointRadius:0},
     {label:'Факт',data:juneSolid,borderColor:color,backgroundColor:'transparent',borderWidth:2.5,tension:0.3,pointRadius:3},
     {label:'Тренд',data:juneDash,borderColor:color,borderDash:[5,4],backgroundColor:'transparent',borderWidth:1.5,tension:0.2,pointRadius:0}
   ];
@@ -1201,7 +1202,7 @@ function initSalesCharts() {
       scales:{x:{grid:GRID,ticks:{color:'#7b84a3',maxTicksLimit:13,font:{size:9}},title:{display:true,text:'День місяця',color:'#5a6280',font:{size:9}}},
         y:{grid:GRID,ticks:{color:'#7b84a3',callback:v=>fmtK(v)+'₴'}}}}
   });
-  const planPct=((proj/planTotal)*100).toFixed(0);
+  const planPct=(planTotal>0?((proj/planTotal)*100).toFixed(0):'—');
   const mom=((proj-mayTot)/mayTot*100).toFixed(0);
   document.getElementById('sales-daily-summary').innerHTML=
     `<div class="forecast-box" style="border-color:#66d9e8"><div class="forecast-label">План місяць</div><div class="forecast-val" style="color:#66d9e8;font-size:19px">${fmtK(planTotal)}₴</div><div class="forecast-sub">Разом</div></div>
