@@ -406,7 +406,7 @@ tr.row-comp td{opacity:.8}
 <div class="hdr">
   <h1>United Home · Analytics Dashboard</h1>
   <div class="sub">United Home Group · Червень 2026</div>
-  <div class="stamp">Поточний: 2026-06 · Дані за 1–4 числа · Оновлено 04.06.2026 · Версія 2.0</div>
+  <div class="stamp">Поточний: 2026-06 · Дані за 1–12 числа · Оновлено 12.06.2026 · Версія 2.0</div>
 </div>
 
 <!-- ═══════════════════ MAIN TABS ═══════════════════ -->
@@ -457,6 +457,8 @@ tr.row-comp td{opacity:.8}
      TAB 1 — ОГЛЯД
 ══════════════════════════════════════════════════ -->
 <div class="mpnl on" id="mp-overview">
+<details style="margin-bottom:16px;background:rgba(165,155,254,.05);border:1px solid rgba(165,155,254,.25);border-radius:10px;padding:10px 14px"><summary style="cursor:pointer;font-weight:700;color:#a29bfe;font-size:13px">📋 Плани місяця (2026-06) — заповнення</summary><div style="margin-top:10px;font-size:12px"><div style="color:#7b84a3;margin-bottom:6px">План продажів по групах:</div><div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:90px;color:#c1c7e0">Ролл</span><input data-pg="roll" type="number" value="8100000" style="width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;padding:5px 8px;font-size:12px"><span style="color:#7b84a3;font-size:11px">₴</span></div><div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:90px;color:#c1c7e0">Амебли</span><input data-pg="amebli" type="number" value="7400000" style="width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;padding:5px 8px;font-size:12px"><span style="color:#7b84a3;font-size:11px">₴</span></div><div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:90px;color:#c1c7e0">Сети</span><input data-pg="seti" type="number" value="3300000" style="width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;padding:5px 8px;font-size:12px"><span style="color:#7b84a3;font-size:11px">₴</span></div><div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:90px;color:#c1c7e0">Розниця</span><input data-pg="roznica" type="number" value="2900000" style="width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;padding:5px 8px;font-size:12px"><span style="color:#7b84a3;font-size:11px">₴</span></div><div style="display:flex;align-items:center;gap:8px;margin:10px 0 4px"><span style="width:90px;color:#c1c7e0">План відгрузок</span><input id="planShip" type="number" value="0" style="width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;padding:5px 8px;font-size:12px"><span style="color:#7b84a3;font-size:11px">₴</span></div><button onclick="genPlanJSON()" style="margin-top:10px;background:#a29bfe;color:#1a1a2e;border:none;border-radius:7px;padding:7px 14px;font-weight:600;cursor:pointer;font-size:12px">Згенерувати JSON (копіюється)</button><div style="color:#7b84a3;font-size:10.5px;margin-top:8px">Онови ключі <b>plans</b> і <b>shipments_plan</b> у <b>data/manual_config.json</b> на сервері → перезапусти пайплайн.</div><textarea id="planOut" readonly style="display:none;width:100%;height:160px;margin-top:8px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.12);border-radius:7px;color:#9ae6b4;padding:8px;font-family:monospace;font-size:11px"></textarea></div></details><script>function genPlanJSON(){var m="2026-06";var plans={};document.querySelectorAll("[data-pg]").forEach(function(i){plans[i.dataset.pg]=Number(i.value)||0;});var sp=Number(document.getElementById("planShip").value)||0;var o={plans:{},shipments_plan:{}};o.plans[m]=plans;o.shipments_plan[m]=sp;var t=document.getElementById("planOut");t.value=JSON.stringify(o,null,2);t.style.display="block";t.select();try{document.execCommand("copy");}catch(e){}}</script>
+<details style="margin-bottom:16px;background:rgba(102,217,232,.05);border:1px solid rgba(102,217,232,.22);border-radius:10px;padding:10px 14px"><summary style="cursor:pointer;font-weight:700;color:#66d9e8;font-size:13px">🩺 Діагностика даних — джерела і перевірки · дані 1–12 червня, оновлено 12.06.2026 12:20</summary><div style="margin-top:10px;overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11.5px"><thead><tr style="color:#7b84a3;text-align:left;border-bottom:1px solid rgba(255,255,255,.08)"><th style="padding:4px 8px">Блок</th><th style="padding:4px 8px">Значення</th><th style="padding:4px 8px">Джерело</th><th style="padding:4px 8px">Статус</th></tr></thead><tbody><tr><td style="padding:3px 8px">Обсяг продажів</td><td style="padding:3px 8px;font-weight:600">9.1M₴</td><td style="padding:3px 8px;color:#7b84a3">CRM · факт по групах</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Замовлень</td><td style="padding:3px 8px;font-weight:600">1 723</td><td style="padding:3px 8px;color:#7b84a3">CRM · унік. ID</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Середній чек</td><td style="padding:3px 8px;font-weight:600">5 274₴</td><td style="padding:3px 8px;color:#7b84a3">CRM</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Маржинальність</td><td style="padding:3px 8px;font-weight:600">41%</td><td style="padding:3px 8px;color:#7b84a3">1С · собівартість</td><td style="padding:3px 8px"><span style="color:#ffd43b;font-weight:600">⚠ оцінка</span></td></tr><tr><td style="padding:3px 8px">Конверсія лід→зам</td><td style="padding:3px 8px;font-weight:600">87.3%</td><td style="padding:3px 8px;color:#7b84a3">CRM · статуси</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Воронка — лідів</td><td style="padding:3px 8px;font-weight:600">2 894</td><td style="padding:3px 8px;color:#7b84a3">CRM · статуси (знімок)</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Відмови</td><td style="padding:3px 8px;font-weight:600">4.8% (93/1946)</td><td style="padding:3px 8px;color:#7b84a3">1С · СостояниеЗаказа</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Відгрузки — факт</td><td style="padding:3px 8px;font-weight:600">9.8M₴</td><td style="padding:3px 8px;color:#7b84a3">1С · SALES</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Відгрузки — план</td><td style="padding:3px 8px;font-weight:600">не задано</td><td style="padding:3px 8px;color:#7b84a3">manual_config.json</td><td style="padding:3px 8px"><span style="color:#ffa94d;font-weight:600">🔧 в розробці</span></td></tr><tr><td style="padding:3px 8px">Категорії (маржа)</td><td style="padding:3px 8px;font-weight:600">6 кат.</td><td style="padding:3px 8px;color:#7b84a3">1С · агрегат груп</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Продавці: конв/поверн</td><td style="padding:3px 8px;font-weight:600">27 ос.</td><td style="padding:3px 8px;color:#7b84a3">CRM · статуси</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">MCI індекс</td><td style="padding:3px 8px;font-weight:600">66 🟢 Оптимизм</td><td style="padding:3px 8px;color:#7b84a3">mci schema</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Маркетинг / ДРР</td><td style="padding:3px 8px;font-weight:600">нема джерела витрат</td><td style="padding:3px 8px;color:#7b84a3">—</td><td style="padding:3px 8px"><span style="color:#ffa94d;font-weight:600">🔧 в розробці</span></td></tr><tr><td style="padding:3px 8px">Денний графік відмов (Огляд)</td><td style="padding:3px 8px;font-weight:600">по днях</td><td style="padding:3px 8px;color:#7b84a3">CRM · дата замовлення</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr></tbody></table><div style="margin-top:8px;color:#7b84a3;font-size:10.5px;line-height:1.6">Автоперевірки: воронка Σстадій=2894 vs ліди=2894 ✅ · спам поза лідами=841 · невідомі статуси=124 · coverage собівартості: roll 86% · amebli 81% · seti 85% · roznica 35%</div></div></details>
 
   <!-- MCI mini-module -->
   <div class="mci-bar">
@@ -509,12 +511,12 @@ tr.row-comp td{opacity:.8}
     <div class="sec-head"><div class="sec-num">3</div><div class="sec-title">↩️ Повернення / Відмови</div><div class="sec-sub">коротко<br>по кожному пункту</div></div>
     <div class="cd">
       <div class="kpi-row" style="margin-bottom:12px">
-        <div class="kpi c2"><div class="kl">Відмови всього</div><div class="kv" style="color:var(--g)">4.3<span class="ku">%</span></div><div class="ks">79 з 1852 · 1С відгрузки</div></div>
-        <div class="kpi c2"><div class="kl">Відмови Matrasroll</div><div class="kv">5.1<span class="ku">%</span></div><div class="ks">44 з 869 зам.</div></div>
-        <div class="kpi c2"><div class="kl">Відмови Amebli</div><div class="kv">3.2<span class="ku">%</span></div><div class="ks">12 з 376 зам.</div></div>
-        <div class="kpi c3"><div class="kl">Втрачені ліди</div><div class="kv">223</div><div class="ks">«Лід (не купив)»</div></div>
-        <div class="kpi c7"><div class="kl">Спам / дублі</div><div class="kv">678</div><div class="ks">652 спам + 26 дублі</div></div>
-        <div class="kpi c4"><div class="kl">Недодзвон</div><div class="kv">131</div><div class="ks">потребує обробки</div></div>
+        <div class="kpi c2"><div class="kl">Відмови всього</div><div class="kv" style="color:var(--g)">4.8<span class="ku">%</span></div><div class="ks">93 з 1946 · 1С відгрузки</div></div>
+        <div class="kpi c2"><div class="kl">Відмови Matrasroll</div><div class="kv">6.0<span class="ku">%</span></div><div class="ks">54 з 903 зам.</div></div>
+        <div class="kpi c2"><div class="kl">Відмови Amebli</div><div class="kv">3.6<span class="ku">%</span></div><div class="ks">14 з 389 зам.</div></div>
+        <div class="kpi c3"><div class="kl">Втрачені ліди</div><div class="kv">257</div><div class="ks">«Лід (не купив)»</div></div>
+        <div class="kpi c7"><div class="kl">Спам / дублі</div><div class="kv">841</div><div class="ks">814 спам + 27 дублі</div></div>
+        <div class="kpi c4"><div class="kl">Недодзвон</div><div class="kv">151</div><div class="ks">потребує обробки</div></div>
       </div>
       <canvas id="ch-sec3" style="max-height:200px"></canvas>
       <div class="ai-block">
@@ -583,25 +585,25 @@ tr.row-comp td{opacity:.8}
   <!-- All brands KPI -->
   <div id="sp-all" class="pnl on">
     <div class="kpi-row">
-      <div class="kpi c1"><div class="kl">Обсяг продажів</div><div class="kv">8.1M<span class="ku">₴</span></div><div class="ks">факт червня · <span class="dlt up">+47% vs міс.</span></div></div>
-      <div class="kpi c2"><div class="kl">Замовлень</div><div class="kv">1 535</div><div class="ks">~208 зам/день</div></div>
-      <div class="kpi c3"><div class="kl">Середній чек</div><div class="kv">5 258<span class="ku">₴</span></div><div class="ks"><span class="dlt down">−25.2%</span> vs 7 371₴</div></div>
-      <div class="kpi c4"><div class="kl">Маржинальність</div><div class="kv">41<span class="ku">%</span></div><div class="ks"><span class="dlt down">−2пп</span> vs 46%</div></div>
-      <div class="kpi c5"><div class="kl">Прогноз місяць</div><div class="kv" style="color:var(--g)">22.0M<span class="ku">₴</span></div><div class="ks">при поточному темпі</div></div>
-      <div class="kpi c6"><div class="kl">Конверсія лід→зам</div><div class="kv">87.6<span class="ku">%</span></div><div class="ks">ціль ≥85%</div></div>
+      <div class="kpi c1"><div class="kl">Обсяг продажів</div><div class="kv">9.1M<span class="ku">₴</span></div><div class="ks">факт за 1–12 червня</div></div>
+      <div class="kpi c2"><div class="kl">Замовлень</div><div class="kv">1 723</div><div class="ks">~144 зам/день</div></div>
+      <div class="kpi c3"><div class="kl">Середній чек</div><div class="kv">5 274<span class="ku">₴</span></div><div class="ks">за 1–12 червня</div></div>
+      <div class="kpi c4"><div class="kl">Маржинальність</div><div class="kv">41<span class="ku">%</span></div><div class="ks">по 1С-собівартості</div></div>
+      <div class="kpi c5"><div class="kl">Прогноз місяць</div><div class="kv" style="color:var(--g)">22.7M<span class="ku">₴</span></div><div class="ks">при поточному темпі</div></div>
+      <div class="kpi c6"><div class="kl">Конверсія лід→зам</div><div class="kv">87.3<span class="ku">%</span></div><div class="ks">ціль ≥85%</div></div>
     </div>
 
     <!-- Sales daily chart: plan / fact / trend / last month -->
     <div class="cd">
       <div class="ct"><span class="dot"></span>Продажі по днях — план / факт / тренд<span class="btot">vs минулий місяць</span></div>
-      <div class="cd-d">Суцільна — факт червня (1–25). Пунктир — тренд до кінця місяця. Сіра область — факт травня. Бірюзовий пунктир — план.</div>
+      <div class="cd-d">Суцільна — факт червня (1–12). Пунктир — тренд до кінця місяця. Сіра область — факт травня. Бірюзовий пунктир — план.</div>
       <canvas id="ch-sales-daily" style="max-height:280px"></canvas>
       <div id="sales-daily-summary" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px;margin-top:12px"></div>
     </div>
 
     <!-- Sales daily table -->
     <div class="cd">
-      <div class="ct"><span class="dot" style="background:var(--b)"></span>Таблиця продажів по днях<span class="btot">1–25 червня</span></div>
+      <div class="ct"><span class="dot" style="background:var(--b)"></span>Таблиця продажів по днях<span class="btot">1–12 червня</span></div>
       <div class="scr" style="max-height:340px">
         <table>
           <thead><tr><th>День</th><th class="r">Факт ₴</th><th class="r">Замовл.</th><th class="r">Сер.чек</th><th class="r">Минулий міс. ₴</th><th class="r">Δ%</th></tr></thead>
@@ -641,7 +643,7 @@ tr.row-comp td{opacity:.8}
 
     <!-- Top sellers -->
     <div class="cd">
-      <div class="ct"><span class="dot" style="background:var(--g)"></span>ТОП продавці<span class="btot">23 активних</span></div>
+      <div class="ct"><span class="dot" style="background:var(--g)"></span>ТОП продавці<span class="btot">27 активних</span></div>
       <div class="cd-d">Виручка · обсяг · конверсія · середній чек · відмови · повернення</div>
       <div class="scr">
         <table>
@@ -691,7 +693,7 @@ tr.row-comp td{opacity:.8}
 
   <!-- DRR KPI row -->
   <div class="kpi-row">
-    <div class="kpi c1"><div class="kl">Рекл. бюджет (1–4 червня)</div><div class="kv">115 010<span class="ku">₴</span></div><div class="ks">~28 750₴/день</div></div>
+    <div class="kpi c1"><div class="kl">Рекл. бюджет (1–12 червня)</div><div class="kv">115 010<span class="ku">₴</span></div><div class="ks">~28 750₴/день</div></div>
     <div class="kpi c7"><div class="kl">ДРР Amebli</div><div class="kv" style="color:var(--r)">51.54<span class="ku">%</span></div><div class="ks">140K₴ / 273K₴ <span class="dlt down">критично</span></div></div>
     <div class="kpi c3"><div class="kl">ДРР Matrasroll</div><div class="kv" style="color:var(--o)">24.21<span class="ku">%</span></div><div class="ks">99K₴ / 411K₴ <span class="dlt warn">увага</span></div></div>
     <div class="kpi c2"><div class="kl">ДРР Відгрузки</div><div class="kv" style="color:var(--lime)">10.07<span class="ku">%</span></div><div class="ks">ціль ≤15% <span class="dlt up">OK</span></div></div>
@@ -738,7 +740,7 @@ tr.row-comp td{opacity:.8}
       <div class="ct"><span class="dot" style="background:var(--y)"></span>Прогноз рекламного бюджету на місяць</div>
       <div class="g2" style="margin-bottom:0">
         <div class="forecast-box">
-          <div class="forecast-label">Витрачено (1–4 червня)</div>
+          <div class="forecast-label">Витрачено (1–12 червня)</div>
           <div class="forecast-val" style="color:var(--ac2)">115K₴</div>
           <div class="forecast-sub">13% місячного бюджету</div>
           <div class="progress-wrap">
@@ -1161,7 +1163,7 @@ tr.row-comp td{opacity:.8}
 
 <script>
 // ═══════════ DATA ═══════════
-const D = {"channels": [{"name": "matrasroll.com.ua", "orders": 810, "revenue": 2661331, "avg_check": 3286, "prev_revenue": 7067358, "delta_cls": "down", "delta_txt": "-62%"}, {"name": "amebli.com.ua", "orders": 409, "revenue": 2627471, "avg_check": 6424, "prev_revenue": 5599263, "delta_cls": "down", "delta_txt": "-53%"}, {"name": "sofino", "orders": 204, "revenue": 1411608, "avg_check": 6920, "prev_revenue": 4099294, "delta_cls": "down", "delta_txt": "-66%"}, {"name": "Шоу-Рум Ретровіль", "orders": 16, "revenue": 342065, "avg_check": 21379, "prev_revenue": 678977, "delta_cls": "down", "delta_txt": "-50%"}, {"name": "Шоу-Рум Якова Гніздовського", "orders": 23, "revenue": 327608, "avg_check": 14244, "prev_revenue": 1323643, "delta_cls": "down", "delta_txt": "-75%"}, {"name": "Шоу-Рум Дрім Таун", "orders": 18, "revenue": 326142, "avg_check": 18119, "prev_revenue": 608030, "delta_cls": "down", "delta_txt": "-46%"}, {"name": "DR-TV", "orders": 5, "revenue": 196190, "avg_check": 39238, "prev_revenue": 246921, "delta_cls": "down", "delta_txt": "-21%"}, {"name": "hubstore.com.ua", "orders": 19, "revenue": 87981, "avg_check": 4631, "prev_revenue": 379763, "delta_cls": "down", "delta_txt": "-77%"}, {"name": "Епіцентр ЮХ", "orders": 20, "revenue": 37269, "avg_check": 1863, "prev_revenue": 45122, "delta_cls": "down", "delta_txt": "-17%"}, {"name": "Rozetka UnitedHomes", "orders": 4, "revenue": 22495, "avg_check": 5624, "prev_revenue": 145031, "delta_cls": "down", "delta_txt": "-84%"}, {"name": "UnitedHome", "orders": 4, "revenue": 18111, "avg_check": 4528, "prev_revenue": 7878, "delta_cls": "up", "delta_txt": "+130%"}, {"name": "id=1056", "orders": 1, "revenue": 6168, "avg_check": 6168, "prev_revenue": 0, "delta_cls": "neu", "delta_txt": "—"}, {"name": "АЛЛО UnitedHome", "orders": 1, "revenue": 2893, "avg_check": 2893, "prev_revenue": 6809, "delta_cls": "down", "delta_txt": "-58%"}], "managers": [{"name": "Юлія Горбань", "orders": 134, "revenue": 937250, "avg_check": 6994, "refuse_pct": 4.3}, {"name": "Анна Глотова", "orders": 103, "revenue": 718470, "avg_check": 6975, "refuse_pct": 1.0}, {"name": "Вікторія Кудрицька", "orders": 113, "revenue": 718267, "avg_check": 6356, "refuse_pct": 3.4}, {"name": "Надія Карпенко", "orders": 145, "revenue": 515920, "avg_check": 3558, "refuse_pct": 5.2}, {"name": "Ростислав Куций", "orders": 74, "revenue": 515371, "avg_check": 6964, "refuse_pct": 3.9}, {"name": "Олена Вус", "orders": 75, "revenue": 501980, "avg_check": 6693, "refuse_pct": 5.1}, {"name": "Вікторія Шегедин", "orders": 141, "revenue": 477445, "avg_check": 3386, "refuse_pct": 4.1}, {"name": "Ольга Галишин", "orders": 61, "revenue": 436993, "avg_check": 7164, "refuse_pct": 3.2}, {"name": "Ірина Молянко", "orders": 64, "revenue": 395673, "avg_check": 6182, "refuse_pct": 3.0}, {"name": "Анна Романенко", "orders": 107, "revenue": 358423, "avg_check": 3350, "refuse_pct": 5.3}, {"name": "Шоу Рум Дарынок", "orders": 24, "revenue": 336480, "avg_check": 14020, "refuse_pct": 0.0}, {"name": "Діана Дзюба", "orders": 101, "revenue": 326470, "avg_check": 3232, "refuse_pct": 2.9}, {"name": "ШоуРум ДрімТаун", "orders": 18, "revenue": 326142, "avg_check": 18119, "refuse_pct": 0.0}, {"name": "Шоу-Рум Ретровіль", "orders": 15, "revenue": 306065, "avg_check": 20404, "refuse_pct": 6.2}, {"name": "Марта Онищук", "orders": 92, "revenue": 300618, "avg_check": 3268, "refuse_pct": 1.1}, {"name": "Мария Волохата", "orders": 70, "revenue": 270116, "avg_check": 3859, "refuse_pct": 1.4}, {"name": "Руслан Сава", "orders": 47, "revenue": 185372, "avg_check": 3944, "refuse_pct": 4.1}, {"name": "Валерія Захожа", "orders": 57, "revenue": 175065, "avg_check": 3071, "refuse_pct": 3.4}, {"name": "id=208", "orders": 55, "revenue": 142569, "avg_check": 2592, "refuse_pct": 3.5}, {"name": "Катерина Мещерiна", "orders": 30, "revenue": 86936, "avg_check": 2898, "refuse_pct": 0.0}, {"name": "Александр Шамардин", "orders": 9, "revenue": 39468, "avg_check": 4385, "refuse_pct": 0.0}, {"name": "id=209", "orders": 0, "revenue": 0, "avg_check": 0, "refuse_pct": 0.0}, {"name": "id=212", "orders": 0, "revenue": 0, "avg_check": 0, "refuse_pct": 0.0}, {"name": "Анастасія Любарец", "orders": 0, "revenue": 0, "avg_check": 0, "refuse_pct": 0.0}, {"name": "Відділ Операторів", "orders": 0, "revenue": 0, "avg_check": 0, "refuse_pct": 0.0}, {"name": "Вікторія Кирієнко", "orders": 0, "revenue": 0, "avg_check": 0, "refuse_pct": 0.0}, {"name": "Едуард Бутенко", "orders": 0, "revenue": 0, "avg_check": 0, "refuse_pct": 0.0}], "products": [{"name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 160x200", "count": 37, "revenue": 280560, "qty": 39}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 160x200", "count": 21, "revenue": 162380, "qty": 25}, {"name": "Матрац Sofino Cocos вакуум 160x200", "count": 24, "revenue": 158376, "qty": 24}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 160х200 см", "count": 51, "revenue": 155885, "qty": 52}, {"name": "Ортопедичний матрац Orange Sleep Master 160x200", "count": 26, "revenue": 148473, "qty": 27}, {"name": "Диван прямий не розкладний Алтерего Lisbon SK 207 2 Seater, 1 кат. Exim Textil Chicago 05", "count": 1, "revenue": 98960, "qty": 10}, {"name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 180x200", "count": 11, "revenue": 96617, "qty": 11}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 140х190 см", "count": 35, "revenue": 92192, "qty": 35}, {"name": "Ортопедичний Orange Sleep Master Cocos 160x200", "count": 11, "revenue": 90986, "qty": 14}, {"name": "Тонкий матрац-топпер PURPLE Base Lite NEW 160x200", "count": 34, "revenue": 83405, "qty": 35}, {"name": "Комплект ліжко Edison (Євро) + матрац Handy 160x200", "count": 5, "revenue": 79995, "qty": 5}, {"name": "Ортопедичний матрац Orange Sleep Master 180x200", "count": 10, "revenue": 74052, "qty": 11}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 90x190", "count": 14, "revenue": 70221, "qty": 18}, {"name": "Ортопедичний матрац Chocolate + 2 подушки(вакуум) 160x200", "count": 1, "revenue": 67480, "qty": 8}, {"name": "Ортопедичний матрац Chocolate (вакуум) 160x200", "count": 8, "revenue": 66940, "qty": 8}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 120х190 см", "count": 28, "revenue": 66607, "qty": 29}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 150х200 см", "count": 23, "revenue": 65072, "qty": 23}, {"name": "Матрац Orange Handy Linen (вакуум) 160x200", "count": 8, "revenue": 64204, "qty": 8}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 140x190", "count": 11, "revenue": 63394, "qty": 11}, {"name": "Ортопедичний матрац Orange Fine Roll 80x190", "count": 15, "revenue": 63286, "qty": 24}, {"name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 140x190", "count": 10, "revenue": 62749, "qty": 10}, {"name": "Ортопедичний матрац Cacao (вакуум) 180x200", "count": 5, "revenue": 60995, "qty": 5}, {"name": "Ортопедичний матрац Orange Big Roll Cocos 160x200", "count": 6, "revenue": 59136, "qty": 6}, {"name": "Ортопедичний матрац Tiramisu (вакуум) 160x200", "count": 6, "revenue": 58410, "qty": 6}, {"name": "Тонкий матрац-топпер PURPLE Bionica Linen Active 160x200 см", "count": 27, "revenue": 56693, "qty": 27}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 110х190 см", "count": 26, "revenue": 55348, "qty": 27}, {"name": "Ортопедичний матрац Cacao (вакуум) 160x200", "count": 5, "revenue": 54940, "qty": 5}, {"name": "Ортопедичний матрац Orange Sleep Master 140x190", "count": 11, "revenue": 54835, "qty": 11}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 90x200", "count": 9, "revenue": 52780, "qty": 15}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 110x190", "count": 11, "revenue": 52646, "qty": 11}, {"name": "Тонкий матрац-топпер PURPLE Bionica Linen Active 140x190 см", "count": 28, "revenue": 51240, "qty": 28}, {"name": "Ортопедичний матрац ORANGE Handy Foam 160x200", "count": 6, "revenue": 51230, "qty": 6}, {"name": "Матрац ORANGE Handy ECO (вакуум) 80x190", "count": 7, "revenue": 51122, "qty": 17}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 160х190 см", "count": 17, "revenue": 50884, "qty": 17}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 80x190", "count": 11, "revenue": 50457, "qty": 15}, {"name": "Ортопедичний матрац Orange Sleep Master 90x190", "count": 8, "revenue": 49598, "qty": 15}, {"name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 160x190", "count": 7, "revenue": 48044, "qty": 7}, {"name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 140x200", "count": 7, "revenue": 47638, "qty": 7}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 140х200 см", "count": 18, "revenue": 47493, "qty": 18}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 180x200", "count": 6, "revenue": 46851, "qty": 6}, {"name": "Тонкий матрац-топпер PURPLE Base Lite Cocos 160x200", "count": 12, "revenue": 46148, "qty": 13}, {"name": "Стіл комп’ютерний Moreli Т224 120х60х75 Антрацит / Дуб Сонома", "count": 2, "revenue": 45556, "qty": 14}, {"name": "Тонкий матрац-топпер BIONICA Linen Ultra 160x200", "count": 11, "revenue": 43892, "qty": 12}, {"name": "Ортопедичний матрац Orange Sleep Master 120x190", "count": 10, "revenue": 43720, "qty": 10}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 140x200", "count": 8, "revenue": 43172, "qty": 8}, {"name": "Тонкий матрац-топпер PURPLE Base Lite Cocos 160x190", "count": 12, "revenue": 41760, "qty": 12}, {"name": "Шафа MiroMark Лука 5 дверей", "count": 2, "revenue": 40594, "qty": 2}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 150х190 см", "count": 15, "revenue": 39914, "qty": 15}, {"name": "Ортопедичний матрац SOFT 80х190", "count": 8, "revenue": 39802, "qty": 14}, {"name": "Ортопедичний Orange Sleep Master Cocos 140x200", "count": 7, "revenue": 39747, "qty": 7}]};
+const D = {"channels": [{"name": "amebli.com.ua", "orders": 458, "revenue": 2980081, "avg_check": 6507, "prev_revenue": 5599263, "delta_cls": "down", "delta_txt": "-47%"}, {"name": "matrasroll.com.ua", "orders": 899, "revenue": 2967895, "avg_check": 3301, "prev_revenue": 7067358, "delta_cls": "down", "delta_txt": "-58%"}, {"name": "sofino", "orders": 246, "revenue": 1731901, "avg_check": 7040, "prev_revenue": 4099294, "delta_cls": "down", "delta_txt": "-58%"}, {"name": "Шоу-Рум Ретровіль", "orders": 17, "revenue": 342065, "avg_check": 20121, "prev_revenue": 678977, "delta_cls": "down", "delta_txt": "-50%"}, {"name": "Шоу-Рум Якова Гніздовського", "orders": 23, "revenue": 327608, "avg_check": 14244, "prev_revenue": 1323643, "delta_cls": "down", "delta_txt": "-75%"}, {"name": "Шоу-Рум Дрім Таун", "orders": 19, "revenue": 326142, "avg_check": 17165, "prev_revenue": 608030, "delta_cls": "down", "delta_txt": "-46%"}, {"name": "DR-TV", "orders": 5, "revenue": 196190, "avg_check": 39238, "prev_revenue": 246921, "delta_cls": "down", "delta_txt": "-21%"}, {"name": "hubstore.com.ua", "orders": 22, "revenue": 100568, "avg_check": 4571, "prev_revenue": 379763, "delta_cls": "down", "delta_txt": "-74%"}, {"name": "Rozetka UnitedHomes", "orders": 6, "revenue": 44877, "avg_check": 7480, "prev_revenue": 145031, "delta_cls": "down", "delta_txt": "-69%"}, {"name": "Епіцентр ЮХ", "orders": 21, "revenue": 38770, "avg_check": 1846, "prev_revenue": 45122, "delta_cls": "down", "delta_txt": "-14%"}, {"name": "UnitedHome", "orders": 4, "revenue": 18111, "avg_check": 4528, "prev_revenue": 7878, "delta_cls": "up", "delta_txt": "+130%"}, {"name": "id=1056", "orders": 1, "revenue": 6168, "avg_check": 6168, "prev_revenue": 0, "delta_cls": "neu", "delta_txt": "—"}, {"name": "АЛЛО UnitedHome", "orders": 1, "revenue": 2893, "avg_check": 2893, "prev_revenue": 6809, "delta_cls": "down", "delta_txt": "-58%"}], "managers": [{"name": "Юлія Горбань", "orders": 153, "revenue": 1078740, "avg_check": 7051, "refuse_pct": 3.8, "conversion": 90.0, "returns": 3}, {"name": "Вікторія Кудрицька", "orders": 125, "revenue": 812288, "avg_check": 6498, "refuse_pct": 3.8, "conversion": 80.6, "returns": 2}, {"name": "Анна Глотова", "orders": 118, "revenue": 803268, "avg_check": 6807, "refuse_pct": 1.7, "conversion": 90.1, "returns": 1}, {"name": "Вікторія Шегедин", "orders": 174, "revenue": 597456, "avg_check": 3434, "refuse_pct": 3.3, "conversion": 92.1, "returns": 5}, {"name": "Ростислав Куций", "orders": 88, "revenue": 581154, "avg_check": 6604, "refuse_pct": 4.3, "conversion": 88.9, "returns": 1}, {"name": "Ольга Галишин", "orders": 72, "revenue": 571540, "avg_check": 7938, "refuse_pct": 1.4, "conversion": 73.5, "returns": 0}, {"name": "Олена Вус", "orders": 86, "revenue": 568073, "avg_check": 6606, "refuse_pct": 5.5, "conversion": 85.1, "returns": 2}, {"name": "Надія Карпенко", "orders": 156, "revenue": 549950, "avg_check": 3525, "refuse_pct": 4.9, "conversion": 88.6, "returns": 2}, {"name": "Ірина Молянко", "orders": 70, "revenue": 445440, "avg_check": 6363, "refuse_pct": 4.1, "conversion": 84.3, "returns": 0}, {"name": "Анна Романенко", "orders": 113, "revenue": 364142, "avg_check": 3222, "refuse_pct": 6.6, "conversion": 85.0, "returns": 3}, {"name": "Діана Дзюба", "orders": 109, "revenue": 360362, "avg_check": 3306, "refuse_pct": 4.4, "conversion": 94.8, "returns": 5}, {"name": "Марта Онищук", "orders": 108, "revenue": 356766, "avg_check": 3303, "refuse_pct": 1.8, "conversion": 98.2, "returns": 0}, {"name": "Шоу Рум Дарынок", "orders": 24, "revenue": 336480, "avg_check": 14020, "refuse_pct": 0.0, "conversion": 96.0, "returns": 0}, {"name": "ШоуРум ДрімТаун", "orders": 19, "revenue": 326142, "avg_check": 17165, "refuse_pct": 0.0, "conversion": 90.5, "returns": 0}, {"name": "Шоу-Рум Ретровіль", "orders": 16, "revenue": 306065, "avg_check": 19129, "refuse_pct": 5.9, "conversion": 100.0, "returns": 0}, {"name": "Мария Волохата", "orders": 70, "revenue": 277446, "avg_check": 3964, "refuse_pct": 1.4, "conversion": 81.4, "returns": 0}, {"name": "Руслан Сава", "orders": 57, "revenue": 251165, "avg_check": 4406, "refuse_pct": 6.6, "conversion": 73.1, "returns": 2}, {"name": "Валерія Захожа", "orders": 67, "revenue": 207048, "avg_check": 3090, "refuse_pct": 2.9, "conversion": 100.0, "returns": 1}, {"name": "id=208", "orders": 56, "revenue": 143218, "avg_check": 2557, "refuse_pct": 5.1, "conversion": 83.6, "returns": 3}, {"name": "Катерина Мещерiна", "orders": 33, "revenue": 110819, "avg_check": 3358, "refuse_pct": 0.0, "conversion": 97.1, "returns": 0}, {"name": "Александр Шамардин", "orders": 9, "revenue": 39468, "avg_check": 4385, "refuse_pct": 0.0, "conversion": 100.0, "returns": 0}, {"name": "id=209", "orders": 0, "revenue": 0, "avg_check": 0, "refuse_pct": 0.0, "conversion": 0.0, "returns": 0}, {"name": "id=212", "orders": 0, "revenue": 0, "avg_check": 0, "refuse_pct": 0.0, "conversion": 0.0, "returns": 0}, {"name": "Анастасія Любарец", "orders": 0, "revenue": 0, "avg_check": 0, "refuse_pct": 0.0, "conversion": 0.0, "returns": 0}, {"name": "Відділ Операторів", "orders": 0, "revenue": 0, "avg_check": 0, "refuse_pct": 0.0, "conversion": 0.0, "returns": 0}, {"name": "Вікторія Кирієнко", "orders": 0, "revenue": 0, "avg_check": 0, "refuse_pct": 0.0, "conversion": 0.0, "returns": 0}, {"name": "Едуард Бутенко", "orders": 0, "revenue": 0, "avg_check": 0, "refuse_pct": 0.0, "conversion": 0.0, "returns": 0}], "products": [{"name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 160x200", "count": 44, "revenue": 328694, "qty": 46}, {"name": "Ортопедичний матрац Orange Sleep Master 160x200", "count": 34, "revenue": 197964, "qty": 36}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 160x200", "count": 23, "revenue": 182819, "qty": 28}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 160х200 см", "count": 57, "revenue": 173879, "qty": 58}, {"name": "Матрац Sofino Cocos вакуум 160x200", "count": 26, "revenue": 171574, "qty": 26}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 140х190 см", "count": 39, "revenue": 102756, "qty": 39}, {"name": "Диван прямий не розкладний Алтерего Lisbon SK 207 2 Seater, 1 кат. Exim Textil Chicago 05", "count": 1, "revenue": 98960, "qty": 10}, {"name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 180x200", "count": 10, "revenue": 86700, "qty": 10}, {"name": "Ортопедичний матрац Cacao (вакуум) 180x200", "count": 7, "revenue": 85393, "qty": 7}, {"name": "Ортопедичний Orange Sleep Master Cocos 160x200", "count": 10, "revenue": 84487, "qty": 13}, {"name": "Тонкий матрац-топпер PURPLE Base Lite NEW 160x200", "count": 34, "revenue": 83405, "qty": 35}, {"name": "Ортопедичний матрац Orange Sleep Master 180x200", "count": 12, "revenue": 80784, "qty": 12}, {"name": "Комплект ліжко Edison (Євро) + матрац Handy 160x200", "count": 5, "revenue": 79995, "qty": 5}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 140x190", "count": 12, "revenue": 69337, "qty": 12}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 150х200 см", "count": 24, "revenue": 67902, "qty": 24}, {"name": "Ортопедичний матрац Chocolate + 2 подушки(вакуум) 160x200", "count": 1, "revenue": 67480, "qty": 8}, {"name": "Ортопедичний матрац Chocolate (вакуум) 160x200", "count": 8, "revenue": 66940, "qty": 8}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 120х190 см", "count": 28, "revenue": 66607, "qty": 29}, {"name": "Ортопедичний матрац Orange Fine Roll 80x190", "count": 16, "revenue": 65957, "qty": 25}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 160х190 см", "count": 22, "revenue": 65870, "qty": 22}, {"name": "Матрац Orange Handy Linen (вакуум) 160x200", "count": 8, "revenue": 64204, "qty": 8}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 110х190 см", "count": 30, "revenue": 63884, "qty": 31}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 90x190", "count": 13, "revenue": 62117, "qty": 16}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 90x200", "count": 11, "revenue": 61092, "qty": 17}, {"name": "Ортопедичний матрац Orange Big Roll Cocos 160x200", "count": 6, "revenue": 59136, "qty": 6}, {"name": "Ортопедичний матрац ORANGE Handy Foam 160x200", "count": 7, "revenue": 58862, "qty": 7}, {"name": "Тонкий матрац-топпер PURPLE Bionica Linen Active 160x200 см", "count": 28, "revenue": 58792, "qty": 28}, {"name": "Ортопедичний матрац Tiramisu (вакуум) 160x200", "count": 6, "revenue": 58410, "qty": 6}, {"name": "Матрац ORANGE Handy ECO (вакуум) 80x190", "count": 9, "revenue": 57168, "qty": 19}, {"name": "Ортопедичний матрац Orange Sleep Master 90x190", "count": 10, "revenue": 56212, "qty": 17}, {"name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 140x190", "count": 9, "revenue": 55373, "qty": 9}, {"name": "Ортопедичний матрац Cacao (вакуум) 160x200", "count": 5, "revenue": 54940, "qty": 5}, {"name": "Ортопедичний матрац Orange Sleep Master 140x190", "count": 11, "revenue": 54835, "qty": 11}, {"name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 160x190", "count": 8, "revenue": 54641, "qty": 8}, {"name": "Ортопедичний матрац ORANGE Handy Cocos (вакуум) 140x200", "count": 8, "revenue": 53412, "qty": 8}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 140x200", "count": 10, "revenue": 53128, "qty": 10}, {"name": "Тонкий матрац-топпер PURPLE Bionica Linen Active 140x190 см", "count": 29, "revenue": 53070, "qty": 29}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 140х200 см", "count": 20, "revenue": 52775, "qty": 20}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 110x190", "count": 11, "revenue": 52646, "qty": 11}, {"name": "Матрац ORANGE Handy ECO (вакуум) 160x200", "count": 7, "revenue": 52368, "qty": 9}, {"name": "Тонкий матрац-топпер BIONICA Linen Ultra 160x200", "count": 13, "revenue": 51236, "qty": 14}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 160x190", "count": 8, "revenue": 50747, "qty": 8}, {"name": "Тонкий матрац-топпер PURPLE Base Lite Cocos 160x200", "count": 13, "revenue": 49680, "qty": 14}, {"name": "Ортопедичний матрац Orange Sleep Master 120x190", "count": 11, "revenue": 48100, "qty": 11}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 180x200", "count": 6, "revenue": 46909, "qty": 6}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 150х190 см", "count": 17, "revenue": 45578, "qty": 17}, {"name": "Стіл комп’ютерний Moreli Т224 120х60х75 Антрацит / Дуб Сонома", "count": 2, "revenue": 45556, "qty": 14}, {"name": "Тонкий матрац-топпер PURPLE Base Lite Cocos 160x190", "count": 13, "revenue": 45240, "qty": 13}, {"name": "Тонкий матрас-топпер Bionica Linen Active Plus 80х190 см", "count": 25, "revenue": 43496, "qty": 27}, {"name": "Ортопедичний матрац ORANGE Handy (вакуум) 80x190", "count": 9, "revenue": 43161, "qty": 13}]};
 
 // ═══════════ UTILS ═══════════
 const fmt = n => { n = Number(n)||0; if(n>=1e6) return (n/1e6).toFixed(2)+'M'; if(n>=1e3) return Math.round(n/1e3)+'K'; return Math.round(n).toString(); };
@@ -1199,13 +1201,13 @@ function swSales(name, btn) {
 
 // ═══════════ BRAND PANELS (same structure as "Всі") ═══════════
 const BRANDS={
-  matrasroll:{name:'Matrasroll',color:'#00d68f',ch:'roll',avg:3286,prodFilter:'mattress',
+  matrasroll:{name:'Matrasroll',color:'#00d68f',ch:'roll',avg:3301,prodFilter:'mattress',
     cats:[{n:'Матраци',share:0.82,m:46,mp:47,ac:3100,acp:3250},{n:'Топери',share:0.14,m:42,mp:40,ac:1900,acp:1850},{n:'Інше',share:0.04,m:30,mp:31,ac:2500,acp:2400}]},
-  amebli:{name:'Amebli',color:'#a29bfe',ch:'amebli',avg:6424,prodFilter:'premium',
+  amebli:{name:'Amebli',color:'#a29bfe',ch:'amebli',avg:6507,prodFilter:'premium',
     cats:[{n:'Матраци',share:0.50,m:44,mp:46,ac:6200,acp:6500},{n:'Топери',share:0.18,m:40,mp:39,ac:2300,acp:2250},{n:"М'які меблі",share:0.20,m:33,mp:31,ac:24000,acp:23000},{n:'Корпусні',share:0.08,m:29,mp:30,ac:19000,acp:18500},{n:'Інше',share:0.04,m:27,mp:28,ac:8000,acp:7800}]},
-  sofino:{name:'Sofino',color:'#339af0',ch:'seti',avg:6898,prodFilter:'furniture',
+  sofino:{name:'Sofino',color:'#339af0',ch:'seti',avg:6981,prodFilter:'furniture',
     cats:[{n:"М'які меблі",share:0.42,m:34,mp:32,ac:33000,acp:31000},{n:'Корпусні',share:0.40,m:28,mp:29,ac:21000,acp:20500},{n:'Матраци',share:0.13,m:43,mp:45,ac:5000,acp:5200},{n:'Інше',share:0.05,m:26,mp:27,ac:9000,acp:8800}]},
-  showrooms:{name:'Шоу-руми',color:'#ffa94d',ch:'roznica',avg:17470,prodFilter:'furniture',
+  showrooms:{name:'Шоу-руми',color:'#ffa94d',ch:'roznica',avg:16878,prodFilter:'furniture',
     cats:[{n:"М'які меблі",share:0.40,m:35,mp:33,ac:42000,acp:40000},{n:'Корпусні',share:0.35,m:30,mp:31,ac:28000,acp:27000},{n:'Матраци',share:0.20,m:45,mp:46,ac:12000,acp:12500},{n:'Інше',share:0.05,m:28,mp:29,ac:15000,acp:14500}]}
 };
 function _prodClass(name){
@@ -1223,7 +1225,10 @@ function _baseName(name){
   return n.split(' ').slice(0,3).join(' ')||name;
 }
 window._brandProd={};
-const REAL_CATS = {"roll": [{"n": "Топери", "share": 0.7622, "m": 42.8, "mp": 42.8, "ac": 2553, "acp": 2553, "rev": 2029469, "cov": 0.97}, {"n": "Матраци", "share": 0.1215, "m": 43.9, "mp": 43.9, "ac": 6105, "acp": 6105, "rev": 323573, "cov": 0.92}, {"n": "Послуги/Доставка ⚠", "share": 0.101, "m": -17.5, "mp": -17.5, "ac": 302, "acp": 302, "rev": 268913, "cov": 0.0}, {"n": "Інше", "share": 0.0153, "m": 44.8, "mp": 44.8, "ac": 552, "acp": 552, "rev": 40857, "cov": 0.85}], "amebli": [{"n": "Матраци", "share": 0.7528, "m": 42.4, "mp": 42.4, "ac": 6184, "acp": 6184, "rev": 1626308, "cov": 0.89}, {"n": "Топери", "share": 0.1181, "m": 47.5, "mp": 47.5, "ac": 3073, "acp": 3073, "rev": 255057, "cov": 0.92}, {"n": "Послуги/Доставка ⚠", "share": 0.0661, "m": 41.2, "mp": 41.2, "ac": 415, "acp": 415, "rev": 142750, "cov": 0.0}, {"n": "Інше", "share": 0.0328, "m": 28.5, "mp": 28.5, "ac": 388, "acp": 388, "rev": 70929, "cov": 0.85}, {"n": "Корпусні ⚠", "share": 0.0218, "m": 25.5, "mp": 25.5, "ac": 9438, "acp": 9438, "rev": 47188, "cov": 0.46}, {"n": "М'які меблі", "share": 0.0084, "m": 30.6, "mp": 30.6, "ac": 18101, "acp": 18101, "rev": 18101, "cov": 1.0}], "seti": [{"n": "Матраци", "share": 0.5706, "m": 38.2, "mp": 38.2, "ac": 5063, "acp": 5063, "rev": 1731557, "cov": 0.93}, {"n": "Топери", "share": 0.2342, "m": 36.3, "mp": 36.3, "ac": 1936, "acp": 1936, "rev": 710608, "cov": 1.0}, {"n": "Корпусні", "share": 0.0678, "m": 30.4, "mp": 30.4, "ac": 9350, "acp": 9350, "rev": 205701, "cov": 0.8}, {"n": "М'які меблі", "share": 0.0626, "m": 23.7, "mp": 23.7, "ac": 9998, "acp": 9998, "rev": 189956, "cov": 0.78}, {"n": "Послуги/Доставка ⚠нд", "share": 0.0509, "m": 0, "mp": 0, "ac": 439, "acp": 439, "rev": 154549, "cov": 0.0}, {"n": "Інше", "share": 0.0139, "m": 37.8, "mp": 37.8, "ac": 519, "acp": 519, "rev": 42059, "cov": 0.81}], "roznica": [{"n": "М'які меблі ⚠", "share": 0.3933, "m": 36.5, "mp": 36.5, "ac": 25723, "acp": 25723, "rev": 514453, "cov": 0.25}, {"n": "Корпусні ⚠", "share": 0.3245, "m": 36.8, "mp": 36.8, "ac": 15159, "acp": 15159, "rev": 424463, "cov": 0.47}, {"n": "Матраци ⚠", "share": 0.2478, "m": 43.0, "mp": 43.0, "ac": 9263, "acp": 9263, "rev": 324193, "cov": 0.54}, {"n": "Топери", "share": 0.0241, "m": 50.9, "mp": 50.9, "ac": 3944, "acp": 3944, "rev": 31551, "cov": 0.94}, {"n": "Інше", "share": 0.01, "m": 43.0, "mp": 43.0, "ac": 1091, "acp": 1091, "rev": 13093, "cov": 0.91}, {"n": "Послуги/Доставка ⚠нд", "share": 0.0003, "m": 0, "mp": 0, "ac": 33, "acp": 33, "rev": 400, "cov": 0.0}]};
+const FUNNEL_REAL = {"in_progress": 1447, "production": 323, "shipping": 335, "sale": 465, "refused": 36, "returned": 30, "lead": 257, "spam": 841, "claim": 1, "unknown": 124, "leads_total": 2894};
+const AGG_CATS = [{"n": "Матраци", "rev": 4480526, "m": 41.2, "mp": 41.2, "ac": 5945, "acp": 5945}, {"n": "Топери", "rev": 3090176, "m": 42.1, "mp": 42.1, "ac": 2452, "acp": 2452}, {"n": "М'які меблі ⚠", "rev": 788736, "m": 31.8, "mp": 31.8, "ac": 21236, "acp": 21236}, {"n": "Корпусні ⚠", "rev": 716379, "m": 33.5, "mp": 33.5, "ac": 13230, "acp": 13230}, {"n": "Послуги/Доставка ⚠нд", "rev": 596151, "m": 0, "mp": 0, "ac": 369, "acp": 369}, {"n": "Інше", "rev": 169732, "m": 37.8, "mp": 37.8, "ac": 517, "acp": 517}];
+const REF_DAILY = {"days": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"], "refused": [3, 5, 3, 3, 5, 7, 4, 4, 1, 1, 0, 0], "returned": [7, 5, 5, 2, 3, 4, 0, 1, 1, 2, 0, 0], "pct": [3.6, 4.7, 3.2, 2.4, 4.4, 5.2, 1.9, 1.7, 0.7, 1.2, 0.0, 0.0]};
+const REAL_CATS = {"roll": [{"n": "Топери", "share": 0.7485, "m": 43.3, "mp": 43.3, "ac": 2543, "acp": 2543, "rev": 2067777, "cov": 0.98}, {"n": "Матраци", "share": 0.1353, "m": 43.8, "mp": 43.8, "ac": 5931, "acp": 5931, "rev": 373663, "cov": 0.88}, {"n": "Послуги/Доставка ⚠", "share": 0.1011, "m": -17.5, "mp": -17.5, "ac": 302, "acp": 302, "rev": 279243, "cov": 0.0}, {"n": "Інше", "share": 0.0152, "m": 47.9, "mp": 47.9, "ac": 559, "acp": 559, "rev": 41922, "cov": 0.87}], "amebli": [{"n": "Матраци", "share": 0.7592, "m": 43.0, "mp": 43.0, "ac": 6045, "acp": 6045, "rev": 1722760, "cov": 0.88}, {"n": "Топери", "share": 0.1142, "m": 48.7, "mp": 48.7, "ac": 3050, "acp": 3050, "rev": 259210, "cov": 0.86}, {"n": "Послуги/Доставка ⚠", "share": 0.0663, "m": 41.2, "mp": 41.2, "ac": 422, "acp": 422, "rev": 150400, "cov": 0.0}, {"n": "Інше", "share": 0.0316, "m": 29.3, "mp": 29.3, "ac": 389, "acp": 389, "rev": 71633, "cov": 0.77}, {"n": "Корпусні ⚠", "share": 0.0208, "m": 25.5, "mp": 25.5, "ac": 9438, "acp": 9438, "rev": 47188, "cov": 0.46}, {"n": "М'які меблі", "share": 0.008, "m": 30.6, "mp": 30.6, "ac": 18101, "acp": 18101, "rev": 18101, "cov": 1.0}], "seti": [{"n": "Матраци", "share": 0.5958, "m": 39.1, "mp": 39.1, "ac": 5227, "acp": 5227, "rev": 2023025, "cov": 0.87}, {"n": "Топери", "share": 0.2155, "m": 36.2, "mp": 36.2, "ac": 1920, "acp": 1920, "rev": 731638, "cov": 0.99}, {"n": "Корпусні", "share": 0.0656, "m": 30.6, "mp": 30.6, "ac": 9677, "acp": 9677, "rev": 222561, "cov": 0.81}, {"n": "М'які меблі", "share": 0.0615, "m": 27.4, "mp": 27.4, "ac": 9946, "acp": 9946, "rev": 208856, "cov": 0.9}, {"n": "Послуги/Доставка ⚠нд", "share": 0.0489, "m": 0, "mp": 0, "ac": 436, "acp": 436, "rev": 166108, "cov": 0.0}, {"n": "Інше", "share": 0.0127, "m": 39.2, "mp": 39.2, "ac": 513, "acp": 513, "rev": 43084, "cov": 0.72}], "roznica": [{"n": "М'які меблі ⚠", "share": 0.3971, "m": 38.3, "mp": 38.3, "ac": 25535, "acp": 25535, "rev": 561779, "cov": 0.23}, {"n": "Корпусні ⚠", "share": 0.3157, "m": 37.4, "mp": 37.4, "ac": 15401, "acp": 15401, "rev": 446630, "cov": 0.39}, {"n": "Матраци ⚠", "share": 0.2553, "m": 41.8, "mp": 41.8, "ac": 9502, "acp": 9502, "rev": 361078, "cov": 0.43}, {"n": "Топери", "share": 0.0223, "m": 50.9, "mp": 50.9, "ac": 3944, "acp": 3944, "rev": 31551, "cov": 0.94}, {"n": "Інше", "share": 0.0093, "m": 43.0, "mp": 43.0, "ac": 1091, "acp": 1091, "rev": 13093, "cov": 0.91}, {"n": "Послуги/Доставка ⚠нд", "share": 0.0003, "m": 0, "mp": 0, "ac": 31, "acp": 31, "rev": 400, "cov": 0.0}]};
 
 function renderBrand(key){
   const b=BRANDS[key]; if(!b)return;
@@ -1248,7 +1253,7 @@ function renderBrand(key){
 
   document.getElementById('sp-'+key).innerHTML=`
     <div class="kpi-row">
-      <div class="kpi c1"><div class="kl">Обсяг продажів (1–25)</div><div class="kv">${fmtK(actual)}<span class="ku">₴</span></div><div class="ks">${b.name}</div></div>
+      <div class="kpi c1"><div class="kl">Обсяг продажів (1–12)</div><div class="kv">${fmtK(actual)}<span class="ku">₴</span></div><div class="ks">${b.name}</div></div>
       <div class="kpi c2"><div class="kl">Замовлень</div><div class="kv">~${fmtN(orders)}</div><div class="ks">~${Math.round(orders/nd)} зам/день</div></div>
       <div class="kpi c3"><div class="kl">Середній чек</div><div class="kv">${fmtN(b.avg)}<span class="ku">₴</span></div></div>
       <div class="kpi c5"><div class="kl">Прогноз місяць</div><div class="kv" style="color:var(--g)">${fmtK(proj)}<span class="ku">₴</span></div></div>
@@ -1258,7 +1263,7 @@ function renderBrand(key){
     <div class="cd"><div class="ct"><span class="dot"></span>Продажі по днях — план / факт / тренд<span class="btot">vs минулий місяць</span></div>
       <canvas id="${P}-ch-daily" style="max-height:280px"></canvas>
       <div id="${P}-summary" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px;margin-top:12px"></div></div>
-    <div class="cd"><div class="ct"><span class="dot" style="background:var(--b)"></span>Таблиця продажів по днях<span class="btot">1–25 червня</span></div>
+    <div class="cd"><div class="ct"><span class="dot" style="background:var(--b)"></span>Таблиця продажів по днях<span class="btot">1–12 червня</span></div>
       <div class="scr" style="max-height:340px"><table><thead><tr><th>День</th><th class="r">Факт ₴</th><th class="r">Замовл.</th><th class="r">Сер.чек</th><th class="r">Минулий міс. ₴</th><th class="r">Δ%</th></tr></thead><tbody id="${P}-day"></tbody></table></div></div>
     <div class="cd"><div class="ct"><span class="dot" style="background:var(--p)"></span>Продажі по категоріях — маржа vs минулий місяць</div>
       <div class="scr"><table><thead><tr><th>Категорія</th><th class="r">Виручка ₴</th><th class="r">Частка</th><th class="r">Сер.чек</th><th class="r">Маржа %</th><th class="r">Маржа мин.міс</th><th class="r">Δ маржі</th></tr></thead><tbody id="${P}-cat"></tbody></table></div></div>
@@ -1289,7 +1294,7 @@ function renderBrand(key){
   ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#c1c7e0',font:{size:10},usePointStyle:true,boxWidth:8}},tooltip:{...TOOLTIP,callbacks:{title:it=>'День '+it[0].label,label:ctx=>ctx.parsed.y!=null?' '+ctx.dataset.label+': '+fmtK(ctx.parsed.y)+'₴':null}}},scales:{x:{grid:GRID,ticks:{color:'#7b84a3',maxTicksLimit:13,font:{size:9}}},y:{grid:GRID,ticks:{color:'#7b84a3',callback:v=>fmtK(v)+'₴'}}}}});
   document.getElementById(P+'-summary').innerHTML=
     `<div class="forecast-box" style="border-color:#66d9e8"><div class="forecast-label">План місяць</div><div class="forecast-val" style="color:#66d9e8;font-size:19px">${fmtK(planTotal)}₴</div></div>
-     <div class="forecast-box" style="border-color:${b.color}"><div class="forecast-label">Факт + прогноз</div><div class="forecast-val" style="color:${b.color};font-size:19px">${fmtK(proj)}₴</div><div class="forecast-sub">факт 1–25: ${fmtK(actual)}₴</div></div>
+     <div class="forecast-box" style="border-color:${b.color}"><div class="forecast-label">Факт + прогноз</div><div class="forecast-val" style="color:${b.color};font-size:19px">${fmtK(proj)}₴</div><div class="forecast-sub">факт 1–12: ${fmtK(actual)}₴</div></div>
      <div class="forecast-box"><div class="forecast-label">Минулий місяць</div><div class="forecast-val" style="color:#7b84a3;font-size:19px">${fmtK(mayTot)}₴</div></div>
      <div class="forecast-box" style="border-color:var(--g);background:rgba(0,214,143,0.05)"><div class="forecast-label">Виконання плану</div><div class="forecast-val" style="color:var(--g);font-size:22px">${(planTotal>0?(proj/planTotal*100).toFixed(0):'—')}%</div><div class="forecast-sub" style="color:var(--g)">+${((proj-mayTot)/mayTot*100).toFixed(0)}% vs міс.</div></div>`;
 
@@ -1314,7 +1319,7 @@ function renderBrand(key){
   // sellers scaled to brand
   const allMgrRev=D.managers.reduce((s,m)=>s+m.revenue,0)||1;
   const sellers=D.managers.slice().sort((x,y)=>y.revenue-x.revenue).slice(0,12);
-  document.getElementById(P+'-sellers').innerHTML=sellers.map((m,i)=>{const rev=Math.round(m.revenue/allMgrRev*actual);const ord=Math.max(1,Math.round(rev/b.avg));const conv=Math.min(95,80+((m.orders*7)%14));const returns=Math.round(ord*0.018);const refClass=m.refuse_pct>=10?'br':m.refuse_pct>=5?'bo':'bg';const convClass=conv>=88?'bg':conv>=82?'bo':'br';return `<tr><td class="num" style="color:var(--td)">${i+1}</td><td>${m.name}</td><td class="r num" style="color:var(--g)">${fmtK(rev)}</td><td class="r num">${ord}</td><td class="r"><span class="badge ${convClass}">${conv}%</span></td><td class="r num">${fmtN(m.avg_check)} ₴</td><td class="r"><span class="badge ${refClass}">${m.refuse_pct.toFixed(1)}%</span></td><td class="r num" style="color:var(--td)">${returns}</td></tr>`;}).join('');
+  document.getElementById(P+'-sellers').innerHTML=sellers.map((m,i)=>{const rev=Math.round(m.revenue/allMgrRev*actual);const ord=Math.max(1,Math.round(rev/b.avg));const conv=(m.conversion!=null?m.conversion:0);const returns=(m.returns!=null?m.returns:0);const refClass=m.refuse_pct>=10?'br':m.refuse_pct>=5?'bo':'bg';const convClass=conv>=88?'bg':conv>=82?'bo':'br';return `<tr><td class="num" style="color:var(--td)">${i+1}</td><td>${m.name}</td><td class="r num" style="color:var(--g)">${fmtK(rev)}</td><td class="r num">${ord}</td><td class="r"><span class="badge ${convClass}">${conv}%</span></td><td class="r num">${fmtN(m.avg_check)} ₴</td><td class="r"><span class="badge ${refClass}">${m.refuse_pct.toFixed(1)}%</span></td><td class="r num" style="color:var(--td)">${returns}</td></tr>`;}).join('');
 
   // funnel scaled
   const fbase=[{n:'📥 Всього лідів',f:1.0,c:'#339af0'},{n:'⚙️ В обробці',f:0.88,c:'#4dabf7'},{n:'🚫 Відмова',f:0.023,c:'#ff6b6b'},{n:'✅ Продаж',f:0.868,c:'#00d68f'},{n:'🏭 У виробництві',f:0.18,c:'#a29bfe'},{n:'📦 Виїхав зі складу',f:0.144,c:'#9775fa'},{n:'🚚 Очікує отримання',f:0.106,c:'#ffd43b'},{n:'🎁 Отримано',f:0.485,c:'#94d82d'},{n:'↩️ Відмова / повернення',f:0.027,c:'#ff8787'}];
@@ -1335,13 +1340,9 @@ function sortBrandProd(btn,key,k){const p=btn.parentElement;p.querySelectorAll('
 
 // ═══════════ OVERVIEW CHARTS ═══════════
 // ═══════════ OVERVIEW: MCI + 4 SECTIONS ═══════════
-const CH = {"roll": {"name": "Ролл", "color": "#00d68f", "june": [213991, 287405, 246950, 241128, 243684, 219756, 244895, 285314, 300624, 329188, 48396], "may": 7067358, "plan": 8100000}, "amebli": {"name": "Амебли", "color": "#a29bfe", "june": [257715, 123367, 249346, 201248, 172059, 188971, 272664, 375866, 370611, 294131, 121493], "may": 5599263, "plan": 7400000}, "seti": {"name": "Сети", "color": "#339af0", "june": [150172, 268148, 253456, 119706, 74956, 157601, 167885, 140405, 192562, 171115, 90470], "may": 4963314, "plan": 3300000}, "roznica": {"name": "Розниця", "color": "#ffa94d", "june": [268062, 152072, 51288, 60113, 34600, 80402, 131091, 132552, 25886, 54753, 4996], "may": 2610650, "plan": 2900000}};
-const O_DIM=30, O_ACT=4, O_FULL=3;
-function rampDaily(monthly){
-  const w=Array.from({length:O_DIM},(_,i)=>0.55+0.9*(i/(O_DIM-1)));
-  const ws=w.reduce((a,b)=>a+b,0);
-  return w.map(x=>Math.round(monthly*x/ws));
-}
+const CH = {"roll": {"name": "Ролл", "color": "#00d68f", "june": [213991, 282464, 246950, 241128, 280883, 210571, 240837, 275575, 306626, 341607, 277362, 49901], "may": 7067358, "plan": 8100000}, "amebli": {"name": "Амебли", "color": "#a29bfe", "june": [286993, 119292, 245449, 245556, 201388, 185071, 272664, 406280, 385160, 300114, 254951, 77163], "may": 5599263, "plan": 7400000}, "seti": {"name": "Сети", "color": "#339af0", "june": [157521, 245247, 259484, 158274, 88785, 157601, 167885, 140405, 211274, 185624, 260334, 110805], "may": 4963314, "plan": 3300000}, "roznica": {"name": "Розниця", "color": "#ffa94d", "june": [268062, 152072, 51288, 60113, 34600, 80402, 131091, 132552, 25886, 54753, 4996, 0], "may": 2610650, "plan": 2900000}};
+const O_DIM=30, O_ACT=12, O_FULL=12;
+function rampDaily(monthly){const d=Math.round(monthly/O_DIM);return Array.from({length:O_DIM},()=>d);}
 
 // ─── SECTION 1: sales plan / fact / trend / last month ───
 let sec1Chart=null;
@@ -1365,7 +1366,7 @@ function renderSec1(key, btn){
   const juneDash=labels.map((_,i)=>{if(i<ND-1)return null;if(i===ND-1)return june[ND-1];return Math.round(avgDaily);});
   const planLine=labels.map(()=>planDaily);
   const datasets=[
-    {label:'Минулий місяць (факт)',data:mayArr,borderColor:'#7b84a3',backgroundColor:'rgba(123,132,163,0.08)',borderWidth:1.5,tension:0.4,pointRadius:0,fill:true},
+    {label:'Минулий місяць (сер./день)',data:mayArr,borderColor:'#7b84a3',backgroundColor:'rgba(123,132,163,0.08)',borderWidth:1.5,tension:0.4,pointRadius:0,fill:true},
     {label:'План',data:planLine,borderColor:'#66d9e8',borderDash:[2,3],backgroundColor:'transparent',borderWidth:1.5,tension:0,pointRadius:0},
     {label:'Факт',data:juneSolid,borderColor:color,backgroundColor:'transparent',borderWidth:2.5,tension:0.3,pointRadius:3},
     {label:'Тренд',data:juneDash,borderColor:color,borderDash:[5,4],backgroundColor:'transparent',borderWidth:1.5,tension:0.2,pointRadius:0}
@@ -1387,7 +1388,7 @@ function renderSec1(key, btn){
   const momColor=mom>=0?'var(--g)':'var(--r)';
   document.getElementById('sec1-summary').innerHTML=
     `<div class="forecast-box" style="border-color:#66d9e8"><div class="forecast-label">План місяць</div><div class="forecast-val" style="color:#66d9e8;font-size:19px">${fmtK(plan)}₴</div><div class="forecast-sub">${label}</div></div>
-     <div class="forecast-box" style="border-color:${color}"><div class="forecast-label">Факт + прогноз</div><div class="forecast-val" style="color:${color};font-size:19px">${fmtK(juneProj)}₴</div><div class="forecast-sub">факт 1–4: ${fmtK(juneActual)}₴</div></div>
+     <div class="forecast-box" style="border-color:${color}"><div class="forecast-label">Факт + прогноз</div><div class="forecast-val" style="color:${color};font-size:19px">${fmtK(juneProj)}₴</div><div class="forecast-sub">факт 1–12: ${fmtK(juneActual)}₴</div></div>
      <div class="forecast-box"><div class="forecast-label">Минулий місяць</div><div class="forecast-val" style="color:#7b84a3;font-size:19px">${fmtK(mayTotal)}₴</div><div class="forecast-sub">факт травня</div></div>
      <div class="forecast-box" style="border-color:${planColor};background:rgba(0,214,143,0.05)"><div class="forecast-label">Виконання плану</div><div class="forecast-val" style="color:${planColor};font-size:22px">${planPct}%</div><div class="forecast-sub" style="color:${momColor}">${mom>=0?'+':''}${mom.toFixed(0)}% vs минулий міс.</div></div>`;
 }
@@ -1396,7 +1397,7 @@ function renderSec1(key, btn){
   // ─── MCI module chart ───
   const mciLabels=["10.06"];
   const mciVals=[66.2];
-  const mciSales=[849];
+  const mciSales=[882];
   new Chart(document.getElementById('ch-mci'),{
     type:'line',
     data:{labels:mciLabels,datasets:[
@@ -1432,10 +1433,10 @@ function renderSec1(key, btn){
   // ─── SECTION 3: returns / refusals — по днях ───
   new Chart(document.getElementById('ch-sec3'),{
     type:'line',
-    data:{labels:dayL,datasets:[
-      {label:'Відмови (шт)',data:[2,5,5,4,4,3,5,4,3,2,1,3,2,2,1,1,5,4,4,4,3,6,5,3,2],borderColor:'#ff6b6b',backgroundColor:'rgba(255,107,107,0.1)',tension:0.35,pointRadius:0,borderWidth:2,fill:true,yAxisID:'y'},
-      {label:'Повернення (шт)',data:[2,3,3,4,2,2,2,3,0,1,1,2,0,1,2,3,1,2,3,4,2,3,3,4,2],borderColor:'#ffa94d',backgroundColor:'transparent',tension:0.35,pointRadius:0,borderWidth:2,yAxisID:'y'},
-      {label:'Відмови %',data:[1.1,2.5,2.3,1.7,2.0,1.4,2.2,2.0,1.4,0.9,0.5,1.4,0.9,1.0,0.5,0.4,2.5,1.9,1.8,2.0,1.4,2.7,2.6,1.4,0.9],borderColor:'#66d9e8',borderDash:[4,3],pointRadius:0,borderWidth:1.5,yAxisID:'y2'}
+    data:{labels:REF_DAILY.days,datasets:[
+      {label:'Відмови (шт)',data:REF_DAILY.refused,borderColor:'#ff6b6b',backgroundColor:'rgba(255,107,107,0.1)',tension:0.35,pointRadius:0,borderWidth:2,fill:true,yAxisID:'y'},
+      {label:'Повернення (шт)',data:REF_DAILY.returned,borderColor:'#ffa94d',backgroundColor:'transparent',tension:0.35,pointRadius:0,borderWidth:2,yAxisID:'y'},
+      {label:'Відмови %',data:REF_DAILY.pct,borderColor:'#66d9e8',borderDash:[4,3],pointRadius:0,borderWidth:1.5,yAxisID:'y2'}
     ]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{labels:{color:'#c1c7e0',font:{size:10},usePointStyle:true,boxWidth:8}},
@@ -1449,7 +1450,7 @@ function renderSec1(key, btn){
 
   // ─── SECTION 4: shipments by day ───
   const shipLabels=Array.from({length:O_DIM},(_,i)=>String(i+1));
-  const shipJune=[6176, 114597, 623972, 1152227, 1507204, 96105, 85537, 585635, 682129, 909645, 3402501];
+  const shipJune=[6176, 114597, 623972, 1152227, 1510408, 96105, 85537, 585635, 682129, 908823, 1218778, 2857313];
   const SND=shipJune.length;
   const shipActual=shipJune.reduce((a,b)=>a+b,0);
   const shipAvg=shipActual/SND;
@@ -1461,7 +1462,7 @@ function renderSec1(key, btn){
   new Chart(document.getElementById('ch-sec4'),{
     type:'line',
     data:{labels:shipLabels,datasets:[
-      {label:'Минулий місяць (факт)',data:shipMay,borderColor:'#7b84a3',backgroundColor:'rgba(123,132,163,0.08)',borderWidth:1.5,tension:0.4,pointRadius:0,fill:true},
+      {label:'Минулий місяць (сер./день)',data:shipMay,borderColor:'#7b84a3',backgroundColor:'rgba(123,132,163,0.08)',borderWidth:1.5,tension:0.4,pointRadius:0,fill:true},
       {label:'Факт',data:shipSolid,borderColor:'#ffa94d',backgroundColor:'transparent',borderWidth:2.5,tension:0.3,pointRadius:3},
       {label:'Тренд',data:shipDash,borderColor:'#ffa94d',borderDash:[5,4],borderWidth:1.5,pointRadius:0,tension:0.2}
     ]},
@@ -1475,7 +1476,7 @@ function renderSec1(key, btn){
   const shipMom=((shipProj-shipMayTotal)/shipMayTotal*100).toFixed(0);
   document.getElementById('sec4-summary').innerHTML=
     `<div class="forecast-box" style="border-color:#66d9e8"><div class="forecast-label">План відгрузок</div><div class="forecast-val" style="color:#66d9e8;font-size:19px">${fmtK(shipPlan)}₴</div><div class="forecast-sub">місяць</div></div>
-     <div class="forecast-box" style="border-color:#ffa94d"><div class="forecast-label">Факт + прогноз</div><div class="forecast-val" style="color:#ffa94d;font-size:19px">${fmtK(shipProj)}₴</div><div class="forecast-sub">факт 1–2: ${fmtK(shipActual)}₴</div></div>
+     <div class="forecast-box" style="border-color:#ffa94d"><div class="forecast-label">Факт + прогноз</div><div class="forecast-val" style="color:#ffa94d;font-size:19px">${fmtK(shipProj)}₴</div><div class="forecast-sub">факт 1–12: ${fmtK(shipActual)}₴</div></div>
      <div class="forecast-box"><div class="forecast-label">Минулий місяць</div><div class="forecast-val" style="color:#7b84a3;font-size:19px">${fmtK(shipMayTotal)}₴</div><div class="forecast-sub">факт травня</div></div>
      <div class="forecast-box" style="border-color:var(--r);background:rgba(255,107,107,0.05)"><div class="forecast-label">Виконання плану</div><div class="forecast-val" style="color:var(--r);font-size:22px">${shipPlanPct}%</div><div class="forecast-sub" style="color:var(--r)">${shipMom}% vs травень</div></div>`;
 
@@ -1504,7 +1505,7 @@ function initSalesCharts() {
   new Chart(document.getElementById('ch-sales-daily'),{
     type:'line',
     data:{labels:dayLabels,datasets:[
-      {label:'Минулий місяць (факт)',data:mayArr,borderColor:'#7b84a3',backgroundColor:'rgba(123,132,163,0.08)',borderWidth:1.5,tension:0.4,pointRadius:0,fill:true},
+      {label:'Минулий місяць (сер./день)',data:mayArr,borderColor:'#7b84a3',backgroundColor:'rgba(123,132,163,0.08)',borderWidth:1.5,tension:0.4,pointRadius:0,fill:true},
       {label:'План',data:dayLabels.map(()=>planDaily),borderColor:'#66d9e8',borderDash:[2,3],borderWidth:1.5,pointRadius:0,tension:0},
       {label:'Факт',data:solid,borderColor:'#a29bfe',backgroundColor:'transparent',borderWidth:2.5,tension:0.3,pointRadius:2},
       {label:'Тренд',data:dash,borderColor:'#a29bfe',borderDash:[5,4],borderWidth:1.5,pointRadius:0,tension:0.2}
@@ -1519,7 +1520,7 @@ function initSalesCharts() {
   const mom=((proj-mayTot)/mayTot*100).toFixed(0);
   document.getElementById('sales-daily-summary').innerHTML=
     `<div class="forecast-box" style="border-color:#66d9e8"><div class="forecast-label">План місяць</div><div class="forecast-val" style="color:#66d9e8;font-size:19px">${fmtK(planTotal)}₴</div><div class="forecast-sub">Разом</div></div>
-     <div class="forecast-box" style="border-color:#a29bfe"><div class="forecast-label">Факт + прогноз</div><div class="forecast-val" style="color:#a29bfe;font-size:19px">${fmtK(proj)}₴</div><div class="forecast-sub">факт 1–25: ${fmtK(totalActual)}₴</div></div>
+     <div class="forecast-box" style="border-color:#a29bfe"><div class="forecast-label">Факт + прогноз</div><div class="forecast-val" style="color:#a29bfe;font-size:19px">${fmtK(proj)}₴</div><div class="forecast-sub">факт 1–12: ${fmtK(totalActual)}₴</div></div>
      <div class="forecast-box"><div class="forecast-label">Минулий місяць</div><div class="forecast-val" style="color:#7b84a3;font-size:19px">${fmtK(mayTot)}₴</div><div class="forecast-sub">факт травня</div></div>
      <div class="forecast-box" style="border-color:var(--g);background:rgba(0,214,143,0.05)"><div class="forecast-label">Виконання плану</div><div class="forecast-val" style="color:var(--g);font-size:22px">${planPct}%</div><div class="forecast-sub" style="color:var(--g)">+${mom}% vs минулий міс.</div></div>`;
 
@@ -1541,13 +1542,7 @@ function initSalesCharts() {
   }).join('');
 
   // ─── Categories with margin ───
-  const cats=[
-    {n:'Матраци',rev:18000000,m:44,mp:46,ac:4500,acp:4800},
-    {n:'Топери',rev:3500000,m:40,mp:38,ac:2200,acp:2150},
-    {n:'Корпусні меблі (ліжка/шафи)',rev:2800000,m:28,mp:30,ac:21000,acp:20500},
-    {n:"М'які меблі (дивани/крісла)",rev:3500000,m:33,mp:31,ac:32000,acp:30500},
-    {n:'Інше',rev:800000,m:26,mp:27,ac:8000,acp:7800}
-  ];
+  const cats=AGG_CATS;
   const catTot=cats.reduce((s,c)=>s+c.rev,0);
   document.getElementById('cat-tbody').innerHTML=cats.map(c=>{
     const dm=c.m-c.mp;
@@ -1593,7 +1588,7 @@ function initSalesCharts() {
     groups[k].qty+=p.qty; groups[k].count+=p.count; groups[k].revenue+=p.revenue;
   });
   const top10=Object.values(groups).sort((a,b)=>b.revenue-a.revenue).slice(0,10);
-  const catMargin=n=>/матрас|матрац|cocos|handy|foam|orange|smart|family|chocolate|cacao|tiramisu|soft/i.test(n)?44:/топер|топпер|bionica|purple|base/i.test(n)?40:/диван|крісло|voss/i.test(n)?33:/ліжко|шафа|новелти|homefort|ridnetut johnson/i.test(n)?28:35;
+  const _CM=(typeof AGG_CATS!=='undefined')?Object.fromEntries(AGG_CATS.map(c=>[c.n.split(' ⚠')[0],c.m])):{};const catMargin=n=>/матрас|матрац|cocos|handy|foam|orange|smart|family|chocolate|cacao|tiramisu|soft/i.test(n)?(_CM['Матраци']||0):/топер|топпер|bionica|purple|base/i.test(n)?(_CM['Топери']||0):/диван|крісло|voss/i.test(n)?(_CM["М'які меблі"]||0):/ліжко|шафа|новелти|homefort/i.test(n)?(_CM['Корпусні']||0):(_CM['Інше']||0);
   document.getElementById('top10-tbody').innerHTML=top10.map((g,i)=>{
     const ap=g.qty?Math.round(g.revenue/g.qty):0;
     return `<tr>
@@ -1609,8 +1604,8 @@ function initSalesCharts() {
 
   // ─── Top sellers (revenue, volume, conversion, avg check, refusals, returns) ───
   document.getElementById('sellers-tbody').innerHTML=D.managers.map((m,i)=>{
-    const conv=m.orders? Math.min(95, 80+((m.orders*7)%14)) : 0;
-    const returns=Math.round(m.orders*0.018);
+    const conv=(m.conversion!=null?m.conversion:0);
+    const returns=(m.returns!=null?m.returns:0);
     const refClass=m.refuse_pct>=10?'br':m.refuse_pct>=5?'bo':'bg';
     const convClass=conv>=88?'bg':conv>=82?'bo':'br';
     return `<tr>
@@ -1627,15 +1622,14 @@ function initSalesCharts() {
 
   // ─── Funnel ───
   const stages=[
-    {n:'📥 Всього лідів',v:660,c:'#339af0'},
-    {n:'⚙️ В обробці',v:580,c:'#4dabf7'},
-    {n:'🚫 Відмова',v:15,c:'#ff6b6b'},
-    {n:'✅ Продаж',v:573,c:'#00d68f'},
-    {n:'🏭 У виробництві',v:120,c:'#a29bfe'},
-    {n:'📦 Виїхав зі складу',v:95,c:'#9775fa'},
-    {n:'🚚 Очікує отримання',v:70,c:'#ffd43b'},
-    {n:'🎁 Отримано',v:320,c:'#94d82d'},
-    {n:'↩️ Відмова / повернення',v:18,c:'#ff8787'}
+    {n:'📥 Всього лідів',v:FUNNEL_REAL.leads_total,c:'#339af0'},
+    {n:'⚙️ В обробці',v:FUNNEL_REAL.in_progress,c:'#4dabf7'},
+    {n:'🏭 У виробництві',v:FUNNEL_REAL.production,c:'#a29bfe'},
+    {n:'🚚 Відправлення',v:FUNNEL_REAL.shipping,c:'#9775fa'},
+    {n:'🎁 Отримано',v:FUNNEL_REAL.sale,c:'#94d82d'},
+    {n:'🚫 Відмова',v:FUNNEL_REAL.refused,c:'#ff6b6b'},
+    {n:'↩️ Повернення',v:FUNNEL_REAL.returned,c:'#ff8787'},
+    {n:'😴 Втрачені ліди',v:FUNNEL_REAL.lead,c:'#ffd43b'}
   ];
   const maxV=Math.max(...stages.map(s=>s.v));
   const leads=stages[0].v;
@@ -1650,7 +1644,7 @@ function initSalesCharts() {
     </div>`;
   }).join('') +
     `<div style="margin-top:10px;padding:8px;background:var(--s2);border-radius:7px;font-size:10px;color:var(--td)">
-      Конв. лід→продаж: <b style="color:#00d68f">86.8%</b> · Відмов: <b style="color:#ff6b6b">2.3%</b> · Повернень після отримання: <b style="color:#ff8787">5.6%</b>
+      Конв. лід→продаж: <b style="color:#00d68f">87.3%</b> · Відмов: <b style="color:#ff6b6b">4.8%</b> · Повернень: <b style="color:#ff8787">1.0%</b>
     </div>`;
 
   // Products (top 50 raw)
@@ -2196,7 +2190,7 @@ function irisHideTyping(agent){
 
 const IRIS_RESPONSES = {
   iris: {
-    'зведений звіт за тиждень': `<b>📊 Зведений звіт · 1–25 червня 2026</b><br><br>
+    'зведений звіт за тиждень': `<b>📊 Зведений звіт · 1–12 червня 2026</b><br><br>
 <b>Продажі:</b> 28.6M₴ (прогноз ~34.3M₴) · <span style="color:var(--g)">+47%</span> vs травень<br>
 <b>Замовлення:</b> ~5 190 (208/день) · Сер. чек: 5 513₴ (<span style="color:var(--r)">−25%</span>)<br>
 <b>Маркетинг:</b> ДРР загальний 10.1% · <span style="color:var(--r)">Amebli ДРР 51.5% — критично</span><br>
@@ -2221,7 +2215,7 @@ const IRIS_RESPONSES = {
 • <b>Логістика</b> — повернення зростають, кожне повернення ≈800₴ логістичних витрат.<br><br>
 💡 <b>Рекомендація:</b> Фокус на середній+ сегмент (маржа 45-46%), оптимізація Amebli ДРР, перегляд тарифів на корпусні.`,
 
-    'аудит дрр по каналах': `<b>📣 Аудит ДРР по каналах · 1–25 червня</b><br><br>
+    'аудит дрр по каналах': `<b>📣 Аудит ДРР по каналах · 1–12 червня</b><br><br>
 <table style="width:100%;font-size:11px">
 <tr style="color:var(--td)"><td>Канал</td><td style="text-align:right">ДРР</td><td style="text-align:right">Статус</td></tr>
 <tr><td>ДРР Замовлення загальний</td><td style="text-align:right;color:var(--g)"><b>4.18%</b></td><td style="text-align:right"><span class="badge bg">✓ OK</span></td></tr>
