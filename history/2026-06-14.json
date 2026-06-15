@@ -2598,6 +2598,12 @@
               "orders": 325,
               "revenue": 771099.0,
               "leads": 0
+            },
+            {
+              "day": 14,
+              "orders": 294,
+              "revenue": 836955.0,
+              "leads": 0
             }
           ]
         }
@@ -3014,13 +3020,19 @@
               "orders": 5,
               "revenue": 11317.0,
               "leads": 0
+            },
+            {
+              "day": 14,
+              "orders": 3,
+              "revenue": 22990.0,
+              "leads": 0
             }
           ]
         }
       ]
     }
   },
-  "generated": "2026-06-15T10:23:19.179797",
+  "generated": "2026-06-15T10:54:57.990933",
   "uh": {
     "label": "UH",
     "ORDERS": {
@@ -3229,12 +3241,12 @@
         }
       },
       "month": {
-        "total": 10837201.19,
-        "count": 2867,
+        "total": 10881605.19,
+        "count": 2874,
         "by_podr": {
-          "Matrasroll": 2807123.0,
-          "A-mebli": 2521887.0,
-          "Sofino": 1826438.99,
+          "Matrasroll": 2810246.0,
+          "A-mebli": 2535960.0,
+          "Sofino": 1853646.99,
           "МР Розетка (Мережі)": 899204.0,
           "Шоу-Рум Дарынок": 790682.0,
           "Шоу-Рум Дрим": 656333.0,
@@ -3252,11 +3264,11 @@
         "by_podr_count": {
           "Шоу-Рум Дарынок": 57,
           "МР Розетка (Мережі)": 233,
-          "Matrasroll": 1196,
+          "Matrasroll": 1197,
           "МР Эпицентр (Мережі)": 59,
           "Шоу-Рум Дрим": 50,
-          "A-mebli": 626,
-          "Sofino": 350,
+          "A-mebli": 628,
+          "Sofino": 354,
           "Шоу-Рум Ретровіль": 31,
           "HabStor": 28,
           "ДРОП": 55,
@@ -4139,23 +4151,23 @@
       {
         "id": "498543759542047",
         "name": "Amebli 2024",
-        "spend": 5504.4,
-        "impressions": 32423,
+        "spend": 5504.62,
+        "impressions": 32431,
         "clicks": 1459,
         "results": 22,
         "cpc": 3.77,
         "ctr": 4.5,
         "error": null,
-        "cpm": 169.77
+        "cpm": 169.73
       },
       {
         "id": "785104883775481",
         "name": "Amebli",
-        "spend": 307.61,
-        "impressions": 23368,
+        "spend": 307.67,
+        "impressions": 23372,
         "clicks": 53,
         "results": 0,
-        "cpc": 5.8,
+        "cpc": 5.81,
         "ctr": 0.23,
         "error": null,
         "cpm": 13.16
@@ -4163,8 +4175,8 @@
       {
         "id": "478301535674476",
         "name": "MatrasRoll",
-        "spend": 175.71,
-        "impressions": 57688,
+        "spend": 175.72,
+        "impressions": 57695,
         "clicks": 1273,
         "results": 48,
         "cpc": 0.14,
@@ -4186,21 +4198,21 @@
       }
     ],
     "total": {
-      "spend": 7377.82,
-      "impressions": 125228,
+      "spend": 7378.11,
+      "impressions": 125247,
       "clicks": 3233,
       "cpc": 2.28,
-      "cpm": 58.92,
+      "cpm": 58.91,
       "ctr": 2.58,
       "results": 105,
-      "cpr": 70.26
+      "cpr": 70.27
     },
     "by_campaign": [
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії матрац ORANGE Handy",
-        "spend": 1614.45,
-        "impressions": 9383,
+        "spend": 1614.52,
+        "impressions": 9384,
         "clicks": 280,
         "cpc": 5.77,
         "ctr": 2.98,
@@ -4219,8 +4231,8 @@
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсіїї акція Sleep Master",
-        "spend": 1322.15,
-        "impressions": 8738,
+        "spend": 1322.18,
+        "impressions": 8739,
         "clicks": 402,
         "cpc": 3.29,
         "ctr": 4.6,
@@ -4229,8 +4241,8 @@
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії топери 2026",
-        "spend": 989.31,
-        "impressions": 7191,
+        "spend": 989.34,
+        "impressions": 7193,
         "clicks": 255,
         "cpc": 3.88,
         "ctr": 3.55,
@@ -4239,28 +4251,28 @@
       {
         "account": "Amebli 2024",
         "campaign": "EW Конверсії матрац  Porto Cocos червень 2026",
-        "spend": 606.6,
-        "impressions": 2548,
+        "spend": 606.62,
+        "impressions": 2550,
         "clicks": 71,
         "cpc": 8.54,
-        "ctr": 2.79,
+        "ctr": 2.78,
         "results": 4
       },
       {
         "account": "Amebli 2024",
         "campaign": "EW Динамічний ремаркетинг",
-        "spend": 587.07,
-        "impressions": 3587,
+        "spend": 587.08,
+        "impressions": 3588,
         "clicks": 435,
         "cpc": 1.35,
-        "ctr": 12.13,
+        "ctr": 12.12,
         "results": 8
       },
       {
         "account": "Amebli 2024",
         "campaign": "EW Direct | Матраци 2026",
-        "spend": 384.82,
-        "impressions": 976,
+        "spend": 384.88,
+        "impressions": 977,
         "clicks": 16,
         "cpc": 24.05,
         "ctr": 1.64,
@@ -4269,10 +4281,10 @@
       {
         "account": "Amebli",
         "campaign": "EW Охват | Шоурум",
-        "spend": 307.61,
-        "impressions": 23368,
+        "spend": 307.67,
+        "impressions": 23372,
         "clicks": 53,
-        "cpc": 5.8,
+        "cpc": 5.81,
         "ctr": 0.23,
         "results": 0
       },
@@ -4290,7 +4302,7 @@
         "account": "MatrasRoll",
         "campaign": "EW топперы | весна 2026",
         "spend": 33.33,
-        "impressions": 8486,
+        "impressions": 8489,
         "clicks": 239,
         "cpc": 0.14,
         "ctr": 2.82,
@@ -4309,8 +4321,8 @@
       {
         "account": "MatrasRoll",
         "campaign": "EW матрасы | campaign",
-        "spend": 28.82,
-        "impressions": 24186,
+        "spend": 28.83,
+        "impressions": 24189,
         "clicks": 254,
         "cpc": 0.11,
         "ctr": 1.05,
@@ -4320,7 +4332,7 @@
         "account": "MatrasRoll",
         "campaign": "EW топперы | июнь статика",
         "spend": 21.69,
-        "impressions": 5666,
+        "impressions": 5667,
         "clicks": 114,
         "cpc": 0.19,
         "ctr": 2.01,
@@ -4376,7 +4388,7 @@
     "new_users": 2796,
     "bounce_rate": 35.1,
     "avg_duration": 494.0,
-    "ads_cost": 36821.44,
+    "ads_cost": 36821.28,
     "ads_clicks": 3464,
     "by_source": [
       {
@@ -4530,7 +4542,7 @@
         "name": "matrasroll.com.ua",
         "sessions": 4762,
         "users": 4289,
-        "ads_cost": 36821.44,
+        "ads_cost": 36821.28,
         "ads_clicks": 3464,
         "error": null
       },
