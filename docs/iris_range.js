@@ -161,6 +161,12 @@
 
     // денний графік обсягу (для лінії)
     out.daily = R.dchart;
+
+    // загальна маржа/покриття по всіх групах (для заголовної KPI-картки)
+    var TR = 0, TC = 0, TV = 0;
+    for (var ag in R.mrg) { for (var ak in R.mrg[ag]) { var ac = R.mrg[ag][ak]; TV += ac.rev; TR += ac.rcov; TC += ac.ccov; } }
+    out.margin_overall = TR > 0 ? pyround((TR - TC) / TR * 100, 1) : null;
+    out.coverage_overall = TV > 0 ? pyround(TR / TV, 2) : 0;
     return out;
   }
 
