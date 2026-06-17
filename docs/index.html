@@ -418,9 +418,9 @@ tr.row-comp td{opacity:.8}
     <option value="2026-05">Травень 2026</option>
     <option value="2026-04">Квітень 2026</option>
     
-    
-    
-    
+    <option value="last7">Останні 7 днів</option>
+    <option value="last30">Останні 30 днів</option>
+    <option value="custom">Довільний діапазон (точні дати)</option>
   </select>
   <span id="gpCustom" style="display:none;align-items:center;gap:6px">
     <input type="date" class="pb-select" id="gpFrom" onchange="applyGlobalPeriod()">
@@ -432,7 +432,7 @@ tr.row-comp td{opacity:.8}
     <option value="prev">Попередній місяць (травень)</option>
     <option value="yoy">Той самий період торік</option>
     <option value="2026-04">Квітень 2026</option>
-    
+    <option value="custom">Довільний діапазон (точні дати)</option>
     <option value="none">Без порівняння</option>
   </select>
   <span id="gcCustom" style="display:none;align-items:center;gap:6px">
@@ -441,6 +441,63 @@ tr.row-comp td{opacity:.8}
     <input type="date" class="pb-select" id="gcTo" onchange="applyGlobalPeriod()">
   </span>
   <span class="pb-hint" id="pbHint">Поточний місяць vs попередній</span>
+</div>
+
+<style>
+#rangePanel{display:none;margin-bottom:16px}
+body.range-mode .main-tabs,body.range-mode .mpnl{display:none!important}
+body.range-mode #rangePanel{display:block}
+#rangePanel .rhead{font-size:13px;color:var(--td);font-family:'JetBrains Mono',monospace;margin:2px 0 12px}
+#rangePanel .rhead b{color:var(--t)}
+#rangePanel .rk{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+#rangePanel .rkpi{background:var(--s);border:1px solid var(--brd);border-radius:11px;padding:12px 13px;position:relative;overflow:hidden}
+#rangePanel .rkpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ac)}
+#rangePanel .rkpi.c2::before{background:var(--g)}#rangePanel .rkpi.c3::before{background:var(--o)}#rangePanel .rkpi.c4::before{background:var(--r)}
+#rangePanel .rkpi .lab{color:var(--td);font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+#rangePanel .rkpi .val{font-size:21px;font-weight:700;margin-top:5px}
+#rangePanel .rkpi .val small{font-size:12px;color:var(--td);font-weight:600}
+#rangePanel .rkpi .dlt{font-size:11px;margin-top:3px;font-weight:600}
+#rangePanel .up{color:var(--g)}#rangePanel .down{color:var(--r)}#rangePanel .neu{color:var(--td)}
+#rangePanel .rg2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:880px){#rangePanel .rg2{grid-template-columns:1fr}}
+#rangePanel .rcard{background:var(--s);border:1px solid var(--brd);border-radius:11px;padding:14px}
+#rangePanel .rcard h3{font-size:13px;margin-bottom:10px;font-weight:700}
+#rangePanel table{width:100%;border-collapse:collapse;font-size:11.5px}
+#rangePanel th,#rangePanel td{padding:5px 7px;text-align:left;border-bottom:1px solid var(--brd)}
+#rangePanel th{color:var(--td);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.4px}
+#rangePanel td.r,#rangePanel th.r{text-align:right;font-variant-numeric:tabular-nums}
+#rangePanel .rgrp{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+#rangePanel .rgc{background:var(--s2);border:1px solid var(--brd);border-radius:9px;padding:10px 11px;border-left:3px solid var(--gc)}
+#rangePanel .rgc .gn{font-weight:700;font-size:12px}
+#rangePanel .rgc .gr{font-size:16px;font-weight:700;margin:4px 0 2px}
+#rangePanel .rgc .gm{font-size:11px;color:var(--td)}
+#rangePanel .rb{display:inline-block;padding:1px 7px;border-radius:6px;font-size:10px;font-weight:600}
+#rangePanel .bg{background:var(--gd);color:var(--g)}#rangePanel .bo{background:var(--od);color:var(--o)}#rangePanel .br{background:var(--rd);color:var(--r)}
+#rangePanel .fr{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+#rangePanel .fr .fl{width:140px;color:var(--t2);font-size:11px}
+#rangePanel .fr .fb{flex:1;height:14px;background:var(--s2);border-radius:4px;overflow:hidden}
+#rangePanel .fr .ff{height:100%;border-radius:4px}
+#rangePanel .fr .fn{width:54px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+#rangePanel .rs3{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+#rangePanel .rs3 .b{background:var(--s2);border:1px solid var(--brd);border-radius:9px;padding:9px 11px}
+#rangePanel .rs3 .b .n{font-size:18px;font-weight:700}#rangePanel .rs3 .b .l{color:var(--td);font-size:10px}
+#rangePanel .muted{color:var(--td);font-size:11px}
+</style>
+<div id="rangePanel">
+  <div class="rhead" id="r-title">Діапазон</div>
+  <div id="r-kpis" class="rk"></div>
+  <div class="rg2">
+    <section class="rcard"><h3>🏷️ Групи (обсяг + маржа 1С)</h3><div id="r-groups" class="rgrp"></div></section>
+    <section class="rcard"><h3>🌐 Канали</h3><div id="r-channels"></div></section>
+  </div>
+  <div class="rg2">
+    <section class="rcard"><h3>👤 Менеджери (топ-12 за обсягом)</h3><div id="r-managers"></div></section>
+    <section class="rcard"><h3>📦 Топ-товари (топ-15)</h3><div id="r-products"></div></section>
+  </div>
+  <div class="rg2">
+    <section class="rcard"><h3>🔻 Воронка (статуси замовлень)</h3><div id="r-funnel"></div></section>
+    <section class="rcard"><h3>🧹 CRM-якість лідів</h3><div id="r-sec3" class="rs3"></div></section>
+  </div>
 </div>
 
 <div class="main-tabs">
@@ -1130,8 +1187,8 @@ tr.row-comp td{opacity:.8}
       <option value="2026-05">Травень 2026</option>
       <option value="2026-04">Квітень 2026</option>
       
-      
-      
+      <option value="last7">Останні 7 днів</option>
+      <option value="last30">Останні 30 днів</option>
       <option value="custom">Довільний діапазон</option>
     </select>
     <div id="dtCustom" style="display:none;gap:8px;margin-top:8px">
@@ -2763,14 +2820,115 @@ injectDateButtons();
 
 
 </script>
+<script src="iris_range.js"></script>
+<script>
+/* IRIS range mode — фетчить daily*.json, рахує двигуном, малює панель #rangePanel.
+   applyGlobalPeriod (з render-кроку 18) делегує сюди для custom/last7/last30. */
+(function(){
+  var GMETA={roll:{n:"Ролл",c:"#00d68f"},amebli:{n:"Амебли",c:"#a29bfe"},seti:{n:"Сети",c:"#339af0"},roznica:{n:"Розниця",c:"#ffa94d"}};
+  var PIPE_UA=[["in_progress","⚙️ В обробці","#4dabf7"],["production","🏭 У виробництві","#a29bfe"],["shipping","📦 Відправлення","#9775fa"],["sale","🎁 Отримано","#00d68f"],["returned","↩️ Повернення","#ff8787"],["refused","🚫 Відмова (не відпр.)","#ff6b6b"],["lead","💸 Втрачений лід","#ffa94d"],["claim","⚠️ Рекламація","#ffd43b"]];
+  var DAILY={},CUR=null,MIN=null,MAX=null,LOADED=false,LOADING=null;
+  function $(id){return document.getElementById(id);}
+  function fmtN(n){return Math.round(n||0).toLocaleString("uk-UA").replace(/,/g," ");}
+  function fmtK(n){return n>=1e6?(n/1e6).toFixed(2)+"M":Math.round(n/1000)+"K";}
+  function pad(d){return ("0"+d).slice(-2);}
+  function isoOf(dt){return dt.getFullYear()+"-"+pad(dt.getMonth()+1)+"-"+pad(dt.getDate());}
+  function dlt(c,p,inv){
+    if(p==null||!isFinite(p)||p===0) return '<span class="dlt neu">—</span>';
+    var x=(c-p)/Math.abs(p)*100, good=inv?x<=0:x>=0, cls=x===0?"neu":good?"up":"down";
+    return '<span class="dlt '+cls+'">'+(x>=0?"+":"")+x.toFixed(0)+'%</span>';
+  }
+  function monthsToLoad(){
+    var out=[["daily.json",CUR]];
+    if(window.MONTH_PAGES) for(var k in window.MONTH_PAGES){ if(k==="current") continue; out.push(["daily-"+k+".json",k]); }
+    return out;
+  }
+  function loadDaily(){
+    if(LOADED) return Promise.resolve();
+    if(LOADING) return LOADING;
+    LOADING=(async function(){
+      try{ var d=await (await fetch("data.json",{cache:"no-store"})).json(); CUR=d&&d.month?d.month:null; }catch(e){}
+      var jobs=monthsToLoad();
+      for(var i=0;i<jobs.length;i++){
+        try{ var j=await (await fetch(jobs[i][0],{cache:"no-store"})).json(); if(j&&j.day&&jobs[i][1]) DAILY[jobs[i][1]]=j; }catch(e){}
+      }
+      var isos=[]; for(var m in DAILY) for(var dk in DAILY[m].day) isos.push(m+"-"+pad(+dk));
+      isos.sort(); MIN=isos[0]; MAX=isos[isos.length-1];
+      ["gpFrom","gpTo","gcFrom","gcTo"].forEach(function(id){var e=$(id);if(e&&MIN){e.min=MIN;e.max=MAX;}});
+      if(MIN){
+        var dm=(CUR&&DAILY[CUR])?CUR:Object.keys(DAILY).sort().pop();
+        var dd=Object.keys(DAILY[dm].day).map(Number).sort(function(a,b){return a-b;});
+        if($("gpFrom")&&!$("gpFrom").value)$("gpFrom").value=dm+"-"+pad(dd[0]);
+        if($("gpTo")&&!$("gpTo").value)$("gpTo").value=dm+"-"+pad(dd[dd.length-1]);
+      }
+      LOADED=true;
+    })();
+    return LOADING;
+  }
+  function curRange(v){
+    if(v==="custom") return [($("gpFrom")||{}).value, ($("gpTo")||{}).value];
+    if(!MAX) return [null,null];
+    var d=new Date(MAX+"T00:00:00"), n=(v==="last7"?6:29), f=new Date(d); f.setDate(f.getDate()-n);
+    var fi=isoOf(f); if(MIN&&fi<MIN)fi=MIN; return [fi, MAX];
+  }
+  function cmpRange(){
+    var c=$("globalCompare"); if(c&&c.value==="custom"){var f=($("gcFrom")||{}).value,t=($("gcTo")||{}).value; if(f&&t&&f<=t) return [f,t];}
+    return null;
+  }
+  function paint(A,B){
+    var cards=[
+      ["c1","Обсяг продажів",fmtN(A.obsyag)+' <small>₴</small>',B?dlt(A.obsyag,B.obsyag):""],
+      ["c1","Замовлень",fmtN(A.orders),B?dlt(A.orders,B.orders):""],
+      ["c1","Середній чек",fmtN(A.avg_check)+' <small>₴</small>',B?dlt(A.avg_check,B.avg_check):""],
+      ["c2","Конверсія",A.conversion.value+' <small>%</small>',B?dlt(A.conversion.value,B.conversion.value):""],
+      ["c4","Відмови (1С)",A.refuse.of_orders+' <small>%</small>',B?dlt(A.refuse.of_orders,B.refuse.of_orders,true):""],
+      ["c3","Відгрузки 1С",fmtN(A.shipments.total)+' <small>₴</small>',B?dlt(A.shipments.total,B.shipments.total):""]
+    ];
+    $("r-kpis").innerHTML=cards.map(function(c){return '<div class="rkpi '+c[0]+'"><div class="lab">'+c[1]+'</div><div class="val">'+c[2]+'</div>'+(c[3]||"")+'</div>';}).join("");
+    $("r-groups").innerHTML=["roll","amebli","seti","roznica"].map(function(g){
+      var b=A.groups[g],gm=GMETA[g];
+      var mt=(b.margin==null)?'<span class="muted">маржа —</span>':'маржа <b>'+b.margin+'%</b> '+(b.reliable?'':'<span class="rb bo">cov '+Math.round(b.coverage*100)+'%</span>');
+      return '<div class="rgc" style="--gc:'+gm.c+'"><div class="gn" style="color:'+gm.c+'">'+gm.n+'</div><div class="gr">'+fmtK(b.rev)+' ₴</div><div class="gm">'+b.n+' зам · '+mt+'</div></div>';
+    }).join("");
+    $("r-channels").innerHTML='<table><tr><th>Сайт</th><th class=r>Обсяг</th><th class=r>Зам.</th><th class=r>Чек</th></tr>'+A.channels.slice(0,12).map(function(c){return '<tr><td>'+c.name+'</td><td class=r>'+fmtK(c.revenue)+'</td><td class=r>'+c.orders+'</td><td class=r>'+fmtN(c.avg_check)+'</td></tr>';}).join("")+'</table>';
+    $("r-managers").innerHTML='<table><tr><th>#</th><th>Менеджер</th><th class=r>Обсяг</th><th class=r>Зам.</th><th class=r>Конв.</th><th class=r>Відм.</th><th class=r>Пов.</th></tr>'+A.managers.slice(0,12).map(function(m,i){
+      var cc=m.conversion>=88?"bg":(m.conversion>=82?"bo":"br"), rc=m.refuse_pct>=10?"br":(m.refuse_pct>=5?"bo":"bg");
+      return '<tr><td>'+(i+1)+'</td><td>'+m.name+'</td><td class=r>'+fmtK(m.revenue)+'</td><td class=r>'+m.orders+'</td><td class=r><span class="rb '+cc+'">'+m.conversion+'%</span></td><td class=r><span class="rb '+rc+'">'+m.refuse_pct.toFixed(1)+'%</span></td><td class=r>'+m.returns+'</td></tr>';
+    }).join("")+'</table>';
+    $("r-products").innerHTML='<table><tr><th>#</th><th>Товар</th><th class=r>Обсяг</th><th class=r>К-ть</th><th class=r>Зам.</th></tr>'+A.products.slice(0,15).map(function(p,i){return '<tr><td>'+(i+1)+'</td><td title="'+p.name+'">'+(p.name.length>42?p.name.slice(0,42)+"…":p.name)+'</td><td class=r>'+fmtK(p.revenue)+'</td><td class=r>'+p.qty+'</td><td class=r>'+p.count+'</td></tr>';}).join("")+'</table>';
+    var lt=A.pipeline.leads_total||1;
+    var fr='<div class="fr"><div class="fl">📥 Всього лідів</div><div class="fb"><div class="ff" style="width:100%;background:#339af0"></div></div><div class="fn">'+fmtN(lt)+'</div></div>';
+    fr+=PIPE_UA.map(function(p){var v=A.pipeline[p[0]]||0,w=Math.max(1,Math.round(v/lt*100));return '<div class="fr"><div class="fl">'+p[1]+'</div><div class="fb"><div class="ff" style="width:'+w+'%;background:'+p[2]+'"></div></div><div class="fn">'+fmtN(v)+'</div></div>';}).join("");
+    if(A.pipeline.unknown)fr+='<div class="fr"><div class="fl muted">❔ Невідомі</div><div class="fb"></div><div class="fn">'+fmtN(A.pipeline.unknown)+'</div></div>';
+    $("r-funnel").innerHTML=fr;
+    var s=A.section3;
+    $("r-sec3").innerHTML=[["💀 Спам",s.spam],["👥 Дублі",s.dubli],["📵 Недодзвон",s.nedodzvon],["📉 Втрачені ліди",s.lost]].map(function(x){return '<div class="b"><div class="n">'+fmtN(x[1])+'</div><div class="l">'+x[0]+'</div></div>';}).join("");
+  }
+  window.IRISRange=function(v){
+    document.body.classList.add("range-mode");
+    loadDaily().then(function(){
+      var r=curRange(v),f=r[0],t=r[1];
+      if(!f||!t||f>t){ if($("pbHint"))$("pbHint").textContent="обери коректний період (від ≤ до)"; if($("r-title"))$("r-title").innerHTML='<span class="muted">Обери дати «від–до» у панелі періоду вище</span>'; return; }
+      if(!window.IRIS){ if($("r-title"))$("r-title").innerHTML='<span class="muted">Двигун не завантажено (iris_range.js)</span>'; return; }
+      var A=window.IRIS.range(DAILY,f,t), cr=cmpRange(), B=cr?window.IRIS.range(DAILY,cr[0],cr[1]):null;
+      if($("r-title"))$("r-title").innerHTML='Період: <b>'+f+' → '+t+'</b>'+(B?'  ·  порівняння: <b>'+cr[0]+' → '+cr[1]+'</b>':'');
+      if($("pbHint"))$("pbHint").textContent=f+" → "+t+(B?(" vs "+cr[0]+"→"+cr[1]):" · без порівняння");
+      try{ paint(A,B); }catch(e){ if($("r-title"))$("r-title").textContent="Помилка рендера: "+e.message; }
+    });
+  };
+})();
+</script>
 
 <script>(function(){
   window.MONTH_PAGES={"current": "index.html", "2026-05": "dash-2026-05.html", "2026-04": "dash-2026-04.html"};
   var SEL="current";
   window.applyGlobalPeriod=function(){
     var p=document.getElementById('globalPeriod'); if(!p) return;
-    var dest=window.MONTH_PAGES[p.value];
-    if(dest && p.value!==SEL){location.href=dest;}
+    var v=p.value;
+    if(v==='custom'||v==='last7'||v==='last30'){ if(window.IRISRange) window.IRISRange(v); return; }
+    document.body.classList.remove('range-mode');
+    var dest=window.MONTH_PAGES[v];
+    if(dest && v!==SEL){location.href=dest;}
   };
   document.addEventListener('DOMContentLoaded',function(){
     var p=document.getElementById('globalPeriod');
