@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IRIS · Діапазон продажів</title>
+<style>
+  :root{
+    --bg:#0c0f1a;--s:#151929;--s2:#1c2137;--s3:#242b47;--brd:#2a3050;--brd2:#3a4170;
+    --t:#e4e8f7;--t2:#c1c7e0;--td:#7b84a3;--td2:#5a6280;
+    --g:#00d68f;--gd:rgba(0,214,143,.15);--o:#ffa94d;--od:rgba(255,169,77,.15);
+    --r:#ff6b6b;--rd:rgba(255,107,107,.15);--ac:#5b8def;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--t);padding:16px 20px;font-size:12px;line-height:1.45}
+  .hdr h1{font-size:18px;font-weight:700}
+  .hdr .sub{color:var(--td);font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-top:3px}
+  .bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--s);border:1px solid var(--brd);border-radius:10px;padding:10px 14px;margin:14px 0}
+  .bar label{color:var(--td);font-weight:600}
+  input[type=date],select{background:var(--s2);color:var(--t);border:1px solid var(--brd2);border-radius:7px;padding:6px 9px;font-size:12px;font-family:inherit}
+  .hint{color:var(--td);margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+  .kpi{background:var(--s);border:1px solid var(--brd);border-radius:11px;padding:12px 13px;position:relative;overflow:hidden}
+  .kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ac)}
+  .kpi.c2::before{background:var(--g)}.kpi.c3::before{background:var(--o)}.kpi.c4::before{background:var(--r)}
+  .kpi .lab{color:var(--td);font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+  .kpi .val{font-size:21px;font-weight:700;margin-top:5px}
+  .kpi .val small{font-size:12px;color:var(--td);font-weight:600}
+  .kpi .dlt{font-size:11px;margin-top:3px;font-weight:600}
+  .up{color:var(--g)}.down{color:var(--r)}.neu{color:var(--td)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  @media(max-width:880px){.grid2{grid-template-columns:1fr}}
+  section.card{background:var(--s);border:1px solid var(--brd);border-radius:11px;padding:14px}
+  section.card h3{font-size:13px;margin-bottom:10px;font-weight:700}
+  table{width:100%;border-collapse:collapse;font-size:11.5px}
+  th,td{padding:5px 7px;text-align:left;border-bottom:1px solid var(--brd)}
+  th{color:var(--td);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.4px}
+  td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
+  .grp{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .gcard{background:var(--s2);border:1px solid var(--brd);border-radius:9px;padding:10px 11px;border-left:3px solid var(--gc)}
+  .gcard .gn{font-weight:700;font-size:12px}
+  .gcard .gr{font-size:16px;font-weight:700;margin:4px 0 2px}
+  .gcard .gm{font-size:11px;color:var(--td)}
+  .badge{display:inline-block;padding:1px 7px;border-radius:6px;font-size:10px;font-weight:600}
+  .bg{background:var(--gd);color:var(--g)}.bo{background:var(--od);color:var(--o)}.br{background:var(--rd);color:var(--r)}
+  .fr{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+  .fr .fl{width:130px;color:var(--t2);font-size:11px}
+  .fr .fb{flex:1;height:14px;background:var(--s2);border-radius:4px;overflow:hidden}
+  .fr .ff{height:100%;border-radius:4px}
+  .fr .fn{width:54px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  .s3{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .s3 .b{background:var(--s2);border:1px solid var(--brd);border-radius:9px;padding:9px 11px}
+  .s3 .b .n{font-size:18px;font-weight:700}.s3 .b .l{color:var(--td);font-size:10px}
+  .err{color:var(--r);padding:10px}
+  .muted{color:var(--td);font-size:11px}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <h1>📊 IRIS · Аналіз за діапазоном</h1>
+  <div class="sub">United Home · довільний період «від–до»</div>
+</div>
+
+<div class="bar">
+  <label>📅 Період:</label>
+  <input type="date" id="gpFrom"><span>–</span><input type="date" id="gpTo">
+  <label style="margin-left:10px">Порівняти:</label>
+  <select id="cmpMode">
+    <option value="none">без порівняння</option>
+    <option value="custom">інший діапазон</option>
+  </select>
+  <span id="cmpBox" style="display:none">
+    <input type="date" id="gcFrom"><span>–</span><input type="date" id="gcTo">
+  </span>
+  <span class="hint" id="hint">завантаження…</span>
+</div>
+
+<div id="kpis" class="kpis"></div>
+<div class="grid2">
+  <section class="card"><h3>🏷️ Групи (обсяг + маржа 1С)</h3><div id="groups" class="grp"></div></section>
+  <section class="card"><h3>🌐 Канали</h3><div id="channels"></div></section>
+</div>
+<div class="grid2">
+  <section class="card"><h3>👤 Менеджери (топ-12 за обсягом)</h3><div id="managers"></div></section>
+  <section class="card"><h3>📦 Топ-товари (топ-15)</h3><div id="products"></div></section>
+</div>
+<div class="grid2">
+  <section class="card"><h3>🔻 Воронка (статуси замовлень)</h3><div id="funnel"></div></section>
+  <section class="card"><h3>🧹 CRM-якість лідів</h3><div id="sec3" class="s3"></div></section>
+</div>
+
+<script src="iris_range.js"></script>
+<script>
+const GMETA={roll:{n:"Ролл",c:"#00d68f"},amebli:{n:"Амебли",c:"#a29bfe"},seti:{n:"Сети",c:"#339af0"},roznica:{n:"Розниця",c:"#ffa94d"}};
+const PIPE_UA=[["in_progress","⚙️ В обробці","#4dabf7"],["production","🏭 У виробництві","#a29bfe"],
+  ["shipping","📦 Відправлення","#9775fa"],["sale","🎁 Отримано","#00d68f"],
+  ["returned","↩️ Повернення","#ff8787"],["refused","🚫 Відмова (не відпр.)","#ff6b6b"],
+  ["lead","💸 Втрачений лід","#ffa94d"],["claim","⚠️ Рекламація","#ffd43b"]];
+let MONTHS={}, CUR=null, MIN=null, MAX=null;
+
+const fmtN=n=>Math.round(n||0).toLocaleString("uk-UA").replace(/,/g," ");
+const fmtK=n=>(n>=1e6?(n/1e6).toFixed(2)+"M":Math.round(n/1000)+"K");
+function $(id){return document.getElementById(id);}
+function iso(m,d){return m+"-"+String(d).padStart(2,"0");}
+
+function dlt(cur,prev,inv){
+  if(prev==null||!isFinite(prev)||prev===0) return '<span class="dlt neu">—</span>';
+  const p=(cur-prev)/Math.abs(prev)*100; const good=inv?p<=0:p>=0;
+  const cls=p===0?"neu":good?"up":"down"; const s=(p>=0?"+":"")+p.toFixed(0)+"%";
+  return '<span class="dlt '+cls+'">'+s+'</span>';
+}
+
+async function loadAll(){
+  let data=null;
+  try{ data=await (await fetch("data.json",{cache:"no-store"})).json(); }catch(e){}
+  CUR=data&&data.month?data.month:null;
+  const files=[];
+  if(CUR) files.push(["daily.json",CUR]);
+  files.push(["daily-2026-05.json","2026-05"],["daily-2026-04.json","2026-04"]);
+  for(const [f,m] of files){
+    try{ const j=await (await fetch(f,{cache:"no-store"})).json(); if(j&&j.day) MONTHS[m]=j; }catch(e){}
+  }
+  // межі дат
+  const isos=[];
+  for(const m in MONTHS) for(const d in MONTHS[m].day) isos.push(iso(m,+d));
+  isos.sort(); MIN=isos[0]; MAX=isos[isos.length-1];
+  if(!isos.length){ $("hint").innerHTML='<span class="err">Не знайдено daily*.json у docs/</span>'; return; }
+  for(const el of ["gpFrom","gpTo","gcFrom","gcTo"]){ $(el).min=MIN; $(el).max=MAX; }
+  // дефолт: поточний місяць (або останній доступний)
+  const dm=CUR&&MONTHS[CUR]?CUR:Object.keys(MONTHS).sort().pop();
+  const dd=Object.keys(MONTHS[dm].day).map(Number).sort((a,b)=>a-b);
+  $("gpFrom").value=iso(dm,dd[0]); $("gpTo").value=iso(dm,dd[dd.length-1]);
+  apply();
+}
+
+function render(A,B){
+  // ── KPI ──
+  const cards=[
+    ["c1","Обсяг продажів",fmtN(A.obsyag)+" <small>₴</small>",B?dlt(A.obsyag,B.obsyag):""],
+    ["c1","Замовлень",fmtN(A.orders),B?dlt(A.orders,B.orders):""],
+    ["c1","Середній чек",fmtN(A.avg_check)+" <small>₴</small>",B?dlt(A.avg_check,B.avg_check):""],
+    ["c2","Конверсія",A.conversion.value+" <small>%</small>",B?dlt(A.conversion.value,B.conversion.value):""],
+    ["c4","Відмови (1С)",A.refuse.of_orders+" <small>%</small>",B?dlt(A.refuse.of_orders,B.refuse.of_orders,true):""],
+    ["c3","Відгрузки 1С",fmtN(A.shipments.total)+" <small>₴</small>",B?dlt(A.shipments.total,B.shipments.total):""],
+  ];
+  $("kpis").innerHTML=cards.map(c=>'<div class="kpi '+c[0]+'"><div class="lab">'+c[1]+'</div><div class="val">'+c[2]+'</div>'+(c[3]||"")+'</div>').join("");
+
+  // ── групи ──
+  $("groups").innerHTML=["roll","amebli","seti","roznica"].map(g=>{
+    const b=A.groups[g], gm=GMETA[g];
+    const mtxt=b.margin==null?'<span class="muted">маржа —</span>':
+      'маржа <b>'+b.margin+'%</b> '+(b.reliable?'':'<span class="badge bo">cov '+Math.round(b.coverage*100)+'%</span>');
+    return '<div class="gcard" style="--gc:'+gm.c+'"><div class="gn" style="color:'+gm.c+'">'+gm.n+'</div>'+
+      '<div class="gr">'+fmtK(b.rev)+' ₴</div><div class="gm">'+b.n+' зам · '+mtxt+'</div></div>';
+  }).join("");
+
+  // ── канали ──
+  $("channels").innerHTML='<table><tr><th>Сайт</th><th class=r>Обсяг</th><th class=r>Зам.</th><th class=r>Чек</th></tr>'+
+    A.channels.slice(0,12).map(c=>'<tr><td>'+c.name+'</td><td class=r>'+fmtK(c.revenue)+'</td><td class=r>'+c.orders+'</td><td class=r>'+fmtN(c.avg_check)+'</td></tr>').join("")+'</table>';
+
+  // ── менеджери ──
+  $("managers").innerHTML='<table><tr><th>#</th><th>Менеджер</th><th class=r>Обсяг</th><th class=r>Зам.</th><th class=r>Конв.</th><th class=r>Відм.</th><th class=r>Пов.</th></tr>'+
+    A.managers.slice(0,12).map((m,i)=>{
+      const cc=m.conversion>=88?"bg":m.conversion>=82?"bo":"br";
+      const rc=m.refuse_pct>=10?"br":m.refuse_pct>=5?"bo":"bg";
+      return '<tr><td>'+(i+1)+'</td><td>'+m.name+'</td><td class=r>'+fmtK(m.revenue)+'</td><td class=r>'+m.orders+
+        '</td><td class=r><span class="badge '+cc+'">'+m.conversion+'%</span></td><td class=r><span class="badge '+rc+'">'+m.refuse_pct.toFixed(1)+'%</span></td><td class=r>'+m.returns+'</td></tr>';
+    }).join("")+'</table>';
+
+  // ── товари ──
+  $("products").innerHTML='<table><tr><th>#</th><th>Товар</th><th class=r>Обсяг</th><th class=r>К-ть</th><th class=r>Зам.</th></tr>'+
+    A.products.slice(0,15).map((p,i)=>'<tr><td>'+(i+1)+'</td><td title="'+p.name+'">'+(p.name.length>42?p.name.slice(0,42)+"…":p.name)+'</td><td class=r>'+fmtK(p.revenue)+'</td><td class=r>'+p.qty+'</td><td class=r>'+p.count+'</td></tr>').join("")+'</table>';
+
+  // ── воронка ──
+  const lt=A.pipeline.leads_total||1;
+  let fr='<div class="fr"><div class="fl">📥 Всього лідів</div><div class="fb"><div class="ff" style="width:100%;background:#339af0"></div></div><div class="fn">'+fmtN(lt)+'</div></div>';
+  fr+=PIPE_UA.map(([k,lab,col])=>{
+    const v=A.pipeline[k]||0, w=Math.max(1,Math.round(v/lt*100));
+    return '<div class="fr"><div class="fl">'+lab+'</div><div class="fb"><div class="ff" style="width:'+w+'%;background:'+col+'"></div></div><div class="fn">'+fmtN(v)+'</div></div>';
+  }).join("");
+  if(A.pipeline.unknown) fr+='<div class="fr"><div class="fl muted">❔ Невідомі</div><div class="fb"></div><div class="fn">'+fmtN(A.pipeline.unknown)+'</div></div>';
+  $("funnel").innerHTML=fr;
+
+  // ── CRM-якість ──
+  const s=A.section3;
+  $("sec3").innerHTML=[["💀 Спам",s.spam],["👥 Дублі",s.dubli],["📵 Недодзвон",s.nedodzvon],["📉 Втрачені ліди",s.lost]]
+    .map(x=>'<div class="b"><div class="n">'+fmtN(x[1])+'</div><div class="l">'+x[0]+'</div></div>').join("");
+}
+
+function apply(){
+  const f=$("gpFrom").value, t=$("gpTo").value;
+  if(!f||!t||f>t){ $("hint").innerHTML='<span class="err">Обери коректний період (від ≤ до)</span>'; return; }
+  const A=IRIS.range(MONTHS,f,t);
+  let B=null, cTxt="без порівняння";
+  if($("cmpMode").value==="custom"){
+    const cf=$("gcFrom").value, ct=$("gcTo").value;
+    if(cf&&ct&&cf<=ct){ B=IRIS.range(MONTHS,cf,ct); cTxt="vs "+cf+" → "+ct; }
+    else cTxt="(обери діапазон порівняння)";
+  }
+  $("hint").textContent=f+" → "+t+" · "+cTxt;
+  render(A,B);
+}
+
+$("cmpMode").onchange=()=>{ $("cmpBox").style.display=$("cmpMode").value==="custom"?"inline":"none"; apply(); };
+["gpFrom","gpTo","gcFrom","gcTo"].forEach(id=>$(id).onchange=apply);
+loadAll();
+</script>
+</body>
+</html>
