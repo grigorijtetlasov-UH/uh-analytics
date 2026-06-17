@@ -445,8 +445,7 @@ tr.row-comp td{opacity:.8}
 
 <style>
 #rangePanel{display:none;margin-bottom:16px}
-body.range-mode .main-tabs,body.range-mode .mpnl{display:none!important}
-body.range-mode #rangePanel{display:block}
+/* (in-place режим: панель не використовується; класу range-mode не додаємо) */
 #rangePanel .rhead{font-size:13px;color:var(--td);font-family:'JetBrains Mono',monospace;margin:2px 0 12px}
 #rangePanel .rhead b{color:var(--t)}
 #rangePanel .rk{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
@@ -514,8 +513,34 @@ body.range-mode #rangePanel{display:block}
      TAB 1 — ОГЛЯД
 ══════════════════════════════════════════════════ -->
 <div class="mpnl on" id="mp-overview">
-<details style="margin-bottom:16px;background:rgba(165,155,254,.05);border:1px solid rgba(165,155,254,.25);border-radius:10px;padding:10px 14px"><summary style="cursor:pointer;font-weight:700;color:#a29bfe;font-size:13px">📋 Плани місяця (2026-06) — заповнення</summary><div style="margin-top:10px;font-size:12px"><div style="color:#7b84a3;margin-bottom:6px">План продажів по групах:</div><div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:90px;color:#c1c7e0">Ролл</span><input data-pg="roll" type="number" value="8100000" style="width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;padding:5px 8px;font-size:12px"><span style="color:#7b84a3;font-size:11px">₴</span></div><div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:90px;color:#c1c7e0">Амебли</span><input data-pg="amebli" type="number" value="7400000" style="width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;padding:5px 8px;font-size:12px"><span style="color:#7b84a3;font-size:11px">₴</span></div><div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:90px;color:#c1c7e0">Сети</span><input data-pg="seti" type="number" value="3300000" style="width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;padding:5px 8px;font-size:12px"><span style="color:#7b84a3;font-size:11px">₴</span></div><div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:90px;color:#c1c7e0">Розниця</span><input data-pg="roznica" type="number" value="2900000" style="width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;padding:5px 8px;font-size:12px"><span style="color:#7b84a3;font-size:11px">₴</span></div><div style="display:flex;align-items:center;gap:8px;margin:10px 0 4px"><span style="width:90px;color:#c1c7e0">План відгрузок</span><input id="planShip" type="number" value="0" style="width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;padding:5px 8px;font-size:12px"><span style="color:#7b84a3;font-size:11px">₴</span></div><button onclick="genPlanJSON()" style="margin-top:10px;background:#a29bfe;color:#1a1a2e;border:none;border-radius:7px;padding:7px 14px;font-weight:600;cursor:pointer;font-size:12px">Згенерувати JSON (копіюється)</button><div style="color:#7b84a3;font-size:10.5px;margin-top:8px">Онови ключі <b>plans</b> і <b>shipments_plan</b> у <b>data/manual_config.json</b> на сервері → перезапусти пайплайн.</div><textarea id="planOut" readonly style="display:none;width:100%;height:160px;margin-top:8px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.12);border-radius:7px;color:#9ae6b4;padding:8px;font-family:monospace;font-size:11px"></textarea></div></details><script>function genPlanJSON(){var m="2026-06";var plans={};document.querySelectorAll("[data-pg]").forEach(function(i){plans[i.dataset.pg]=Number(i.value)||0;});var sp=Number(document.getElementById("planShip").value)||0;var o={plans:{},shipments_plan:{}};o.plans[m]=plans;o.shipments_plan[m]=sp;var t=document.getElementById("planOut");t.value=JSON.stringify(o,null,2);t.style.display="block";t.select();try{document.execCommand("copy");}catch(e){}}</script>
+<details style="margin-bottom:16px;background:rgba(165,155,254,.05);border:1px solid rgba(165,155,254,.25);border-radius:10px;padding:10px 14px"><summary style="cursor:pointer;font-weight:700;color:#a29bfe;font-size:13px">📋 Плани місяця (2026-06) — заповнення</summary><div style="margin-top:10px;font-size:12px"><div style="color:#7b84a3;margin-bottom:6px">План продажів по групах:</div><div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:90px;color:#c1c7e0">Ролл</span><input data-pg="roll" type="number" value="8100000" style="width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;padding:5px 8px;font-size:12px"><span style="color:#7b84a3;font-size:11px">₴</span></div><div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:90px;color:#c1c7e0">Амебли</span><input data-pg="amebli" type="number" value="7400000" style="width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;padding:5px 8px;font-size:12px"><span style="color:#7b84a3;font-size:11px">₴</span></div><div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:90px;color:#c1c7e0">Сети</span><input data-pg="seti" type="number" value="3300000" style="width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;padding:5px 8px;font-size:12px"><span style="color:#7b84a3;font-size:11px">₴</span></div><div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:90px;color:#c1c7e0">Розниця</span><input data-pg="roznica" type="number" value="2900000" style="width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;padding:5px 8px;font-size:12px"><span style="color:#7b84a3;font-size:11px">₴</span></div><div style="display:flex;align-items:center;gap:8px;margin:10px 0 4px"><span style="width:90px;color:#c1c7e0">План відгрузок</span><input id="planShip" type="number" value="0" style="width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;padding:5px 8px;font-size:12px"><span style="color:#7b84a3;font-size:11px">₴</span></div><button onclick="applyPlansLive()" style="margin-top:10px;margin-right:8px;background:#00d68f;color:#08240f;border:none;border-radius:7px;padding:7px 14px;font-weight:700;cursor:pointer;font-size:12px">✅ Застосувати на дашборді</button><button onclick="resetPlansLive()" style="margin-top:10px;margin-right:8px;background:rgba(255,255,255,.08);color:#c1c7e0;border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:7px 14px;font-weight:600;cursor:pointer;font-size:12px">↺ Серверні плани</button><button onclick="genPlanJSON()" style="margin-top:10px;background:#a29bfe;color:#1a1a2e;border:none;border-radius:7px;padding:7px 14px;font-weight:600;cursor:pointer;font-size:12px">Згенерувати JSON (копіюється)</button><div style="color:#7b84a3;font-size:10.5px;margin-top:8px"><b style="color:#00d68f">Застосувати на дашборді</b> — одразу (зберігається у браузері). <b>Згенерувати JSON</b> — для постійного збереження: онови <b>plans</b>/<b>shipments_plan</b> у <b>data/manual_config.json</b> на сервері → перезапусти пайплайн. <b>↺ Серверні плани</b> — скинути локальні й показати серверні.</div><textarea id="planOut" readonly style="display:none;width:100%;height:160px;margin-top:8px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.12);border-radius:7px;color:#9ae6b4;padding:8px;font-family:monospace;font-size:11px"></textarea></div></details><script>function genPlanJSON(){var m="2026-06";var plans={};document.querySelectorAll("[data-pg]").forEach(function(i){plans[i.dataset.pg]=Number(i.value)||0;});var sp=Number(document.getElementById("planShip").value)||0;var o={plans:{},shipments_plan:{}};o.plans[m]=plans;o.shipments_plan[m]=sp;var t=document.getElementById("planOut");t.value=JSON.stringify(o,null,2);t.style.display="block";t.select();try{document.execCommand("copy");}catch(e){}}function applyPlansLive(){var m="2026-06";var plans={};document.querySelectorAll("[data-pg]").forEach(function(i){plans[i.dataset.pg]=Number(i.value)||0;});var sp=Number(document.getElementById("planShip").value)||0;try{localStorage.setItem("iris_plans_"+m,JSON.stringify({plans:plans,ship:sp}));}catch(e){}location.reload();}function resetPlansLive(){var m="2026-06";try{localStorage.removeItem("iris_plans_"+m);}catch(e){}location.reload();}</script>
 <details style="margin-bottom:16px;background:rgba(102,217,232,.05);border:1px solid rgba(102,217,232,.22);border-radius:10px;padding:10px 14px"><summary style="cursor:pointer;font-weight:700;color:#66d9e8;font-size:13px">🩺 Діагностика даних — джерела і перевірки · дані 1–16 червня, оновлено 17.06.2026 10:31</summary><div style="margin-top:10px;overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11.5px"><thead><tr style="color:#7b84a3;text-align:left;border-bottom:1px solid rgba(255,255,255,.08)"><th style="padding:4px 8px">Блок</th><th style="padding:4px 8px">Значення</th><th style="padding:4px 8px">Джерело</th><th style="padding:4px 8px">Статус</th></tr></thead><tbody><tr><td style="padding:3px 8px">Обсяг продажів</td><td style="padding:3px 8px;font-weight:600">13.6M₴</td><td style="padding:3px 8px;color:#7b84a3">CRM · факт по групах</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Замовлень</td><td style="padding:3px 8px;font-weight:600">2 673</td><td style="padding:3px 8px;color:#7b84a3">CRM · унік. ID</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Середній чек</td><td style="padding:3px 8px;font-weight:600">5 103₴</td><td style="padding:3px 8px;color:#7b84a3">CRM</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Маржинальність</td><td style="padding:3px 8px;font-weight:600">41%</td><td style="padding:3px 8px;color:#7b84a3">1С · собівартість</td><td style="padding:3px 8px"><span style="color:#ffd43b;font-weight:600">⚠ оцінка</span></td></tr><tr><td style="padding:3px 8px">Конверсія лід→зам</td><td style="padding:3px 8px;font-weight:600">87.3%</td><td style="padding:3px 8px;color:#7b84a3">CRM · статуси</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Воронка — лідів</td><td style="padding:3px 8px;font-weight:600">5 030</td><td style="padding:3px 8px;color:#7b84a3">CRM · статуси (знімок)</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Відмови</td><td style="padding:3px 8px;font-weight:600">4.6% (126/2722)</td><td style="padding:3px 8px;color:#7b84a3">1С · СостояниеЗаказа</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Відгрузки — факт</td><td style="padding:3px 8px;font-weight:600">10.8M₴</td><td style="padding:3px 8px;color:#7b84a3">1С · SALES</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Відгрузки — план</td><td style="padding:3px 8px;font-weight:600">не задано</td><td style="padding:3px 8px;color:#7b84a3">manual_config.json</td><td style="padding:3px 8px"><span style="color:#ffa94d;font-weight:600">🔧 в розробці</span></td></tr><tr><td style="padding:3px 8px">Категорії (маржа)</td><td style="padding:3px 8px;font-weight:600">6 кат.</td><td style="padding:3px 8px;color:#7b84a3">1С · агрегат груп</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Продавці: конв/поверн</td><td style="padding:3px 8px;font-weight:600">29 ос.</td><td style="padding:3px 8px;color:#7b84a3">CRM · статуси</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">MCI індекс</td><td style="padding:3px 8px;font-weight:600">66 🟢 Оптимизм</td><td style="padding:3px 8px;color:#7b84a3">mci schema</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr><tr><td style="padding:3px 8px">Маркетинг / ДРР</td><td style="padding:3px 8px;font-weight:600">нема джерела витрат</td><td style="padding:3px 8px;color:#7b84a3">—</td><td style="padding:3px 8px"><span style="color:#ffa94d;font-weight:600">🔧 в розробці</span></td></tr><tr><td style="padding:3px 8px">Денний графік відмов (Огляд)</td><td style="padding:3px 8px;font-weight:600">по днях</td><td style="padding:3px 8px;color:#7b84a3">CRM · дата замовлення</td><td style="padding:3px 8px"><span style="color:#00d68f;font-weight:600">✅ реальне</span></td></tr></tbody></table><div style="margin-top:8px;color:#7b84a3;font-size:10.5px;line-height:1.6">Автоперевірки: воронка Σстадій=5030 vs ліди=5030 ✅ · спам поза лідами=1698 · невідомі статуси=496 · coverage собівартості: roll 88% · amebli 86% · seti 88% · roznica 57%</div></div></details>
+
+<style>#ov-range{display:none}#mp-overview.ovr-on>:not(#ov-range){display:none}#mp-overview.ovr-on #ov-range{display:block}</style>
+<div id="ov-range">
+  <div class="kpi-row" id="ovr-kpis"></div>
+  <div class="cd">
+    <div class="ct"><span class="dot"></span>Порівняння періодів — виручка по днях<span class="btot" id="ovr-bt"></span></div>
+    <div class="cd-d">Дві криві: <b style="color:#a29bfe">Період 1</b> (обраний) проти <b style="color:#ffa94d">Період 2</b> (порівняння), вирівняно за днем від початку періоду. Наведи курсор — побачиш фактичну дату.</div>
+    <canvas id="ch-ov-range" style="max-height:340px"></canvas>
+  </div>
+  <div class="cd" id="ovr-cmp-card">
+    <div class="ct"><span class="dot" style="background:var(--g)"></span>Підсумок: Період 1 vs Період 2</div>
+    <div class="scr"><table><thead><tr><th>Показник</th><th class="r">Період 1</th><th class="r">Період 2</th><th class="r">Δ</th></tr></thead><tbody id="ovr-cmp"></tbody></table></div>
+  </div>
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--c)"></span>Воронка замовлень (Період 1)</div>
+    <div id="ovr-funnel" style="padding-top:6px"></div>
+  </div>
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--g)"></span>ТОП-менеджери (Період 1)</div>
+    <div class="scr" style="max-height:360px"><table><thead><tr><th>#</th><th>Менеджер</th><th class="r">Виручка ₴</th><th class="r">Зам.</th><th class="r">Конв.</th><th class="r">Сер.чек</th><th class="r">Відм.</th><th class="r">Пов.</th></tr></thead><tbody id="ovr-mgrs"></tbody></table></div>
+  </div>
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--lime)"></span>ТОП-товари (Період 1)</div>
+    <div class="scr" style="max-height:360px"><table><thead><tr><th>#</th><th>Товар</th><th class="r">Од.</th><th class="r">Зам.</th><th class="r">Сер.ціна</th><th class="r">Виручка ₴</th></tr></thead><tbody id="ovr-prods"></tbody></table></div>
+  </div>
+</div>
 
   <!-- MCI mini-module -->
   <div class="mci-bar">
@@ -641,7 +666,7 @@ body.range-mode #rangePanel{display:block}
 
   <!-- All brands KPI -->
   <div id="sp-all" class="pnl on">
-    <div class="kpi-row">
+    <div class="kpi-row" id="sp-kpis">
       <div class="kpi c1"><div class="kl">Обсяг продажів</div><div class="kv">13.6M<span class="ku">₴</span></div><div class="ks">факт за 1–16 червня</div></div>
       <div class="kpi c2"><div class="kl">Замовлень</div><div class="kv">2 673</div><div class="ks">~167 зам/день</div></div>
       <div class="kpi c3"><div class="kl">Середній чек</div><div class="kv">5 103<span class="ku">₴</span></div><div class="ks">за 1–16 червня</div></div>
@@ -652,7 +677,7 @@ body.range-mode #rangePanel{display:block}
 
     <!-- Sales daily chart: plan / fact / trend / last month -->
     <div class="cd">
-      <div class="ct"><span class="dot"></span>Продажі по днях — план / факт / тренд<span class="btot">vs минулий місяць</span></div>
+      <div class="ct" id="sales-daily-ct"><span class="dot"></span>Продажі по днях — план / факт / тренд<span class="btot">vs минулий місяць</span></div>
       <div class="cd-d">Суцільна — факт червня (1–16). Пунктир — тренд до кінця місяця. Сіра область — факт травня. Бірюзовий пунктир — план.</div>
       <canvas id="ch-sales-daily" style="max-height:280px"></canvas>
       <div id="sales-daily-summary" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px;margin-top:12px"></div>
@@ -1398,6 +1423,7 @@ function sortBrandProd(btn,key,k){const p=btn.parentElement;p.querySelectorAll('
 // ═══════════ OVERVIEW CHARTS ═══════════
 // ═══════════ OVERVIEW: MCI + 4 SECTIONS ═══════════
 const CH = {"roll": {"name": "Ролл", "color": "#00d68f", "june": [237570, 300607, 252298, 251492, 285263, 251568, 255729, 270740, 300823, 339274, 283452, 228736, 305433, 296453, 320940, 283791], "may": 7731671, "plan": 8100000}, "amebli": {"name": "Амебли", "color": "#a29bfe", "june": [311857, 127254, 269451, 259137, 206949, 182894, 258828, 368152, 355077, 292550, 257255, 317672, 299057, 250219, 291231, 335339], "may": 6032632, "plan": 7400000}, "seti": {"name": "Сети", "color": "#339af0", "june": [155957, 274869, 302144, 162615, 116457, 189370, 173629, 170109, 201824, 187858, 292025, 199516, 77350, 156213, 254480, 136755], "may": 5406209, "plan": 3300000}, "roznica": {"name": "Розниця", "color": "#ffa94d", "june": [268062, 152072, 60088, 60113, 34600, 80402, 131091, 184724, 25886, 54753, 6096, 143839, 249524, 217816, 7951, 64713], "may": 2616267, "plan": 2900000}};
+try{var _pl=JSON.parse(localStorage.getItem('iris_plans_2026-06')||'null');if(_pl){if(_pl.plans){for(var _g in _pl.plans){if(typeof CH!=='undefined'&&CH[_g])CH[_g].plan=_pl.plans[_g];}}if(_pl.ship!=null)window.PLAN_SHIP=_pl.ship;}}catch(e){}
 const O_DIM=30, O_ACT=16, O_FULL=16;
 function rampDaily(monthly){const d=Math.round(monthly/O_DIM);return Array.from({length:O_DIM},()=>d);}
 
@@ -1512,7 +1538,7 @@ function renderSec1(key, btn){
   const shipActual=shipJune.reduce((a,b)=>a+b,0);
   const shipAvg=shipActual/SND;
   const shipProj=shipActual+shipAvg*(O_DIM-SND);
-  const shipPlan=0, shipPlanDaily=Math.round(shipPlan/O_DIM);
+  const shipPlan=(window.PLAN_SHIP!=null?window.PLAN_SHIP:0), shipPlanDaily=Math.round(shipPlan/O_DIM);
   const shipMay=rampDaily(21784572), shipMayTotal=shipMay.reduce((a,b)=>a+b,0);
   const shipSolid=shipLabels.map((_,i)=> i<SND?shipJune[i]:null);
   const shipDash=shipLabels.map((_,i)=>{if(i<SND-1)return null;if(i===SND-1)return shipJune[SND-1];return Math.round(shipAvg);});
@@ -2875,46 +2901,94 @@ injectDateButtons();
     var c=$("globalCompare"); if(c&&c.value==="custom"){var f=($("gcFrom")||{}).value,t=($("gcTo")||{}).value; if(f&&t&&f<=t) return [f,t];}
     return null;
   }
-  function paint(A,B){
-    var cards=[
-      ["c1","Обсяг продажів",fmtN(A.obsyag)+' <small>₴</small>',B?dlt(A.obsyag,B.obsyag):""],
-      ["c1","Замовлень",fmtN(A.orders),B?dlt(A.orders,B.orders):""],
-      ["c1","Середній чек",fmtN(A.avg_check)+' <small>₴</small>',B?dlt(A.avg_check,B.avg_check):""],
-      ["c2","Конверсія",A.conversion.value+' <small>%</small>',B?dlt(A.conversion.value,B.conversion.value):""],
-      ["c4","Відмови (1С)",A.refuse.of_orders+' <small>%</small>',B?dlt(A.refuse.of_orders,B.refuse.of_orders,true):""],
-      ["c3","Відгрузки 1С",fmtN(A.shipments.total)+' <small>₴</small>',B?dlt(A.shipments.total,B.shipments.total):""]
-    ];
-    $("r-kpis").innerHTML=cards.map(function(c){return '<div class="rkpi '+c[0]+'"><div class="lab">'+c[1]+'</div><div class="val">'+c[2]+'</div>'+(c[3]||"")+'</div>';}).join("");
-    $("r-groups").innerHTML=["roll","amebli","seti","roznica"].map(function(g){
-      var b=A.groups[g],gm=GMETA[g];
-      var mt=(b.margin==null)?'<span class="muted">маржа —</span>':'маржа <b>'+b.margin+'%</b> '+(b.reliable?'':'<span class="rb bo">cov '+Math.round(b.coverage*100)+'%</span>');
-      return '<div class="rgc" style="--gc:'+gm.c+'"><div class="gn" style="color:'+gm.c+'">'+gm.n+'</div><div class="gr">'+fmtK(b.rev)+' ₴</div><div class="gm">'+b.n+' зам · '+mt+'</div></div>';
-    }).join("");
-    $("r-channels").innerHTML='<table><tr><th>Сайт</th><th class=r>Обсяг</th><th class=r>Зам.</th><th class=r>Чек</th></tr>'+A.channels.slice(0,12).map(function(c){return '<tr><td>'+c.name+'</td><td class=r>'+fmtK(c.revenue)+'</td><td class=r>'+c.orders+'</td><td class=r>'+fmtN(c.avg_check)+'</td></tr>';}).join("")+'</table>';
-    $("r-managers").innerHTML='<table><tr><th>#</th><th>Менеджер</th><th class=r>Обсяг</th><th class=r>Зам.</th><th class=r>Конв.</th><th class=r>Відм.</th><th class=r>Пов.</th></tr>'+A.managers.slice(0,12).map(function(m,i){
-      var cc=m.conversion>=88?"bg":(m.conversion>=82?"bo":"br"), rc=m.refuse_pct>=10?"br":(m.refuse_pct>=5?"bo":"bg");
-      return '<tr><td>'+(i+1)+'</td><td>'+m.name+'</td><td class=r>'+fmtK(m.revenue)+'</td><td class=r>'+m.orders+'</td><td class=r><span class="rb '+cc+'">'+m.conversion+'%</span></td><td class=r><span class="rb '+rc+'">'+m.refuse_pct.toFixed(1)+'%</span></td><td class=r>'+m.returns+'</td></tr>';
-    }).join("")+'</table>';
-    $("r-products").innerHTML='<table><tr><th>#</th><th>Товар</th><th class=r>Обсяг</th><th class=r>К-ть</th><th class=r>Зам.</th></tr>'+A.products.slice(0,15).map(function(p,i){return '<tr><td>'+(i+1)+'</td><td title="'+p.name+'">'+(p.name.length>42?p.name.slice(0,42)+"…":p.name)+'</td><td class=r>'+fmtK(p.revenue)+'</td><td class=r>'+p.qty+'</td><td class=r>'+p.count+'</td></tr>';}).join("")+'</table>';
-    var lt=A.pipeline.leads_total||1;
-    var fr='<div class="fr"><div class="fl">📥 Всього лідів</div><div class="fb"><div class="ff" style="width:100%;background:#339af0"></div></div><div class="fn">'+fmtN(lt)+'</div></div>';
-    fr+=PIPE_UA.map(function(p){var v=A.pipeline[p[0]]||0,w=Math.max(1,Math.round(v/lt*100));return '<div class="fr"><div class="fl">'+p[1]+'</div><div class="fb"><div class="ff" style="width:'+w+'%;background:'+p[2]+'"></div></div><div class="fn">'+fmtN(v)+'</div></div>';}).join("");
-    if(A.pipeline.unknown)fr+='<div class="fr"><div class="fl muted">❔ Невідомі</div><div class="fb"></div><div class="fn">'+fmtN(A.pipeline.unknown)+'</div></div>';
-    $("r-funnel").innerHTML=fr;
-    var s=A.section3;
-    $("r-sec3").innerHTML=[["💀 Спам",s.spam],["👥 Дублі",s.dubli],["📵 Недодзвон",s.nedodzvon],["📉 Втрачені ліди",s.lost]].map(function(x){return '<div class="b"><div class="n">'+fmtN(x[1])+'</div><div class="l">'+x[0]+'</div></div>';}).join("");
+  // ── режим діапазону → вкладка «Огляд», блок #ov-range (графік двох кривих) ──
+  var RANGE_ON=false, ovChart=null, ca=[], cb=[];
+  function money(n){ return fmtN(n)+'<span class="ku">₴</span>'; }
+
+  function ovrKPIs(A,B){
+    var row=$("ovr-kpis"); if(!row) return;
+    function dd(c,p,inv){ return B?(' '+dlt(c,p,inv)):''; }
+    function card(cls,lab,val,sub){ return '<div class="kpi '+cls+'"><div class="kl">'+lab+'</div><div class="kv">'+val+'</div><div class="ks">'+(sub||'')+'</div></div>'; }
+    var mrg=(A.margin_overall==null)?'—':A.margin_overall;
+    row.innerHTML=
+      card('c1','Обсяг продажів',money(A.obsyag),(B?'vs П2'+dd(A.obsyag,B.obsyag):'факт за період'))+
+      card('c2','Замовлень',fmtN(A.orders),(B?'vs П2'+dd(A.orders,B.orders):'за період'))+
+      card('c3','Середній чек',money(A.avg_check),(B?'vs П2'+dd(A.avg_check,B.avg_check):''))+
+      card('c4','Маржинальність',mrg+'<span class="ku">%</span>','покриття '+Math.round((A.coverage_overall||0)*100)+'%')+
+      card('c5','Відгрузки 1С',money(A.shipments.total),(B?'vs П2'+dd(A.shipments.total,B.shipments.total):'факт 1С'))+
+      card('c6','Конверсія',A.conversion.value+'<span class="ku">%</span>','відмови '+A.refuse.of_orders+'%');
   }
-  window.IRISRange=function(v){
-    document.body.classList.add("range-mode");
+  function ovrChart(A,B){
+    ca=Object.keys(A.daily).sort(); cb=B?Object.keys(B.daily).sort():[];
+    var n=Math.max(ca.length,cb.length), labels=[]; for(var i=0;i<n;i++) labels.push('Д'+(i+1));
+    var ds=[{label:'Період 1',data:ca.map(function(d){return A.daily[d];}),borderColor:'#a29bfe',backgroundColor:'rgba(162,155,254,0.10)',borderWidth:2.5,tension:0.3,pointRadius:2,fill:true}];
+    if(B) ds.push({label:'Період 2',data:cb.map(function(d){return B.daily[d];}),borderColor:'#ffa94d',backgroundColor:'transparent',borderWidth:2,borderDash:[5,4],tension:0.3,pointRadius:2});
+    var cv=$("ch-ov-range"); if(!cv||!window.Chart) return;
+    var cfg={labels:labels,datasets:ds};
+    if(ovChart){ ovChart.data=cfg; ovChart.update(); return; }
+    ovChart=new Chart(cv,{type:'line',data:cfg,options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#c1c7e0',font:{size:11},usePointStyle:true,boxWidth:8}},
+        tooltip:{callbacks:{label:function(x){var arr=x.datasetIndex===0?ca:cb,dt=arr[x.dataIndex]||'';return x.dataset.label+' ('+dt+'): '+fmtN(x.parsed.y)+'₴';}}}},
+      scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#7b84a3',font:{size:9}},title:{display:true,text:'День від початку періоду',color:'#5a6280',font:{size:9}}},
+        y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#7b84a3',callback:function(v){return (v>=1e6?(v/1e6).toFixed(1)+'M':Math.round(v/1000)+'K')+'₴';}}}}}});
+  }
+  function ovrCmp(A,B){
+    var tb=$("ovr-cmp"); if(!tb) return;
+    function r(lab,a,b,fmt,inv){ var fa=fmt?fmt(a):a, fb=B?(fmt?fmt(b):b):'—', d=B?dlt(a,b,inv):''; return '<tr><td>'+lab+'</td><td class="r">'+fa+'</td><td class="r">'+fb+'</td><td class="r">'+d+'</td></tr>'; }
+    var m=function(x){return fmtN(x)+' ₴';};
+    tb.innerHTML=
+      r('Обсяг продажів',A.obsyag,B?B.obsyag:0,m)+
+      r('Замовлень',A.orders,B?B.orders:0,fmtN)+
+      r('Середній чек',A.avg_check,B?B.avg_check:0,m)+
+      r('Конверсія, %',A.conversion.value,B?B.conversion.value:0,null)+
+      r('Відмови 1С, %',A.refuse.of_orders,B?B.refuse.of_orders:0,null,true)+
+      r('Відгрузки 1С',A.shipments.total,B?B.shipments.total:0,m);
+  }
+  function ovrFunnel(A){
+    var fc=$("ovr-funnel"); if(!fc) return;
+    var PIPE=[["leads_total","📥 Всього лідів","#339af0"],["in_progress","⚙️ В обробці","#4dabf7"],["production","🏭 У виробництві","#a29bfe"],["shipping","📦 Відправлення","#9775fa"],["sale","🎁 Отримано","#00d68f"],["returned","↩️ Повернення","#ff8787"],["refused","🚫 Відмова","#ff6b6b"],["lead","💸 Втрачений лід","#ffa94d"]];
+    var lt=A.pipeline.leads_total||1;
+    var rows=PIPE.map(function(p){var v=A.pipeline[p[0]]||0,w=Math.max(2,Math.round(v/lt*100)),pct=(v/lt*100).toFixed(0);
+      return '<div class="funnel-row"><div class="funnel-label">'+p[1]+'</div><div class="funnel-bar-wrap"><div class="funnel-bar-fill" style="width:'+w+'%;background:'+p[2]+';height:100%;border-radius:3px"></div></div><div class="funnel-num" style="color:'+p[2]+'">'+fmtN(v)+'</div><div class="funnel-pct">'+pct+'%</div></div>';
+    }).join("");
+    rows+='<div style="margin-top:10px;padding:8px;background:var(--s2);border-radius:7px;font-size:10px;color:var(--td)">Конв.: <b style="color:#00d68f">'+A.conversion.value+'%</b> · Відмови 1С: <b style="color:#ff6b6b">'+A.refuse.of_orders+'%</b> · Спам: <b>'+fmtN(A.section3.spam)+'</b> · Недодзвон: <b>'+fmtN(A.section3.nedodzvon)+'</b> · Втрачені ліди: <b>'+fmtN(A.section3.lost)+'</b></div>';
+    fc.innerHTML=rows;
+  }
+  function ovrMgrs(A){
+    var tb=$("ovr-mgrs"); if(!tb) return;
+    tb.innerHTML=A.managers.map(function(m,i){
+      return '<tr><td>'+(i+1)+'</td><td>'+m.name+'</td><td class="r">'+fmtN(m.revenue)+'</td><td class="r">'+m.orders+'</td><td class="r">'+m.conversion+'%</td><td class="r">'+fmtN(m.avg_check)+'</td><td class="r">'+m.refuse_pct.toFixed(1)+'%</td><td class="r">'+m.returns+'</td></tr>';
+    }).join("");
+  }
+  function ovrProds(A){
+    var tb=$("ovr-prods"); if(!tb) return;
+    tb.innerHTML=A.products.slice(0,50).map(function(p,i){
+      var price=p.qty?Math.round(p.revenue/p.qty):0;
+      return '<tr><td>'+(i+1)+'</td><td>'+p.name+'</td><td class="r">'+p.qty+'</td><td class="r">'+p.count+'</td><td class="r">'+fmtN(price)+'</td><td class="r">'+fmtN(p.revenue)+'</td></tr>';
+    }).join("");
+  }
+  function renderOverviewRange(A,B,f,t,cr){
+    ovrKPIs(A,B); ovrChart(A,B); ovrCmp(A,B); ovrFunnel(A); ovrMgrs(A); ovrProds(A);
+    var cw=$("ovr-cmp-card"); if(cw) cw.style.display=B?'':'none';
+    if($("ovr-bt")) $("ovr-bt").textContent=B?('П1 '+f+'→'+t+'  ·  П2 '+cr[0]+'→'+cr[1]):(f+'→'+t);
+  }
+
+  window.IRISApplyRange=function(v){
+    var ob=document.querySelector('[onclick*="swMain(\'overview\'"]'); if(ob)ob.click();   // вкладка «Огляд»
     loadDaily().then(function(){
       var r=curRange(v),f=r[0],t=r[1];
-      if(!f||!t||f>t){ if($("pbHint"))$("pbHint").textContent="обери коректний період (від ≤ до)"; if($("r-title"))$("r-title").innerHTML='<span class="muted">Обери дати «від–до» у панелі періоду вище</span>'; return; }
-      if(!window.IRIS){ if($("r-title"))$("r-title").innerHTML='<span class="muted">Двигун не завантажено (iris_range.js)</span>'; return; }
+      if(!f||!t||f>t){ if($("pbHint"))$("pbHint").textContent="обери коректний період (від ≤ до)"; return; }
+      if(!window.IRIS){ if($("pbHint"))$("pbHint").textContent="двигун не завантажено (iris_range.js)"; return; }
       var A=window.IRIS.range(DAILY,f,t), cr=cmpRange(), B=cr?window.IRIS.range(DAILY,cr[0],cr[1]):null;
-      if($("r-title"))$("r-title").innerHTML='Період: <b>'+f+' → '+t+'</b>'+(B?'  ·  порівняння: <b>'+cr[0]+' → '+cr[1]+'</b>':'');
-      if($("pbHint"))$("pbHint").textContent=f+" → "+t+(B?(" vs "+cr[0]+"→"+cr[1]):" · без порівняння");
-      try{ paint(A,B); }catch(e){ if($("r-title"))$("r-title").textContent="Помилка рендера: "+e.message; }
+      var ov=$("mp-overview"); if(ov)ov.classList.add("ovr-on");     // показати #ov-range, сховати решту Огляду
+      try{ renderOverviewRange(A,B,f,t,cr); RANGE_ON=true; }catch(e){ if($("pbHint"))$("pbHint").textContent="Помилка рендера: "+e.message; }
+      if($("pbHint"))$("pbHint").textContent="Діапазон "+f+" → "+t+(B?(" vs "+cr[0]+"→"+cr[1]):" · без порівняння")+" · вкладка Огляд";
     });
+  };
+  window.IRISExitRange=function(){
+    if(!RANGE_ON) return;
+    var ov=$("mp-overview"); if(ov)ov.classList.remove("ovr-on");
+    RANGE_ON=false;
   };
 })();
 </script>
@@ -2925,8 +2999,8 @@ injectDateButtons();
   window.applyGlobalPeriod=function(){
     var p=document.getElementById('globalPeriod'); if(!p) return;
     var v=p.value;
-    if(v==='custom'||v==='last7'||v==='last30'){ if(window.IRISRange) window.IRISRange(v); return; }
-    document.body.classList.remove('range-mode');
+    if(v==='custom'||v==='last7'||v==='last30'){ if(window.IRISApplyRange) window.IRISApplyRange(v); return; }
+    if(window.IRISExitRange) window.IRISExitRange();
     var dest=window.MONTH_PAGES[v];
     if(dest && v!==SEL){location.href=dest;}
   };
