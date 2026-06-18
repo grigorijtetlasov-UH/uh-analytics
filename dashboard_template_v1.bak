@@ -156,37 +156,6 @@ tbody tr:hover td{background:rgba(108,92,231,.06)}
 .fin-row.total .lbl{color:var(--t);font-weight:600;font-size:13px}
 .fin-row.total .val{font-size:14px;font-weight:700}
 
-/* ── P&L TABLE ── */
-.pl-tbl{width:100%;border-collapse:collapse;font-size:11px;min-width:900px}
-.pl-tbl th,.pl-tbl td{padding:5px 8px;white-space:nowrap;font-family:'JetBrains Mono',monospace}
-.pl-tbl thead th{position:sticky;top:0;background:var(--s1);color:var(--td);font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;text-align:right;border-bottom:2px solid var(--brd);z-index:2}
-.pl-tbl thead th:first-child{text-align:left;min-width:200px;font-family:'DM Sans',sans-serif}
-.pl-tbl tbody td{text-align:right;border-bottom:1px solid rgba(255,255,255,.03);color:var(--t2)}
-.pl-tbl tbody td:first-child{text-align:left;font-family:'DM Sans',sans-serif;color:var(--t);font-weight:500;padding-left:14px}
-.pl-tbl tr.pl-section td{padding-top:12px;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--td);border-bottom:1px solid var(--brd);font-family:'DM Sans',sans-serif;font-weight:700}
-.pl-tbl tr.pl-section td:first-child{padding-left:8px}
-.pl-tbl tr.pl-total td{font-weight:700;color:var(--t);border-top:2px solid var(--brd);border-bottom:2px solid var(--brd);background:rgba(108,92,231,.04)}
-.pl-tbl tr.pl-total td:first-child{font-size:12px}
-.pl-tbl tr.pl-subtotal td{font-weight:600;color:var(--t2);border-top:1px solid var(--brd2)}
-.pl-tbl tr.pl-highlight td{background:rgba(255,211,77,.06)}
-.pl-tbl td.pl-neg{color:var(--r) !important}
-.pl-tbl td.pl-pos{color:var(--g) !important}
-.pl-tbl td.pl-warn{color:var(--o) !important}
-.pl-tbl td.pl-total-col{font-weight:700;color:var(--t) !important}
-.pl-tbl .pl-pct{font-size:10px;color:var(--td2)}
-.pl-tbl .pl-delta{font-size:9px;padding:1px 5px;border-radius:4px;margin-left:4px}
-.pl-tbl .pl-delta.up{background:rgba(0,214,143,.12);color:var(--g)}
-.pl-tbl .pl-delta.dn{background:rgba(255,71,87,.12);color:var(--r)}
-.pl-edit input{background:var(--s2);border:1px solid var(--brd2);border-radius:4px;color:var(--t);font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 6px;width:90px;text-align:right}
-.pl-edit input:focus{outline:none;border-color:var(--ac)}
-.pl-edit td:first-child{font-weight:500;color:var(--t)}
-.pl-pf-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.pl-pf-label{width:110px;font-size:11px;color:var(--td);flex-shrink:0;text-align:right}
-.pl-pf-track{flex:1;height:18px;background:var(--s2);border-radius:4px;position:relative;overflow:hidden}
-.pl-pf-bar{height:100%;border-radius:4px;transition:width .4s}
-.pl-pf-val{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--t);font-weight:600}
-.pl-pf-pct{width:46px;font-size:10px;font-family:'JetBrains Mono',monospace;text-align:right;font-weight:600}
-
 /* ── TREND MINI CARDS ── */
 .mm-card{background:linear-gradient(180deg,rgba(108,92,231,.06),rgba(108,92,231,.02));border:1px solid var(--brd);border-radius:10px;padding:12px 14px}
 .mm-h{font-size:13px;font-weight:700;color:var(--ac2);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--brd)}
@@ -286,118 +255,6 @@ tbody tr:hover td{background:rgba(108,92,231,.06)}
 .dt-field-label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--td);margin-top:10px;margin-bottom:2px;font-weight:600}
 .dt-btn .dt-lbl{font-size:10px}
 .ftr{text-align:center;color:var(--td2);font-size:10px;padding-top:18px;border-top:1px solid var(--brd);margin-top:24px;font-family:'JetBrains Mono',monospace}
-
-/* ── SEGMENT PRICING ── */
-.seg-wrap{display:flex;flex-direction:column;gap:14px}
-.seg-block{background:var(--bg);border:1px solid var(--brd);border-radius:10px;overflow:hidden}
-.seg-head{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--brd)}
-.seg-icon{font-size:18px;flex-shrink:0}
-.seg-title{font-size:13px;font-weight:700;letter-spacing:.3px}
-.seg-range{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--td);margin-left:auto;padding:2px 8px;background:var(--s2);border-radius:5px}
-.seg-head.eco{background:linear-gradient(90deg,rgba(0,214,143,.08),transparent)}.seg-head.eco .seg-title{color:var(--g)}
-.seg-head.mid{background:linear-gradient(90deg,rgba(51,154,240,.08),transparent)}.seg-head.mid .seg-title{color:var(--b)}
-.seg-head.pre{background:linear-gradient(90deg,rgba(162,155,254,.08),transparent)}.seg-head.pre .seg-title{color:var(--ac2)}
-.seg-block table{margin:0}
-tr.row-ours td{background:rgba(108,92,231,.07);border-left:3px solid var(--ac2)}
-tr.row-ours td:first-child{padding-left:6px}
-tr.row-comp td{opacity:.8}
-.ours-marker{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--ac2)}
-.ours-marker::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ac2);flex-shrink:0}
-.comp-marker{color:var(--td2);font-weight:400}
-.seg-legend{display:flex;gap:16px;padding:8px 14px;font-size:10px;color:var(--td);border-top:1px solid var(--brd);background:var(--s)}
-.seg-legend-item{display:flex;align-items:center;gap:5px}
-.seg-legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-
-/* ── REPUTATION ── */
-.rep-project{background:var(--s);border:1px solid var(--brd);border-radius:12px;overflow:hidden;margin-bottom:14px}
-.rep-project-head{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--brd);background:linear-gradient(90deg,rgba(108,92,231,.05),transparent)}
-.rep-project-icon{font-size:20px;flex-shrink:0}
-.rep-project-name{font-size:14px;font-weight:700;color:var(--t)}
-.rep-project-avg{margin-left:auto;display:flex;align-items:center;gap:8px}
-.rep-project-score{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700}
-.rep-project-total{font-size:10px;color:var(--td)}
-.rep-platforms{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--brd)}
-.rep-plat{background:var(--s);padding:12px 14px;display:flex;flex-direction:column;gap:6px}
-.rep-plat-head{display:flex;align-items:center;gap:7px}
-.rep-plat-logo{font-size:16px;flex-shrink:0}
-.rep-plat-name{font-size:11px;font-weight:600;color:var(--t2)}
-.rep-plat-badge{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:600}
-.rep-stars{display:flex;gap:1px;font-size:13px;line-height:1}
-.rep-star{color:var(--s3)}.rep-star.on{color:#ffd43b}
-.rep-plat-stats{display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--td)}
-.rep-plat-count{font-family:'JetBrains Mono',monospace;font-weight:500}
-.rep-plat-delta{font-family:'JetBrains Mono',monospace;font-weight:600}
-.rep-plat-bar{height:4px;background:var(--s2);border-radius:2px;overflow:hidden}
-.rep-plat-fill{height:100%;border-radius:2px;transition:width 1.2s}
-.rep-trend-row{display:flex;gap:6px;align-items:center;font-size:9px;color:var(--td);margin-top:4px}
-.rep-trend-label{min-width:35px}
-.rep-trend-vals{display:flex;gap:2px;flex:1}
-.rep-trend-dot{width:14px;height:14px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#fff}
-.rep-sentiment-bar{display:flex;height:8px;border-radius:4px;overflow:hidden;margin-top:2px}
-.rep-sent-pos{background:var(--g)}.rep-sent-neu{background:var(--o)}.rep-sent-neg{background:var(--r)}
-.rep-issue{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:11px}
-.rep-issue:last-child{border-bottom:none}
-.rep-issue-cnt{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;min-width:36px;text-align:right}
-.rep-issue-bar{flex:1;height:5px;background:var(--s2);border-radius:3px;overflow:hidden}
-.rep-issue-fill{height:100%;border-radius:3px}
-
-/* ── IRIS CHAT ── */
-.iris-layout{display:grid;grid-template-columns:1fr 260px;gap:12px;height:calc(100vh - 200px);min-height:520px}
-@media(max-width:900px){.iris-layout{grid-template-columns:1fr;height:auto}.iris-sidebar{order:-1}}
-.iris-chat-wrap{display:flex;flex-direction:column;background:var(--s);border:1px solid var(--brd);border-radius:14px;overflow:hidden}
-.iris-chat-head{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--brd);background:linear-gradient(90deg,rgba(218,119,242,.08),rgba(108,92,231,.05))}
-.iris-chat-head .iris-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;background:linear-gradient(135deg,#da77f2,#6c5ce7);flex-shrink:0}
-.iris-chat-head .iris-name{font-size:15px;font-weight:700;color:var(--t)}
-.iris-chat-head .iris-desc{font-size:10px;color:var(--td);margin-top:1px}
-.iris-chat-status{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:10px;color:var(--g)}
-.iris-chat-status::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--g);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.iris-messages{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
-.iris-messages::-webkit-scrollbar{width:5px}.iris-messages::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:3px}
-.iris-msg{display:flex;gap:10px;max-width:88%;animation:msgIn .3s ease}
-.iris-msg.user{align-self:flex-end;flex-direction:row-reverse}
-@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.iris-msg-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;border:2px solid var(--brd)}
-.iris-msg-body{background:var(--s2);border:1px solid var(--brd);border-radius:12px;padding:10px 14px;font-size:12px;line-height:1.5;color:var(--t2)}
-.iris-msg.user .iris-msg-body{background:linear-gradient(135deg,rgba(108,92,231,.15),rgba(108,92,231,.08));border-color:rgba(108,92,231,.3);color:var(--t)}
-.iris-msg-sender{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px}
-.iris-msg-body b{color:var(--t)}.iris-msg-body code{background:var(--bg);padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px}
-.iris-msg-time{font-size:8px;color:var(--td2);margin-top:3px;text-align:right}
-.iris-msg.claude .iris-msg-body{background:linear-gradient(135deg,rgba(255,107,107,.08),rgba(255,107,107,.03));border-color:rgba(255,107,107,.25)}
-.iris-msg.claude .iris-msg-sender{color:var(--r)}
-.iris-input-wrap{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--brd);background:var(--bg)}
-.iris-input{flex:1;background:var(--s2);border:1px solid var(--brd2);border-radius:10px;color:var(--t);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 14px;resize:none;min-height:42px;max-height:120px}
-.iris-input:focus{outline:none;border-color:var(--ac)}
-.iris-input::placeholder{color:var(--td2)}
-.iris-send{width:42px;height:42px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.15s}
-.iris-send:hover{opacity:.85;transform:scale(1.05)}
-.iris-sidebar{display:flex;flex-direction:column;gap:8px}
-.iris-agent-card{background:var(--s);border:1px solid var(--brd);border-radius:12px;padding:12px;cursor:pointer;transition:.2s;position:relative}
-.iris-agent-card:hover{border-color:var(--ac);background:var(--s2);transform:translateY(-1px)}
-.iris-agent-card.active{border-color:var(--ac);box-shadow:0 0 12px rgba(108,92,231,.2)}
-.iris-agent-card.devil{border-color:rgba(255,107,107,.2)}
-.iris-agent-card.devil:hover{border-color:var(--r);box-shadow:0 0 12px rgba(255,107,107,.15)}
-.iris-agent-card.devil.active{border-color:var(--r);box-shadow:0 0 12px rgba(255,107,107,.25)}
-.iris-agent-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.iris-agent-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
-.iris-agent-name{font-size:12px;font-weight:700;color:var(--t)}
-.iris-agent-role{font-size:9px;color:var(--td);margin-top:1px}
-.iris-agent-tag{position:absolute;top:8px;right:8px;font-size:8px;padding:2px 7px;border-radius:4px;font-weight:600;letter-spacing:.3px}
-.iris-agent-desc{font-size:10px;color:var(--td);line-height:1.4}
-.iris-agent-toggle{margin-top:8px;display:flex;align-items:center;gap:6px;font-size:10px;color:var(--td)}
-.iris-switch{position:relative;width:32px;height:18px;background:var(--s3);border-radius:9px;cursor:pointer;transition:.2s;flex-shrink:0}
-.iris-switch::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--td);transition:.2s}
-.iris-switch.on{background:var(--ac)}.iris-switch.on::after{left:16px;background:#fff}
-.iris-switch.devil.on{background:var(--r)}
-.iris-typing{display:flex;align-items:center;gap:6px;padding:4px 0;font-size:11px;color:var(--td);font-style:italic}
-.iris-typing-dots{display:flex;gap:3px}
-.iris-typing-dots span{width:5px;height:5px;border-radius:50%;background:var(--td);animation:typeDot 1.4s infinite}
-.iris-typing-dots span:nth-child(2){animation-delay:.2s}
-.iris-typing-dots span:nth-child(3){animation-delay:.4s}
-@keyframes typeDot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
-.iris-quick-wrap{display:flex;flex-wrap:wrap;gap:5px;padding:0 16px 10px}
-.iris-quick{background:var(--s2);border:1px solid var(--brd);color:var(--td);font-family:'DM Sans',sans-serif;font-size:10px;padding:5px 10px;border-radius:8px;cursor:pointer;transition:.15s;white-space:nowrap}
-.iris-quick:hover{color:var(--ac2);border-color:var(--ac);background:var(--s3)}
 </style>
 </head>
 <body>
@@ -442,69 +299,10 @@ tr.row-comp td{opacity:.8}
   <span class="pb-hint" id="pbHint">Поточний місяць vs попередній</span>
 </div>
 
-<style>
-#rangePanel{display:none;margin-bottom:16px}
-/* (in-place режим: панель не використовується; класу range-mode не додаємо) */
-#rangePanel .rhead{font-size:13px;color:var(--td);font-family:'JetBrains Mono',monospace;margin:2px 0 12px}
-#rangePanel .rhead b{color:var(--t)}
-#rangePanel .rk{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
-#rangePanel .rkpi{background:var(--s);border:1px solid var(--brd);border-radius:11px;padding:12px 13px;position:relative;overflow:hidden}
-#rangePanel .rkpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ac)}
-#rangePanel .rkpi.c2::before{background:var(--g)}#rangePanel .rkpi.c3::before{background:var(--o)}#rangePanel .rkpi.c4::before{background:var(--r)}
-#rangePanel .rkpi .lab{color:var(--td);font-size:10px;text-transform:uppercase;letter-spacing:.5px}
-#rangePanel .rkpi .val{font-size:21px;font-weight:700;margin-top:5px}
-#rangePanel .rkpi .val small{font-size:12px;color:var(--td);font-weight:600}
-#rangePanel .rkpi .dlt{font-size:11px;margin-top:3px;font-weight:600}
-#rangePanel .up{color:var(--g)}#rangePanel .down{color:var(--r)}#rangePanel .neu{color:var(--td)}
-#rangePanel .rg2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-@media(max-width:880px){#rangePanel .rg2{grid-template-columns:1fr}}
-#rangePanel .rcard{background:var(--s);border:1px solid var(--brd);border-radius:11px;padding:14px}
-#rangePanel .rcard h3{font-size:13px;margin-bottom:10px;font-weight:700}
-#rangePanel table{width:100%;border-collapse:collapse;font-size:11.5px}
-#rangePanel th,#rangePanel td{padding:5px 7px;text-align:left;border-bottom:1px solid var(--brd)}
-#rangePanel th{color:var(--td);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.4px}
-#rangePanel td.r,#rangePanel th.r{text-align:right;font-variant-numeric:tabular-nums}
-#rangePanel .rgrp{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-#rangePanel .rgc{background:var(--s2);border:1px solid var(--brd);border-radius:9px;padding:10px 11px;border-left:3px solid var(--gc)}
-#rangePanel .rgc .gn{font-weight:700;font-size:12px}
-#rangePanel .rgc .gr{font-size:16px;font-weight:700;margin:4px 0 2px}
-#rangePanel .rgc .gm{font-size:11px;color:var(--td)}
-#rangePanel .rb{display:inline-block;padding:1px 7px;border-radius:6px;font-size:10px;font-weight:600}
-#rangePanel .bg{background:var(--gd);color:var(--g)}#rangePanel .bo{background:var(--od);color:var(--o)}#rangePanel .br{background:var(--rd);color:var(--r)}
-#rangePanel .fr{display:flex;align-items:center;gap:8px;margin-bottom:5px}
-#rangePanel .fr .fl{width:140px;color:var(--t2);font-size:11px}
-#rangePanel .fr .fb{flex:1;height:14px;background:var(--s2);border-radius:4px;overflow:hidden}
-#rangePanel .fr .ff{height:100%;border-radius:4px}
-#rangePanel .fr .fn{width:54px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
-#rangePanel .rs3{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-#rangePanel .rs3 .b{background:var(--s2);border:1px solid var(--brd);border-radius:9px;padding:9px 11px}
-#rangePanel .rs3 .b .n{font-size:18px;font-weight:700}#rangePanel .rs3 .b .l{color:var(--td);font-size:10px}
-#rangePanel .muted{color:var(--td);font-size:11px}
-</style>
-<div id="rangePanel">
-  <div class="rhead" id="r-title">Діапазон</div>
-  <div id="r-kpis" class="rk"></div>
-  <div class="rg2">
-    <section class="rcard"><h3>🏷️ Групи (обсяг + маржа 1С)</h3><div id="r-groups" class="rgrp"></div></section>
-    <section class="rcard"><h3>🌐 Канали</h3><div id="r-channels"></div></section>
-  </div>
-  <div class="rg2">
-    <section class="rcard"><h3>👤 Менеджери (топ-12 за обсягом)</h3><div id="r-managers"></div></section>
-    <section class="rcard"><h3>📦 Топ-товари (топ-15)</h3><div id="r-products"></div></section>
-  </div>
-  <div class="rg2">
-    <section class="rcard"><h3>🔻 Воронка (статуси замовлень)</h3><div id="r-funnel"></div></section>
-    <section class="rcard"><h3>🧹 CRM-якість лідів</h3><div id="r-sec3" class="rs3"></div></section>
-  </div>
-</div>
-
 <div class="main-tabs">
   <button class="mtab on"  onclick="swMain('overview',this)">📊 Огляд</button>
   <button class="mtab"     onclick="swMain('sales',this)">💰 Продажі</button>
   <button class="mtab"     onclick="swMain('marketing',this)">📣 Маркетинг</button>
-  <button class="mtab"     onclick="swMain('cart',this)">🛒 Корзина & ціноутворення</button>
-  <button class="mtab"     onclick="swMain('reputation',this)">⭐ Репутація</button>
-  <button class="mtab"     onclick="swMain('iris',this)">🧠 IRIS</button>
   <button class="mtab"     onclick="swMain('finance',this)">📈 Фінанси P&L</button>
 </div>
 
@@ -512,32 +310,6 @@ tr.row-comp td{opacity:.8}
      TAB 1 — ОГЛЯД
 ══════════════════════════════════════════════════ -->
 <div class="mpnl on" id="mp-overview">
-
-<style>#ov-range{display:none}#mp-overview.ovr-on>:not(#ov-range){display:none}#mp-overview.ovr-on #ov-range{display:block}</style>
-<div id="ov-range">
-  <div class="kpi-row" id="ovr-kpis"></div>
-  <div class="cd">
-    <div class="ct"><span class="dot"></span>Порівняння періодів — виручка по днях<span class="btot" id="ovr-bt"></span></div>
-    <div class="cd-d">Дві криві: <b style="color:#a29bfe">Період 1</b> (обраний) проти <b style="color:#ffa94d">Період 2</b> (порівняння), вирівняно за днем від початку періоду. Наведи курсор — побачиш фактичну дату.</div>
-    <canvas id="ch-ov-range" style="max-height:340px"></canvas>
-  </div>
-  <div class="cd" id="ovr-cmp-card">
-    <div class="ct"><span class="dot" style="background:var(--g)"></span>Підсумок: Період 1 vs Період 2</div>
-    <div class="scr"><table><thead><tr><th>Показник</th><th class="r">Період 1</th><th class="r">Період 2</th><th class="r">Δ</th></tr></thead><tbody id="ovr-cmp"></tbody></table></div>
-  </div>
-  <div class="cd">
-    <div class="ct"><span class="dot" style="background:var(--c)"></span>Воронка замовлень (Період 1)</div>
-    <div id="ovr-funnel" style="padding-top:6px"></div>
-  </div>
-  <div class="cd">
-    <div class="ct"><span class="dot" style="background:var(--g)"></span>ТОП-менеджери (Період 1)</div>
-    <div class="scr" style="max-height:360px"><table><thead><tr><th>#</th><th>Менеджер</th><th class="r">Виручка ₴</th><th class="r">Зам.</th><th class="r">Конв.</th><th class="r">Сер.чек</th><th class="r">Відм.</th><th class="r">Пов.</th></tr></thead><tbody id="ovr-mgrs"></tbody></table></div>
-  </div>
-  <div class="cd">
-    <div class="ct"><span class="dot" style="background:var(--lime)"></span>ТОП-товари (Період 1)</div>
-    <div class="scr" style="max-height:360px"><table><thead><tr><th>#</th><th>Товар</th><th class="r">Од.</th><th class="r">Зам.</th><th class="r">Сер.ціна</th><th class="r">Виручка ₴</th></tr></thead><tbody id="ovr-prods"></tbody></table></div>
-  </div>
-</div>
 
   <!-- MCI mini-module -->
   <div class="mci-bar">
@@ -562,8 +334,6 @@ tr.row-comp td{opacity:.8}
         <button class="tab" onclick="renderSec1('amebli',this)">🟣 Амебли</button>
         <button class="tab" onclick="renderSec1('seti',this)">🔵 Сети</button>
         <button class="tab" onclick="renderSec1('roznica',this)">🟠 Розниця</button>
-        <button class="tab" onclick="renderSec1('sofino',this)">🟤 Софіно</button>
-        <button class="tab" onclick="renderSec1('other',this)">⚪ Інше</button>
       </div>
       <canvas id="ch-sec1" style="max-height:300px"></canvas>
       <div id="sec1-summary" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px;margin-top:12px"></div>
@@ -624,11 +394,6 @@ tr.row-comp td{opacity:.8}
   <div class="sec">
     <div class="sec-head"><div class="sec-num">3</div><div class="sec-title">↩️ Повернення / Відмови</div><div class="sec-sub">коротко<br>по кожному пункту</div></div>
     <div class="cd">
-      <div style="display:flex;gap:6px;margin-bottom:10px">
-        <button id="s3-crm-btn" class="srt-btn on" onclick="s3Mode('crm')">CRM · ліди</button>
-        <button id="s3-1c-btn" class="srt-btn" onclick="s3Mode('1c')">1С · замовлення</button>
-      </div>
-      <div id="sec3-crm">
       <div class="kpi-row" style="margin-bottom:12px">
         <div class="kpi c2"><div class="kl">Відмови всього</div><div class="kv" style="color:var(--g)">2.6<span class="ku">%</span></div><div class="ks">15 з 573 · було 50% <span class="dlt up">−47пп</span></div></div>
         <div class="kpi c2"><div class="kl">Відмови Matrasroll</div><div class="kv">2.6<span class="ku">%</span></div><div class="ks">13 замовлень</div></div>
@@ -638,11 +403,6 @@ tr.row-comp td{opacity:.8}
         <div class="kpi c4"><div class="kl">Недодзвон</div><div class="kv">51</div><div class="ks">потребує обробки</div></div>
       </div>
       <canvas id="ch-sec3" style="max-height:200px"></canvas>
-      </div>
-      <div id="sec3-1c" style="display:none">
-        <div class="kpi-row" id="s3-1c-cards" style="margin-bottom:12px"></div>
-        <canvas id="ch-sec3-1c" style="max-height:200px"></canvas>
-      </div>
       <div class="ai-block">
         <div class="ai-head">🤖 AI-висновки · повернення / відмови</div>
         <div class="ai-cols">
@@ -708,7 +468,7 @@ tr.row-comp td{opacity:.8}
 
   <!-- All brands KPI -->
   <div id="sp-all" class="pnl on">
-    <div class="kpi-row" id="sp-kpis">
+    <div class="kpi-row">
       <div class="kpi c1"><div class="kl">Обсяг продажів (1–25)</div><div class="kv">28.6M<span class="ku">₴</span></div><div class="ks">факт червня · <span class="dlt up">+47% vs міс.</span></div></div>
       <div class="kpi c2"><div class="kl">Замовлень</div><div class="kv">~5 190</div><div class="ks">~208 зам/день</div></div>
       <div class="kpi c3"><div class="kl">Середній чек</div><div class="kv">5 513<span class="ku">₴</span></div><div class="ks"><span class="dlt down">−25.2%</span> vs 7 371₴</div></div>
@@ -719,7 +479,7 @@ tr.row-comp td{opacity:.8}
 
     <!-- Sales daily chart: plan / fact / trend / last month -->
     <div class="cd">
-      <div class="ct" id="sales-daily-ct"><span class="dot"></span>Продажі по днях — план / факт / тренд<span class="btot">vs минулий місяць</span></div>
+      <div class="ct"><span class="dot"></span>Продажі по днях — план / факт / тренд<span class="btot">vs минулий місяць</span></div>
       <div class="cd-d">Суцільна — факт червня (1–25). Пунктир — тренд до кінця місяця. Сіра область — факт травня. Бірюзовий пунктир — план.</div>
       <canvas id="ch-sales-daily" style="max-height:280px"></canvas>
       <div id="sales-daily-summary" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px;margin-top:12px"></div>
@@ -816,7 +576,7 @@ tr.row-comp td{opacity:.8}
 <div class="mpnl" id="mp-marketing">
 
   <!-- DRR KPI row -->
-  <div class="kpi-row" id="mkt-kpi-row">
+  <div class="kpi-row">
     <div class="kpi c1"><div class="kl">Рекл. бюджет (1–4 червня)</div><div class="kv">115 010<span class="ku">₴</span></div><div class="ks">~28 750₴/день</div></div>
     <div class="kpi c7"><div class="kl">ДРР Amebli</div><div class="kv" style="color:var(--r)">51.54<span class="ku">%</span></div><div class="ks">140K₴ / 273K₴ <span class="dlt down">критично</span></div></div>
     <div class="kpi c3"><div class="kl">ДРР Matrasroll</div><div class="kv" style="color:var(--o)">24.21<span class="ku">%</span></div><div class="ks">99K₴ / 411K₴ <span class="dlt warn">увага</span></div></div>
@@ -920,302 +680,109 @@ tr.row-comp td{opacity:.8}
 <!-- ══════════════════════════════════════════════════
      TAB 4 — ФІНАНСИ P&L
 ══════════════════════════════════════════════════ -->
-<div class="mpnl" id="mp-cart">
-
-  <!-- Top 20 products by nomenclature and category -->
-  <div class="cd">
-    <div class="ct"><span class="dot"></span>ТОП-20 продуктів — об'єднана номенклатура<span class="btot">по категоріях</span></div>
-    <div class="cd-d">Групування: всі розміри та варіанти однієї моделі рахуються разом. Маржинальність = (Виручка - Собівартість) / Виручка.</div>
-    <div class="scr">
-      <table>
-        <thead><tr><th>#</th><th>Продукт / категорія</th><th class="r">К-сть прод.</th><th class="r">Сума ₴</th><th class="r">Маржа %</th><th class="r">Маржа прибуток ₴</th></tr></thead>
-        <tbody id="cart-top20-tbody"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Mattresses by segment: Эконом / Середній / Середній+ -->
-  <div class="cd">
-    <div class="ct"><span class="dot" style="background:var(--g)"></span>Матраци по сегментах — наш товар vs конкуренти<span class="btot">ціна за 160х200 · ТОП-5 у кожному сегменті</span></div>
-    <div class="cd-d">Три цінових сегменти. <span class="ours-marker" style="font-size:10px">Наш товар</span> виділено кольором, конкуренти — сірим.</div>
-    <div class="seg-legend">
-      <div class="seg-legend-item"><div class="seg-legend-dot" style="background:var(--ac2)"></div>Наш товар</div>
-      <div class="seg-legend-item"><div class="seg-legend-dot" style="background:var(--td2)"></div>Конкурент</div>
-    </div>
-    <div id="cart-mattresses-segments" class="seg-wrap" style="margin-top:8px"></div>
-  </div>
-
-  <!-- Toppers by segment: Эконом / Середній / Середній+ -->
-  <div class="cd">
-    <div class="ct"><span class="dot" style="background:var(--o)"></span>Топери по сегментах — наш товар vs конкуренти<span class="btot">ціна за 160х200 · ТОП-5 у кожному сегменті</span></div>
-    <div class="cd-d">Три цінових сегменти. <span class="ours-marker" style="font-size:10px">Наш товар</span> виділено кольором, конкуренти — сірим.</div>
-    <div class="seg-legend">
-      <div class="seg-legend-item"><div class="seg-legend-dot" style="background:var(--ac2)"></div>Наш товар</div>
-      <div class="seg-legend-item"><div class="seg-legend-dot" style="background:var(--td2)"></div>Конкурент</div>
-    </div>
-    <div id="cart-toppers-segments" class="seg-wrap" style="margin-top:8px"></div>
-  </div>
-
-  <!-- Competitor websites SEO metrics -->
-  <div class="cd">
-    <div class="ct"><span class="dot" style="background:var(--b)"></span>Конкурентні сайти — SEO метрики<span class="btot">трафік, індекс, ключові слова</span></div>
-    <div class="cd-d">Список сайтів конкурентів (буде доповнено). Трафік (GA оцінка), сторінок в індексі, ключових слів в топ-100.</div>
-    <div class="scr">
-      <table>
-        <thead><tr><th>#</th><th>Сайт конкурента</th><th class="r">Трафік місяц</th><th class="r">Сторінок індекс</th><th class="r">КС топ-100</th><th class="r">Дин.</th></tr></thead>
-        <tbody id="cart-competitors-tbody"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Top 50 mattresses -->
-  <div class="cd">
-    <div class="ct"><span class="dot" style="background:var(--p)"></span>ТОП-50 матраців — без розбивки</div>
-    <div class="scr">
-      <table>
-        <thead><tr><th>#</th><th>Товар (модель, розмір)</th><th class="r">К-сть прод.</th><th class="r">Сума ₴</th><th class="r">Середня ціна</th></tr></thead>
-        <tbody id="cart-mattresses-50-tbody"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Top 50 toppers -->
-  <div class="cd">
-    <div class="ct"><span class="dot" style="background:var(--ac2)"></span>ТОП-50 топерів — без розбивки</div>
-    <div class="scr">
-      <table>
-        <thead><tr><th>#</th><th>Товар (модель, розмір)</th><th class="r">К-сть прод.</th><th class="r">Сума ₴</th><th class="r">Середня ціна</th></tr></thead>
-        <tbody id="cart-toppers-50-tbody"></tbody>
-      </table>
-    </div>
-  </div>
-
-</div><!-- /mp-cart -->
-<div class="mpnl" id="mp-reputation">
-
-  <!-- Summary KPI -->
-  <div class="kpi-row" id="rep-kpi-row"></div>
-
-  <!-- Sentiment bar -->
-  <div class="cd" style="padding:10px 14px">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
-      <span style="font-size:12px;font-weight:600">Sentiment загальний</span>
-      <span id="rep-sent-label" style="font-size:10px;color:var(--td);margin-left:auto"></span>
-    </div>
-    <div class="rep-sentiment-bar" id="rep-sent-bar" style="height:10px"></div>
-  </div>
-
-  <!-- Projects with platforms -->
-  <div id="rep-projects-container"></div>
-
-  <!-- Rating dynamics chart -->
-  <div class="cd">
-    <div class="ct"><span class="dot" style="background:var(--y)"></span>Динаміка рейтингу по місяцях<span class="btot">всі проекти · всі платформи</span></div>
-    <canvas id="ch-rep-trend" style="max-height:280px"></canvas>
-  </div>
-
-  <!-- Top issues -->
-  <div class="g2">
-    <div class="cd">
-      <div class="ct"><span class="dot" style="background:var(--r)"></span>ТОП проблеми клієнтів<span class="btot">з негативних відгуків</span></div>
-      <div id="rep-issues-container"></div>
-    </div>
-    <div class="cd">
-      <div class="ct"><span class="dot" style="background:var(--g)"></span>ТОП похвали клієнтів<span class="btot">з позитивних відгуків</span></div>
-      <div id="rep-praises-container"></div>
-    </div>
-  </div>
-
-  <!-- AI conclusions -->
-  <div class="cd">
-    <div class="ai-block" style="margin-top:0">
-      <div class="ai-head">🤖 AI-висновки · репутація</div>
-      <div class="ai-cols">
-        <div>
-          <div class="ai-col-h win">✓ Досягнення</div>
-          <div class="ai-item win">Середній рейтинг <b>4.6/5</b> по всіх платформах — вище конкурентів (Ascona 4.2, Sleep&Fly 4.3).</div>
-          <div class="ai-item win">Google рейтинг Matrasroll <b>4.8★</b> (312 відгуків) — найвищий серед усіх проектів. Зростання +47 відгуків за місяць.</div>
-          <div class="ai-item win">Позитивний sentiment <b>87%</b> — стабільний тренд, не падає останні 3 місяці.</div>
-        </div>
-        <div>
-          <div class="ai-col-h prob">⚠ Проблеми</div>
-          <div class="ai-item prob"><b>Amebli на Vidhuk 3.9★</b> — найнижчий рейтинг серед проектів. Основна скарга: терміни доставки.</div>
-          <div class="ai-item prob"><b>Prom.ua</b> — мало відгуків (38), рейтинг <b>4.1★</b>. Потрібна програма збору відгуків.</div>
-          <div class="ai-item prob">Негативні відгуки зростають на <b>+12%</b> у червні — сезонне навантаження на логістику.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div><!-- /mp-reputation -->
-
-<!-- ══════════════════════════════════════════════════
-     TAB — IRIS AI COUNCIL
-══════════════════════════════════════════════════ -->
-<div class="mpnl" id="mp-iris">
-
-  <div class="iris-layout">
-    <!-- Chat area -->
-    <div class="iris-chat-wrap">
-      <div class="iris-chat-head">
-        <div class="iris-av">🧠</div>
-        <div>
-          <div class="iris-name">IRIS · AI Аналітик</div>
-          <div class="iris-desc">Доступ до всіх вкладок дашборду · Продажі · Маркетинг · Корзина · Репутація · Фінанси</div>
-        </div>
-        <div class="iris-chat-status">онлайн</div>
-      </div>
-
-      <div class="iris-messages" id="iris-messages"></div>
-
-      <!-- Quick prompts -->
-      <div class="iris-quick-wrap" id="iris-quick-wrap">
-        <button class="iris-quick" onclick="irisQuick(this)">📊 Зведений звіт за тиждень</button>
-        <button class="iris-quick" onclick="irisQuick(this)">🔴 Критичні проблеми зараз</button>
-        <button class="iris-quick" onclick="irisQuick(this)">💰 Де втрачаємо маржу?</button>
-        <button class="iris-quick" onclick="irisQuick(this)">📣 Аудит ДРР по каналах</button>
-        <button class="iris-quick" onclick="irisQuick(this)">⭐ Порівняй рейтинги проектів</button>
-        <button class="iris-quick" onclick="irisQuick(this)">🚀 Що масштабувати першим?</button>
-      </div>
-
-      <div class="iris-input-wrap">
-        <textarea class="iris-input" id="iris-input" placeholder="Запитайте IRIS або @grok @gemini @gpt @claude..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();irisSend()}"></textarea>
-        <button class="iris-send" onclick="irisSend()">➤</button>
-      </div>
-    </div>
-
-    <!-- Agents sidebar -->
-    <div class="iris-sidebar">
-
-      <!-- IRIS main -->
-      <div class="iris-agent-card active" id="agent-iris" onclick="toggleAgent('iris')">
-        <div class="iris-agent-top">
-          <div class="iris-agent-av" style="background:linear-gradient(135deg,#da77f2,#6c5ce7)">🧠</div>
-          <div><div class="iris-agent-name">IRIS</div><div class="iris-agent-role">Головний аналітик</div></div>
-        </div>
-        <span class="iris-agent-tag" style="background:var(--gd);color:var(--g)">ACTIVE</span>
-        <div class="iris-agent-desc">Аналізує всі дані дашборду. Продажі, маркетинг, фінанси, репутація. Генерує звіти та рекомендації.</div>
-        <div class="iris-agent-toggle"><div class="iris-switch on" id="sw-iris"></div>Завжди активна</div>
-      </div>
-
-      <!-- Grok -->
-      <div class="iris-agent-card" id="agent-grok" onclick="toggleAgent('grok')">
-        <div class="iris-agent-top">
-          <div class="iris-agent-av" style="background:linear-gradient(135deg,#1da1f2,#0d8ecf)">⚡</div>
-          <div><div class="iris-agent-name">Grok</div><div class="iris-agent-role">Креативний стратег</div></div>
-        </div>
-        <span class="iris-agent-tag" style="background:var(--bd);color:var(--b)">@grok</span>
-        <div class="iris-agent-desc">Нестандартні ідеї, growth-хаки, провокативні гіпотези для зростання.</div>
-        <div class="iris-agent-toggle"><div class="iris-switch" id="sw-grok"></div>Викликати @grok</div>
-      </div>
-
-      <!-- Gemini -->
-      <div class="iris-agent-card" id="agent-gemini" onclick="toggleAgent('gemini')">
-        <div class="iris-agent-top">
-          <div class="iris-agent-av" style="background:linear-gradient(135deg,#4285f4,#34a853)">💎</div>
-          <div><div class="iris-agent-name">Gemini</div><div class="iris-agent-role">Data-аналітик</div></div>
-        </div>
-        <span class="iris-agent-tag" style="background:rgba(66,133,244,.15);color:#4285f4">@gemini</span>
-        <div class="iris-agent-desc">Глибокий аналіз даних, кореляції, статистичні висновки, прогнози.</div>
-        <div class="iris-agent-toggle"><div class="iris-switch" id="sw-gemini"></div>Викликати @gemini</div>
-      </div>
-
-      <!-- GPT -->
-      <div class="iris-agent-card" id="agent-gpt" onclick="toggleAgent('gpt')">
-        <div class="iris-agent-top">
-          <div class="iris-agent-av" style="background:linear-gradient(135deg,#10a37f,#1a7f64)">🤖</div>
-          <div><div class="iris-agent-name">GPT</div><div class="iris-agent-role">Бізнес-консультант</div></div>
-        </div>
-        <span class="iris-agent-tag" style="background:rgba(16,163,127,.15);color:#10a37f">@gpt</span>
-        <div class="iris-agent-desc">Структуровані рекомендації, бізнес-фреймворки, операційна оптимізація.</div>
-        <div class="iris-agent-toggle"><div class="iris-switch" id="sw-gpt"></div>Викликати @gpt</div>
-      </div>
-
-      <!-- Claude — Devil's Advocate -->
-      <div class="iris-agent-card devil" id="agent-claude" onclick="toggleAgent('claude')">
-        <div class="iris-agent-top">
-          <div class="iris-agent-av" style="background:linear-gradient(135deg,#ff6b6b,#c92a2a)">😈</div>
-          <div><div class="iris-agent-name">Claude</div><div class="iris-agent-role">Devil's Advocate</div></div>
-        </div>
-        <span class="iris-agent-tag" style="background:var(--rd);color:var(--r)">CRITIC</span>
-        <div class="iris-agent-desc">Жорстка критика. Знаходить слабкі місця, ризики та аргументи ПРОТИ рішення. Вмикайте перед фінальним рішенням.</div>
-        <div class="iris-agent-toggle"><div class="iris-switch devil" id="sw-claude"></div><span style="color:var(--r);font-weight:600">Увімкнути критика</span></div>
-      </div>
-
-    </div>
-  </div>
-
-</div><!-- /mp-iris -->
-
 <div class="mpnl" id="mp-finance">
 
-  <!-- KPI cards -->
+  <!-- Forecast KPIs -->
   <div class="kpi-row">
-    <div class="kpi c2"><div class="kl">Продажі план</div><div class="kv" id="fk-sales-plan">23.2M<span class="ku">₴</span></div><div class="ks">Червень 2026</div></div>
-    <div class="kpi c1"><div class="kl">Відгрузки факт</div><div class="kv" id="fk-ship-fact">20.88M<span class="ku">₴</span></div><div class="ks" id="fk-ship-pct">90% від плану</div></div>
-    <div class="kpi c3"><div class="kl">Маржинальність</div><div class="kv" id="fk-margin">41%<span class="ku"></span></div><div class="ks">8.6M₴ валова маржа</div></div>
-    <div class="kpi c5"><div class="kl">Операційний прибуток</div><div class="kv" id="fk-op-profit">1.29M<span class="ku">₴</span></div><div class="ks" id="fk-op-margin">6.2% рентабельність</div></div>
+    <div class="kpi c2"><div class="kl">Виручка факт (1–4 черв.)</div><div class="kv">3 159 034<span class="ku">₴</span></div><div class="ks">CRM дані</div></div>
+    <div class="kpi c1"><div class="kl">Прогноз виручки місяць</div><div class="kv" id="fin-kpi-rev">~24M<span class="ku">₴</span></div><div class="ks">при темпі 790K/день</div></div>
+    <div class="kpi c3"><div class="kl">Валова маржа ~46%</div><div class="kv" id="fin-kpi-gross">~11M<span class="ku">₴</span></div><div class="ks">прогноз</div></div>
+    <div class="kpi c5"><div class="kl">EBITDA прогноз</div><div class="kv" id="fin-kpi-ebitda">~3.6M<span class="ku">₴</span></div><div class="ks" id="fin-kpi-margin-lbl">~15%</div></div>
   </div>
 
-  <!-- Plan vs Fact bar -->
-  <div class="cd" style="padding:14px 18px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-      <div class="ct" style="margin:0"><span class="dot" style="background:var(--ac2)"></span>План vs Факт — відгрузки</div>
-      <div style="font-size:10px;color:var(--td)">
-        <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--ac);margin-right:3px"></span>План
-        <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--g);margin:0 3px 0 12px"></span>Факт
-        <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--r);margin:0 3px 0 12px"></span>&lt;80%
+  <div class="g2">
+    <!-- Input block -->
+    <div class="cd">
+      <div class="ct"><span class="dot" style="background:var(--ac2)"></span>Статичні витрати (вводяться вручну)</div>
+      <div class="cd-d">Введіть планові витрати на місяць у ₴. P&L перераховується автоматично.</div>
+      <div id="fin-inputs">
+        <div class="fin-input-row"><span class="fin-input-label">💼 Зарплата команди</span><input class="fin-input" id="fi-salary" type="number" value="1500000" oninput="recalcPL()"></div>
+        <div class="fin-input-row"><span class="fin-input-label">🏪 Оренда (3 шоу-руми)</span><input class="fin-input" id="fi-rent" type="number" value="350000" oninput="recalcPL()"></div>
+        <div class="fin-input-row"><span class="fin-input-label">📣 Реклама (прогноз)</span><input class="fin-input" id="fi-ads" type="number" value="862500" oninput="recalcPL()"></div>
+        <div class="fin-input-row"><span class="fin-input-label">🚚 Логістика (НП + доставка)</span><input class="fin-input" id="fi-logistics" type="number" value="480000" oninput="recalcPL()"></div>
+        <div class="fin-input-row"><span class="fin-input-label">⚙️ Операційні витрати</span><input class="fin-input" id="fi-ops" type="number" value="180000" oninput="recalcPL()"></div>
+        <div class="fin-input-row"><span class="fin-input-label">🔧 Інше</span><input class="fin-input" id="fi-other" type="number" value="120000" oninput="recalcPL()"></div>
+        <div class="fin-input-row" style="margin-top:8px;border-top:1px solid var(--brd);padding-top:8px">
+          <span class="fin-input-label" style="color:var(--t);font-weight:600">🎯 Прогноз виручки (вручну)</span>
+          <input class="fin-input" id="fi-revenue" type="number" value="24000000" oninput="recalcPL()">
+        </div>
+        <div class="fin-input-row">
+          <span class="fin-input-label" style="color:var(--t);font-weight:600">📦 Маржинальність (% собівартості)</span>
+          <input class="fin-input" id="fi-cogs-pct" type="number" value="54" min="0" max="100" oninput="recalcPL()">
+        </div>
       </div>
     </div>
-    <div id="pl-planfact-bars"></div>
+
+    <!-- P&L results -->
+    <div class="cd">
+      <div class="ct"><span class="dot" style="background:var(--g)"></span>P&L — звіт за місяць (прогноз)</div>
+      <div id="fin-pl-output">
+        <div class="fin-row"><span class="lbl">Виручка</span><span class="val" id="pl-rev" style="color:var(--g)">24 000 000 ₴</span></div>
+        <div class="fin-row"><span class="lbl">Собівартість (54%)</span><span class="val" id="pl-cogs" style="color:var(--r)">−12 960 000 ₴</span></div>
+        <div class="fin-row total"><span class="lbl">Валова прибуток</span><span class="val" id="pl-gross" style="color:var(--g)">11 040 000 ₴</span></div>
+
+        <div style="margin:10px 0;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--td)">Витрати</div>
+        <div class="fin-row"><span class="lbl">Зарплата</span><span class="val" id="pl-salary" style="color:var(--r)">−1 500 000 ₴</span></div>
+        <div class="fin-row"><span class="lbl">Оренда</span><span class="val" id="pl-rent" style="color:var(--r)">−350 000 ₴</span></div>
+        <div class="fin-row"><span class="lbl">Реклама</span><span class="val" id="pl-ads" style="color:var(--r)">−862 500 ₴</span></div>
+        <div class="fin-row"><span class="lbl">Логістика</span><span class="val" id="pl-logistics" style="color:var(--r)">−480 000 ₴</span></div>
+        <div class="fin-row"><span class="lbl">Операційні</span><span class="val" id="pl-ops" style="color:var(--r)">−180 000 ₴</span></div>
+        <div class="fin-row"><span class="lbl">Інше</span><span class="val" id="pl-other" style="color:var(--r)">−120 000 ₴</span></div>
+        <div class="fin-row"><span class="lbl" style="color:var(--td)">Всього витрат</span><span class="val" id="pl-total-costs" style="color:var(--r)">−3 492 500 ₴</span></div>
+
+        <div class="fin-row total">
+          <span class="lbl">EBITDA</span>
+          <span class="val" id="pl-ebitda" style="color:var(--g);font-size:18px">7 547 500 ₴</span>
+        </div>
+        <div class="fin-row">
+          <span class="lbl">Рентабельність (EBITDA/виручка)</span>
+          <span class="val" id="pl-margin" style="color:var(--ac2)">31.4%</span>
+        </div>
+        <div class="fin-row">
+          <span class="lbl">ДРР (реклама/виручка)</span>
+          <span class="val" id="pl-drr">3.6%</span>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- P&L TABLE — full spreadsheet style -->
-  <div class="cd" style="padding:0;overflow-x:auto">
-    <div style="padding:14px 18px 8px"><div class="ct"><span class="dot" style="background:var(--g)"></span>P&L — Червень 2026 (по проєктах)</div></div>
-    <table class="pl-tbl" id="pl-table">
-      <thead><tr id="pl-thead"></tr></thead>
-      <tbody id="pl-tbody"></tbody>
-    </table>
-  </div>
-
-  <!-- Static inputs (editable) -->
+  <!-- P&L Chart -->
   <div class="cd">
-    <div class="ct"><span class="dot" style="background:var(--o)"></span>Статичні витрати (вводяться вручну)</div>
-    <div class="cd-d">Редагуйте значення по кожному проєкту. P&L перераховується автоматично.</div>
-    <div style="overflow-x:auto">
-      <table class="pl-tbl pl-edit" id="pl-edit-table"></table>
-    </div>
-  </div>
-
-  <!-- Charts row -->
-  <div class="g2">
-    <div class="cd">
-      <div class="ct"><span class="dot"></span>Динаміка виручки та маржі (3 місяці)</div>
-      <canvas id="ch-pl-monthly" style="max-height:260px"></canvas>
-    </div>
-    <div class="cd">
-      <div class="ct"><span class="dot" style="background:var(--r)"></span>Структура витрат (Червень)</div>
-      <canvas id="ch-pl-costs" style="max-height:260px"></canvas>
-    </div>
+    <div class="ct"><span class="dot"></span>Динаміка виручки та маржі по місяцях (1С дані + прогноз)</div>
+    <canvas id="ch-pl-monthly" style="max-height:260px"></canvas>
   </div>
 
   <!-- Scenario analysis -->
   <div class="g3">
     <div class="mm-card">
       <div class="mm-h">🐌 Песимістичний</div>
-      <div class="mm-rows" id="sc-pessimistic"></div>
-      <div class="mm-trend warn">−15% від базового</div>
+      <div class="mm-rows">
+        <div class="mm-r"><span class="mm-l">Виручка:</span><span class="mm-v">18M₴</span></div>
+        <div class="mm-r"><span class="mm-l">Валова маржа 46%:</span><span class="mm-v">8.28M₴</span></div>
+        <div class="mm-r"><span class="mm-l">EBITDA:</span><span class="mm-v" style="color:var(--o)">4.79M₴</span></div>
+        <div class="mm-r"><span class="mm-l">Рентабельність:</span><span class="mm-v">26.6%</span></div>
+      </div>
+      <div class="mm-trend warn">ДРР = 4.8%</div>
     </div>
     <div class="mm-card" style="border-color:var(--ac)">
-      <div class="mm-h" style="color:var(--g)">🎯 Базовий</div>
-      <div class="mm-rows" id="sc-base"></div>
+      <div class="mm-h" style="color:var(--g)">🎯 Базовий (поточний темп)</div>
+      <div class="mm-rows">
+        <div class="mm-r"><span class="mm-l">Виручка:</span><span class="mm-v" style="color:var(--g)">24M₴</span></div>
+        <div class="mm-r"><span class="mm-l">Валова маржа 46%:</span><span class="mm-v">11.04M₴</span></div>
+        <div class="mm-r"><span class="mm-l">EBITDA:</span><span class="mm-v" id="scenario-base-ebitda" style="color:var(--g)">7.55M₴</span></div>
+        <div class="mm-r"><span class="mm-l">Рентабельність:</span><span class="mm-v" id="scenario-base-margin">31.4%</span></div>
+      </div>
       <div class="mm-trend up">Поточний прогноз</div>
     </div>
     <div class="mm-card">
       <div class="mm-h">🚀 Оптимістичний</div>
-      <div class="mm-rows" id="sc-optimistic"></div>
-      <div class="mm-trend up">+30% до базового</div>
+      <div class="mm-rows">
+        <div class="mm-r"><span class="mm-l">Виручка:</span><span class="mm-v">32M₴</span></div>
+        <div class="mm-r"><span class="mm-l">Валова маржа 46%:</span><span class="mm-v">14.72M₴</span></div>
+        <div class="mm-r"><span class="mm-l">EBITDA:</span><span class="mm-v" style="color:var(--g)">11.23M₴</span></div>
+        <div class="mm-r"><span class="mm-l">Рентабельність:</span><span class="mm-v">35.1%</span></div>
+      </div>
+      <div class="mm-trend up">+33% до базового</div>
     </div>
   </div>
 
@@ -1369,13 +936,9 @@ function swMain(name, btn) {
   btn.classList.add('on');
   document.getElementById('mp-'+name).classList.add('on');
   // lazy-init charts
-  if(name==='overview' && !window._overviewInit) { if(typeof initOverviewSections === 'function') initOverviewSections(); window._overviewInit=true; }
   if(name==='sales' && !window._salesInit) { initSalesCharts(); window._salesInit=true; }
   if(name==='marketing' && !window._mktInit) { initMktCharts(); window._mktInit=true; }
-  if(name==='cart' && !window._cartInit) { initCartCharts(); window._cartInit=true; }
-  if(name==='reputation' && !window._repInit) { initReputationCharts(); window._repInit=true; }
   if(name==='finance' && !window._finInit) { initFinCharts(); window._finInit=true; }
-  if(name==='iris') { initIrisTab(); }
 }
 function swSales(name, btn) {
   document.querySelectorAll('#mp-sales .tab').forEach(t => t.classList.remove('on'));
@@ -1528,33 +1091,6 @@ const CH = {
   seti:    {name:'Сети',    color:'#339af0', june:[270000,235000,250000,173681,274600,213300,203700,262100,273700,269500,257200,282200,219100,209200,269300,281100,276700,264200,289800,225000,214800,276400,288500,284000,271100], may:5100000, plan:7000000},
   roznica: {name:'Розниця', color:'#ffa94d', june:[230000,190000,200000,148916,226200,175600,167700,215900,225400,221900,211800,232400,180500,172300,221800,231500,227900,217600,238600,185300,176900,227600,237600,233900,223300], may:4100000, plan:6000000}
 };
-const CHO = CH;  // Секція 1 (Огляд): дані з 1С ORDERS — render підмінює це присвоєння; фолбек = CH (CRM)
-window.SEC3_1C=null;  // Секція 3 (1С-режим) — render підмінює
-const MKT = null;  // Маркетинг — render підмінює реальним data["marketing"] (фолбек = мок у initMktCharts)
-let sec3_1c_chart=null;
-function s3Mode(m){
-  var crm=document.getElementById('sec3-crm'),ic=document.getElementById('sec3-1c');
-  var cb=document.getElementById('s3-crm-btn'),ib=document.getElementById('s3-1c-btn');
-  if(!crm||!ic)return;
-  if(m==='1c'){crm.style.display='none';ic.style.display='block';if(cb)cb.classList.remove('on');if(ib)ib.classList.add('on');renderSec3_1c();}
-  else{ic.style.display='none';crm.style.display='block';if(ib)ib.classList.remove('on');if(cb)cb.classList.add('on');}
-}
-function renderSec3_1c(){
-  var D=window.SEC3_1C;if(!D)return;
-  var order=["Отказ (Не отправлен)","Отказ (Отправлен)","Рекламация","Помилка менеджера","Потрібно уточнення/передз","Спам/Помилка/Дубль"];
-  var cls=["c4","c3","c7","c2","c4","c7"];
-  document.getElementById('s3-1c-cards').innerHTML=order.map(function(st,i){
-    var c=(D.cards&&D.cards[st])||{count:0,sum:0};
-    return '<div class="kpi '+cls[i]+'"><div class="kl">'+st+'</div><div class="kv">'+c.count+'</div><div class="ks">'+fmtK(c.sum)+'₴</div></div>';
-  }).join('');
-  var nd=((D.daily&&D.daily.ne)||[]).length||O_DIM;
-  var labels=Array.from({length:nd},function(_,i){return String(i+1);});
-  if(sec3_1c_chart)sec3_1c_chart.destroy();
-  sec3_1c_chart=new Chart(document.getElementById('ch-sec3-1c'),{type:'line',data:{labels:labels,datasets:[
-    {label:'Відмови до відправки',data:D.daily.ne,borderColor:'#ff6b6b',backgroundColor:'rgba(255,107,107,0.08)',borderWidth:2,tension:0.3,pointRadius:2,fill:true},
-    {label:'Повернення (відправлено)',data:D.daily.otpr,borderColor:'#ffa94d',backgroundColor:'transparent',borderWidth:2,tension:0.3,pointRadius:2}
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#c1c7e0',font:{size:10},usePointStyle:true,boxWidth:8}},tooltip:{...TOOLTIP,callbacks:{title:function(it){return 'День '+it[0].label;},label:function(ctx){return ' '+ctx.dataset.label+': '+ctx.parsed.y;}}}},scales:{x:{grid:GRID,ticks:{color:'#7b84a3',font:{size:9}}},y:{grid:GRID,ticks:{color:'#7b84a3'}}}}});
-}
 const O_DIM=30, O_ACT=4, O_FULL=3;
 function rampDaily(monthly){
   const w=Array.from({length:O_DIM},(_,i)=>0.55+0.9*(i/(O_DIM-1)));
@@ -1568,10 +1104,10 @@ function renderSec1(key, btn){
   if(btn){document.querySelectorAll('#sec1-tabs .tab').forEach(t=>t.classList.remove('on'));btn.classList.add('on');}
   let june, may, plan, color, label;
   if(key==='all'){
-    june=Object.values(CHO)[0].june.map(()=>0); may=0; plan=0; color='#a29bfe'; label='Разом';
-    Object.values(CHO).forEach(c=>{c.june.forEach((v,i)=>june[i]+=v);may+=c.may;plan+=c.plan;});
+    june=Object.values(CH)[0].june.map(()=>0); may=0; plan=0; color='#a29bfe'; label='Разом';
+    Object.values(CH).forEach(c=>{c.june.forEach((v,i)=>june[i]+=v);may+=c.may;plan+=c.plan;});
   } else {
-    const c=CHO[key]; june=c.june.slice(); may=c.may; plan=c.plan; color=c.color; label=c.name;
+    const c=CH[key]; june=c.june.slice(); may=c.may; plan=c.plan; color=c.color; label=c.name;
   }
   const ND=june.length;
   const juneActual=june.reduce((a,b)=>a+b,0);
@@ -1611,7 +1147,7 @@ function renderSec1(key, btn){
      <div class="forecast-box" style="border-color:${planColor};background:rgba(0,214,143,0.05)"><div class="forecast-label">Виконання плану</div><div class="forecast-val" style="color:${planColor};font-size:22px">${planPct}%</div><div class="forecast-sub" style="color:${momColor}">${mom>=0?'+':''}${mom.toFixed(0)}% vs минулий міс.</div></div>`;
 }
 
-(function initOverviewSections() {
+(function initOverviewSections(){
   // ─── MCI module chart ───
   const mciLabels=Array.from({length:25},(_,i)=>String(i+1).padStart(2,'0')+'.06');
   const mciVals=[79,72,75,62,79,69,67,77,79,78,76,81,70,68,78,81,80,78,82,71,69,80,82,81,79];
@@ -1928,21 +1464,8 @@ function sortProd(btn, key) {
 
 // ═══════════ MARKETING CHARTS ═══════════
 function initMktCharts() {
-  const M = window.MKT || null;
-  const _f = n => Math.round(n||0).toLocaleString('uk');
-  // KPI-рядок — реальні дані (MTD до вчора), якщо є MKT
-  if (M && M.totals && M.brands) {
-    const t = M.totals, b = M.brands, el = document.getElementById('mkt-kpi-row');
-    if (el) el.innerHTML = `
-    <div class="kpi c1"><div class="kl">Рекл. бюджет (MTD до вчора)</div><div class="kv">${_f(t.spend)}<span class="ku">₴</span></div><div class="ks">~${_f(t.budget_per_day)}₴/день</div></div>
-    <div class="kpi c7"><div class="kl">ДРР Amebli</div><div class="kv" style="color:var(--r)">${b.amebli.drr}<span class="ku">%</span></div><div class="ks">${_f(b.amebli.spend)} / ${_f(b.amebli.revenue)}₴</div></div>
-    <div class="kpi c3"><div class="kl">ДРР Matrasroll</div><div class="kv" style="color:var(--o)">${b.matrasroll.drr}<span class="ku">%</span></div><div class="ks">${_f(b.matrasroll.spend)} / ${_f(b.matrasroll.revenue)}₴</div></div>
-    <div class="kpi c2"><div class="kl">ДРР Відгрузки</div><div class="kv" style="color:var(--lime)">${t.drr_ship}<span class="ku">%</span></div><div class="ks">ціль ≤15%</div></div>
-    <div class="kpi c4"><div class="kl">ДРР Замовлення</div><div class="kv" style="color:var(--g)">${t.drr_orders}<span class="ku">%</span></div><div class="ks">ціль ≤7%</div></div>
-    <div class="kpi c5"><div class="kl">Meta / Google</div><div class="kv">${_f(t.spend_meta/1000)}K<span class="ku"> / </span>${_f(t.spend_google/1000)}K</div><div class="ks">spend ₴</div></div>`;
-  }
   // DRR bars
-  const drrs = (M && M.drr_bars && M.drr_bars.length) ? M.drr_bars : [
+  const drrs = [
     {name:'ДРР Amebli',val:51.54,target:15,color:'#ff6b6b'},
     {name:'ДРР Matrasroll',val:24.21,target:15,color:'#ffa94d'},
     {name:'ДРР Відгрузки',val:10.07,target:15,color:'#94d82d'},
@@ -1957,7 +1480,7 @@ function initMktCharts() {
     </div>`).join('');
 
   // Marketing channels table
-  const mktData = (M && M.channels && M.channels.length) ? M.channels : [
+  const mktData = [
     {ch:'matrasroll.com.ua',traffic:4200,leads:140,cr_tl:3.3,orders:449,cr_lo:61,budget_day:8300,drr:24.2,drr_cls:'warn'},
     {ch:'amebli.com.ua',traffic:2800,leads:105,cr_tl:3.7,orders:207,cr_lo:53,budget_day:11200,drr:51.5,drr_cls:'bad'},
     {ch:'sofino',traffic:1600,leads:48,cr_tl:3.0,orders:147,cr_lo:55,budget_day:0,drr:0,drr_cls:'neu'},
@@ -1979,15 +1502,15 @@ function initMktCharts() {
     </tr>`;
   }).join('');
 
-  // Funnel chart (marketing) — з тих самих каналів (mktData = реальні або мок)
+  // Funnel chart (marketing)
   new Chart(document.getElementById('ch-funnel-mkt'),{
     type:'bar',
     data:{
-      labels:mktData.map(r=>r.ch),
+      labels:['Matrasroll','Amebli','Sofino','DR-TV','Шоу-руми'],
       datasets:[
-        {label:'Трафік/100',data:mktData.map(r=>Math.round((r.traffic||0)/100)),backgroundColor:'rgba(51,154,240,0.4)',borderColor:'#339af0',borderWidth:1,borderRadius:3},
-        {label:'Ліди',data:mktData.map(r=>r.leads||0),backgroundColor:'rgba(162,155,254,0.7)',borderColor:'#a29bfe',borderWidth:1,borderRadius:3},
-        {label:'Замовлення',data:mktData.map(r=>r.orders||0),backgroundColor:'rgba(0,214,143,0.7)',borderColor:'#00d68f',borderWidth:1,borderRadius:3}
+        {label:'Трафік/100',data:[42,28,16,0,0],backgroundColor:'rgba(51,154,240,0.4)',borderColor:'#339af0',borderWidth:1,borderRadius:3},
+        {label:'Ліди',data:[140,105,48,8,19],backgroundColor:'rgba(162,155,254,0.7)',borderColor:'#a29bfe',borderWidth:1,borderRadius:3},
+        {label:'Замовлення',data:[449,207,147,6,26],backgroundColor:'rgba(0,214,143,0.7)',borderColor:'#00d68f',borderWidth:1,borderRadius:3}
       ]
     },
     options:{
@@ -2037,760 +1560,16 @@ function initMktCharts() {
 }
 
 // ═══════════ FINANCE CHARTS ═══════════
-
-// ═══════════ CART & PRICING - LAZY INIT ═══════════
-function initCartCharts(){
-  // ТОП-20 продуктів
-  const top20 = [
-    {n:'ORANGE Handy (матраци)',q:500,s:3500000,m:44},{n:'Prestige (матраци)',q:400,s:2900000,m:46},
-    {n:'Hendy (матраци)',q:350,s:2400000,m:42},{n:'BIONICA (топери)',q:280,s:800000,m:40},
-    {n:'PURPLE (топери)',q:250,s:850000,m:41},{n:'Chocolate (матраци)',q:200,s:1200000,m:43},
-    {n:'Brown Диван (м\'яка)',q:150,s:1800000,m:33},{n:'Voss (м\'яка)',q:120,s:1400000,m:34},
-    {n:'Novelty Ліжко (корпус)',q:80,s:900000,m:28},{n:'Cacao (матраци)',q:100,s:650000,m:41},
-    {n:'Tiramisu (топери)',q:90,s:250000,m:40},{n:'Family (матраци)',q:85,s:500000,m:42},
-    {n:'Dual Zone (матраци)',q:70,s:600000,m:45},{n:'Homefort (корпус)',q:50,s:600000,m:29},
-    {n:'Ridnetut (крісло)',q:45,s:400000,m:32},{n:'Miromark (ліжко)',q:40,s:450000,m:27},
-    {n:'Coconut (топери)',q:35,s:120000,m:39},{n:'Smart Flex (матраци)',q:40,s:250000,m:40},
-    {n:'Altego (крісло)',q:30,s:350000,m:31},{n:'Comfort Plus (топери)',q:25,s:80000,m:38}
-  ];
-  let t = document.getElementById('cart-top20-tbody');
-  if(t) t.innerHTML = top20.map((p,i)=>`<tr><td class="num">${i+1}</td><td><b>${p.n}</b></td><td class="r num">${p.q}</td><td class="r num" style="color:var(--g)">${(p.s/1e6).toFixed(1)}M</td><td class="r num" style="color:${p.m>=40?'var(--g)':p.m>=30?'var(--o)':'var(--r)'};">${p.m}%</td><td class="r num" style="color:var(--ac2)">${(p.s*p.m/100/1e6).toFixed(1)}M</td></tr>`).join('');
-
-  // ═══ SEGMENT RENDERER ═══
-  function renderSegments(containerId, segments) {
-    const el = document.getElementById(containerId); if(!el) return;
-    el.innerHTML = segments.map(seg => {
-      const rows = seg.items.map((item, i) => {
-        const cls = item.ours ? 'row-ours' : 'row-comp';
-        const name = item.ours
-          ? `<span class="ours-marker">${item.name}</span>`
-          : `<span class="comp-marker">${item.name}</span>`;
-        const diffCls = item.diff > 0 ? 'down' : item.diff < 0 ? 'up' : 'neu';
-        const diffSign = item.diff > 0 ? '+' : '';
-        const vol = item.ours ? `<span style="color:var(--ac2);font-weight:600">${item.vol}</span>` : `<span style="color:var(--td)">${item.vol || '—'}</span>`;
-        return `<tr class="${cls}">
-          <td class="num" style="color:var(--td)">${i+1}</td>
-          <td>${name}</td>
-          <td class="r num" style="font-weight:600;color:${item.ours?'var(--ac2)':'var(--t2)'}">${fmtN(item.price)}₴</td>
-          <td class="r"><span class="dlt ${diffCls}">${diffSign}${item.diff.toFixed(1)}%</span></td>
-          <td class="r num">${vol}</td>
-          <td class="r num" style="color:${item.margin>=40?'var(--g)':item.margin>=30?'var(--o)':'var(--r)'}">${item.margin}%</td>
-        </tr>`;
-      }).join('');
-      return `<div class="seg-block">
-        <div class="seg-head ${seg.cls}">
-          <span class="seg-icon">${seg.icon}</span>
-          <span class="seg-title">${seg.title}</span>
-          <span class="seg-range">${seg.range}</span>
-        </div>
-        <table>
-          <thead><tr><th>#</th><th>Модель / бренд</th><th class="r">Ціна 160х200</th><th class="r">Δ до сер.</th><th class="r">Обсяг мі-ць</th><th class="r">Маржа</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>`;
-    }).join('');
-  }
-
-  // ═══ МАТРАЦИ ПО СЕГМЕНТАХ ═══
-  const matSegments = [
-    { title:'Економ', cls:'eco', icon:'💚', range:'2 500 – 5 500 ₴',
-      items:[
-        {name:'ORANGE Fine Roll',     ours:true,  price:2890, diff:-8.2, vol:245, margin:46},
-        {name:'ORANGE Handy ECO',     ours:true,  price:3190, diff:-1.7, vol:198, margin:44},
-        {name:'Ascona Balance Eco',   ours:false, price:3450, diff:+6.3, vol:'~180', margin:0},
-        {name:'Sleep&Fly Standart',   ours:false, price:2990, diff:-7.9, vol:'~150', margin:0},
-        {name:'Eurosleep Eco Lite',   ours:false, price:3290, diff:+1.4, vol:'~120', margin:0},
-        {name:'Aeromix Basic',        ours:false, price:3690, diff:+13.7, vol:'~95', margin:0},
-        {name:'ORANGE Handy Foam',    ours:true,  price:3490, diff:+7.5, vol:162, margin:43},
-      ]
-    },
-    { title:'Середній', cls:'mid', icon:'💙', range:'5 500 – 10 000 ₴',
-      items:[
-        {name:'ORANGE Handy',          ours:true,  price:6290, diff:-5.1, vol:310, margin:44},
-        {name:'ORANGE Handy Cocos',    ours:true,  price:7490, diff:+13.0, vol:287, margin:45},
-        {name:'Ascona Terapia Cardio', ours:false, price:6890, diff:+3.9, vol:'~200', margin:0},
-        {name:'Sleep&Fly Organic',     ours:false, price:7190, diff:+8.4, vol:'~170', margin:0},
-        {name:'Vegas Ecolatex',        ours:false, price:6490, diff:-2.1, vol:'~140', margin:0},
-        {name:'Eurosleep Premium',     ours:false, price:8290, diff:+25.0, vol:'~110', margin:0},
-        {name:'Chocolate',             ours:true,  price:8440, diff:+27.2, vol:134, margin:43},
-      ]
-    },
-    { title:'Середній +', cls:'pre', icon:'💜', range:'10 000 – 18 000 ₴',
-      items:[
-        {name:'Orange Big Roll Cocos', ours:true,  price:11490, diff:-4.6, vol:89, margin:46},
-        {name:'Smart Dual Zone',       ours:true,  price:13890, diff:+15.3, vol:72, margin:45},
-        {name:'Ascona Mediflex',       ours:false, price:12490, diff:+3.7, vol:'~85', margin:0},
-        {name:'Sleep&Fly Silver Edition',ours:false,price:14990, diff:+24.4, vol:'~60', margin:0},
-        {name:'Vegas Gold Latex',      ours:false, price:11890, diff:-1.3, vol:'~70', margin:0},
-        {name:'Eurosleep Ortho Plus',  ours:false, price:15490, diff:+28.5, vol:'~45', margin:0},
-        {name:'Family Premium',        ours:true,  price:12290, diff:+2.0, vol:65, margin:42},
-      ]
-    }
-  ];
-  renderSegments('cart-mattresses-segments', matSegments);
-
-  // ═══ ТОПЕРИ ПО СЕГМЕНТАХ ═══
-  const topSegments = [
-    { title:'Економ', cls:'eco', icon:'💚', range:'1 200 – 2 500 ₴',
-      items:[
-        {name:'PURPLE Base Lite NEW',  ours:true,  price:1390, diff:-10.3, vol:195, margin:41},
-        {name:'BIONICA Active Lite',   ours:true,  price:1690, diff:+9.0, vol:172, margin:40},
-        {name:'Ascona TopComfort Eco', ours:false, price:1590, diff:+2.6, vol:'~130', margin:0},
-        {name:'Sleep&Fly Mini',        ours:false, price:1490, diff:-3.9, vol:'~110', margin:0},
-        {name:'Eurosleep Slim Basic',  ours:false, price:1790, diff:+15.5, vol:'~90', margin:0},
-        {name:'Aeromix Topper Lite',   ours:false, price:1890, diff:+21.9, vol:'~75', margin:0},
-        {name:'Coconut Lite',          ours:true,  price:1490, diff:-3.9, vol:148, margin:39},
-      ]
-    },
-    { title:'Середній', cls:'mid', icon:'💙', range:'2 500 – 4 500 ₴',
-      items:[
-        {name:'BIONICA Linen Active Plus',ours:true,price:2990, diff:-6.3, vol:220, margin:40},
-        {name:'PURPLE Base',             ours:true,  price:3290, diff:+3.1, vol:185, margin:41},
-        {name:'Ascona Ergogel',          ours:false, price:3490, diff:+9.4, vol:'~140', margin:0},
-        {name:'Sleep&Fly Latex Thin',    ours:false, price:2890, diff:-9.4, vol:'~120', margin:0},
-        {name:'Vegas Cool Top',          ours:false, price:3190, diff:0.0, vol:'~100', margin:0},
-        {name:'Eurosleep Memory Thin',   ours:false, price:3690, diff:+15.7, vol:'~80', margin:0},
-        {name:'Tiramisu',                ours:true,  price:2790, diff:-12.5, vol:160, margin:40},
-      ]
-    },
-    { title:'Середній +', cls:'pre', icon:'💜', range:'4 500 – 8 000 ₴',
-      items:[
-        {name:'BIONICA Premium Cocos',   ours:true,  price:5490, diff:-2.8, vol:78, margin:42},
-        {name:'PURPLE Ortho Linen',      ours:true,  price:6290, diff:+11.4, vol:62, margin:43},
-        {name:'Ascona Terapia Slim',     ours:false, price:5890, diff:+4.3, vol:'~55', margin:0},
-        {name:'Sleep&Fly Gold Thin',     ours:false, price:6490, diff:+14.9, vol:'~40', margin:0},
-        {name:'Vegas Latex Premium',     ours:false, price:5190, diff:-8.2, vol:'~50', margin:0},
-        {name:'Eurosleep Ortho Topper',  ours:false, price:7290, diff:+29.0, vol:'~30', margin:0},
-        {name:'Comfort Plus Premium',    ours:true,  price:4890, diff:-13.4, vol:55, margin:41},
-      ]
-    }
-  ];
-  renderSegments('cart-toppers-segments', topSegments);
-
-  // Конкуренти
-  const comps = [{s:'ascona.ua',tr:127,p:3240,k:1847},{s:'vegas-dream.ua',tr:94,p:2156,k:1203},{s:'sleepfly.ua',tr:78,p:1845,k:956},{s:'eurosleep.com.ua',tr:65,p:1567,k:823},{s:'aeromix.ua',tr:52,p:1234,k:678},{s:'relax-center.ua',tr:41,p:987,k:512},{s:'mediflex.ua',tr:38,p:856,k:467},{s:'comfort-sleep.ua',tr:34,p:745,k:412},{s:'dream-home.ua',tr:28,p:634,k:348},{s:'elite-mattress.ua',tr:24,p:521,k:287}];
-  let c = document.getElementById('cart-competitors-tbody');
-  if(c) c.innerHTML = comps.map((x,i)=>`<tr><td class="num">${i+1}</td><td style="font-family:monospace;font-size:9px">${x.s}</td><td class="r num">${x.tr}K</td><td class="r num">${x.p}</td><td class="r num">${x.k}</td><td class="r" style="color:var(--g);font-weight:600">↑</td></tr>`).join('');
-
-  // ТОП-50 матрасів
-  const mats50 = ['ORANGE Fine Roll','ORANGE Handy ECO','ORANGE Handy Foam','ORANGE Handy','ORANGE Handy Cocos','Chocolate','Orange Big Roll Cocos','Smart Dual Zone','Family Premium','Cacao'];
-  let m50 = document.getElementById('cart-mattresses-50-tbody');
-  if(m50) m50.innerHTML = Array.from({length:50},(_, i)=>{const qty = 10+Math.random()*100; return `<tr><td class="num">${i+1}</td><td style="font-size:9px"><b>${mats50[i%mats50.length]} ${['90x200','140x200','160x200','180x200'][i%4]}</b></td><td class="r num">${Math.round(qty)}</td><td class="r num" style="color:var(--g)">${Math.round(qty*7000/1000)}K</td><td class="r num">7000</td></tr>`;}).join('');
-
-  // ТОП-50 топерів
-  const tops50 = ['PURPLE Base Lite NEW','BIONICA Active Lite','Coconut Lite','BIONICA Linen Active Plus','PURPLE Base','Tiramisu','BIONICA Premium Cocos','PURPLE Ortho Linen','Comfort Plus Premium','SmartTopper'];
-  let t50 = document.getElementById('cart-toppers-50-tbody');
-  if(t50) t50.innerHTML = Array.from({length:50},(_, i)=>{const qty = 5+Math.random()*80; return `<tr><td class="num">${i+1}</td><td style="font-size:9px"><b>${tops50[i%tops50.length]} ${['90x200','140x200','160x200','180x200'][i%4]}</b></td><td class="r num">${Math.round(qty)}</td><td class="r num" style="color:var(--g)">${Math.round(qty*2800/1000)}K</td><td class="r num">2800</td></tr>`;}).join('');
-}
-
-function initReputationCharts(){
-  const PLATFORMS = [
-    {id:'google',  name:'Google Maps',  icon:'🔍', color:'#4285f4'},
-    {id:'vidhuk',  name:'Vidhuk.com',   icon:'💬', color:'#ff6b6b'},
-    {id:'vnutri',  name:'Vnutri.ua',    icon:'🏠', color:'#ffa94d'},
-    {id:'fb',      name:'Facebook',      icon:'📘', color:'#1877f2'},
-    {id:'rozetka', name:'Rozetka',       icon:'🛒', color:'#00a046'},
-    {id:'prom',    name:'Prom.ua',       icon:'🏪', color:'#e5383b'},
-    {id:'hotline', name:'Hotline.ua',    icon:'📊', color:'#f59f00'},
-    {id:'nok',     name:'НОК (OLX)',     icon:'📦', color:'#47c1bf'}
-  ];
-
-  const PROJECTS = [
-    {name:'Matrasroll', icon:'🟢', color:'#00d68f', platforms:[
-      {id:'google',r:4.8,cnt:312,d:+47,trend:[4.5,4.5,4.6,4.7,4.7,4.8],pos:91,neu:6,neg:3},
-      {id:'vidhuk',r:4.5,cnt:187,d:+22,trend:[4.3,4.3,4.4,4.4,4.5,4.5],pos:85,neu:10,neg:5},
-      {id:'vnutri',r:4.6,cnt:94,d:+11,trend:[4.4,4.5,4.5,4.5,4.6,4.6],pos:88,neu:8,neg:4},
-      {id:'fb',r:4.7,cnt:256,d:+31,trend:[4.5,4.6,4.6,4.6,4.7,4.7],pos:90,neu:7,neg:3},
-      {id:'rozetka',r:4.4,cnt:523,d:+68,trend:[4.2,4.2,4.3,4.3,4.4,4.4],pos:83,neu:11,neg:6},
-      {id:'prom',r:4.2,cnt:38,d:+5,trend:[4.0,4.0,4.1,4.1,4.2,4.2],pos:79,neu:13,neg:8},
-      {id:'hotline',r:4.3,cnt:112,d:+14,trend:[4.1,4.2,4.2,4.3,4.3,4.3],pos:82,neu:12,neg:6},
-      {id:'nok',r:4.5,cnt:89,d:+9,trend:[4.3,4.4,4.4,4.5,4.5,4.5],pos:87,neu:9,neg:4}
-    ]},
-    {name:'Amebli', icon:'🟣', color:'#a29bfe', platforms:[
-      {id:'google',r:4.5,cnt:198,d:+28,trend:[4.3,4.3,4.4,4.4,4.5,4.5],pos:86,neu:9,neg:5},
-      {id:'vidhuk',r:3.9,cnt:142,d:+18,trend:[3.7,3.7,3.8,3.8,3.9,3.9],pos:72,neu:16,neg:12},
-      {id:'vnutri',r:4.2,cnt:67,d:+8,trend:[4.0,4.0,4.1,4.1,4.2,4.2],pos:80,neu:12,neg:8},
-      {id:'fb',r:4.4,cnt:189,d:+24,trend:[4.2,4.2,4.3,4.3,4.4,4.4],pos:84,neu:10,neg:6},
-      {id:'rozetka',r:4.1,cnt:341,d:+42,trend:[3.9,3.9,4.0,4.0,4.1,4.1],pos:77,neu:14,neg:9},
-      {id:'prom',r:4.0,cnt:28,d:+3,trend:[3.8,3.9,3.9,4.0,4.0,4.0],pos:75,neu:15,neg:10},
-      {id:'hotline',r:4.1,cnt:85,d:+10,trend:[3.9,4.0,4.0,4.1,4.1,4.1],pos:78,neu:13,neg:9},
-      {id:'nok',r:4.3,cnt:56,d:+6,trend:[4.1,4.1,4.2,4.2,4.3,4.3],pos:82,neu:11,neg:7}
-    ]},
-    {name:'Sofino', icon:'🔵', color:'#339af0', platforms:[
-      {id:'google',r:4.6,cnt:156,d:+19,trend:[4.4,4.4,4.5,4.5,4.6,4.6],pos:88,neu:8,neg:4},
-      {id:'vidhuk',r:4.3,cnt:98,d:+12,trend:[4.1,4.1,4.2,4.2,4.3,4.3],pos:82,neu:12,neg:6},
-      {id:'vnutri',r:4.4,cnt:52,d:+6,trend:[4.2,4.3,4.3,4.3,4.4,4.4],pos:84,neu:10,neg:6},
-      {id:'fb',r:4.5,cnt:134,d:+17,trend:[4.3,4.4,4.4,4.4,4.5,4.5],pos:86,neu:9,neg:5},
-      {id:'rozetka',r:4.2,cnt:287,d:+35,trend:[4.0,4.0,4.1,4.1,4.2,4.2],pos:80,neu:13,neg:7},
-      {id:'prom',r:4.1,cnt:22,d:+2,trend:[3.9,4.0,4.0,4.0,4.1,4.1],pos:77,neu:14,neg:9},
-      {id:'hotline',r:4.2,cnt:73,d:+8,trend:[4.0,4.1,4.1,4.2,4.2,4.2],pos:80,neu:13,neg:7},
-      {id:'nok',r:4.4,cnt:41,d:+4,trend:[4.2,4.2,4.3,4.3,4.4,4.4],pos:85,neu:10,neg:5}
-    ]},
-    {name:'Шоу-руми', icon:'🟠', color:'#ffa94d', platforms:[
-      {id:'google',r:4.7,cnt:89,d:+12,trend:[4.5,4.5,4.6,4.6,4.7,4.7],pos:92,neu:5,neg:3},
-      {id:'vidhuk',r:4.4,cnt:34,d:+4,trend:[4.2,4.3,4.3,4.3,4.4,4.4],pos:84,neu:11,neg:5},
-      {id:'fb',r:4.6,cnt:78,d:+9,trend:[4.4,4.4,4.5,4.5,4.6,4.6],pos:89,neu:7,neg:4},
-      {id:'nok',r:4.5,cnt:23,d:+2,trend:[4.3,4.4,4.4,4.5,4.5,4.5],pos:87,neu:9,neg:4}
-    ]}
-  ];
-
-  const months = ['Січ','Лют','Бер','Кві','Тра','Чер'];
-
-  function stars(r) {
-    const full = Math.floor(r), half = r - full >= 0.3 ? 1 : 0;
-    let s = '';
-    for(let i=0;i<5;i++) s += `<span class="rep-star ${i<full||(i===full&&half)?'on':''}">${i<full?'★':(i===full&&half?'★':'☆')}</span>`;
-    return s;
-  }
-
-  function trendDots(arr, color) {
-    return `<div class="rep-trend-row"><span class="rep-trend-label">6мі-ців</span><div class="rep-trend-vals">${arr.map(v => {
-      const bg = v >= 4.5 ? 'var(--g)' : v >= 4.0 ? 'var(--o)' : 'var(--r)';
-      return `<div class="rep-trend-dot" style="background:${bg}">${v}</div>`;
-    }).join('')}</div></div>`;
-  }
-
-  // KPI summary
-  let totalCnt = 0, totalWeighted = 0, totalPos = 0, totalNeu = 0, totalNeg = 0, totalDelta = 0;
-  PROJECTS.forEach(p => p.platforms.forEach(pl => {
-    totalCnt += pl.cnt; totalWeighted += pl.r * pl.cnt; totalDelta += pl.d;
-    totalPos += Math.round(pl.cnt * pl.pos / 100);
-    totalNeu += Math.round(pl.cnt * pl.neu / 100);
-    totalNeg += Math.round(pl.cnt * pl.neg / 100);
-  }));
-  const avgR = (totalWeighted / totalCnt).toFixed(1);
-  const posPct = Math.round(totalPos / totalCnt * 100);
-  const neuPct = Math.round(totalNeu / totalCnt * 100);
-  const negPct = Math.round(totalNeg / totalCnt * 100);
-
-  document.getElementById('rep-kpi-row').innerHTML = `
-    <div class="kpi c1"><div class="kl">Середня оцінка</div><div class="kv">${avgR}<span class="ku">/5</span></div><div class="ks">з ${fmtN(totalCnt)} відгуків</div></div>
-    <div class="kpi c2"><div class="kl">Позитивні</div><div class="kv" style="color:var(--g)">${posPct}<span class="ku">%</span></div><div class="ks">${fmtN(totalPos)} відгуків</div></div>
-    <div class="kpi c3"><div class="kl">Нейтральні</div><div class="kv" style="color:var(--o)">${neuPct}<span class="ku">%</span></div><div class="ks">${fmtN(totalNeu)} відгуків</div></div>
-    <div class="kpi c7"><div class="kl">Негативні</div><div class="kv" style="color:var(--r)">${negPct}<span class="ku">%</span></div><div class="ks">${fmtN(totalNeg)} відгуків</div></div>
-    <div class="kpi c4"><div class="kl">Нових за місяць</div><div class="kv">+${totalDelta}</div><div class="ks">приріст червня</div></div>
-    <div class="kpi c5"><div class="kl">Платформ</div><div class="kv">${PLATFORMS.length}</div><div class="ks">джерел відгуків</div></div>
-  `;
-
-  // Sentiment bar
-  document.getElementById('rep-sent-bar').innerHTML = `
-    <div class="rep-sent-pos" style="width:${posPct}%"></div>
-    <div class="rep-sent-neu" style="width:${neuPct}%"></div>
-    <div class="rep-sent-neg" style="width:${negPct}%"></div>`;
-  document.getElementById('rep-sent-label').textContent = `👍 ${posPct}% позитив · 😐 ${neuPct}% нейтрал · 👎 ${negPct}% негатив`;
-
-  // Project blocks
-  const container = document.getElementById('rep-projects-container');
-  container.innerHTML = PROJECTS.map(proj => {
-    const pCnt = proj.platforms.reduce((s,p) => s + p.cnt, 0);
-    const pAvg = (proj.platforms.reduce((s,p) => s + p.r * p.cnt, 0) / pCnt).toFixed(1);
-    const pDelta = proj.platforms.reduce((s,p) => s + p.d, 0);
-    const scoreColor = pAvg >= 4.5 ? 'var(--g)' : pAvg >= 4.0 ? 'var(--o)' : 'var(--r)';
-
-    const plats = proj.platforms.map(pl => {
-      const meta = PLATFORMS.find(x => x.id === pl.id) || {};
-      const badgeColor = pl.r >= 4.5 ? 'var(--gd);color:var(--g)' : pl.r >= 4.0 ? 'var(--od);color:var(--o)' : 'var(--rd);color:var(--r)';
-      const deltaColor = pl.d > 0 ? 'var(--g)' : 'var(--r)';
-      const fillPct = Math.round(pl.r / 5 * 100);
-      return `<div class="rep-plat">
-        <div class="rep-plat-head">
-          <span class="rep-plat-logo">${meta.icon||'📋'}</span>
-          <span class="rep-plat-name">${meta.name||pl.id}</span>
-          <span class="rep-plat-badge" style="background:${badgeColor}">${pl.r}★</span>
-        </div>
-        <div class="rep-stars">${stars(pl.r)}</div>
-        <div class="rep-plat-bar"><div class="rep-plat-fill" style="width:${fillPct}%;background:${meta.color||'var(--ac)'}"></div></div>
-        <div class="rep-plat-stats">
-          <span class="rep-plat-count">${pl.cnt} відг.</span>
-          <span class="rep-plat-delta" style="color:${deltaColor}">+${pl.d} за мі-ць</span>
-        </div>
-        <div class="rep-sentiment-bar">
-          <div class="rep-sent-pos" style="width:${pl.pos}%"></div>
-          <div class="rep-sent-neu" style="width:${pl.neu}%"></div>
-          <div class="rep-sent-neg" style="width:${pl.neg}%"></div>
-        </div>
-        ${trendDots(pl.trend, meta.color)}
-      </div>`;
-    }).join('');
-
-    return `<div class="rep-project">
-      <div class="rep-project-head">
-        <span class="rep-project-icon">${proj.icon}</span>
-        <span class="rep-project-name">${proj.name}</span>
-        <div class="rep-project-avg">
-          <span class="rep-project-score" style="color:${scoreColor}">${pAvg}★</span>
-          <span class="rep-project-total">${fmtN(pCnt)} відг. · <span style="color:var(--g)">+${pDelta}</span> за мі-ць</span>
-        </div>
-      </div>
-      <div class="rep-platforms">${plats}</div>
-    </div>`;
-  }).join('');
-
-  // Rating trend chart
-  const datasets = PROJECTS.map(proj => {
-    const avgByMonth = months.map((_, mi) => {
-      const vals = proj.platforms.filter(p => p.trend.length > mi).map(p => p.trend[mi]);
-      return vals.length ? +(vals.reduce((a,b) => a+b, 0) / vals.length).toFixed(2) : null;
-    });
-    return {label:proj.name, data:avgByMonth, borderColor:proj.color, backgroundColor:'transparent', borderWidth:2.5, tension:0.4, pointRadius:4, pointBackgroundColor:proj.color};
-  });
-  new Chart(document.getElementById('ch-rep-trend'), {
-    type:'line',
-    data:{labels:months, datasets},
-    options:{responsive:true, maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:'#c1c7e0',font:{size:10},usePointStyle:true,boxWidth:8}},tooltip:{...TOOLTIP,callbacks:{label:ctx=>' '+ctx.dataset.label+': '+ctx.parsed.y+'★'}}},
-      scales:{x:{grid:GRID,ticks:{color:'#7b84a3'}},y:{grid:GRID,min:3.5,max:5.0,ticks:{color:'#7b84a3',callback:v=>v.toFixed(1)+'★'}}}}
-  });
-
-  // Top issues
-  const issues = [
-    {n:'Затримка доставки',cnt:42,color:'var(--r)'},{n:'Пошкоджена упаковка',cnt:28,color:'var(--r)'},
-    {n:'Невідповідність опису',cnt:19,color:'var(--o)'},{n:'Важко зв\'язатися',cnt:15,color:'var(--o)'},
-    {n:'Неповна комплектація',cnt:12,color:'var(--o)'},{n:'Запах нового матрацу',cnt:9,color:'var(--td)'},
-    {n:'Помилка в розмірі',cnt:7,color:'var(--td)'},{n:'Якість тканини',cnt:5,color:'var(--td)'}
-  ];
-  const maxIssue = issues[0].cnt;
-  document.getElementById('rep-issues-container').innerHTML = issues.map(is =>
-    `<div class="rep-issue">
-      <span style="flex:1;color:var(--t2)">${is.n}</span>
-      <div class="rep-issue-bar"><div class="rep-issue-fill" style="width:${Math.round(is.cnt/maxIssue*100)}%;background:${is.color}"></div></div>
-      <span class="rep-issue-cnt" style="color:${is.color}">${is.cnt}</span>
-    </div>`).join('');
-
-  // Top praises
-  const praises = [
-    {n:'Зручний матрац / комфорт',cnt:380,color:'var(--g)'},{n:'Швидка доставка',cnt:245,color:'var(--g)'},
-    {n:'Якість за ціну',cnt:198,color:'var(--g)'},{n:'Ввічливий менеджер',cnt:167,color:'var(--g)'},
-    {n:'Гарна упаковка',cnt:134,color:'var(--b)'},{n:'Легке замовлення',cnt:112,color:'var(--b)'},
-    {n:'Рекомендую знайомим',cnt:89,color:'var(--b)'},{n:'Зручний сайт',cnt:67,color:'var(--b)'}
-  ];
-  const maxPraise = praises[0].cnt;
-  document.getElementById('rep-praises-container').innerHTML = praises.map(pr =>
-    `<div class="rep-issue">
-      <span style="flex:1;color:var(--t2)">${pr.n}</span>
-      <div class="rep-issue-bar"><div class="rep-issue-fill" style="width:${Math.round(pr.cnt/maxPraise*100)}%;background:${pr.color}"></div></div>
-      <span class="rep-issue-cnt" style="color:${pr.color}">${pr.cnt}</span>
-    </div>`).join('');
-}
-
-// ═══════════ IRIS CHAT ═══════════
-const IRIS_AGENTS = {
-  iris:   {name:'IRIS',   icon:'🧠', color:'#da77f2', role:'Головний аналітик'},
-  grok:   {name:'Grok',   icon:'⚡', color:'#1da1f2', role:'Креативний стратег'},
-  gemini: {name:'Gemini', icon:'💎', color:'#4285f4', role:'Data-аналітик'},
-  gpt:    {name:'GPT',    icon:'🤖', color:'#10a37f', role:'Бізнес-консультант'},
-  claude: {name:'Claude', icon:'😈', color:'#ff6b6b', role:"Devil's Advocate"}
-};
-const irisActiveAgents = {iris:true, grok:false, gemini:false, gpt:false, claude:false};
-
-function toggleAgent(id){
-  if(id==='iris') return;
-  irisActiveAgents[id] = !irisActiveAgents[id];
-  const sw = document.getElementById('sw-'+id);
-  const card = document.getElementById('agent-'+id);
-  if(sw) sw.classList.toggle('on', irisActiveAgents[id]);
-  if(card) card.classList.toggle('active', irisActiveAgents[id]);
-}
-
-function irisAddMsg(agent, text, isUser){
-  const box = document.getElementById('iris-messages');
-  const a = IRIS_AGENTS[agent] || IRIS_AGENTS.iris;
-  const now = new Date();
-  const time = now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
-  const cls = isUser ? 'iris-msg user' : (agent==='claude' ? 'iris-msg claude' : 'iris-msg');
-  const senderColor = isUser ? 'var(--ac2)' : a.color;
-  const msg = document.createElement('div');
-  msg.className = cls;
-  msg.innerHTML = `
-    <div class="iris-msg-av" style="background:${isUser?'var(--s3)':a.color+'22'};border-color:${isUser?'var(--ac)':a.color}">${isUser?'👤':a.icon}</div>
-    <div class="iris-msg-body">
-      <div class="iris-msg-sender" style="color:${senderColor}">${isUser?'Ви':a.name+' · '+a.role}</div>
-      ${text}
-      <div class="iris-msg-time">${time}</div>
-    </div>`;
-  box.appendChild(msg);
-  box.scrollTop = box.scrollHeight;
-}
-
-function irisShowTyping(agent){
-  const box = document.getElementById('iris-messages');
-  const a = IRIS_AGENTS[agent] || IRIS_AGENTS.iris;
-  const el = document.createElement('div');
-  el.className = 'iris-typing';
-  el.id = 'iris-typing-'+agent;
-  el.innerHTML = `<div class="iris-msg-av" style="background:${a.color}22;border-color:${a.color};width:24px;height:24px;font-size:12px;border-width:1px">${a.icon}</div><span>${a.name} друкує</span><div class="iris-typing-dots"><span></span><span></span><span></span></div>`;
-  box.appendChild(el);
-  box.scrollTop = box.scrollHeight;
-}
-function irisHideTyping(agent){
-  const el = document.getElementById('iris-typing-'+agent);
-  if(el) el.remove();
-}
-
-const IRIS_RESPONSES = {
-  iris: {
-    'зведений звіт за тиждень': `<b>📊 Зведений звіт · 1–25 червня 2026</b><br><br>
-<b>Продажі:</b> 28.6M₴ (прогноз ~34.3M₴) · <span style="color:var(--g)">+47%</span> vs травень<br>
-<b>Замовлення:</b> ~5 190 (208/день) · Сер. чек: 5 513₴ (<span style="color:var(--r)">−25%</span>)<br>
-<b>Маркетинг:</b> ДРР загальний 10.1% · <span style="color:var(--r)">Amebli ДРР 51.5% — критично</span><br>
-<b>Відгрузки:</b> прогноз ~14M₴ — відстає від замовлень<br>
-<b>Репутація:</b> 4.4★ середня · +385 нових відгуків<br>
-<b>EBITDA прогноз:</b> 7.55M₴ (31.4%)<br><br>
-⚠️ <b>Критичні точки:</b> ДРР Amebli потребує термінового аудиту, розрив замовлення↔відгрузки росте, середній чек падає.`,
-
-    'критичні проблеми зараз': `<b>🔴 Критичні проблеми · червень 2026</b><br><br>
-1️⃣ <b>ДРР Amebli 51.5%</b> — реклама з'їдає половину виручки. Рекомендація: зупинити кампанії з ROAS &lt;2 протягом 24 годин.<br><br>
-2️⃣ <b>Середній чек −25%</b> (5 513₴ vs 7 371₴) — зсув у дешевші SKU. Перевірити чи це сезонний ефект чи зміна міксу.<br><br>
-3️⃣ <b>Розрив замовлення↔відгрузки</b> — прогноз замовлень 34M₴, відгрузок 14M₴. Ризик накопичення черги.<br><br>
-4️⃣ <b>ST Даринок і ДрімТаун: 0₴ при 15 замовленнях</b> — дані не підтягуються з 1С. Потрібна інтеграція.<br><br>
-5️⃣ <b>Amebli на Vidhuk 3.9★</b> — найнижчий рейтинг, скарги на доставку зростають.`,
-
-    'де втрачаємо маржу?': `<b>💰 Аналіз втрат маржинальності</b><br><br>
-Загальна маржа <b>~44%</b> (було 46%, <span style="color:var(--r)">−2пп</span>).<br><br>
-<b>Де втрачаємо:</b><br>
-• <b>Зсув до дешевих SKU</b> — частка економ-матрасів зросла з 35% до 48%. Маржа: 42% vs 46% у середньому сегменті.<br>
-• <b>Корпусні меблі</b> — маржа 28% (<span style="color:var(--r)">−2пп</span>). Зростання собівартості MDF/фурнітури.<br>
-• <b>Amebli канал</b> — ДРР 51.5% + маржа продукту 44% = реальна маржа <b>−7.5%</b> після реклами.<br>
-• <b>Логістика</b> — повернення зростають, кожне повернення ≈800₴ логістичних витрат.<br><br>
-💡 <b>Рекомендація:</b> Фокус на середній+ сегмент (маржа 45-46%), оптимізація Amebli ДРР, перегляд тарифів на корпусні.`,
-
-    'аудит дрр по каналах': `<b>📣 Аудит ДРР по каналах · 1–25 червня</b><br><br>
-<table style="width:100%;font-size:11px">
-<tr style="color:var(--td)"><td>Канал</td><td style="text-align:right">ДРР</td><td style="text-align:right">Статус</td></tr>
-<tr><td>ДРР Замовлення загальний</td><td style="text-align:right;color:var(--g)"><b>4.18%</b></td><td style="text-align:right"><span class="badge bg">✓ OK</span></td></tr>
-<tr><td>ДРР Відгрузки загальний</td><td style="text-align:right;color:var(--lime)"><b>10.07%</b></td><td style="text-align:right"><span class="badge bg">✓ ціль ≤15%</span></td></tr>
-<tr><td>Matrasroll</td><td style="text-align:right;color:var(--o)"><b>24.21%</b></td><td style="text-align:right"><span class="badge bo">⚠ вище 15%</span></td></tr>
-<tr><td>Amebli</td><td style="text-align:right;color:var(--r)"><b>51.54%</b></td><td style="text-align:right"><span class="badge br">🔴 критично</span></td></tr>
-<tr><td>Sofino</td><td style="text-align:right;color:var(--g)"><b>0%</b></td><td style="text-align:right"><span class="badge bn">органіка</span></td></tr>
-</table><br>
-⚡ <b>Дія:</b> Amebli — зупинити 50% кампаній, залишити лише ROAS&gt;3. Matrasroll — перерозподілити бюджет у топ-5 кампаній.`,
-
-    'порівняй рейтинги проектів': `<b>⭐ Порівняння рейтингів проектів</b><br><br>
-<b>🟢 Matrasroll: 4.5★</b> (1 611 відг.) — лідер по к-сті. Google 4.8★ найвищий. Ріст +207/міс.<br>
-<b>🟠 Шоу-руми: 4.6★</b> (224 відг.) — найвищий рейтинг, але мало відгуків. Google 4.7★.<br>
-<b>🔵 Sofino: 4.3★</b> (863 відг.) — стабільний середнячок. Rozetka 4.2★ тягне вниз.<br>
-<b>🟣 Amebli: 4.2★</b> (1 106 відг.) — <span style="color:var(--r)">найнижчий</span>. Vidhuk 3.9★ — проблема доставки.<br><br>
-📈 <b>Тренд:</b> Всі проекти зростають +0.1-0.2★ за 6 місяців. Amebli найповільніший.<br>
-💡 <b>Пріоритет:</b> Amebli на Vidhuk — відповідати на негативні відгуки протягом 24г.`,
-
-    'що масштабувати першим?': `<b>🚀 Що масштабувати першим · рекомендація IRIS</b><br><br>
-<b>Рейтинг можливостей:</b><br><br>
-1️⃣ <b>Sofino (органічний трафік)</b> — чек 5 728₴, 0₴ рекламних витрат, маржа 34%. Вкласти в SEO та контент — потенціал 2x за 3 місяці.<br><br>
-2️⃣ <b>DR-TV канал</b> — чек 47 249₴ (!), 0₴ реклами. Виділити менеджера, протестувати YouTube Ads.<br><br>
-3️⃣ <b>Середній+ сегмент матрасів</b> — маржа 45-46%, менше конкуренція за ціною. Збільшити рекламу Smart Dual Zone та Big Roll Cocos.<br><br>
-4️⃣ <b>Відгуки як канал</b> — +385 відгуків/місяць. Запустити програму "відгук за знижку" → +30% конверсії на сайті.<br><br>
-⚠️ <b>НЕ масштабувати:</b> Amebli рекламу (ДРР 51.5%), економ-сегмент (маржа падає).`
-  },
-  grok: [
-    `<b>⚡ Grok тут.</b> Оке, давайте чесно — ваш ДРР Amebli не просто поганий, він <i>катастрофічний</i>. 51%? Ви буквально платите людям щоб вони купили у вас. 💀<br><br>Але ось що цікаво — ваш Sofino робить гроші <b>без жодної реклами</b>. Чек 5 728₴. Це ваш спящий гігант.<br><br>🔥 <b>Growth-хак:</b> Візьміть кращі кампанії Matrasroll, скопіюйте креативи для Sofino, запустіть з бюджетом 5К/день. Якщо конверсія навіть 50% від Matrasroll — це ROI 800%.`,
-    `<b>⚡ Нестандартна ідея від Grok:</b><br><br>Ви витрачаєте 28 750₴/день на рекламу. А скільки на UGC та відгуки? Підозрюю — нуль.<br><br>Факт: 1 відгук на Google = ~50 додаткових кліків (органіка). У вас +385 відгуків/місяць. Це <b>19 250 безкоштовних кліків</b> щомісяця.<br><br>🎯 <b>Ідея:</b> Програма "Матрац + відгук = подушка в подарунок". Собівартість подушки ~200₴. ROI від одного відгука > 2000₴ за рік через органіку.`,
-    `<b>⚡ Grok бачить патерн:</b><br><br>Ваш середній чек впав на 25%. Всі панікують. Але подивіться на <b>кількість замовлень</b> — вона зросла на 47%. Більше людей купують дешевше.<br><br>Це не баг, це фіча. Ви захоплюєте ринок входу. Тепер потрібен <b>апсейл-ланцюжок</b>: купив економ матрац → через 3 місяці пропонуєте топер → через рік преміум заміну.<br><br>🎯 LTV > одноразовий чек. Побудуйте CRM-ланцюжок.`
-  ],
-  gemini: [
-    `<b>💎 Gemini · Статистичний аналіз</b><br><br>Побудував кореляційну матрицю ваших KPI:<br><br>• Кореляція MCI ↔ Продажі: <code>r = +0.82</code> (сильна)<br>• Кореляція ДРР ↔ Маржа: <code>r = −0.91</code> (обернена, критична)<br>• Кореляція Рейтинг ↔ Конверсія: <code>r = +0.67</code> (помірна)<br><br>📊 <b>Висновок:</b> Кожен +0.1★ рейтингу = +1.2% конверсії ≈ +288K₴/місяць. Інвестиція в репутацію має найвищий ROI серед усіх каналів.<br><br><b>Прогноз:</b> При поточному тренді виручка червня буде <code>33.6M ± 2.1M₴</code> (95% CI).`,
-    `<b>💎 Gemini · Аналіз сезонності</b><br><br>Проаналізував дані за 12 місяців:<br><br>• Червень — <b>пік сезону</b> для матрасів (індекс 1.28x від середньорічного)<br>• Падіння чека −25% <b>нормальне</b> для червня — сезонний попит на економ-сегмент (переїзди, ремонти)<br>• Липень-серпень: очікується спад до 0.85x<br><br>⚠️ <b>Ризик:</b> Ви масштабуєте рекламу в пік. Коли сезон впаде — ДРР злетить ще вище якщо не скоротити бюджет заздалегідь.<br><br>📅 <b>Рекомендація:</b> Запланувати зниження рекламного бюджету на −30% з 1 липня.`,
-    `<b>💎 Gemini · Когортний аналіз</b><br><br>Розбив клієнтів по когортах першої покупки:<br><br>• <b>Когорта Січ-Лют 2026:</b> 12% повторних покупок за 4 місяці<br>• <b>Когорта Бер-Кві 2026:</b> 8% повторних за 2 місяці (нормально)<br>• <b>Repeat purchase rate</b> по ринку: 15-18% за 6 місяців<br><br>📊 Ви відстаєте від бенчмарку на 3-6пп. Кожен % повторних = ~240K₴/місяць.<br><br>💡 <b>Дія:</b> Email/SMS ланцюжок через 90 днів після покупки. Пропозиція аксесуарів або топера.`
-  ],
-  gpt: [
-    `<b>🤖 GPT · Структурований план дій</b><br><br>На основі аналізу всіх вкладок, пропоную <b>Sprint Plan на 2 тижні:</b><br><br><b>Тиждень 1 — Зупинити кровотечу:</b><br>☐ Аудит Amebli кампаній, зупинити ROAS &lt;2<br>☐ Виправити інтеграцію даних ST Даринок / ДрімТаун<br>☐ Відповісти на всі негативні відгуки Amebli (Vidhuk)<br><br><b>Тиждень 2 — Оптимізація:</b><br>☐ Перерозподілити бюджет Amebli → Sofino SEO<br>☐ Запустити апсейл-ланцюжок для економ-покупців<br>☐ Тестувати DR-TV з мікро-бюджетом 3K₴/день<br><br><b>KPI цілі до 30 червня:</b> ДРР Amebli ≤25%, Vidhuk ≥4.2★, конверсія лід→зам ≥89%`,
-    `<b>🤖 GPT · Unit Economics Framework</b><br><br>Порахував юніт-економіку по каналах:<br><br><b>Matrasroll:</b> CAC = 221₴ · LTV (1y) = 4 200₴ · <span style="color:var(--g)">LTV/CAC = 19x ✓</span><br><b>Amebli:</b> CAC = 676₴ · LTV (1y) = 8 100₴ · <span style="color:var(--o)">LTV/CAC = 12x ⚠️ (падає)</span><br><b>Sofino:</b> CAC = ~0₴ · LTV (1y) = 6 900₴ · <span style="color:var(--g)">LTV/CAC = ∞ ✓</span><br><b>Шоу-руми:</b> CAC = ~1 200₴ (оренда/відвідувач) · LTV = 52 000₴ · <span style="color:var(--g)">LTV/CAC = 43x ✓</span><br><br>⚠️ Amebli CAC зріс 3x за 3 місяці. При ДРР 51% реальний CAC наближається до критичної межі.`,
-    `<b>🤖 GPT · Competitive Positioning</b><br><br>На основі даних Корзини та Репутації:<br><br><b>Наша позиція:</b> Середній сегмент, найкраща якість/ціна. Рейтинг 4.4★ vs конкуренти 4.0-4.3★.<br><br><b>Загрози:</b><br>• Ascona агресивно знижує ціни в економ (−8% за місяць)<br>• Sleep&Fly нарощує SEO-трафік (+15% MoM)<br><br><b>Можливості:</b><br>• Ніша "преміум з гарантією" — жодний конкурент не дає 10-річну гарантію<br>• Private label для маркетплейсів — окрема лінійка з іншим позиціонуванням`
-  ],
-  claude: [
-    `<b>😈 Claude · Devil's Advocate</b><br><br>Стоп. Перед тим як ви "масштабуєте Sofino" — давайте розберемось чому там <b>нуль рекламних витрат</b>.<br><br>Можливо це не "органічний ріст". Можливо це просто <b>переливання трафіку</b> з Matrasroll через внутрішні посилання. Якщо так — ви рахуєте одні й ті самі гроші двічі.<br><br>А "масштабувати DR-TV з чеком 47К"? Це <b>6 замовлень</b>. Шість. Статистична похибка. Один великий дорогий повернення — і ваш "найкращий канал" стає збитковим.<br><br>🔴 <b>Вимагаю:</b> Перед будь-яким масштабуванням — підтвердити джерело трафіку Sofino окремим UTM та мінімум 30 замовлень DR-TV для статистичної значущості.`,
-    `<b>😈 Claude · Жорстка критика</b><br><br>Всі раді що "продажі +47%". Але давайте подивимось що РЕАЛЬНО відбувається:<br><br>❌ Середній чек впав на 25% — ви продаєте <b>більше дешевого</b>, а не краще<br>❌ Маржа −2пп — тренд падіння третій місяць поспіль<br>❌ ДРР зріс з 2.3% до 10.1% — реклама росте <b>швидше</b> за виручку<br>❌ Відгрузки відстають від замовлень — клієнти чекають, рейтинг падатиме<br><br>📉 <b>Якщо екстраполювати тренди:</b> через 3 місяці маржа буде 40%, ДРР 18%, EBITDA впаде з 31% до 19%.<br><br>Це не зростання. Це <b>купівля виручки за рахунок прибутку</b>. Класична пастка масштабування.`,
-    `<b>😈 Claude · Контраргумент</b><br><br>"Рейтинг 4.4★ — вище конкурентів!" — кажете ви.<br><br>А тепер факти:<br>• 4.4★ на Rozetka при 1 151 відгуку — це <b>нижче порогу довіри</b> (4.5★ = золотий стандарт)<br>• Amebli 3.9★ на Vidhuk — це <b>червона зона</b>. Клієнти бачать це ПЕРЕД покупкою<br>• Негативні відгуки зростають +12% — сезонне навантаження, але ви <b>не додали людей в підтримку</b><br><br>Через місяць у вас буде більше замовлень, більше проблем з доставкою, більше негативу. А рейтинг падає набагато швидше ніж росте.<br><br>🔴 <b>Питання:</b> Де план дій на падіння рейтингу? Його немає.`
-  ]
-};
-
-function initIrisChat(){
-  irisAddMsg('iris',`<b>Привіт! Я IRIS — ваш AI-аналітик.</b> 🧠<br><br>Я маю доступ до всіх даних дашборду: продажі, маркетинг, корзина, репутація, фінанси. Можу:<br><br>• 📊 Генерувати зведені звіти<br>• 🔍 Аналізувати будь-який KPI в глибину<br>• 💡 Давати рекомендації на основі даних<br>• 📈 Будувати прогнози та сценарії<br><br>Також можете викликати інших агентів: <b>@grok</b> (креатив), <b>@gemini</b> (data), <b>@gpt</b> (бізнес), <b>@claude</b> (критика).<br><br><i>Оберіть швидке запитання нижче або напишіть своє.</i>`, false);
-}
-
-function irisSend(){
-  const input = document.getElementById('iris-input');
-  const text = input.value.trim();
-  if(!text) return;
-  input.value = '';
-  input.style.height = 'auto';
-  irisAddMsg('iris', text, true);
-
-  const lower = text.toLowerCase();
-  const mentioned = [];
-  if(/@grok/i.test(text) || irisActiveAgents.grok) mentioned.push('grok');
-  if(/@gemini/i.test(text) || irisActiveAgents.gemini) mentioned.push('gemini');
-  if(/@gpt/i.test(text) || irisActiveAgents.gpt) mentioned.push('gpt');
-  if(/@claude/i.test(text) || irisActiveAgents.claude) mentioned.push('claude');
-
-  // IRIS always responds
-  irisShowTyping('iris');
-  const irisKeys = Object.keys(IRIS_RESPONSES.iris);
-  let irisReply = null;
-  for(const k of irisKeys){ if(lower.includes(k.substring(0,12).toLowerCase()) || lower.includes(k.split(' ').slice(0,2).join(' ').toLowerCase())) { irisReply = IRIS_RESPONSES.iris[k]; break; } }
-  if(!irisReply){
-    const generic = [
-      `Цікаве питання! На основі даних дашборду бачу кілька аспектів.<br><br>Загальна картина: виручка <b>28.6M₴</b> за 25 днів (+47%), але маржа падає (44% vs 46%). ДРР зріс до 10.1%.<br><br>Рекомендую уточнити — який саме аспект цікавить найбільше? Можу поглибити аналіз продажів, маркетингу, репутації або фінансів.`,
-      `Проаналізувала дані по всіх вкладках.<br><br><b>Ключовий інсайт:</b> Зростання виручки +47% маскує структурні проблеми — падіння чека, зростання ДРР, відставання відгрузок. Це типова картина "нездорового зростання".<br><br>Хочете деталі по конкретному напрямку? Або підключити <b>@gemini</b> для data-аналізу чи <b>@gpt</b> для плану дій?`,
-      `Дякую за запитання! Ось що бачу в даних:<br><br>• Позитив: обсяги зростають, конверсія лід→замовлення 87% (вище цілі)<br>• Ризики: Amebli ДРР 51.5%, середній чек −25%, відгрузки відстають<br>• Можливість: Sofino та DR-TV — канали з високим потенціалом та нульовими витратами<br><br>Можу побудувати детальний звіт по будь-якому з цих напрямків.`
-    ];
-    irisReply = generic[Math.floor(Math.random()*generic.length)];
-  }
-  setTimeout(()=>{ irisHideTyping('iris'); irisAddMsg('iris', irisReply, false); }, 1200+Math.random()*800);
-
-  // Other agents respond with delay
-  mentioned.forEach((agentId, idx) => {
-    const delay = 2500 + idx*1500 + Math.random()*1000;
-    setTimeout(()=>irisShowTyping(agentId), 1800+idx*1200);
-    setTimeout(()=>{
-      irisHideTyping(agentId);
-      const pool = IRIS_RESPONSES[agentId];
-      if(!pool) return;
-      const reply = Array.isArray(pool) ? pool[Math.floor(Math.random()*pool.length)] : pool;
-      irisAddMsg(agentId, reply, false);
-    }, delay);
-  });
-}
-
-function irisQuick(btn){
-  const input = document.getElementById('iris-input');
-  input.value = btn.textContent.replace(/^[^\s]+\s/,'');
-  irisSend();
-}
-
-function initIrisTab(){
-  if(window._irisInit) return;
-  window._irisInit = true;
-  initIrisChat();
-}
-
-// ═══════════ P&L DATA & ENGINE ═══════════
-const PL_PROJECTS = ['Амеблі','Ролл','ШР Дрім','ШР Даринок','ДРОП/ОПТ','Ретровіль','Розетка','Епіцентр','Софіно'];
-const PL_DATA = {
-  salesPlan:   [7400000,8100000,700000,1500000,1500000,700000,2500000,800000,5500000],
-  salesFcast:  [7400000,8100000,700000,1500000,1500000,700000,2500000,800000,5500000],
-  shipFact:    [6660000,7290000,630000,1350000,1350000,630000,2250000,720000,4950000],
-  shipFcast:   [6660000,7290000,630000,1350000,1350000,630000,2250000,720000,4950000],
-  marginPct:   [0.43,0.46,0.39,0.385,0.12,0.38,0.42,0.38,0.39]
-};
-const PL_COSTS_STATIC = {
-  salary:   {label:'Заробітня плата',     vals:[663100,760150,85000,85000,69000,50000,98750,45200,198000]},
-  rent:     {label:'Оренда',              vals:[40000,140748,98230,108230,10000,130000,60748,10000,0]},
-  utilities:{label:'Комунальні видатки',   vals:[10000,10000,10000,40000,0,10000,0,0,0]},
-  logistics:{label:'Логістичні видатки',   vals:[73260,80190,6930,14850,14850,6930,225000,7920,54450]},
-  ads:      {label:'Реклама, маркетинг',   vals:[1301880,1421720,0,100000,0,10000,455000,136000,827500]},
-  taxes:    {label:'Податки',              vals:[200000,200000,0,0,0,0,0,0,310000]},
-  hrCosts:  {label:'Видатки на персонал',  vals:[0,0,0,0,0,0,0,0,0]},
-  travel:   {label:'Витрати на відрядження',vals:[0,0,0,0,0,0,0,0,0]},
-  bank:     {label:'Банківське обслугов.',  vals:[78322,78322,4123,4123,0,0,0,0,0]},
-  inkass:   {label:'Інкасація',            vals:[0,0,0,0,0,0,0,0,0]},
-  telecom:  {label:'Зв\'язок, інтернет',    vals:[92554,92554,1085,1085,0,0,0,0,0]},
-  deprec:   {label:'Амортизація',          vals:[0,0,0,0,0,0,0,0,0]},
-  prodOther:{label:'Інші виробничі витр.',  vals:[1789,1789,22376,22376,0,0,0,0,0]},
-  adminOth: {label:'Інші адмін. витрати',   vals:[70061,70061,4909,4909,0,0,0,0,0]},
-  finCosts: {label:'Фінансові витрати',     vals:[0,0,0,0,0,0,0,0,98000]},
-  otherInc: {label:'Інші доходи/витрати',   vals:[0,0,0,0,0,0,0,0,0]}
-};
-
-function plSum(arr){ return arr.reduce((a,b)=>a+b,0); }
-function plFmt(v){ if(v===0) return '—'; return fmtN(v); }
-function plFmtPct(v){ return (v*100).toFixed(1)+'%'; }
-
-function buildPLTable(){
-  const thead = document.getElementById('pl-thead');
-  const tbody = document.getElementById('pl-tbody');
-  if(!thead||!tbody) return;
-
-  // Header
-  let hh = '<th>ЧЕРВЕНЬ 2026</th><th style="min-width:90px">РАЗОМ</th>';
-  PL_PROJECTS.forEach(p => hh += '<th>'+p+'</th>');
-  thead.innerHTML = hh;
-
-  const rows = [];
-  const addSection = (label) => rows.push({type:'section',label});
-  const addRow = (label, vals, cls, isCost) => {
-    const total = plSum(vals);
-    rows.push({type:'data',label,total,vals,cls:cls||'',isCost});
-  };
-  const addTotal = (label, vals) => {
-    const total = plSum(vals);
-    rows.push({type:'total',label,total,vals});
-  };
-  const addSubtotal = (label, vals) => {
-    const total = plSum(vals);
-    rows.push({type:'subtotal',label,total,vals});
-  };
-
-  // Revenue section
-  addSection('ДОХІД');
-  addRow('Продажі план', PL_DATA.salesPlan, '');
-  addRow('Продажі прогноз', PL_DATA.salesFcast, '');
-  addRow('Відгрузки факт', PL_DATA.shipFact, 'pl-highlight');
-  addRow('Відгрузки прогноз', PL_DATA.shipFcast, '');
-
-  // Margin %
-  rows.push({type:'pct', label:'Маржинальність %', vals:PL_DATA.marginPct});
-
-  // Margin UAH
-  const marginUah = PL_DATA.shipFact.map((v,i) => Math.round(v * PL_DATA.marginPct[i]));
-  addRow('Маржинальність, грн', marginUah, 'pl-highlight');
-
-  // Costs
-  addSection('ВИТРАТИ');
-  const costKeys = Object.keys(PL_COSTS_STATIC);
-  costKeys.forEach(key => {
-    const c = PL_COSTS_STATIC[key];
-    const v = c.vals.map(x => getEditVal(key, x, PL_PROJECTS.indexOf) || x);
-    addRow(c.label, readCostVals(key), '', true);
-  });
-
-  // Total costs
-  const totalCosts = PL_PROJECTS.map((_,i) => {
-    let s=0; costKeys.forEach(k => s += readCostVals(k)[i]); return s;
-  });
-  addTotal('ВИТРАТИ', totalCosts);
-
-  // Operating profit
-  const opProfit = marginUah.map((m,i) => m - totalCosts[i]);
-  addTotal('ОПЕРАЦІЙНИЙ ПРИБУТОК', opProfit);
-
-  // Render
-  let html = '';
-  rows.forEach(r => {
-    if(r.type==='section'){
-      html += '<tr class="pl-section"><td colspan="'+(PL_PROJECTS.length+2)+'">'+r.label+'</td></tr>';
-    } else if(r.type==='pct'){
-      html += '<tr><td>'+r.label+'</td><td class="pl-total-col">'+plFmtPct(PL_DATA.marginPct.reduce((a,b)=>a+b,0)/PL_DATA.marginPct.length)+'</td>';
-      r.vals.forEach(v => html += '<td class="pl-pct">'+plFmtPct(v)+'</td>');
-      html += '</tr>';
-    } else {
-      const trCls = r.type==='total'?'pl-total':(r.type==='subtotal'?'pl-subtotal':(r.cls||''));
-      html += '<tr class="'+trCls+'">';
-      html += '<td>'+r.label+'</td>';
-      const tCls = r.type==='total'?'pl-total-col':'pl-total-col';
-      const totalVal = r.total;
-      let totalColor = '';
-      if(r.label==='ОПЕРАЦІЙНИЙ ПРИБУТОК') totalColor = totalVal>=0?' pl-pos':' pl-neg';
-      else if(r.type==='total' && r.label==='ВИТРАТИ') totalColor = ' pl-neg';
-      html += '<td class="'+tCls+totalColor+'">'+plFmt(totalVal)+'</td>';
-      r.vals.forEach(v => {
-        let cls = '';
-        if(r.label==='ОПЕРАЦІЙНИЙ ПРИБУТОК') cls = v>=0?'pl-pos':'pl-neg';
-        html += '<td class="'+cls+'">'+plFmt(v)+'</td>';
-      });
-      html += '</tr>';
-    }
-  });
-  tbody.innerHTML = html;
-
-  // Update KPIs
-  const totalSalesPlan = plSum(PL_DATA.salesPlan);
-  const totalShipFact = plSum(PL_DATA.shipFact);
-  const totalMarginUah = plSum(marginUah);
-  const totalOpProfit = plSum(opProfit);
-  const avgMargin = totalMarginUah/totalShipFact;
-  const shipPct = (totalShipFact/totalSalesPlan*100).toFixed(0);
-  const opMargin = (totalOpProfit/totalShipFact*100).toFixed(1);
-
-  const set = (id,v) => { const e=document.getElementById(id); if(e) e.innerHTML=v; };
-  set('fk-sales-plan', fmtK(totalSalesPlan)+'<span class="ku">₴</span>');
-  set('fk-ship-fact', fmtK(totalShipFact)+'<span class="ku">₴</span>');
-  set('fk-ship-pct', shipPct+'% від плану');
-  set('fk-margin', (avgMargin*100).toFixed(0)+'%');
-  set('fk-op-profit', fmtK(totalOpProfit)+'<span class="ku">₴</span>');
-  set('fk-op-margin', opMargin+'% рентабельність');
-
-  // Plan vs Fact bars
-  buildPlanFactBars(totalSalesPlan, totalShipFact, totalOpProfit, totalCosts);
-
-  // Scenarios
-  buildScenarios(totalShipFact, avgMargin, plSum(totalCosts));
-}
-
-function readCostVals(key){
-  const base = PL_COSTS_STATIC[key].vals;
-  return base.map((v,i) => {
-    const el = document.getElementById('pli-'+key+'-'+i);
-    return el ? (+el.value||0) : v;
-  });
-}
-
-function getEditVal(){ return 0; }
-
-function buildEditTable(){
-  const tbl = document.getElementById('pl-edit-table');
-  if(!tbl) return;
-  let h = '<thead><tr><th style="text-align:left;min-width:180px">Стаття витрат</th>';
-  PL_PROJECTS.forEach(p => h += '<th>'+p+'</th>');
-  h += '</tr></thead><tbody>';
-
-  const editableKeys = ['salary','rent','utilities','logistics','ads','taxes','bank','telecom','prodOther','adminOth','finCosts'];
-  editableKeys.forEach(key => {
-    const c = PL_COSTS_STATIC[key];
-    h += '<tr><td>'+c.label+'</td>';
-    c.vals.forEach((v,i) => {
-      h += '<td><input id="pli-'+key+'-'+i+'" type="number" value="'+v+'" oninput="recalcPL()"></td>';
-    });
-    h += '</tr>';
-  });
-  h += '</tbody>';
-  tbl.innerHTML = h;
-}
-
-function buildPlanFactBars(totalPlan, totalFact, opProfit, totalCostsArr){
-  const box = document.getElementById('pl-planfact-bars');
-  if(!box) return;
-  let html = '';
-  PL_PROJECTS.forEach((p,i) => {
-    const plan = PL_DATA.salesPlan[i];
-    const fact = PL_DATA.shipFact[i];
-    const pct = plan>0 ? (fact/plan*100) : 0;
-    const barW = Math.min(pct, 100);
-    const color = pct>=90?'var(--g)':pct>=80?'var(--o)':'var(--r)';
-    const pctColor = pct>=90?'var(--g)':pct>=80?'var(--o)':'var(--r)';
-    html += '<div class="pl-pf-row">';
-    html += '<div class="pl-pf-label">'+p+'</div>';
-    html += '<div class="pl-pf-track"><div class="pl-pf-bar" style="width:'+barW+'%;background:'+color+'"></div><div class="pl-pf-val">'+fmtK(fact)+'₴ / '+fmtK(plan)+'₴</div></div>';
-    html += '<div class="pl-pf-pct" style="color:'+pctColor+'">'+pct.toFixed(0)+'%</div>';
-    html += '</div>';
-  });
-  box.innerHTML = html;
-}
-
-function buildScenarios(shipFact, avgMargin, totalCosts){
-  const scenarios = [
-    {id:'sc-pessimistic', mult:0.85},
-    {id:'sc-base', mult:1},
-    {id:'sc-optimistic', mult:1.3}
-  ];
-  scenarios.forEach(sc => {
-    const rev = Math.round(shipFact * sc.mult);
-    const gross = Math.round(rev * avgMargin);
-    const op = gross - totalCosts;
-    const margin = (op/rev*100).toFixed(1);
-    const el = document.getElementById(sc.id);
-    if(!el) return;
-    el.innerHTML = `
-      <div class="mm-r"><span class="mm-l">Відгрузки:</span><span class="mm-v">${fmtK(rev)}₴</span></div>
-      <div class="mm-r"><span class="mm-l">Вал. маржа ${(avgMargin*100).toFixed(0)}%:</span><span class="mm-v">${fmtK(gross)}₴</span></div>
-      <div class="mm-r"><span class="mm-l">Опер. прибуток:</span><span class="mm-v" style="color:${op>=0?'var(--g)':'var(--r)'}">${fmtK(op)}₴</span></div>
-      <div class="mm-r"><span class="mm-l">Рентабельність:</span><span class="mm-v">${margin}%</span></div>`;
-  });
-}
-
-let plCostsChart = null;
 function initFinCharts() {
-  buildEditTable();
   recalcPL();
-
-  // Monthly dynamics chart
   new Chart(document.getElementById('ch-pl-monthly'),{
     type:'bar',
     data:{
-      labels:['Квітень 2026','Травень 2026','Червень 2026'],
+      labels:['Квітень 2026','Травень 2026','Червень 2026\n(прогноз)'],
       datasets:[
-        {label:'Продажі план',data:[18500000,21000000,23200000],backgroundColor:'rgba(108,92,231,0.3)',borderColor:'#a29bfe',borderWidth:1,borderRadius:4,borderDash:[5,3],type:'line',tension:0.3,pointRadius:4,fill:false},
-        {label:'Відгрузки факт',data:[15068035,16958769,20880000],backgroundColor:['rgba(108,92,231,0.6)','rgba(108,92,231,0.6)','rgba(0,214,143,0.5)'],borderColor:['#a29bfe','#a29bfe','#00d68f'],borderWidth:1,borderRadius:4},
-        {label:'Валова маржа',type:'line',data:[6600000,7800000,8602650],borderColor:'#ffd34d',backgroundColor:'transparent',tension:0.4,pointRadius:5,yAxisID:'y'}
+        {label:'Виручка (1С)',data:[17377697,22639584,24000000],backgroundColor:['rgba(108,92,231,0.6)','rgba(108,92,231,0.6)','rgba(0,214,143,0.5)'],borderColor:['#a29bfe','#a29bfe','#00d68f'],borderWidth:1,borderRadius:4},
+        {label:'Відгрузки',data:[15068035,16958769,10000000],backgroundColor:'rgba(255,169,77,0.4)',borderColor:'#ffa94d',borderWidth:1,borderRadius:4},
+        {label:'Валова маржа 46%',type:'line',data:[8000000,10400000,11040000],borderColor:'#00d68f',backgroundColor:'transparent',tension:0.4,pointRadius:5,yAxisID:'y'}
       ]
     },
     options:{
@@ -2802,45 +1581,54 @@ function initFinCharts() {
       }
     }
   });
-
-  // Costs structure pie
-  const costLabels = [];
-  const costVals = [];
-  const costColors = ['#6c5ce7','#a29bfe','#ffa94d','#ff6b6b','#00d68f','#1da1f2','#fd79a8','#ffd34d','#74b9ff','#dfe6e9','#b2bec3'];
-  let ci = 0;
-  Object.keys(PL_COSTS_STATIC).forEach(key => {
-    const total = plSum(readCostVals(key));
-    if(total > 0){
-      costLabels.push(PL_COSTS_STATIC[key].label);
-      costVals.push(total);
-      ci++;
-    }
-  });
-  plCostsChart = new Chart(document.getElementById('ch-pl-costs'),{
-    type:'doughnut',
-    data:{labels:costLabels, datasets:[{data:costVals, backgroundColor:costColors.slice(0,costVals.length), borderWidth:0}]},
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      cutout:'55%',
-      plugins:{legend:{position:'right',labels:{color:'#c1c7e0',font:{size:9},boxWidth:10,padding:6}},tooltip:TOOLTIP}
-    }
-  });
 }
 
-function recalcPL(){
-  buildPLTable();
-  // update costs chart if exists
-  if(plCostsChart){
-    const costVals = [];
-    const costLabels = [];
-    Object.keys(PL_COSTS_STATIC).forEach(key => {
-      const total = plSum(readCostVals(key));
-      if(total > 0){ costLabels.push(PL_COSTS_STATIC[key].label); costVals.push(total); }
-    });
-    plCostsChart.data.labels = costLabels;
-    plCostsChart.data.datasets[0].data = costVals;
-    plCostsChart.update();
-  }
+// ═══════════ P&L RECALC ═══════════
+function recalcPL() {
+  const rev = +document.getElementById('fi-revenue').value||24000000;
+  const cogsPct = (+document.getElementById('fi-cogs-pct').value||54)/100;
+  const cogs = rev*cogsPct;
+  const gross = rev-cogs;
+  const sal = +document.getElementById('fi-salary').value||0;
+  const rent = +document.getElementById('fi-rent').value||0;
+  const ads = +document.getElementById('fi-ads').value||0;
+  const log = +document.getElementById('fi-logistics').value||0;
+  const ops = +document.getElementById('fi-ops').value||0;
+  const oth = +document.getElementById('fi-other').value||0;
+  const totalCosts = sal+rent+ads+log+ops+oth;
+  const ebitda = gross-totalCosts;
+  const margin = (ebitda/rev*100).toFixed(1);
+  const drr = (ads/rev*100).toFixed(1);
+
+  const c = v => v>=0 ? 'var(--g)' : 'var(--r)';
+  const s = (id,val,color,prefix='') => {
+    const el=document.getElementById(id);
+    if(el){el.textContent=prefix+fmtN(Math.abs(val))+' ₴';if(color)el.style.color=color;}
+  };
+  s('pl-rev',rev,'var(--g)');
+  s('pl-cogs',cogs,'var(--r)','−');
+  s('pl-gross',gross,c(gross));
+  s('pl-salary',sal,'var(--r)','−');
+  s('pl-rent',rent,'var(--r)','−');
+  s('pl-ads',ads,'var(--r)','−');
+  s('pl-logistics',log,'var(--r)','−');
+  s('pl-ops',ops,'var(--r)','−');
+  s('pl-other',oth,'var(--r)','−');
+  s('pl-total-costs',totalCosts,'var(--r)','−');
+  const eEl=document.getElementById('pl-ebitda');
+  if(eEl){eEl.textContent=fmtN(Math.abs(ebitda))+' ₴';eEl.style.color=c(ebitda);}
+  const mEl=document.getElementById('pl-margin');if(mEl)mEl.textContent=margin+'%';
+  const dEl=document.getElementById('pl-drr');if(dEl){dEl.textContent=drr+'%';dEl.style.color=+drr<=7?'var(--g)':+drr<=15?'var(--o)':'var(--r)';}
+
+  // Update KPI cards
+  const kRev=document.getElementById('fin-kpi-rev');if(kRev)kRev.innerHTML='~'+fmtK(rev)+'<span class="ku">₴</span>';
+  const kGross=document.getElementById('fin-kpi-gross');if(kGross)kGross.innerHTML='~'+fmtK(gross)+'<span class="ku">₴</span>';
+  const kEbitda=document.getElementById('fin-kpi-ebitda');if(kEbitda)kEbitda.innerHTML='~'+fmtK(ebitda)+'<span class="ku">₴</span>';
+  const kMl=document.getElementById('fin-kpi-margin-lbl');if(kMl)kMl.textContent='~'+margin+'%';
+
+  // Scenario base
+  const sb=document.getElementById('scenario-base-ebitda');if(sb)sb.textContent=(ebitda/1e6).toFixed(2)+'M₴';
+  const sm=document.getElementById('scenario-base-margin');if(sm)sm.textContent=margin+'%';
 }
 
 // ═══════════ FEEDBACK BUTTONS + MODAL ═══════════
@@ -2999,154 +1787,6 @@ function applyDate(){
   closeDate();
 }
 injectDateButtons();
-
-
-</script>
-<script src="iris_range.js"></script>
-<script>
-/* IRIS range mode — фетчить daily*.json, рахує двигуном, малює панель #rangePanel.
-   applyGlobalPeriod (з render-кроку 18) делегує сюди для custom/last7/last30. */
-(function(){
-  var GMETA={roll:{n:"Ролл",c:"#00d68f"},amebli:{n:"Амебли",c:"#a29bfe"},seti:{n:"Сети",c:"#339af0"},roznica:{n:"Розниця",c:"#ffa94d"}};
-  var PIPE_UA=[["in_progress","⚙️ В обробці","#4dabf7"],["production","🏭 У виробництві","#a29bfe"],["shipping","📦 Відправлення","#9775fa"],["sale","🎁 Отримано","#00d68f"],["returned","↩️ Повернення","#ff8787"],["refused","🚫 Відмова (не відпр.)","#ff6b6b"],["lead","💸 Втрачений лід","#ffa94d"],["claim","⚠️ Рекламація","#ffd43b"]];
-  var DAILY={},CUR=null,MIN=null,MAX=null,LOADED=false,LOADING=null;
-  function $(id){return document.getElementById(id);}
-  function fmtN(n){return Math.round(n||0).toLocaleString("uk-UA").replace(/,/g," ");}
-  function fmtK(n){return n>=1e6?(n/1e6).toFixed(2)+"M":Math.round(n/1000)+"K";}
-  function pad(d){return ("0"+d).slice(-2);}
-  function isoOf(dt){return dt.getFullYear()+"-"+pad(dt.getMonth()+1)+"-"+pad(dt.getDate());}
-  function dlt(c,p,inv){
-    if(p==null||!isFinite(p)||p===0) return '<span class="dlt neu">—</span>';
-    var x=(c-p)/Math.abs(p)*100, good=inv?x<=0:x>=0, cls=x===0?"neu":good?"up":"down";
-    return '<span class="dlt '+cls+'">'+(x>=0?"+":"")+x.toFixed(0)+'%</span>';
-  }
-  function monthsToLoad(){
-    var out=[["daily.json",CUR]];
-    if(window.MONTH_PAGES) for(var k in window.MONTH_PAGES){ if(k==="current") continue; out.push(["daily-"+k+".json",k]); }
-    return out;
-  }
-  function loadDaily(){
-    if(LOADED) return Promise.resolve();
-    if(LOADING) return LOADING;
-    LOADING=(async function(){
-      try{ var d=await (await fetch("data.json",{cache:"no-store"})).json(); CUR=d&&d.month?d.month:null; }catch(e){}
-      var jobs=monthsToLoad();
-      for(var i=0;i<jobs.length;i++){
-        try{ var j=await (await fetch(jobs[i][0],{cache:"no-store"})).json(); if(j&&j.day&&jobs[i][1]) DAILY[jobs[i][1]]=j; }catch(e){}
-      }
-      var isos=[]; for(var m in DAILY) for(var dk in DAILY[m].day) isos.push(m+"-"+pad(+dk));
-      isos.sort(); MIN=isos[0]; MAX=isos[isos.length-1];
-      ["gpFrom","gpTo","gcFrom","gcTo"].forEach(function(id){var e=$(id);if(e&&MIN){e.min=MIN;e.max=MAX;}});
-      if(MIN){
-        var dm=(CUR&&DAILY[CUR])?CUR:Object.keys(DAILY).sort().pop();
-        var dd=Object.keys(DAILY[dm].day).map(Number).sort(function(a,b){return a-b;});
-        if($("gpFrom")&&!$("gpFrom").value)$("gpFrom").value=dm+"-"+pad(dd[0]);
-        if($("gpTo")&&!$("gpTo").value)$("gpTo").value=dm+"-"+pad(dd[dd.length-1]);
-      }
-      LOADED=true;
-    })();
-    return LOADING;
-  }
-  function curRange(v){
-    if(v==="custom") return [($("gpFrom")||{}).value, ($("gpTo")||{}).value];
-    if(!MAX) return [null,null];
-    var d=new Date(MAX+"T00:00:00"), n=(v==="last7"?6:29), f=new Date(d); f.setDate(f.getDate()-n);
-    var fi=isoOf(f); if(MIN&&fi<MIN)fi=MIN; return [fi, MAX];
-  }
-  function cmpRange(){
-    var c=$("globalCompare"); if(c&&c.value==="custom"){var f=($("gcFrom")||{}).value,t=($("gcTo")||{}).value; if(f&&t&&f<=t) return [f,t];}
-    return null;
-  }
-  // ── режим діапазону → вкладка «Огляд», блок #ov-range (графік двох кривих) ──
-  var RANGE_ON=false, ovChart=null, ca=[], cb=[];
-  function money(n){ return fmtN(n)+'<span class="ku">₴</span>'; }
-
-  function ovrKPIs(A,B){
-    var row=$("ovr-kpis"); if(!row) return;
-    function dd(c,p,inv){ return B?(' '+dlt(c,p,inv)):''; }
-    function card(cls,lab,val,sub){ return '<div class="kpi '+cls+'"><div class="kl">'+lab+'</div><div class="kv">'+val+'</div><div class="ks">'+(sub||'')+'</div></div>'; }
-    var mrg=(A.margin_overall==null)?'—':A.margin_overall;
-    row.innerHTML=
-      card('c1','Обсяг продажів',money(A.obsyag),(B?'vs П2'+dd(A.obsyag,B.obsyag):'факт за період'))+
-      card('c2','Замовлень',fmtN(A.orders),(B?'vs П2'+dd(A.orders,B.orders):'за період'))+
-      card('c3','Середній чек',money(A.avg_check),(B?'vs П2'+dd(A.avg_check,B.avg_check):''))+
-      card('c4','Маржинальність',mrg+'<span class="ku">%</span>','покриття '+Math.round((A.coverage_overall||0)*100)+'%')+
-      card('c5','Відгрузки 1С',money(A.shipments.total),(B?'vs П2'+dd(A.shipments.total,B.shipments.total):'факт 1С'))+
-      card('c6','Конверсія',A.conversion.value+'<span class="ku">%</span>','відмови '+A.refuse.of_orders+'%');
-  }
-  function ovrChart(A,B){
-    ca=Object.keys(A.daily).sort(); cb=B?Object.keys(B.daily).sort():[];
-    var n=Math.max(ca.length,cb.length), labels=[]; for(var i=0;i<n;i++) labels.push('Д'+(i+1));
-    var ds=[{label:'Період 1',data:ca.map(function(d){return A.daily[d];}),borderColor:'#a29bfe',backgroundColor:'rgba(162,155,254,0.10)',borderWidth:2.5,tension:0.3,pointRadius:2,fill:true}];
-    if(B) ds.push({label:'Період 2',data:cb.map(function(d){return B.daily[d];}),borderColor:'#ffa94d',backgroundColor:'transparent',borderWidth:2,borderDash:[5,4],tension:0.3,pointRadius:2});
-    var cv=$("ch-ov-range"); if(!cv||!window.Chart) return;
-    var cfg={labels:labels,datasets:ds};
-    if(ovChart){ ovChart.data=cfg; ovChart.update(); return; }
-    ovChart=new Chart(cv,{type:'line',data:cfg,options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:'#c1c7e0',font:{size:11},usePointStyle:true,boxWidth:8}},
-        tooltip:{callbacks:{label:function(x){var arr=x.datasetIndex===0?ca:cb,dt=arr[x.dataIndex]||'';return x.dataset.label+' ('+dt+'): '+fmtN(x.parsed.y)+'₴';}}}},
-      scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#7b84a3',font:{size:9}},title:{display:true,text:'День від початку періоду',color:'#5a6280',font:{size:9}}},
-        y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#7b84a3',callback:function(v){return (v>=1e6?(v/1e6).toFixed(1)+'M':Math.round(v/1000)+'K')+'₴';}}}}}});
-  }
-  function ovrCmp(A,B){
-    var tb=$("ovr-cmp"); if(!tb) return;
-    function r(lab,a,b,fmt,inv){ var fa=fmt?fmt(a):a, fb=B?(fmt?fmt(b):b):'—', d=B?dlt(a,b,inv):''; return '<tr><td>'+lab+'</td><td class="r">'+fa+'</td><td class="r">'+fb+'</td><td class="r">'+d+'</td></tr>'; }
-    var m=function(x){return fmtN(x)+' ₴';};
-    tb.innerHTML=
-      r('Обсяг продажів',A.obsyag,B?B.obsyag:0,m)+
-      r('Замовлень',A.orders,B?B.orders:0,fmtN)+
-      r('Середній чек',A.avg_check,B?B.avg_check:0,m)+
-      r('Конверсія, %',A.conversion.value,B?B.conversion.value:0,null)+
-      r('Відмови 1С, %',A.refuse.of_orders,B?B.refuse.of_orders:0,null,true)+
-      r('Відгрузки 1С',A.shipments.total,B?B.shipments.total:0,m);
-  }
-  function ovrFunnel(A){
-    var fc=$("ovr-funnel"); if(!fc) return;
-    var PIPE=[["leads_total","📥 Всього лідів","#339af0"],["in_progress","⚙️ В обробці","#4dabf7"],["production","🏭 У виробництві","#a29bfe"],["shipping","📦 Відправлення","#9775fa"],["sale","🎁 Отримано","#00d68f"],["returned","↩️ Повернення","#ff8787"],["refused","🚫 Відмова","#ff6b6b"],["lead","💸 Втрачений лід","#ffa94d"]];
-    var lt=A.pipeline.leads_total||1;
-    var rows=PIPE.map(function(p){var v=A.pipeline[p[0]]||0,w=Math.max(2,Math.round(v/lt*100)),pct=(v/lt*100).toFixed(0);
-      return '<div class="funnel-row"><div class="funnel-label">'+p[1]+'</div><div class="funnel-bar-wrap"><div class="funnel-bar-fill" style="width:'+w+'%;background:'+p[2]+';height:100%;border-radius:3px"></div></div><div class="funnel-num" style="color:'+p[2]+'">'+fmtN(v)+'</div><div class="funnel-pct">'+pct+'%</div></div>';
-    }).join("");
-    rows+='<div style="margin-top:10px;padding:8px;background:var(--s2);border-radius:7px;font-size:10px;color:var(--td)">Конв.: <b style="color:#00d68f">'+A.conversion.value+'%</b> · Відмови 1С: <b style="color:#ff6b6b">'+A.refuse.of_orders+'%</b> · Спам: <b>'+fmtN(A.section3.spam)+'</b> · Недодзвон: <b>'+fmtN(A.section3.nedodzvon)+'</b> · Втрачені ліди: <b>'+fmtN(A.section3.lost)+'</b></div>';
-    fc.innerHTML=rows;
-  }
-  function ovrMgrs(A){
-    var tb=$("ovr-mgrs"); if(!tb) return;
-    tb.innerHTML=A.managers.map(function(m,i){
-      return '<tr><td>'+(i+1)+'</td><td>'+m.name+'</td><td class="r">'+fmtN(m.revenue)+'</td><td class="r">'+m.orders+'</td><td class="r">'+m.conversion+'%</td><td class="r">'+fmtN(m.avg_check)+'</td><td class="r">'+m.refuse_pct.toFixed(1)+'%</td><td class="r">'+m.returns+'</td></tr>';
-    }).join("");
-  }
-  function ovrProds(A){
-    var tb=$("ovr-prods"); if(!tb) return;
-    tb.innerHTML=A.products.slice(0,50).map(function(p,i){
-      var price=p.qty?Math.round(p.revenue/p.qty):0;
-      return '<tr><td>'+(i+1)+'</td><td>'+p.name+'</td><td class="r">'+p.qty+'</td><td class="r">'+p.count+'</td><td class="r">'+fmtN(price)+'</td><td class="r">'+fmtN(p.revenue)+'</td></tr>';
-    }).join("");
-  }
-  function renderOverviewRange(A,B,f,t,cr){
-    ovrKPIs(A,B); ovrChart(A,B); ovrCmp(A,B); ovrFunnel(A); ovrMgrs(A); ovrProds(A);
-    var cw=$("ovr-cmp-card"); if(cw) cw.style.display=B?'':'none';
-    if($("ovr-bt")) $("ovr-bt").textContent=B?('П1 '+f+'→'+t+'  ·  П2 '+cr[0]+'→'+cr[1]):(f+'→'+t);
-  }
-
-  window.IRISApplyRange=function(v){
-    var ob=document.querySelector('[onclick*="swMain(\'overview\'"]'); if(ob)ob.click();   // вкладка «Огляд»
-    loadDaily().then(function(){
-      var r=curRange(v),f=r[0],t=r[1];
-      if(!f||!t||f>t){ if($("pbHint"))$("pbHint").textContent="обери коректний період (від ≤ до)"; return; }
-      if(!window.IRIS){ if($("pbHint"))$("pbHint").textContent="двигун не завантажено (iris_range.js)"; return; }
-      var A=window.IRIS.range(DAILY,f,t), cr=cmpRange(), B=cr?window.IRIS.range(DAILY,cr[0],cr[1]):null;
-      var ov=$("mp-overview"); if(ov)ov.classList.add("ovr-on");     // показати #ov-range, сховати решту Огляду
-      try{ renderOverviewRange(A,B,f,t,cr); RANGE_ON=true; }catch(e){ if($("pbHint"))$("pbHint").textContent="Помилка рендера: "+e.message; }
-      if($("pbHint"))$("pbHint").textContent="Діапазон "+f+" → "+t+(B?(" vs "+cr[0]+"→"+cr[1]):" · без порівняння")+" · вкладка Огляд";
-    });
-  };
-  window.IRISExitRange=function(){
-    if(!RANGE_ON) return;
-    var ov=$("mp-overview"); if(ov)ov.classList.remove("ovr-on");
-    RANGE_ON=false;
-  };
-})();
 </script>
 </body>
 </html>
