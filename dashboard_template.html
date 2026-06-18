@@ -591,7 +591,7 @@ tr.row-comp td{opacity:.8}
   <div class="sec">
     <div class="sec-head"><div class="sec-num">2</div><div class="sec-title">📣 Маркетинг — ДРР, трафік, конверсії</div><div class="sec-sub">тренд + приріст<br>vs травень</div></div>
     <div class="cd">
-      <div class="kpi-row" style="margin-bottom:12px">
+      <div class="kpi-row" id="sec2-kpi-row" style="margin-bottom:12px">
         <div class="kpi c7"><div class="kl">ДРР Amebli</div><div class="kv" style="color:var(--r)">51.5<span class="ku">%</span></div><div class="ks">vs 12% · <span class="dlt down">+39пп</span></div></div>
         <div class="kpi c3"><div class="kl">ДРР Matrasroll</div><div class="kv" style="color:var(--o)">24.2<span class="ku">%</span></div><div class="ks">vs 5% · <span class="dlt down">+19пп</span></div></div>
         <div class="kpi c2"><div class="kl">ДРР загальний</div><div class="kv" style="color:var(--lime)">10.1<span class="ku">%</span></div><div class="ks">vs 2.3% · <span class="dlt down">+7.8пп</span></div></div>
@@ -1631,11 +1631,28 @@ function renderSec1(key, btn){
       }}
   });
 
-  // ─── SECTION 2: marketing — ДРР по днях ───
+  // ─── SECTION 2: marketing — ДРР тренд по місяцях (MKT.trend) ───
   const dayL=Array.from({length:25},(_,i)=>String(i+1));
+  const _m2 = (typeof MKT !== 'undefined' && MKT) ? MKT : null;
+  if (_m2 && _m2.brands && _m2.totals) {
+    const b=_m2.brands, t=_m2.totals, _e2=document.getElementById('sec2-kpi-row'), _ff=n=>Math.round(n||0).toLocaleString('uk');
+    if(_e2) _e2.innerHTML = `
+        <div class="kpi c7"><div class="kl">ДРР Amebli</div><div class="kv" style="color:var(--r)">${b.amebli.drr}<span class="ku">%</span></div><div class="ks">${_ff(b.amebli.spend)}₴ реклами</div></div>
+        <div class="kpi c3"><div class="kl">ДРР Matrasroll</div><div class="kv" style="color:var(--o)">${b.matrasroll.drr}<span class="ku">%</span></div><div class="ks">${_ff(b.matrasroll.spend)}₴ реклами</div></div>
+        <div class="kpi c2"><div class="kl">ДРР Відгрузки</div><div class="kv" style="color:var(--lime)">${t.drr_ship}<span class="ku">%</span></div><div class="ks">ціль ≤15%</div></div>
+        <div class="kpi c4"><div class="kl">ДРР Замовлення</div><div class="kv" style="color:#00d68f">${t.drr_orders}<span class="ku">%</span></div><div class="ks">ціль ≤7%</div></div>
+        <div class="kpi c5"><div class="kl">Трафік (MTD)</div><div class="kv">${_ff(b.amebli.sessions+b.matrasroll.sessions)}</div><div class="ks">сесій GA4</div></div>
+        <div class="kpi c8"><div class="kl">Рекл. бюджет</div><div class="kv">${_ff(t.budget_per_day)}<span class="ku">₴/д</span></div><div class="ks">${_ff(t.spend)}₴ MTD</div></div>`;
+  }
+  const _t2 = (_m2 && _m2.trend && _m2.trend.labels && _m2.trend.labels.length) ? _m2.trend : null;
   new Chart(document.getElementById('ch-sec2'),{
     type:'line',
-    data:{labels:dayL,datasets:[
+    data: _t2 ? {labels:_t2.labels,datasets:[
+      {label:'ДРР Amebli %',data:_t2.amebli,borderColor:'#ff6b6b',backgroundColor:'rgba(255,107,107,0.07)',tension:0.35,pointRadius:4,borderWidth:2,fill:true},
+      {label:'ДРР Matrasroll %',data:_t2.matrasroll,borderColor:'#ffa94d',backgroundColor:'transparent',tension:0.35,pointRadius:4,borderWidth:2},
+      {label:'ДРР Відгрузки %',data:_t2.ship,borderColor:'#94d82d',backgroundColor:'transparent',tension:0.35,pointRadius:4,borderWidth:2},
+      {label:'Ціль ≤15%',data:_t2.labels.map(()=>15),borderColor:'#66d9e8',borderDash:[3,3],pointRadius:0,borderWidth:1.5}
+    ]} : {labels:dayL,datasets:[
       {label:'ДРР Amebli %',data:[36.4,40.7,44.8,48.6,43.7,46.7,49.3,43.1,45.0,46.7,48.3,41.6,43.6,45.8,40.1,43.2,46.7,50.6,46.4,50.7,54.9,50.6,54.4,57.8,60.8],borderColor:'#ff6b6b',backgroundColor:'rgba(255,107,107,0.07)',tension:0.35,pointRadius:0,borderWidth:2,fill:true},
       {label:'ДРР Matrasroll %',data:[17.0,20.2,23.2,26.1,21.6,23.9,25.8,20.4,21.8,23.0,24.2,18.5,19.9,21.6,16.5,18.8,21.4,24.3,20.4,23.6,26.7,22.8,25.6,28.1,30.3],borderColor:'#ffa94d',backgroundColor:'transparent',tension:0.35,pointRadius:0,borderWidth:2},
       {label:'ДРР загальний %',data:[7.3,8.6,9.8,10.9,9.1,10.0,10.8,8.6,9.1,9.6,10.1,7.8,8.3,9.0,6.9,7.8,8.9,10.0,8.4,9.7,10.9,9.3,10.5,11.5,12.3],borderColor:'#94d82d',backgroundColor:'transparent',tension:0.35,pointRadius:0,borderWidth:2},
@@ -1928,7 +1945,7 @@ function sortProd(btn, key) {
 
 // ═══════════ MARKETING CHARTS ═══════════
 function initMktCharts() {
-  const M = window.MKT || null;
+  const M = (typeof MKT !== 'undefined' && MKT) ? MKT : null;
   const _f = n => Math.round(n||0).toLocaleString('uk');
   // KPI-рядок — реальні дані (MTD до вчора), якщо є MKT
   if (M && M.totals && M.brands) {
@@ -1997,15 +2014,17 @@ function initMktCharts() {
     }
   });
 
-  // DRR trend
+  // DRR trend — по місяцях з MKT.trend (фолбек = мок)
+  const _tr = (M && M.trend && M.trend.labels && M.trend.labels.length)
+    ? M.trend : {labels:['Квітень','Травень','Червень'],amebli:[8,12,51.5],matrasroll:[3,5,24.2],ship:[1.7,2.3,10.07]};
   new Chart(document.getElementById('ch-drr-trend'),{
     type:'line',
     data:{
-      labels:['Квітень','Травень','1–4 Червня'],
+      labels:_tr.labels,
       datasets:[
-        {label:'ДРР Amebli %',data:[8,12,51.5],borderColor:'#ff6b6b',backgroundColor:'rgba(255,107,107,0.1)',tension:0.4,fill:true,pointRadius:5},
-        {label:'ДРР Matrasroll %',data:[3,5,24.2],borderColor:'#ffa94d',backgroundColor:'rgba(255,169,77,0.1)',tension:0.4,fill:true,pointRadius:5},
-        {label:'ДРР Загальний %',data:[1.7,2.3,10.07],borderColor:'#94d82d',backgroundColor:'rgba(148,216,45,0.1)',tension:0.4,fill:true,pointRadius:5}
+        {label:'ДРР Amebli %',data:_tr.amebli,borderColor:'#ff6b6b',backgroundColor:'rgba(255,107,107,0.1)',tension:0.4,fill:true,pointRadius:5},
+        {label:'ДРР Matrasroll %',data:_tr.matrasroll,borderColor:'#ffa94d',backgroundColor:'rgba(255,169,77,0.1)',tension:0.4,fill:true,pointRadius:5},
+        {label:'ДРР Відгрузки %',data:_tr.ship,borderColor:'#94d82d',backgroundColor:'rgba(148,216,45,0.1)',tension:0.4,fill:true,pointRadius:5}
       ]
     },
     options:{

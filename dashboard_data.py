@@ -15,6 +15,9 @@ from finance.db.connection import connect
 
 OUT = Path("docs/data.json")
 CONFIG = Path("data/manual_config.json")
+_TREND_CACHE = Path("docs/mkt_trend.json")
+_MON_SHORT = {1: "Січ", 2: "Лют", 3: "Бер", 4: "Кві", 5: "Тра", 6: "Чер",
+              7: "Лип", 8: "Сер", 9: "Вер", 10: "Жов", 11: "Лис", 12: "Гру"}
 
 C_SITE = "Сайт"; C_MGR = "Менеджер"; C_NAME = "Назва [Товари/Послуги]"
 C_QTY = "К-ть [Товари/Послуги]"; C_LSUM = "Сума [Товари/Послуги]"
@@ -663,6 +666,31 @@ def daily_layer(df, m1c_rows):
     return {"day": day}
 
 
+def _mkt_month(ym, mkt, until_override=None):
+    """Marketing-обʼєкт за місяць ym (повний, або MTD якщо until_override).
+    Reuse build_marketing; 1С-виручка за ym (SALES + ORDERS). None якщо нема 1С."""
+    import calendar as _c
+    yk, mk = int(ym[:4]), int(ym[5:7])
+    lastd = _c.monthrange(yk, mk)[1]
+    since = ym + "-01"
+    until = until_override or (ym + "-%02d" % lastd)
+    sales = _fetch_1c_sales(ym)
+    if not sales:
+        return None
+    orders = _fetch_1c_orders(ym)
+    m1c_m = fetch_1c_margin(sales)
+    og = orders_1c_section1(orders, [], lastd)["groups"]
+    _sl = lambda x: float(sum(x or []))
+    bstats = {
+        "amebli":     {"revenue": float((m1c_m.get("amebli") or {}).get("rev", 0) or 0), "orders": 0, "leads": None},
+        "matrasroll": {"revenue": float((m1c_m.get("roll") or {}).get("rev", 0) or 0), "orders": 0, "leads": None},
+        "total_revenue_ship":   sum((m1c_m.get(g) or {}).get("rev", 0) for g in m1c_m),
+        "total_revenue_orders": sum(_sl(og[g]["june"]) for g in og),
+        "other": [],
+    }
+    return mkt.build_marketing(since, until, bstats)
+
+
 def main():
     import sys
     import calendar
@@ -747,13 +775,18 @@ def main():
         _until = date(y, mo, day_count).strftime("%Y-%m-%d")
         _og = sec1["groups"]
         _sl = lambda x: float(sum(x or []))
+        _oall = _orders(df).copy(); _oall["_g"] = _oall[C_SITE].apply(_group_of)
+        _lbg = _oall.groupby("_g").size().to_dict()
         _bstats = {
             "amebli":     {"revenue": float((m1c.get("amebli") or {}).get("rev", 0) or 0),
-                           "orders": (grp.get("amebli") or {}).get("orders", 0), "leads": None},
+                           "orders": (grp.get("amebli") or {}).get("orders", 0),
+                           "leads": int(_lbg.get("amebli", 0))},
             "matrasroll": {"revenue": float((m1c.get("roll") or {}).get("rev", 0) or 0),
-                           "orders": (grp.get("roll") or {}).get("orders", 0), "leads": None},
+                           "orders": (grp.get("roll") or {}).get("orders", 0),
+                           "leads": int(_lbg.get("roll", 0))},
             "total_revenue_ship":   _sl(ship.get("june")),
             "total_revenue_orders": sum(_sl(_og[g]["june"]) for g in _og),
+            "total_leads":          int(len(_oall)),
             "other": [],
         }
         marketing_obj = _mkt.build_marketing(_since, _until, _bstats)
@@ -763,6 +796,52 @@ def main():
               f"\u0412\u0456\u0434\u0433\u0440 {_t['drr_ship']}% / \u0417\u0430\u043c\u043e\u0432\u043b {_t['drr_orders']}%")
     except Exception as _e:
         print("  \u26a0\ufe0f \u043c\u0430\u0440\u043a\u0435\u0442\u0438\u043d\u0433 \u043f\u0440\u043e\u043f\u0443\u0449\u0435\u043d\u043e:", _e)
+
+    # ── Тренд ДРР по місяцях (поточний + 2 попередні; кеш для завершених місяців) ──
+    if marketing_obj:
+        try:
+            import marketing as _mkt2
+            _months = []; _yy, _mm = y, mo
+            for _ in range(3):
+                _months.append("%04d-%02d" % (_yy, _mm))
+                _mm -= 1
+                if _mm == 0:
+                    _mm = 12; _yy -= 1
+            _months.reverse()
+            _cache = {}
+            try:
+                _cache = json.loads(_TREND_CACHE.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+            _tr = {"labels": [], "amebli": [], "matrasroll": [], "ship": []}
+            for _ym in _months:
+                _iscur = (_ym == cur_now)
+                if _iscur:
+                    _d = {"amebli": marketing_obj["brands"]["amebli"]["drr"],
+                          "matrasroll": marketing_obj["brands"]["matrasroll"]["drr"],
+                          "ship": marketing_obj["totals"]["drr_ship"]}
+                elif _ym in _cache:
+                    _d = _cache[_ym]
+                else:
+                    _o = _mkt_month(_ym, _mkt2)
+                    if _o is None:
+                        continue
+                    _d = {"amebli": _o["brands"]["amebli"]["drr"],
+                          "matrasroll": _o["brands"]["matrasroll"]["drr"],
+                          "ship": _o["totals"]["drr_ship"]}
+                    _cache[_ym] = _d                       # кешуємо лише завершені місяці
+                _tr["labels"].append(_MON_SHORT.get(int(_ym[5:7]), _ym) + (" (MTD)" if _iscur else ""))
+                _tr["amebli"].append(_d["amebli"]); _tr["matrasroll"].append(_d["matrasroll"]); _tr["ship"].append(_d["ship"])
+            try:
+                _TREND_CACHE.write_text(json.dumps(_cache, ensure_ascii=False), encoding="utf-8")
+            except Exception:
+                pass
+            if len(_tr["labels"]) >= 2:
+                marketing_obj["trend"] = _tr
+                print("  \u0442\u0440\u0435\u043d\u0434 \u0414\u0420\u0420 (\u0432\u0456\u0434\u0433\u0440):",
+                      " \u2192 ".join("%s %s%%" % (l, s) for l, s in zip(_tr["labels"], _tr["ship"])))
+        except Exception as _te:
+            print("  \u26a0\ufe0f \u0442\u0440\u0435\u043d\u0434 \u043f\u0440\u043e\u043f\u0443\u0449\u0435\u043d\u043e:", _te)
 
     data = {
         "month": cur_month,
