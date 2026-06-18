@@ -843,6 +843,18 @@ def main():
         except Exception as _te:
             print("  \u26a0\ufe0f \u0442\u0440\u0435\u043d\u0434 \u043f\u0440\u043e\u043f\u0443\u0449\u0435\u043d\u043e:", _te)
 
+    # ── Репутація (читаємо docs/reputation.json, який пише reputation_vidhuk.py) ──
+    reputation_obj = None
+    try:
+        _rp = Path("docs/reputation.json")
+        if _rp.exists():
+            reputation_obj = json.loads(_rp.read_text(encoding="utf-8"))
+            print("  репутація:", len(reputation_obj.get("brands", {})), "бренди з reputation.json")
+        else:
+            print("  репутація: docs/reputation.json немає (запусти reputation_vidhuk.py)")
+    except Exception as _rpe:
+        print("  \u26a0\ufe0f репутація пропущено:", _rpe)
+
     data = {
         "month": cur_month,
         "generated": datetime.now().strftime("%d.%m.%Y %H:%M"),
@@ -860,6 +872,7 @@ def main():
         "mci": mci_bar(ds),
         "sec1_orders": sec1,
         "marketing": marketing_obj,
+        "reputation": reputation_obj,
         "sec3_1c": orders_1c_section3(o1c_rows, day_count),
     }
     out_path.parent.mkdir(parents=True, exist_ok=True)

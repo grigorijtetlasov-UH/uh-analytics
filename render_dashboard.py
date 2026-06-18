@@ -102,6 +102,11 @@ def main():
         html = html.replace("const MKT = null;",
                             "const MKT = " + json.dumps(mkt, ensure_ascii=False) + ";", 1)
 
+    rep = data.get("reputation")
+    if rep:
+        html = html.replace("const REP = null;",
+                            "const REP = " + json.dumps(rep, ensure_ascii=False) + ";", 1)
+
     # 4b) реальний середній чек у бренди (BRANDS[].avg ← groups[].avg)
     if g:
         for gk, gv in g.items():
@@ -145,7 +150,6 @@ def main():
     # 5) Позначаємо ненаповнені вкладки «в розробці» (наповнюємо по черзі реальними даними)
     wip_tabs = [
         ">🛒 Корзина & ціноутворення</button>",
-        ">⭐ Репутація</button>",
         ">🧠 IRIS</button>",
         ">📈 Фінанси P&L</button>",
     ]

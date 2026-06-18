@@ -1531,6 +1531,7 @@ const CH = {
 const CHO = CH;  // Секція 1 (Огляд): дані з 1С ORDERS — render підмінює це присвоєння; фолбек = CH (CRM)
 window.SEC3_1C=null;  // Секція 3 (1С-режим) — render підмінює
 const MKT = null;  // Маркетинг — render підмінює реальним data["marketing"] (фолбек = мок у initMktCharts)
+const REP = null;  // Репутація — render підмінює data["reputation"] (фолбек = мок у initReputationCharts)
 let sec3_1c_chart=null;
 function s3Mode(m){
   var crm=document.getElementById('sec3-crm'),ic=document.getElementById('sec3-1c');
@@ -2245,7 +2246,74 @@ function initCartCharts(){
   if(t50) t50.innerHTML = Array.from({length:50},(_, i)=>{const qty = 5+Math.random()*80; return `<tr><td class="num">${i+1}</td><td style="font-size:9px"><b>${tops50[i%tops50.length]} ${['90x200','140x200','160x200','180x200'][i%4]}</b></td><td class="r num">${Math.round(qty)}</td><td class="r num" style="color:var(--g)">${Math.round(qty*2800/1000)}K</td><td class="r num">2800</td></tr>`;}).join('');
 }
 
+function repReal(REP){
+  const B = Object.values(REP.brands);
+  const nf = n => (Number(n)||0).toLocaleString('uk');
+  const sHTML = r => { r=Number(r)||0; const f=Math.floor(r), h=(r-f>=0.3)?1:0; let s='';
+    for(let i=0;i<5;i++) s+=`<span class="rep-star ${i<f||(i===f&&h)?'on':''}">${i<f?'★':(i===f&&h?'★':'☆')}</span>`; return s; };
+  const col = r => r>=4.5?'var(--g)':r>=4.0?'var(--o)':'var(--r)';
+
+  let tCnt=0, tW=0, sPos=0, sNeu=0, sNeg=0;
+  B.forEach(b=>{ if(b.rating!=null){ tCnt+=b.count||0; tW+=Number(b.rating)*(b.count||0); }
+    const d=b.dist||{}; sPos+=(d['5']||0)+(d['4']||0); sNeu+=(d['3']||0); sNeg+=(d['2']||0)+(d['1']||0); });
+  const sN=sPos+sNeu+sNeg;
+  const avgR=(tCnt?tW/tCnt:0).toFixed(1);
+  const pP=sN?Math.round(sPos/sN*100):0, nP=sN?Math.round(sNeu/sN*100):0, gP=sN?Math.round(sNeg/sN*100):0;
+
+  document.getElementById('rep-kpi-row').innerHTML = `
+    <div class="kpi c1"><div class="kl">Середня оцінка</div><div class="kv">${avgR}<span class="ku">/5</span></div><div class="ks">зважено · ${nf(tCnt)} відгуків</div></div>
+    <div class="kpi c2"><div class="kl">Позитивні</div><div class="kv" style="color:var(--g)">${pP}<span class="ku">%</span></div><div class="ks">вибірка ${sN}</div></div>
+    <div class="kpi c3"><div class="kl">Нейтральні</div><div class="kv" style="color:var(--o)">${nP}<span class="ku">%</span></div><div class="ks">оцінка «3»</div></div>
+    <div class="kpi c7"><div class="kl">Негативні</div><div class="kv" style="color:var(--r)">${gP}<span class="ku">%</span></div><div class="ks">оцінки «1-2»</div></div>
+    <div class="kpi c4"><div class="kl">Всього відгуків</div><div class="kv">${nf(tCnt)}</div><div class="ks">${B.length} бренди</div></div>
+    <div class="kpi c5"><div class="kl">Джерело</div><div class="kv" style="font-size:17px">Vidhuk.ua</div><div class="ks">${REP.generated||''}</div></div>`;
+
+  document.getElementById('rep-sent-bar').innerHTML =
+    `<div class="rep-sent-pos" style="width:${pP}%"></div><div class="rep-sent-neu" style="width:${nP}%"></div><div class="rep-sent-neg" style="width:${gP}%"></div>`;
+  document.getElementById('rep-sent-label').textContent = `👍 ${pP}% · 😐 ${nP}% · 👎 ${gP}% (за вибіркою ${sN})`;
+
+  document.getElementById('rep-projects-container').innerHTML = B.map(b=>{
+    const d=b.dist||{}; const dm=Math.max(1,(d['5']||0),(d['4']||0),(d['3']||0),(d['2']||0),(d['1']||0));
+    const rows=[5,4,3,2,1].map(s=>{const c=d[String(s)]||0; const bg=s>=4?'var(--g)':s===3?'var(--o)':'var(--r)';
+      return `<div class="rep-issue"><span style="width:26px;color:var(--t2);font-size:11px">${s}★</span><div class="rep-issue-bar"><div class="rep-issue-fill" style="width:${Math.round(c/dm*100)}%;background:${bg}"></div></div><span class="rep-issue-cnt">${c}</span></div>`;}).join('');
+    return `<div class="rep-project">
+      <div class="rep-project-head">
+        <span class="rep-project-icon" style="color:${b.color}">●</span>
+        <span class="rep-project-name">${b.name}</span>
+        <div class="rep-project-avg"><span class="rep-project-score" style="color:${col(b.rating)}">${b.rating}★</span><span class="rep-project-total">${nf(b.count)} відг. · Vidhuk</span></div>
+      </div>
+      <div class="rep-stars">${sHTML(b.rating)}</div>
+      <div class="rep-sentiment-bar" style="margin:6px 0"><div class="rep-sent-pos" style="width:${b.pos}%"></div><div class="rep-sent-neu" style="width:${b.neu}%"></div><div class="rep-sent-neg" style="width:${b.neg}%"></div></div>
+      <div style="font-size:10px;color:var(--td);margin:6px 0 2px">розподіл оцінок (вибірка ${b.sample_n}):</div>
+      ${rows}
+      <a href="${b.url}" target="_blank" rel="noopener" style="font-size:10px;color:var(--ac)">відкрити на Vidhuk →</a>
+    </div>`;
+  }).join('');
+
+  const yms=[...new Set(B.flatMap(b=>(b.monthly||[]).map(x=>x.ym)))].sort();
+  const lbl=yms.map(ym=>{const o=B.flatMap(b=>b.monthly||[]).find(x=>x.ym===ym); return o?o.m:ym;});
+  const dsets=B.map(b=>({label:b.name, data:yms.map(ym=>{const o=(b.monthly||[]).find(x=>x.ym===ym); return o?o.avg:null;}),
+    borderColor:b.color, backgroundColor:'transparent', borderWidth:2.5, tension:0.4, pointRadius:4, pointBackgroundColor:b.color, spanGaps:true}));
+  new Chart(document.getElementById('ch-rep-trend'), {type:'line', data:{labels:lbl, datasets:dsets},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#c1c7e0',font:{size:10},usePointStyle:true,boxWidth:8}},
+        tooltip:{...TOOLTIP,callbacks:{label:ctx=>' '+ctx.dataset.label+': '+(ctx.parsed.y!=null?ctx.parsed.y+'★':'—')}}},
+      scales:{x:{grid:GRID,ticks:{color:'#7b84a3'}},y:{grid:GRID,min:1,max:5,ticks:{color:'#7b84a3',callback:v=>v+'★'}}}}});
+
+  const all=B.flatMap(b=>(b.reviews||[]).map(r=>Object.assign({brand:b.name}, r)));
+  const sortD=(a,b)=>(b.date||'').localeCompare(a.date||'');
+  const neg=all.filter(r=>r.stars&&r.stars<=2).sort(sortD).slice(0,6);
+  const pos=all.filter(r=>r.stars&&r.stars>=4).sort(sortD).slice(0,6);
+  const card=r=>`<div style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06)">
+    <div style="font-size:10px;color:var(--td);margin-bottom:2px"><b style="color:var(--t2)">${r.brand}</b> · ${r.stars}★ · ${r.date}</div>
+    <div style="font-size:11px;color:var(--t2);line-height:1.35">${(r.text||'').slice(0,170)}${(r.text||'').length>170?'…':''}</div></div>`;
+  document.getElementById('rep-issues-container').innerHTML  = neg.length?neg.map(card).join(''):'<div style="color:var(--td);font-size:11px">у вибірці немає негативних</div>';
+  document.getElementById('rep-praises-container').innerHTML = pos.length?pos.map(card).join(''):'<div style="color:var(--td);font-size:11px">у вибірці немає позитивних</div>';
+}
+
 function initReputationCharts(){
+  if (typeof REP !== 'undefined' && REP && REP.brands) { repReal(REP); return; }
+
   const PLATFORMS = [
     {id:'google',  name:'Google Maps',  icon:'🔍', color:'#4285f4'},
     {id:'vidhuk',  name:'Vidhuk.com',   icon:'💬', color:'#ff6b6b'},
