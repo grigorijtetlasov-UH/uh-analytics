@@ -214,6 +214,15 @@ tbody tr:hover td{background:rgba(108,92,231,.06)}
 .funnel-bar-fill{height:100%;border-radius:3px}
 .funnel-num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;min-width:80px;text-align:right}
 .funnel-pct{font-size:9px;color:var(--td);min-width:45px;text-align:right}
+.fun-caret{font-size:9px;color:var(--td);width:12px;display:inline-block;text-align:center}
+.fun-clickable{cursor:pointer;border-radius:5px}
+.fun-clickable:hover{background:rgba(255,255,255,.03)}
+.fun-detail{margin:0 0 7px 22px;padding:6px 10px;background:var(--s2);border-radius:6px;border-left:2px solid rgba(255,255,255,.12)}
+.fun-det-row{display:flex;gap:10px;padding:3px 0;font-size:10px;border-bottom:1px solid rgba(255,255,255,.03)}
+.fun-det-row:last-child{border-bottom:none}
+.fun-det-st{flex:1;color:var(--t2)}
+.fun-det-n{font-family:'JetBrains Mono',monospace;color:var(--t2);min-width:52px;text-align:right}
+.fun-det-p{color:var(--td);min-width:40px;text-align:right}
 
 /* ── FORECAST WIDGET ── */
 .forecast-box{background:var(--s2);border:1px solid var(--brd2);border-radius:10px;padding:14px;text-align:center}
@@ -781,7 +790,7 @@ tr.row-comp td{opacity:.8}
     <!-- Funnel -->
     <div class="cd">
       <div class="ct"><span class="dot" style="background:var(--c)"></span>Воронка замовлень — від ліда до отримання</div>
-      <div class="cd-d">Повний шлях замовлення по статусах CRM/1С.</div>
+      <div class="cd-d">Поточний статус кожного замовлення місяця, згруповано по стадіях<span id="funnel-asof"></span>. Клікни рядок — побачиш усі статуси категорії та їх частку.</div>
       <div id="funnel-container" style="padding-top:6px"></div>
     </div>
 
@@ -2045,19 +2054,34 @@ function initSalesCharts() {
   ];
   const maxV=Math.max(...stages.map(s=>s.v));
   const leads=stages[0].v;
-  document.getElementById('funnel-container').innerHTML=stages.map(s=>{
+  window.funToggle=function(i){var d=document.getElementById('fdet'+i),c=document.getElementById('fcar'+i);if(!d)return;var open=d.style.display==='none';d.style.display=open?'block':'none';if(c)c.textContent=open?'▾':'▸';};
+  const FD=(typeof FUNNEL_REAL!=='undefined'&&FUNNEL_REAL&&FUNNEL_REAL._detail)?FUNNEL_REAL._detail:{};
+  document.getElementById('funnel-container').innerHTML=stages.map((s,i)=>{
     const w=Math.max(2,Math.round(s.v/maxV*100));
     const pct=(s.v/leads*100).toFixed(0);
-    return `<div class="funnel-row">
+    const det=(s.k&&FD[s.k])?FD[s.k]:null;
+    const hasDet=!!det;
+    const car=hasDet?`<span class="fun-caret" id="fcar${i}">▸</span>`:`<span style="display:inline-block;width:12px"></span>`;
+    let panel='';
+    if(hasDet){
+      panel=`<div class="fun-detail" id="fdet${i}" style="display:none">`+
+        Object.entries(det).sort((a,b)=>b[1]-a[1]).map(e=>{
+          const p=s.v?(e[1]/s.v*100).toFixed(0):0;
+          return `<div class="fun-det-row"><span class="fun-det-st">${e[0]}</span><span class="fun-det-n">${fmtN(e[1])}</span><span class="fun-det-p">${p}%</span></div>`;
+        }).join('')+`</div>`;
+    }
+    return `<div class="funnel-row${hasDet?' fun-clickable':''}"${hasDet?` onclick="funToggle(${i})"`:''}>
+      ${car}
       <div class="funnel-label">${s.n}</div>
       <div class="funnel-bar-wrap"><div class="funnel-bar-fill" style="width:${w}%;background:${s.c};height:100%;border-radius:3px"></div></div>
       <div class="funnel-num" style="color:${s.c}">${fmtN(s.v)}</div>
       <div class="funnel-pct">${pct}%</div>
-    </div>`;
+    </div>${panel}`;
   }).join('') +
     `<div style="margin-top:10px;padding:8px;background:var(--s2);border-radius:7px;font-size:10px;color:var(--td)">
       Конв. лід→продаж: <b style="color:#00d68f">86.8%</b> · Відмов: <b style="color:#ff6b6b">2.3%</b> · Повернень після отримання: <b style="color:#ff8787">5.6%</b>
     </div>`;
+  (function(){var _fa=document.getElementById('funnel-asof');if(_fa&&typeof FUNNEL_REAL!=='undefined'&&FUNNEL_REAL&&FUNNEL_REAL._asof){var p=String(FUNNEL_REAL._asof).split(' ')[0].split('.');if(p.length>=2)_fa.textContent=' · станом на '+p[0]+'.'+p[1];}})();
 
   // Products (top 50 raw)
   renderProducts('revenue');

@@ -324,7 +324,8 @@ def main():
     # 13b) інжект FUNNEL_REAL + AGG_CATS
     inj = ""
     if pl:
-        inj += "\nconst FUNNEL_REAL = " + json.dumps(pl, ensure_ascii=False) + ";"
+        pl_js = dict(pl); pl_js["_asof"] = data.get("generated", "")
+        inj += "\nconst FUNNEL_REAL = " + json.dumps(pl_js, ensure_ascii=False) + ";"
     if agg_list:
         inj += "\nconst AGG_CATS = " + json.dumps(agg_list, ensure_ascii=False) + ";"
     rd = data.get("daily_refuse") or {}
@@ -337,14 +338,14 @@ def main():
     if pl:
         real_stages = (
             "const stages=[\n"
-            "    {n:'📥 Всього лідів',v:FUNNEL_REAL.leads_total,c:'#339af0'},\n"
-            "    {n:'⚙️ В обробці',v:FUNNEL_REAL.in_progress,c:'#4dabf7'},\n"
-            "    {n:'🏭 У виробництві',v:FUNNEL_REAL.production,c:'#a29bfe'},\n"
-            "    {n:'🚚 Відправлення',v:FUNNEL_REAL.shipping,c:'#9775fa'},\n"
-            "    {n:'🎁 Отримано',v:FUNNEL_REAL.sale,c:'#94d82d'},\n"
-            "    {n:'🚫 Відмова',v:FUNNEL_REAL.refused,c:'#ff6b6b'},\n"
-            "    {n:'↩️ Повернення',v:FUNNEL_REAL.returned,c:'#ff8787'},\n"
-            "    {n:'😴 Втрачені ліди',v:FUNNEL_REAL.lead,c:'#ffd43b'}\n"
+            "    {n:'📥 Всього лідів',v:FUNNEL_REAL.leads_total,c:'#339af0',k:''},\n"
+            "    {n:'⚙️ В обробці',v:FUNNEL_REAL.in_progress,c:'#4dabf7',k:'in_progress'},\n"
+            "    {n:'🏭 У виробництві',v:FUNNEL_REAL.production,c:'#a29bfe',k:'production'},\n"
+            "    {n:'🚚 Відправлення',v:FUNNEL_REAL.shipping,c:'#9775fa',k:'shipping'},\n"
+            "    {n:'🎁 Отримано',v:FUNNEL_REAL.sale,c:'#94d82d',k:'sale'},\n"
+            "    {n:'🚫 Відмова',v:FUNNEL_REAL.refused,c:'#ff6b6b',k:'refused'},\n"
+            "    {n:'↩️ Повернення',v:FUNNEL_REAL.returned,c:'#ff8787',k:'returned'},\n"
+            "    {n:'😴 Втрачені ліди',v:FUNNEL_REAL.lead,c:'#ffd43b',k:'lead'}\n"
             "  ];")
         html = re.sub(r"const stages=\[\s*\{n:'📥 Всього лідів',v:660,.*?\];",
                       real_stages, html, count=1, flags=re.DOTALL)

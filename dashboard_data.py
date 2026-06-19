@@ -392,14 +392,19 @@ def order_funnel(df):
     o = _orders(df)
     c = {"in_progress": 0, "production": 0, "shipping": 0, "sale": 0,
          "refused": 0, "returned": 0, "lead": 0, "spam": 0, "claim": 0, "unknown": 0}
+    detail = {}                                         # {категорія: {статус: к-сть}}
     for st in o["Статус"].astype(str):
-        cat = _status_cat(st)
+        s = st.strip()
+        cat = _status_cat(s)
         if cat == "junk":
             continue
         c[cat] = c.get(cat, 0) + 1
+        detail.setdefault(cat, {})
+        detail[cat][s] = detail[cat].get(s, 0) + 1
     real = ("in_progress", "production", "shipping", "sale",
             "refused", "returned", "lead", "claim")
     c["leads_total"] = sum(c[k] for k in real)          # реальні ліди (без спаму/невідомих)
+    c["_detail"] = detail                               # розбивка кожної категорії по статусах
     return c
 
 
