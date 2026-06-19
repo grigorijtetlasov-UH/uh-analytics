@@ -1014,14 +1014,20 @@ tr.row-comp td{opacity:.8}
     <canvas id="ch-rep-trend" style="max-height:280px"></canvas>
   </div>
 
+  <!-- Negative themes -->
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--r)"></span>Чим найчастіше незадоволені<span class="btot">негатив за темами · усі платформи</span></div>
+    <div id="rep-themes-container"></div>
+  </div>
+
   <!-- Top issues -->
   <div class="g2">
     <div class="cd">
-      <div class="ct"><span class="dot" style="background:var(--r)"></span>ТОП проблеми клієнтів<span class="btot">з негативних відгуків</span></div>
+      <div class="ct"><span class="dot" style="background:var(--r)"></span>Свіжі негативні відгуки<span class="btot">оцінки ≤2★ · усі платформи</span></div>
       <div id="rep-issues-container"></div>
     </div>
     <div class="cd">
-      <div class="ct"><span class="dot" style="background:var(--g)"></span>ТОП похвали клієнтів<span class="btot">з позитивних відгуків</span></div>
+      <div class="ct"><span class="dot" style="background:var(--g)"></span>Свіжі позитивні відгуки<span class="btot">оцінки ≥4★ · усі платформи</span></div>
       <div id="rep-praises-container"></div>
     </div>
   </div>
@@ -2315,16 +2321,42 @@ function repReal(REP){
         tooltip:Object.assign({},TOOLTIP,{callbacks:{label:ctx=>' '+ctx.dataset.label+': '+(ctx.parsed.y!=null?ctx.parsed.y+'★':'—')}})},
       scales:{x:{grid:GRID,ticks:{color:'#7b84a3'}},y:{grid:GRID,min:1,max:5,ticks:{color:'#7b84a3',callback:v=>v+'★'}}}}});
 
-  // проблеми/похвали — свіжі відгуки з УСІХ платформ
+  // ── негатив: теми (укр+рос ключові слова) + приклади відгуків ──
+  const THEMES=[
+    {k:'Доставка / строки', c:'var(--o)', re:/доставк|достав|затрим|задерж|строк|срок|термін|не привез|не отрим|не получ|тижн|тижд|недел|пошт|не дочека|довго чека|долго жда|відправ|отправ|не встиг|не приш/i},
+    {k:'Якість товару', c:'var(--r)', re:/якіст|качеств|брак|зламал|сломал|порвал|продав|провал|дефект|поган|плох|тонк|кривий|кривой|перекош|розвалив|развалил|не соответ|не відповіда.{0,14}(опис|сайт|фото|малюн)/i},
+    {k:'Сервіс / менеджери', c:'var(--rd)', re:/менеджер|консультант|хамств|груб|не передзвон|не перезвон|ігнор|игнор|обслугов|спілкув|общени|тиша|тишина|неввічлив|невежлив|сервіс|сервис|не відповіда(?!.{0,14}(опис|сайт|фото|малюн))/i},
+    {k:'Гроші / повернення', c:'var(--r)', re:/поверн|возврат|верн|гроші|деньг|кошт|передопл|предопл|обман|шахрай|мошен|кинул|розвод|развод/i},
+    {k:'Не той товар', c:'var(--o)', re:/не той|не то\b|інш.{0,6}товар|друг.{0,6}товар|надіслал.{0,8}інш|прислал.{0,8}друг|замість|вместо|не те.{0,6}замов|не тот.{0,6}заказ|підмін|подмен/i},
+  ];
+  const tag=t=>{t=(t||'').toLowerCase(); return THEMES.filter(x=>x.re.test(t));};
   const all=[]; B.forEach(b=>Object.values(b.platforms||{}).forEach(p=>(p.reviews||[]).forEach(r=>all.push(Object.assign({_b:b.name,_p:p.label},r)))));
   const sortD=(a,b)=>(b.date||'').localeCompare(a.date||'');
-  const neg=all.filter(r=>r.stars&&r.stars<=2).sort(sortD).slice(0,6);
-  const pos=all.filter(r=>r.stars&&r.stars>=4).sort(sortD).slice(0,6);
-  const card=r=>`<div style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06)">
-    <div style="font-size:10px;color:var(--td);margin-bottom:2px"><b style="color:var(--t2)">${r._b}</b> · ${r._p} · ${r.stars}★ · ${r.date||''}</div>
-    <div style="font-size:11px;color:var(--t2);line-height:1.35">${(r.text||'').slice(0,160)}${(r.text||'').length>160?'…':''}</div></div>`;
-  const ic=document.getElementById('rep-issues-container'); if(ic) ic.innerHTML=neg.length?neg.map(card).join(''):'<div style="color:var(--td);font-size:11px">у вибірці немає негативних</div>';
-  const pc=document.getElementById('rep-praises-container'); if(pc) pc.innerHTML=pos.length?pos.map(card).join(''):'<div style="color:var(--td);font-size:11px">у вибірці немає позитивних</div>';
+  const negAll=all.filter(r=>r.stars&&r.stars<=2).sort(sortD);
+  const posAll=all.filter(r=>r.stars&&r.stars>=4).sort(sortD);
+  const platN=[...new Set(all.map(r=>r._p))].length;
+
+  // теми негативу (бари)
+  const cnt={}; THEMES.forEach(x=>cnt[x.k]=0); let other=0;
+  negAll.forEach(r=>{const th=tag(r.text); if(th.length) th.forEach(x=>cnt[x.k]++); else other++;});
+  const rows=THEMES.map(x=>({n:x.k,cnt:cnt[x.k],c:x.c})).filter(r=>r.cnt>0).sort((a,b)=>b.cnt-a.cnt);
+  if(other) rows.push({n:'Інше', cnt:other, c:'var(--td)'});
+  const maxT=Math.max(1,...rows.map(r=>r.cnt));
+  const tcEl=document.getElementById('rep-themes-container');
+  if(tcEl) tcEl.innerHTML = rows.length
+    ? rows.map(r=>`<div class="rep-issue"><span style="flex:1;color:var(--t2)">${r.n}</span><div class="rep-issue-bar"><div class="rep-issue-fill" style="width:${Math.round(r.cnt/maxT*100)}%;background:${r.c}"></div></div><span class="rep-issue-cnt" style="color:${r.c}">${r.cnt}</span></div>`).join('')
+      + `<div style="font-size:10px;color:var(--td);margin-top:8px">Всього негативних у вибірці: <b style="color:var(--t2)">${negAll.length}</b> (оцінки ≤2★ · ${B.length} бренди · ${platN} платф.)</div>`
+    : '<div style="color:var(--td);font-size:11px">негативних у вибірці немає</div>';
+
+  // приклади відгуків (негатив із тегами тем / позитив)
+  const chip=(t,c)=>`<span style="display:inline-block;padding:1px 7px;margin:0 4px 2px 0;border-radius:9px;background:var(--s2);color:${c};font-size:9px;font-weight:600">${t}</span>`;
+  const head=r=>`<div style="font-size:10px;color:var(--td);margin-bottom:3px"><b style="color:var(--t2)">${r._b}</b> · ${r._p} · ${r.stars}★ · ${r.date||''}</div>`;
+  const body=r=>`<div style="font-size:11px;color:var(--t2);line-height:1.4">${(r.text||'').slice(0,200)}${(r.text||'').length>200?'…':''}</div>`;
+  const negCard=r=>{const ch=tag(r.text).map(x=>chip(x.k,x.c)).join('');
+    return `<div style="padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05)">${head(r)}${ch?`<div style="margin-bottom:3px">${ch}</div>`:''}${body(r)}</div>`;};
+  const posCard=r=>`<div style="padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05)">${head(r)}${body(r)}</div>`;
+  const ic=document.getElementById('rep-issues-container'); if(ic) ic.innerHTML=negAll.length?negAll.slice(0,8).map(negCard).join(''):'<div style="color:var(--td);font-size:11px">немає негативних</div>';
+  const pc=document.getElementById('rep-praises-container'); if(pc) pc.innerHTML=posAll.length?posAll.slice(0,8).map(posCard).join(''):'<div style="color:var(--td);font-size:11px">немає позитивних</div>';
 }
 
 function initReputationCharts(){
