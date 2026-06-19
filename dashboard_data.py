@@ -671,12 +671,13 @@ def _merge_reputation():
     {generated, brands:{key:{name,color,platforms:{plat:{...}},agg:{rating,count,pos,neu,neg}}}}."""
     SRC = [("docs/reputation.json", "vidhuk"),
            ("docs/reputation_google.json", "google"),
+           ("docs/reputation_056.json", "056"),
            ("docs/reputation_hotline.json", "hotline"),
            ("docs/reputation_prom.json", "prom"),
            ("docs/reputation_rozetka.json", "rozetka")]
-    LABEL = {"vidhuk": "Vidhuk.ua", "google": "Google", "hotline": "Hotline.ua",
+    LABEL = {"vidhuk": "Vidhuk.ua", "google": "Google", "056": "056.ua", "hotline": "Hotline.ua",
              "prom": "Prom.ua", "rozetka": "Rozetka"}
-    ICON = {"vidhuk": "\U0001f4ac", "google": "\U0001f50d", "hotline": "\U0001f4ca",
+    ICON = {"vidhuk": "\U0001f4ac", "google": "\U0001f50d", "056": "\U0001f3d9\ufe0f", "hotline": "\U0001f4ca",
             "prom": "\U0001f3ea", "rozetka": "\U0001f6d2"}
     brands, gen = {}, None
     for fname, plat in SRC:
