@@ -107,6 +107,17 @@ def main():
         html = html.replace("const REP = null;",
                             "const REP = " + json.dumps(rep, ensure_ascii=False) + ";", 1)
 
+    # 4a4) Callider — AI-дзвінки (окремий docs/callaider.json, не в data.json)
+    cal_path = Path("docs/callaider.json")
+    if cal_path.exists():
+        try:
+            cal = json.loads(cal_path.read_text(encoding="utf-8"))
+            html = html.replace("const CALLAIDER = null;",
+                                "const CALLAIDER = " + json.dumps(cal, ensure_ascii=False) + ";", 1)
+            print("  ✓ Callider:", (cal.get("totals") or {}).get("calls", 0), "дзвінків")
+        except Exception as e:
+            print("  ⚠ callaider.json:", e)
+
     # 4b) реальний середній чек у бренди (BRANDS[].avg ← groups[].avg)
     if g:
         for gk, gv in g.items():

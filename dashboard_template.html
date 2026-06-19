@@ -506,6 +506,7 @@ tr.row-comp td{opacity:.8}
   <button class="mtab"     onclick="swMain('reputation',this)">⭐ Репутація</button>
   <button class="mtab"     onclick="swMain('iris',this)">🧠 IRIS</button>
   <button class="mtab"     onclick="swMain('finance',this)">📈 Фінанси P&L</button>
+  <button class="mtab"     onclick="swMain('callaider',this)">📞 Callider</button>
 </div>
 
 <!-- ══════════════════════════════════════════════════
@@ -1228,6 +1229,64 @@ tr.row-comp td{opacity:.8}
 </div><!-- /mp-finance -->
 
 
+<!-- ══════════════════════════════════════════════════
+     TAB — CALLIDER (AI-дзвінки на вхідній лінії)
+══════════════════════════════════════════════════ -->
+<div class="mpnl" id="mp-callaider">
+<style>
+#mp-callaider .cl-camp{background:var(--s2);border:1px solid var(--brd);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+#mp-callaider .cl-camp-h{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+#mp-callaider .cl-camp-i{font-size:16px}
+#mp-callaider .cl-camp-n{font-weight:600;font-size:13px}
+#mp-callaider .cl-camp-st{margin-left:auto;font-size:10px;padding:2px 8px;border-radius:20px}
+#mp-callaider .cl-camp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+#mp-callaider .cl-m-v{font-size:18px;font-weight:700}
+#mp-callaider .cl-m-l{font-size:10px;color:var(--td)}
+#mp-callaider .cl-row{display:flex;align-items:center;gap:10px;padding:7px 10px;border-bottom:1px solid var(--brd);font-size:12px;flex-wrap:wrap}
+#mp-callaider .cl-ph{font-weight:600;font-family:monospace;min-width:100px}
+#mp-callaider .cl-dt{color:var(--td);min-width:108px}
+#mp-callaider .cl-du{color:var(--t2);min-width:64px}
+#mp-callaider .cl-en{font-size:11px;margin-left:auto}
+#mp-callaider .cl-sum{flex-basis:100%;color:var(--t2);font-size:11px;margin-top:4px;padding-left:6px;border-left:2px solid var(--ac)}
+</style>
+
+  <!-- KPI -->
+  <div class="kpi-row" id="cl-kpi-row"></div>
+
+  <!-- Кампанії по брендах -->
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--ac)"></span>AI-кампанії по брендах<span class="btot">вхідна лінія · диспетчер/утримання</span></div>
+    <div id="cl-campaigns"></div>
+  </div>
+
+  <!-- Тренд + тривалості -->
+  <div class="g2">
+    <div class="cd">
+      <div class="ct"><span class="dot" style="background:var(--b)"></span>Дзвінки по днях<span class="btot">усі кампанії</span></div>
+      <canvas id="ch-cl-daily" style="max-height:260px"></canvas>
+    </div>
+    <div class="cd">
+      <div class="ct"><span class="dot" style="background:var(--g)"></span>Розподіл тривалостей<span class="btot">всі дзвінки</span></div>
+      <canvas id="ch-cl-dur" style="max-height:260px"></canvas>
+    </div>
+  </div>
+
+  <!-- Причини завершення -->
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--o)"></span>Причини завершення дзвінків<span class="btot">endReason · усі кампанії</span></div>
+    <div id="cl-ends"></div>
+  </div>
+
+  <!-- Лог дзвінків -->
+  <div class="cd">
+    <div class="ct"><span class="dot" style="background:var(--td)"></span>Останні дзвінки<span class="btot">останні 40 на кампанію</span></div>
+    <div id="cl-log-tabs" class="tabs" style="margin-bottom:10px"></div>
+    <div id="cl-log"></div>
+  </div>
+
+</div><!-- /mp-callaider -->
+
+
 <!-- Feedback modal -->
 <div class="fb-overlay" id="fbOverlay" onclick="if(event.target===this)closeFeedback()">
   <div class="fb-modal">
@@ -1369,6 +1428,107 @@ const GRID = { color:'rgba(255,255,255,0.04)' };
 const TOOLTIP = { backgroundColor:'#1c2137', borderColor:'#3a4170', borderWidth:1, padding:10, titleColor:'#e4e8f7', bodyColor:'#c1c7e0' };
 
 // ═══════════ TAB SWITCHES ═══════════
+// ═══════════ CALLIDER — AI-дзвінки ═══════════
+const CL_BRAND={sofino:{n:'Sofino',c:'#339af0',i:'🔵'},matrasroll:{n:'MatrasRoll',c:'#00d68f',i:'🟢'},amebli:{n:'Amebli',c:'#a29bfe',i:'🟣'},hubstore:{n:'HubStore',c:'#ffa94d',i:'🟠'},other:{n:'Інші',c:'#7b84a3',i:'⚪'}};
+function clFmt(n){ return (typeof fmtN==='function')?fmtN(n):String(n||0); }
+function clDur(s){ s=Math.round(s||0); if(s<60)return s+'с'; const m=Math.floor(s/60); return m+'хв '+(s%60)+'с'; }
+function clAxes(){ return {x:{grid:(typeof GRID!=='undefined'?GRID:{}),ticks:{color:'#7b84a3',maxTicksLimit:12}},y:{grid:(typeof GRID!=='undefined'?GRID:{}),ticks:{color:'#7b84a3'},beginAtZero:true}}; }
+
+function callaiderInit(){
+  if(typeof CALLAIDER!=='undefined' && CALLAIDER && CALLAIDER.campaigns){ callaiderReal(CALLAIDER); return; }
+  const w=$('cl-kpi-row'); if(w) w.innerHTML='<div class="cd" style="padding:20px;color:var(--td)">Дані CallAIder ще не завантажені. Запусти <code>./run.sh callaider.py</code> і онови дашборд.</div>';
+}
+
+function callaiderReal(C){
+  const camps=(C.campaigns||[]).slice().sort((a,b)=>(b.total||0)-(a.total||0));
+  const T=C.totals||{};
+  const answeredPct = T.calls? Math.round(T.answered/T.calls*1000)/10 : 0;
+  let durSum=0,durCnt=0; camps.forEach(c=>{ if(c.total){durSum+=(c.avg_duration||0)*c.total; durCnt+=c.total;} });
+  const avgDur = durCnt? durSum/durCnt : 0;
+  const activeN = camps.filter(c=>c.status==='in_progress').length;
+
+  $('cl-kpi-row').innerHTML =
+    '<div class="kpi c2"><div class="kl">Всього дзвінків</div><div class="kv">'+clFmt(T.calls||0)+'</div><div class="ks">'+camps.length+' кампаній · '+activeN+' активних</div></div>'+
+    '<div class="kpi c1"><div class="kl">Дозвон</div><div class="kv" style="color:var(--g)">'+answeredPct+'<span class="ku">%</span></div><div class="ks">'+clFmt(T.answered||0)+' відповіли</div></div>'+
+    '<div class="kpi c3"><div class="kl">Сер. тривалість</div><div class="kv">'+clDur(avgDur)+'</div><div class="ks">утримання / маршрутизація</div></div>'+
+    '<div class="kpi c7"><div class="kl">Невдалих</div><div class="kv" style="color:var(--r)">'+clFmt(T.failed||0)+'</div><div class="ks">не зʼєдналися</div></div>';
+
+  const stMap={in_progress:['var(--gd);color:var(--g)','активна'],paused:['var(--od);color:var(--o)','пауза'],completed:['var(--s3);color:var(--td)','завершена'],failed:['var(--rd);color:var(--r)','помилка']};
+  $('cl-campaigns').innerHTML = camps.map(function(c){
+    const b=CL_BRAND[c.brand]||CL_BRAND.other;
+    const ap = c.total? Math.round(c.answered/c.total*1000)/10 : 0;
+    const st=stMap[c.status]||['var(--s3);color:var(--td)',(c.status||'—')];
+    return '<div class="cl-camp"><div class="cl-camp-h">'+
+      '<span class="cl-camp-i" style="color:'+b.c+'">'+b.i+'</span>'+
+      '<span class="cl-camp-n">'+(c.name||b.n)+'</span>'+
+      '<span class="cl-camp-st" style="background:'+st[0]+'">'+st[1]+'</span></div>'+
+      '<div class="cl-camp-grid">'+
+      '<div><div class="cl-m-v">'+clFmt(c.total||0)+'</div><div class="cl-m-l">дзвінків</div></div>'+
+      '<div><div class="cl-m-v" style="color:var(--g)">'+ap+'%</div><div class="cl-m-l">дозвон</div></div>'+
+      '<div><div class="cl-m-v">'+clDur(c.avg_duration)+'</div><div class="cl-m-l">сер. трив.</div></div>'+
+      '<div><div class="cl-m-v" style="color:'+(c.failed?'var(--r)':'var(--td)')+'">'+clFmt(c.failed||0)+'</div><div class="cl-m-l">невдалих</div></div>'+
+      '</div></div>';
+  }).join('');
+
+  // Дзвінки по днях (сума по кампаніях)
+  const dmap={}; camps.forEach(c=>(c.daily||[]).forEach(d=>{ dmap[d.date]=(dmap[d.date]||0)+d.count; }));
+  const days=Object.keys(dmap).sort();
+  const dlabels=days.map(d=>{const p=d.split('-');return p[2]+'.'+p[1];});
+  if(window._clDaily) window._clDaily.destroy();
+  window._clDaily=new Chart($('ch-cl-daily'),{type:'line',
+    data:{labels:dlabels,datasets:[{label:'Дзвінків',data:days.map(d=>dmap[d]),borderColor:'#339af0',backgroundColor:'rgba(51,154,240,.12)',fill:true,tension:.3,pointRadius:0,borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:(typeof TOOLTIP!=='undefined'?TOOLTIP:{})},scales:clAxes()}});
+
+  // Розподіл тривалостей
+  const order=['0-10с','10-30с','30-60с','1-3хв','3хв+'];
+  const bmap={}; order.forEach(k=>bmap[k]=0);
+  camps.forEach(c=>{const b=c.duration_buckets||{};order.forEach(k=>bmap[k]+=(b[k]||0));});
+  if(window._clDur) window._clDur.destroy();
+  window._clDur=new Chart($('ch-cl-dur'),{type:'bar',
+    data:{labels:order,datasets:[{label:'Дзвінків',data:order.map(k=>bmap[k]),backgroundColor:['#ff6b6b','#ffa94d','#ffd43b','#00d68f','#339af0'],borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:(typeof TOOLTIP!=='undefined'?TOOLTIP:{})},scales:{x:{grid:{display:false},ticks:{color:'#7b84a3'}},y:{grid:(typeof GRID!=='undefined'?GRID:{}),ticks:{color:'#7b84a3'},beginAtZero:true}}}});
+
+  // Причини завершення
+  const emap={}; camps.forEach(c=>{const e=c.ends||{};Object.keys(e).forEach(k=>emap[k]=(emap[k]||0)+e[k]);});
+  const etot=Object.values(emap).reduce((a,b)=>a+b,0)||1;
+  const ents=Object.entries(emap).sort((a,b)=>b[1]-a[1]);
+  const ecolor=k=>/normal|answer|complete/i.test(k)?'var(--g)':/(no.?answer|busy|reject|cancel|fail|timeout|decline)/i.test(k)?'var(--r)':'var(--o)';
+  $('cl-ends').innerHTML = ents.map(function(p){
+    const k=p[0],v=p[1],pct=Math.round(v/etot*100);
+    return '<div class="rep-issue"><span style="flex:1;color:var(--t2)">'+k+'</span><div class="rep-issue-bar"><div class="rep-issue-fill" style="width:'+pct+'%;background:'+ecolor(k)+'"></div></div><span class="rep-issue-cnt" style="color:'+ecolor(k)+'">'+clFmt(v)+'</span></div>';
+  }).join('');
+
+  // Лог дзвінків — таби по кампаніях
+  const withCalls=camps.filter(c=>(c.recent||[]).length);
+  window._clCamps={}; withCalls.forEach(c=>window._clCamps[c.id]=c);
+  $('cl-log-tabs').innerHTML = withCalls.map(function(c,i){
+    const b=CL_BRAND[c.brand]||CL_BRAND.other;
+    return '<button class="tab'+(i===0?' on':'')+'" onclick="clLog('+c.id+',this)">'+b.i+' '+(c.name||b.n)+'</button>';
+  }).join('');
+  if(withCalls.length) clLogRender(withCalls[0]);
+  else $('cl-log').innerHTML='<div style="color:var(--td);padding:10px">Немає дзвінків</div>';
+}
+
+function clLog(id,btn){
+  document.querySelectorAll('#cl-log-tabs .tab').forEach(t=>t.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  clLogRender(window._clCamps[id]);
+}
+function clLogRender(c){
+  if(!c){ $('cl-log').innerHTML=''; return; }
+  const rows=(c.recent||[]).map(function(x){
+    const okEnd=/normal|answer|complete/i.test(x.end||'');
+    const sum = x.summary? '<div class="cl-sum">'+x.summary+'</div>' : '';
+    return '<div class="cl-row">'+
+      '<span class="cl-ph">'+(x.phone||'—')+'</span>'+
+      '<span class="cl-dt">'+(x.date||'')+'</span>'+
+      '<span class="cl-du">'+clDur(x.duration)+'</span>'+
+      '<span class="cl-en" style="color:'+(okEnd?'var(--g)':'var(--o)')+'">'+(x.end||x.status||'—')+'</span>'+
+      sum+'</div>';
+  }).join('');
+  $('cl-log').innerHTML = rows || '<div style="color:var(--td);padding:10px">Немає дзвінків</div>';
+}
+
 function swMain(name, btn) {
   document.querySelectorAll('.mtab').forEach(t => t.classList.remove('on'));
   document.querySelectorAll('.mpnl').forEach(p => p.classList.remove('on'));
@@ -1381,6 +1541,7 @@ function swMain(name, btn) {
   if(name==='cart' && !window._cartInit) { initCartCharts(); window._cartInit=true; }
   if(name==='reputation' && !window._repInit) { initReputationCharts(); window._repInit=true; }
   if(name==='finance' && !window._finInit) { initFinCharts(); window._finInit=true; }
+  if(name==='callaider' && !window._callInit) { callaiderInit(); window._callInit=true; }
   if(name==='iris') { initIrisTab(); }
 }
 function swSales(name, btn) {
@@ -1538,6 +1699,7 @@ const CHO = CH;  // Секція 1 (Огляд): дані з 1С ORDERS — rend
 window.SEC3_1C=null;  // Секція 3 (1С-режим) — render підмінює
 const MKT = null;  // Маркетинг — render підмінює реальним data["marketing"] (фолбек = мок у initMktCharts)
 const REP = null;  // Репутація — render підмінює data["reputation"] (фолбек = мок у initReputationCharts)
+const CALLAIDER = null;  // AI-дзвінки CallAIder — render підмінює docs/callaider.json
 let sec3_1c_chart=null;
 function s3Mode(m){
   var crm=document.getElementById('sec3-crm'),ic=document.getElementById('sec3-1c');
