@@ -666,6 +666,58 @@ def daily_layer(df, m1c_rows):
     return {"day": day}
 
 
+def _merge_reputation():
+    """Зливає docs/reputation*.json (Vidhuk, Google, …) у мульти-платформну структуру:
+    {generated, brands:{key:{name,color,platforms:{plat:{...}},agg:{rating,count,pos,neu,neg}}}}."""
+    SRC = [("docs/reputation.json", "vidhuk"),
+           ("docs/reputation_google.json", "google"),
+           ("docs/reputation_hotline.json", "hotline"),
+           ("docs/reputation_prom.json", "prom"),
+           ("docs/reputation_rozetka.json", "rozetka")]
+    LABEL = {"vidhuk": "Vidhuk.ua", "google": "Google", "hotline": "Hotline.ua",
+             "prom": "Prom.ua", "rozetka": "Rozetka"}
+    ICON = {"vidhuk": "\U0001f4ac", "google": "\U0001f50d", "hotline": "\U0001f4ca",
+            "prom": "\U0001f3ea", "rozetka": "\U0001f6d2"}
+    brands, gen = {}, None
+    for fname, plat in SRC:
+        p = Path(fname)
+        if not p.exists():
+            continue
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        gen = data.get("generated") or gen
+        for bk, bd in (data.get("brands") or {}).items():
+            b = brands.setdefault(bk, {"name": bd.get("name", bk), "color": "#888", "platforms": {}})
+            if bd.get("name"):
+                b["name"] = bd["name"]
+            if bd.get("color"):
+                b["color"] = bd["color"]
+            b["platforms"][plat] = {
+                "label": LABEL.get(plat, plat), "icon": ICON.get(plat, "\U0001f4cb"),
+                "rating": bd.get("rating"), "count": bd.get("count"),
+                "sample_n": bd.get("sample_n", 0),
+                "pos": bd.get("pos", 0), "neu": bd.get("neu", 0), "neg": bd.get("neg", 0),
+                "dist": bd.get("dist"), "monthly": bd.get("monthly"),
+                "reviews": bd.get("reviews", []), "url": bd.get("url", ""),
+            }
+    if not brands:
+        return None
+    for bk, b in brands.items():
+        ps = list(b["platforms"].values())
+        tc = sum((p["count"] or 0) for p in ps if p.get("rating") is not None)
+        tw = sum((p["rating"] or 0) * (p["count"] or 0) for p in ps if p.get("rating") is not None)
+        sn = sum(p.get("sample_n", 0) for p in ps)
+        sp = sum(p.get("pos", 0) * p.get("sample_n", 0) for p in ps)
+        snu = sum(p.get("neu", 0) * p.get("sample_n", 0) for p in ps)
+        sng = sum(p.get("neg", 0) * p.get("sample_n", 0) for p in ps)
+        b["agg"] = {"rating": round(tw / tc, 1) if tc else None, "count": tc,
+                    "pos": round(sp / sn) if sn else 0, "neu": round(snu / sn) if sn else 0,
+                    "neg": round(sng / sn) if sn else 0}
+    return {"generated": gen, "brands": brands}
+
+
 def _mkt_month(ym, mkt, until_override=None):
     """Marketing-обʼєкт за місяць ym (повний, або MTD якщо until_override).
     Reuse build_marketing; 1С-виручка за ym (SALES + ORDERS). None якщо нема 1С."""
@@ -843,17 +895,13 @@ def main():
         except Exception as _te:
             print("  \u26a0\ufe0f \u0442\u0440\u0435\u043d\u0434 \u043f\u0440\u043e\u043f\u0443\u0449\u0435\u043d\u043e:", _te)
 
-    # ── Репутація (читаємо docs/reputation.json, який пише reputation_vidhuk.py) ──
-    reputation_obj = None
-    try:
-        _rp = Path("docs/reputation.json")
-        if _rp.exists():
-            reputation_obj = json.loads(_rp.read_text(encoding="utf-8"))
-            print("  репутація:", len(reputation_obj.get("brands", {})), "бренди з reputation.json")
-        else:
-            print("  репутація: docs/reputation.json немає (запусти reputation_vidhuk.py)")
-    except Exception as _rpe:
-        print("  \u26a0\ufe0f репутація пропущено:", _rpe)
+    # ── Репутація: мерж усіх джерел (Vidhuk + Google + …) у мульти-платформну структуру ──
+    reputation_obj = _merge_reputation()
+    if reputation_obj:
+        _pn = sum(len(b["platforms"]) for b in reputation_obj["brands"].values())
+        print("  репутація:", len(reputation_obj["brands"]), "бренди /", _pn, "платформ-джерел")
+    else:
+        print("  репутація: джерел немає (запусти reputation_vidhuk.py / reputation_google.py)")
 
     data = {
         "month": cur_month,

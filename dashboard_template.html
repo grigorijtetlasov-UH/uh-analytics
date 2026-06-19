@@ -2247,18 +2247,22 @@ function initCartCharts(){
 }
 
 function repReal(REP){
-  const B = Object.values(REP.brands);
+  const B = Object.values(REP.brands || {});
   const nf = n => (Number(n)||0).toLocaleString('uk');
   const sHTML = r => { r=Number(r)||0; const f=Math.floor(r), h=(r-f>=0.3)?1:0; let s='';
-    for(let i=0;i<5;i++) s+=`<span class="rep-star ${i<f||(i===f&&h)?'on':''}">${i<f?'★':(i===f&&h?'★':'☆')}</span>`; return s; };
+    for(let i=0;i<5;i++){ const on=i<f||(i===f&&h); s+=`<span class="rep-star ${on?'on':''}">${i<f?'★':(i===f&&h?'★':'☆')}</span>`; } return s; };
   const col = r => r>=4.5?'var(--g)':r>=4.0?'var(--o)':'var(--r)';
+  const PN = {vidhuk:'Vidhuk',google:'Google',hotline:'Hotline',prom:'Prom',rozetka:'Rozetka'};
 
-  let tCnt=0, tW=0, sPos=0, sNeu=0, sNeg=0;
-  B.forEach(b=>{ if(b.rating!=null){ tCnt+=b.count||0; tW+=Number(b.rating)*(b.count||0); }
-    const d=b.dist||{}; sPos+=(d['5']||0)+(d['4']||0); sNeu+=(d['3']||0); sNeg+=(d['2']||0)+(d['1']||0); });
-  const sN=sPos+sNeu+sNeg;
+  // всі платформи (для KPI-агрегату)
+  const allP = [];
+  B.forEach(b => Object.values(b.platforms||{}).forEach(p => allP.push(p)));
+  const platTypes = [...new Set(B.flatMap(b=>Object.keys(b.platforms||{})))];
+  let tCnt=0,tW=0,sN=0,sP=0,sNu=0,sNg=0;
+  allP.forEach(p=>{ if(p.rating!=null){tCnt+=p.count||0; tW+=p.rating*(p.count||0);}
+    sN+=p.sample_n||0; sP+=(p.pos||0)*(p.sample_n||0); sNu+=(p.neu||0)*(p.sample_n||0); sNg+=(p.neg||0)*(p.sample_n||0); });
   const avgR=(tCnt?tW/tCnt:0).toFixed(1);
-  const pP=sN?Math.round(sPos/sN*100):0, nP=sN?Math.round(sNeu/sN*100):0, gP=sN?Math.round(sNeg/sN*100):0;
+  const pP=sN?Math.round(sP/sN):0, nP=sN?Math.round(sNu/sN):0, gP=sN?Math.round(sNg/sN):0;
 
   document.getElementById('rep-kpi-row').innerHTML = `
     <div class="kpi c1"><div class="kl">Середня оцінка</div><div class="kv">${avgR}<span class="ku">/5</span></div><div class="ks">зважено · ${nf(tCnt)} відгуків</div></div>
@@ -2266,61 +2270,61 @@ function repReal(REP){
     <div class="kpi c3"><div class="kl">Нейтральні</div><div class="kv" style="color:var(--o)">${nP}<span class="ku">%</span></div><div class="ks">оцінка «3»</div></div>
     <div class="kpi c7"><div class="kl">Негативні</div><div class="kv" style="color:var(--r)">${gP}<span class="ku">%</span></div><div class="ks">оцінки «1-2»</div></div>
     <div class="kpi c4"><div class="kl">Всього відгуків</div><div class="kv">${nf(tCnt)}</div><div class="ks">${B.length} бренди</div></div>
-    <div class="kpi c5"><div class="kl">Джерело</div><div class="kv" style="font-size:17px">Vidhuk.ua</div><div class="ks">${REP.generated||''}</div></div>`;
+    <div class="kpi c5"><div class="kl">Платформ</div><div class="kv">${platTypes.length}</div><div class="ks">${platTypes.map(p=>PN[p]||p).join(' · ')}</div></div>`;
 
   document.getElementById('rep-sent-bar').innerHTML =
     `<div class="rep-sent-pos" style="width:${pP}%"></div><div class="rep-sent-neu" style="width:${nP}%"></div><div class="rep-sent-neg" style="width:${gP}%"></div>`;
-  document.getElementById('rep-sent-label').textContent = `👍 ${pP}% · 😐 ${nP}% · 👎 ${gP}% (за вибіркою ${sN})`;
+  const sl=document.getElementById('rep-sent-label'); if(sl) sl.textContent=`👍 ${pP}% · 😐 ${nP}% · 👎 ${gP}% (за вибіркою ${sN})`;
 
-  const _cards = B.map(b=>{
-    const d=b.dist||{}; const dm=Math.max(1,(d['5']||0),(d['4']||0),(d['3']||0),(d['2']||0),(d['1']||0));
-    const badge = b.rating>=4.5?'var(--gd);color:var(--g)':b.rating>=4.0?'var(--od);color:var(--o)':'var(--rd);color:var(--r)';
-    const rows=[5,4,3,2,1].map(s=>{const c=d[String(s)]||0; const bg=s>=4?'var(--g)':s===3?'var(--o)':'var(--r)';
-      return `<div class="rep-issue"><span style="min-width:22px;color:var(--td);font-size:10px">${s}★</span><div class="rep-issue-bar"><div class="rep-issue-fill" style="width:${Math.round(c/dm*100)}%;background:${bg}"></div></div><span class="rep-issue-cnt">${c}</span></div>`;}).join('');
-    return `<div class="rep-plat">
-      <div class="rep-plat-head">
-        <span class="rep-plat-logo" style="color:${b.color}">●</span>
-        <span class="rep-plat-name">${b.name}</span>
-        <span class="rep-plat-badge" style="background:${badge}">${b.rating}★</span>
+  // бренд → секція з картками-платформами
+  document.getElementById('rep-projects-container').innerHTML = B.map(b=>{
+    const ps = Object.entries(b.platforms||{});
+    const agg = b.agg || {};
+    const cards = ps.map(([pk,p])=>{
+      const badge = p.rating>=4.5?'var(--gd);color:var(--g)':(p.rating>=4.0?'var(--od);color:var(--o)':'var(--rd);color:var(--r)');
+      return `<div class="rep-plat" style="width:240px;border:1px solid var(--brd);border-radius:10px">
+        <div class="rep-plat-head"><span class="rep-plat-logo">${p.icon||'📋'}</span><span class="rep-plat-name">${p.label||pk}</span><span class="rep-plat-badge" style="background:${badge}">${p.rating!=null?p.rating+'★':'—'}</span></div>
+        <div class="rep-stars">${sHTML(p.rating)}</div>
+        <div class="rep-plat-bar"><div class="rep-plat-fill" style="width:${Math.round((Number(p.rating)||0)/5*100)}%;background:${col(p.rating)}"></div></div>
+        <div class="rep-plat-stats"><span class="rep-plat-count">${nf(p.count)} відгуків</span><span class="rep-plat-delta" style="color:var(--td)">вибірка ${p.sample_n||0}</span></div>
+        <div class="rep-sentiment-bar"><div class="rep-sent-pos" style="width:${p.pos||0}%"></div><div class="rep-sent-neu" style="width:${p.neu||0}%"></div><div class="rep-sent-neg" style="width:${p.neg||0}%"></div></div>
+        ${p.url?`<a href="${p.url}" target="_blank" rel="noopener" style="font-size:9px;color:var(--ac);margin-top:2px;display:inline-block">${p.label} →</a>`:''}
+      </div>`;
+    }).join('');
+    return `<div class="rep-project">
+      <div class="rep-project-head">
+        <span class="rep-project-icon" style="color:${b.color}">●</span>
+        <span class="rep-project-name">${b.name}</span>
+        <div class="rep-project-avg"><span class="rep-project-score" style="color:${col(+agg.rating)}">${agg.rating!=null?agg.rating+'★':'—'}</span><span class="rep-project-total">${nf(agg.count)} відгуків · ${ps.length} платф.</span></div>
       </div>
-      <div class="rep-stars">${sHTML(b.rating)}</div>
-      <div class="rep-plat-bar"><div class="rep-plat-fill" style="width:${Math.round((Number(b.rating)||0)/5*100)}%;background:${col(b.rating)}"></div></div>
-      <div class="rep-plat-stats"><span class="rep-plat-count">${nf(b.count)} відгуків</span><span class="rep-plat-delta" style="color:var(--td)">Vidhuk.ua</span></div>
-      <div class="rep-sentiment-bar"><div class="rep-sent-pos" style="width:${b.pos}%"></div><div class="rep-sent-neu" style="width:${b.neu}%"></div><div class="rep-sent-neg" style="width:${b.neg}%"></div></div>
-      <div style="font-size:9px;color:var(--td);margin:6px 0 2px">розподіл оцінок (вибірка ${b.sample_n})</div>
-      ${rows}
-      <a href="${b.url}" target="_blank" rel="noopener" style="font-size:10px;color:var(--ac);margin-top:4px;display:inline-block">відкрити на Vidhuk →</a>
+      <div class="rep-platforms" style="display:flex;flex-wrap:wrap;gap:10px;background:transparent;padding:12px 14px">${cards}</div>
     </div>`;
   }).join('');
-  document.getElementById('rep-projects-container').innerHTML = `
-    <div class="rep-project">
-      <div class="rep-project-head">
-        <span class="rep-project-icon">⭐</span>
-        <span class="rep-project-name">Рейтинги брендів</span>
-        <div class="rep-project-avg"><span class="rep-project-score" style="color:${col(+avgR)}">${avgR}★</span><span class="rep-project-total">${nf(tCnt)} відгуків · Vidhuk.ua</span></div>
-      </div>
-      <div class="rep-platforms" style="grid-template-columns:repeat(3,1fr)">${_cards}</div>
-    </div>`;
 
-  const yms=[...new Set(B.flatMap(b=>(b.monthly||[]).map(x=>x.ym)))].sort();
-  const lbl=yms.map(ym=>{const o=B.flatMap(b=>b.monthly||[]).find(x=>x.ym===ym); return o?o.m:ym;});
-  const dsets=B.map(b=>({label:b.name, data:yms.map(ym=>{const o=(b.monthly||[]).find(x=>x.ym===ym); return o?o.avg:null;}),
-    borderColor:b.color, backgroundColor:'transparent', borderWidth:2.5, tension:0.4, pointRadius:4, pointBackgroundColor:b.color, spanGaps:true}));
+  // тренд рейтингу по місяцях (з Vidhuk-даних кожного бренду)
+  const monthlyOf = b => ((b.platforms&&b.platforms.vidhuk&&b.platforms.vidhuk.monthly)||[]);
+  const yms=[...new Set(B.flatMap(b=>monthlyOf(b).map(x=>x.ym)))].sort();
+  const lbl=yms.map(ym=>{const o=B.flatMap(b=>monthlyOf(b)).find(x=>x.ym===ym); return o?o.m:ym;});
+  const dsets=B.filter(b=>monthlyOf(b).length).map(b=>({label:b.name,
+    data:yms.map(ym=>{const o=monthlyOf(b).find(x=>x.ym===ym); return o?o.avg:null;}),
+    borderColor:b.color, backgroundColor:'transparent', borderWidth:2.5, tension:0.4,
+    pointRadius:4, pointBackgroundColor:b.color, spanGaps:true}));
   new Chart(document.getElementById('ch-rep-trend'), {type:'line', data:{labels:lbl, datasets:dsets},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{labels:{color:'#c1c7e0',font:{size:10},usePointStyle:true,boxWidth:8}},
-        tooltip:{...TOOLTIP,callbacks:{label:ctx=>' '+ctx.dataset.label+': '+(ctx.parsed.y!=null?ctx.parsed.y+'★':'—')}}},
+        tooltip:Object.assign({},TOOLTIP,{callbacks:{label:ctx=>' '+ctx.dataset.label+': '+(ctx.parsed.y!=null?ctx.parsed.y+'★':'—')}})},
       scales:{x:{grid:GRID,ticks:{color:'#7b84a3'}},y:{grid:GRID,min:1,max:5,ticks:{color:'#7b84a3',callback:v=>v+'★'}}}}});
 
-  const all=B.flatMap(b=>(b.reviews||[]).map(r=>Object.assign({brand:b.name}, r)));
+  // проблеми/похвали — свіжі відгуки з УСІХ платформ
+  const all=[]; B.forEach(b=>Object.values(b.platforms||{}).forEach(p=>(p.reviews||[]).forEach(r=>all.push(Object.assign({_b:b.name,_p:p.label},r)))));
   const sortD=(a,b)=>(b.date||'').localeCompare(a.date||'');
   const neg=all.filter(r=>r.stars&&r.stars<=2).sort(sortD).slice(0,6);
   const pos=all.filter(r=>r.stars&&r.stars>=4).sort(sortD).slice(0,6);
   const card=r=>`<div style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06)">
-    <div style="font-size:10px;color:var(--td);margin-bottom:2px"><b style="color:var(--t2)">${r.brand}</b> · ${r.stars}★ · ${r.date}</div>
-    <div style="font-size:11px;color:var(--t2);line-height:1.35">${(r.text||'').slice(0,170)}${(r.text||'').length>170?'…':''}</div></div>`;
-  document.getElementById('rep-issues-container').innerHTML  = neg.length?neg.map(card).join(''):'<div style="color:var(--td);font-size:11px">у вибірці немає негативних</div>';
-  document.getElementById('rep-praises-container').innerHTML = pos.length?pos.map(card).join(''):'<div style="color:var(--td);font-size:11px">у вибірці немає позитивних</div>';
+    <div style="font-size:10px;color:var(--td);margin-bottom:2px"><b style="color:var(--t2)">${r._b}</b> · ${r._p} · ${r.stars}★ · ${r.date||''}</div>
+    <div style="font-size:11px;color:var(--t2);line-height:1.35">${(r.text||'').slice(0,160)}${(r.text||'').length>160?'…':''}</div></div>`;
+  const ic=document.getElementById('rep-issues-container'); if(ic) ic.innerHTML=neg.length?neg.map(card).join(''):'<div style="color:var(--td);font-size:11px">у вибірці немає негативних</div>';
+  const pc=document.getElementById('rep-praises-container'); if(pc) pc.innerHTML=pos.length?pos.map(card).join(''):'<div style="color:var(--td);font-size:11px">у вибірці немає позитивних</div>';
 }
 
 function initReputationCharts(){
