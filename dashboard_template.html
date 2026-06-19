@@ -1436,7 +1436,7 @@ function clAxes(){ return {x:{grid:(typeof GRID!=='undefined'?GRID:{}),ticks:{co
 
 function callaiderInit(){
   if(typeof CALLAIDER!=='undefined' && CALLAIDER && CALLAIDER.campaigns){ callaiderReal(CALLAIDER); return; }
-  const w=$('cl-kpi-row'); if(w) w.innerHTML='<div class="cd" style="padding:20px;color:var(--td)">Дані CallAIder ще не завантажені. Запусти <code>./run.sh callaider.py</code> і онови дашборд.</div>';
+  const w=document.getElementById('cl-kpi-row'); if(w) w.innerHTML='<div class="cd" style="padding:20px;color:var(--td)">Дані CallAIder ще не завантажені. Запусти <code>./run.sh callaider.py</code> і онови дашборд.</div>';
 }
 
 function callaiderReal(C){
@@ -1447,14 +1447,14 @@ function callaiderReal(C){
   const avgDur = durCnt? durSum/durCnt : 0;
   const activeN = camps.filter(c=>c.status==='in_progress').length;
 
-  $('cl-kpi-row').innerHTML =
+  document.getElementById('cl-kpi-row').innerHTML =
     '<div class="kpi c2"><div class="kl">Всього дзвінків</div><div class="kv">'+clFmt(T.calls||0)+'</div><div class="ks">'+camps.length+' кампаній · '+activeN+' активних</div></div>'+
     '<div class="kpi c1"><div class="kl">Дозвон</div><div class="kv" style="color:var(--g)">'+answeredPct+'<span class="ku">%</span></div><div class="ks">'+clFmt(T.answered||0)+' відповіли</div></div>'+
     '<div class="kpi c3"><div class="kl">Сер. тривалість</div><div class="kv">'+clDur(avgDur)+'</div><div class="ks">утримання / маршрутизація</div></div>'+
     '<div class="kpi c7"><div class="kl">Невдалих</div><div class="kv" style="color:var(--r)">'+clFmt(T.failed||0)+'</div><div class="ks">не зʼєдналися</div></div>';
 
   const stMap={in_progress:['var(--gd);color:var(--g)','активна'],paused:['var(--od);color:var(--o)','пауза'],completed:['var(--s3);color:var(--td)','завершена'],failed:['var(--rd);color:var(--r)','помилка']};
-  $('cl-campaigns').innerHTML = camps.map(function(c){
+  document.getElementById('cl-campaigns').innerHTML = camps.map(function(c){
     const b=CL_BRAND[c.brand]||CL_BRAND.other;
     const ap = c.total? Math.round(c.answered/c.total*1000)/10 : 0;
     const st=stMap[c.status]||['var(--s3);color:var(--td)',(c.status||'—')];
@@ -1475,7 +1475,7 @@ function callaiderReal(C){
   const days=Object.keys(dmap).sort();
   const dlabels=days.map(d=>{const p=d.split('-');return p[2]+'.'+p[1];});
   if(window._clDaily) window._clDaily.destroy();
-  window._clDaily=new Chart($('ch-cl-daily'),{type:'line',
+  window._clDaily=new Chart(document.getElementById('ch-cl-daily'),{type:'line',
     data:{labels:dlabels,datasets:[{label:'Дзвінків',data:days.map(d=>dmap[d]),borderColor:'#339af0',backgroundColor:'rgba(51,154,240,.12)',fill:true,tension:.3,pointRadius:0,borderWidth:2}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:(typeof TOOLTIP!=='undefined'?TOOLTIP:{})},scales:clAxes()}});
 
@@ -1484,7 +1484,7 @@ function callaiderReal(C){
   const bmap={}; order.forEach(k=>bmap[k]=0);
   camps.forEach(c=>{const b=c.duration_buckets||{};order.forEach(k=>bmap[k]+=(b[k]||0));});
   if(window._clDur) window._clDur.destroy();
-  window._clDur=new Chart($('ch-cl-dur'),{type:'bar',
+  window._clDur=new Chart(document.getElementById('ch-cl-dur'),{type:'bar',
     data:{labels:order,datasets:[{label:'Дзвінків',data:order.map(k=>bmap[k]),backgroundColor:['#ff6b6b','#ffa94d','#ffd43b','#00d68f','#339af0'],borderRadius:4}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:(typeof TOOLTIP!=='undefined'?TOOLTIP:{})},scales:{x:{grid:{display:false},ticks:{color:'#7b84a3'}},y:{grid:(typeof GRID!=='undefined'?GRID:{}),ticks:{color:'#7b84a3'},beginAtZero:true}}}});
 
@@ -1493,7 +1493,7 @@ function callaiderReal(C){
   const etot=Object.values(emap).reduce((a,b)=>a+b,0)||1;
   const ents=Object.entries(emap).sort((a,b)=>b[1]-a[1]);
   const ecolor=k=>/normal|answer|complete/i.test(k)?'var(--g)':/(no.?answer|busy|reject|cancel|fail|timeout|decline)/i.test(k)?'var(--r)':'var(--o)';
-  $('cl-ends').innerHTML = ents.map(function(p){
+  document.getElementById('cl-ends').innerHTML = ents.map(function(p){
     const k=p[0],v=p[1],pct=Math.round(v/etot*100);
     return '<div class="rep-issue"><span style="flex:1;color:var(--t2)">'+k+'</span><div class="rep-issue-bar"><div class="rep-issue-fill" style="width:'+pct+'%;background:'+ecolor(k)+'"></div></div><span class="rep-issue-cnt" style="color:'+ecolor(k)+'">'+clFmt(v)+'</span></div>';
   }).join('');
@@ -1501,12 +1501,12 @@ function callaiderReal(C){
   // Лог дзвінків — таби по кампаніях
   const withCalls=camps.filter(c=>(c.recent||[]).length);
   window._clCamps={}; withCalls.forEach(c=>window._clCamps[c.id]=c);
-  $('cl-log-tabs').innerHTML = withCalls.map(function(c,i){
+  document.getElementById('cl-log-tabs').innerHTML = withCalls.map(function(c,i){
     const b=CL_BRAND[c.brand]||CL_BRAND.other;
     return '<button class="tab'+(i===0?' on':'')+'" onclick="clLog('+c.id+',this)">'+b.i+' '+(c.name||b.n)+'</button>';
   }).join('');
   if(withCalls.length) clLogRender(withCalls[0]);
-  else $('cl-log').innerHTML='<div style="color:var(--td);padding:10px">Немає дзвінків</div>';
+  else document.getElementById('cl-log').innerHTML='<div style="color:var(--td);padding:10px">Немає дзвінків</div>';
 }
 
 function clLog(id,btn){
@@ -1515,7 +1515,7 @@ function clLog(id,btn){
   clLogRender(window._clCamps[id]);
 }
 function clLogRender(c){
-  if(!c){ $('cl-log').innerHTML=''; return; }
+  if(!c){ document.getElementById('cl-log').innerHTML=''; return; }
   const rows=(c.recent||[]).map(function(x){
     const okEnd=/normal|answer|complete/i.test(x.end||'');
     const sum = x.summary? '<div class="cl-sum">'+x.summary+'</div>' : '';
@@ -1526,7 +1526,7 @@ function clLogRender(c){
       '<span class="cl-en" style="color:'+(okEnd?'var(--g)':'var(--o)')+'">'+(x.end||x.status||'—')+'</span>'+
       sum+'</div>';
   }).join('');
-  $('cl-log').innerHTML = rows || '<div style="color:var(--td);padding:10px">Немає дзвінків</div>';
+  document.getElementById('cl-log').innerHTML = rows || '<div style="color:var(--td);padding:10px">Немає дзвінків</div>';
 }
 
 function swMain(name, btn) {
