@@ -1,5 +1,5 @@
 {
- "generated": "2026-06-22 08:03",
+ "generated": "2026-06-22 10:21",
  "campaigns": [
   {
    "id": 97,
@@ -556,12 +556,12 @@
    "brand": "hubstore",
    "type": "inbound",
    "status": "in_progress",
-   "total": 171,
-   "completed": 170,
+   "total": 176,
+   "completed": 176,
    "failed": 0,
-   "evaluated": 170,
+   "evaluated": 176,
    "avg_duration": 35.9,
-   "answered": 170,
+   "answered": 176,
    "with_transcript": 0,
    "with_eval": 0,
    "daily": [
@@ -667,27 +667,76 @@
     },
     {
      "date": "2026-06-22",
-     "count": 6
+     "count": 11
     }
    ],
    "duration_buckets": {
-    "0-10с": 7,
-    "10-30с": 85,
-    "30-60с": 65,
+    "0-10с": 6,
+    "10-30с": 87,
+    "30-60с": 69,
     "1-3хв": 13,
     "3хв+": 1
    },
    "ends": {
-    "normal": 168,
-    "transferred": 2,
-    "?": 1
+    "normal": 174,
+    "transferred": 2
    },
    "recent": [
     {
+     "phone": "0954013349",
+     "duration": 28,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-22 09:01",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0662955152",
+     "duration": 32,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-22 08:19",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
      "phone": "0958031278",
-     "duration": null,
-     "status": "in_progress",
-     "end": null,
+     "duration": 44,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-22 08:13",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0958031278",
+     "duration": 34,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-22 08:11",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0958031278",
+     "duration": 56,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-22 08:08",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0958031278",
+     "duration": 28,
+     "status": "evaluated",
+     "end": "normal",
      "date": "2026-06-22 08:02",
      "summary": "",
      "transcript": "",
@@ -1029,56 +1078,6 @@
      "status": "evaluated",
      "end": "normal",
      "date": "2026-06-17 08:34",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0500306620",
-     "duration": 32,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-17 08:33",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0666405612",
-     "duration": 31,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-16 14:30",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0503523986",
-     "duration": 23,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-16 12:35",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0990165531",
-     "duration": 39,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-16 10:37",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0677232562",
-     "duration": 25,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-16 08:49",
      "summary": "",
      "transcript": "",
      "eval": null
@@ -2174,10 +2173,10 @@
   }
  ],
  "totals": {
-  "calls": 7352,
-  "completed": 7337,
+  "calls": 7357,
+  "completed": 7343,
   "failed": 12,
-  "answered": 7329,
+  "answered": 7335,
   "with_transcript": 0,
   "with_eval": 0
  }
