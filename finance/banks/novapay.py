@@ -124,16 +124,34 @@ class NovaPayAdapter(BankAdapter):
                               f"<tem:GetAccountsList><tem:request><tem:jwt>{self._jwt}</tem:jwt>"
                               f"<tem:client_id>{cid}</tem:client_id></tem:request></tem:GetAccountsList>")
             for b in self._blocks(raw_a, "Accounts"):
+                acc_id = self._val(b, "id")
                 out.append(Account(
                     external_id=cid,
                     fio=name,
                     iban=self._val(b, "IBAN"),
                     currency=self._val(b, "currency") or "UAH",
-                    provider_account_id=self._val(b, "id"),
+                    balance=self._fetch_rest(acc_id),
+                    provider_account_id=acc_id,
                     raw={"client_id": cid, "name": name},
                 ))
         self.log.info("NovaPay: %d клієнтів, %d рахунків", len(clients), len(out))
         return out
+
+    def _fetch_rest(self, account_id: str):
+        """Поточний залишок (confirmed_balance) через GetAccountRest. У гривнях — без /100."""
+        if not account_id:
+            return None
+        try:
+            raw = self._call(
+                "GetAccountRest",
+                f"<tem:GetAccountRest><tem:request><tem:jwt>{self._jwt}</tem:jwt>"
+                f"<tem:account_id>{account_id}</tem:account_id>"
+                f"</tem:request></tem:GetAccountRest>")
+            val = self._val(raw, "confirmed_balance")
+            return Decimal(val) if val else None
+        except Exception as e:
+            self.log.warning("GetAccountRest FAILED (acc %s): %s", account_id, e)
+            return None
 
     # ── transactions ───────────────────────────────────────────────
     def _parse_payments(self, raw_xml: str) -> list[dict]:
