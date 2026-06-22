@@ -24,6 +24,7 @@ echo "[4/7] generate_dashboard.py (старий — місячний month.html 
 ./run.sh generate_dashboard.py || echo "  WARN: monthly gen failed, continuing"
 echo "  OK"
 echo "[5/7] НОВИЙ дашборд: dashboard_data.py + render_dashboard.py..."
+./run.sh callaider.py || echo "  WARN: callaider failed, continuing"
 ./run.sh dashboard_data.py
 ./run.sh render_dashboard.py
 cp docs/preview.html docs/index.html

@@ -197,6 +197,7 @@ def parse_order(raw):
         "campaign_id":           str(raw.get("campaignId")) if raw.get("campaignId") else None,
         "tip_stvorenna_zaavki":  raw.get("tipStvorennaZaavki"),
         
+        "comment":          raw.get("comment"),
         "items_count":      len(raw.get("products") or []),
     }
 
@@ -281,7 +282,7 @@ def upsert_batch(conn, orders):
                     rejection_reason, pricina_vidmovi, pricina_obrobki,
                     problemne_zaperechenna, osibka_menedzera,
                     kategoria_zvernenna, menedzer_na_magazini,
-                    campaign_id, tip_stvorenna_zaavki, items_count, synced_at
+                    campaign_id, tip_stvorenna_zaavki, items_count, comment, synced_at
                 ) VALUES (
                     %(id)s, %(order_id_1c)s, %(nomer_1s)s, %(external_id)s, %(status_id)s,
                     %(site_id)s, %(manager_id)s, %(form_id)s, %(organization_id)s,
@@ -297,7 +298,7 @@ def upsert_batch(conn, orders):
                     %(rejection_reason)s, %(pricina_vidmovi)s, %(pricina_obrobki)s,
                     %(problemne_zaperechenna)s, %(osibka_menedzera)s,
                     %(kategoria_zvernenna)s, %(menedzer_na_magazini)s,
-                    %(campaign_id)s, %(tip_stvorenna_zaavki)s, %(items_count)s, NOW()
+                    %(campaign_id)s, %(tip_stvorenna_zaavki)s, %(items_count)s, %(comment)s, NOW()
                 )
                 ON CONFLICT (id) DO UPDATE SET
                     status_id=EXCLUDED.status_id, manager_id=EXCLUDED.manager_id,
@@ -305,6 +306,7 @@ def upsert_batch(conn, orders):
                     total_amount=EXCLUDED.total_amount, payed_amount=EXCLUDED.payed_amount,
                     rest_pay=EXCLUDED.rest_pay, profit_amount=EXCLUDED.profit_amount,
                     rejection_reason=EXCLUDED.rejection_reason,
+                    comment=EXCLUDED.comment,
                     items_count=EXCLUDED.items_count, synced_at=NOW()
                 RETURNING (xmax = 0) AS inserted
             """, po)

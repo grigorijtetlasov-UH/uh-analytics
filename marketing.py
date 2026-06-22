@@ -50,6 +50,21 @@ def _meta_get(url, params, retries=4):
     return {"error": {"message": "max retries"}}
 
 
+def _usd_uah_rate():
+    """Курс USD→UAH з НБУ; фолбек META_USD_UAH з .env або 41.5."""
+    try:
+        r = requests.get("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json",
+                         params={"valcode": "USD"}, timeout=15)
+        r.raise_for_status()
+        rate = float(r.json()[0]["rate"])
+        if rate > 0:
+            print(f"  курс НБУ USD→UAH: {rate}")
+            return rate
+    except Exception as ex:
+        print(f"  ⚠ НБУ курс недоступний ({ex})")
+    return float(os.getenv("META_USD_UAH", "41.5"))
+
+
 def fetch_meta_mtd(since, until):
     """Сумарні Meta-витрати/кліки/результати за діапазон [since..until], по брендах."""
     out = {
@@ -57,6 +72,8 @@ def fetch_meta_mtd(since, until):
         "matrasroll": {"spend": 0.0, "clicks": 0, "impressions": 0, "results": 0},
         "accounts": [], "total_spend": 0.0,
     }
+    usd_rate = _usd_uah_rate()
+    out["usd_uah_rate"] = usd_rate
     last_token = None
     for acc in fd.META_ACCOUNTS:
         if last_token == acc["token"]:
@@ -70,7 +87,7 @@ def fetch_meta_mtd(since, until):
             {
                 "access_token": acc["token"],
                 "time_range":   json.dumps({"since": since, "until": until}),
-                "fields":       "spend,impressions,clicks,actions",
+                "fields":       "spend,impressions,clicks,actions,account_currency",
                 "level":        "account",
             },
         )
@@ -78,7 +95,15 @@ def fetch_meta_mtd(since, until):
             rec["error"] = "API error"          # НЕ зберігаємо текст — у ньому буває токен
         elif d.get("data"):
             row = d["data"][0]
-            rec["spend"]       = round(fd.safe_float(row.get("spend", 0)), 2)
+            cur = (row.get("account_currency") or "UAH").upper()
+            spend_raw = fd.safe_float(row.get("spend", 0))
+            rec["currency"] = cur
+            if cur == "USD":
+                rec["spend_usd"] = round(spend_raw, 2)
+                spend_raw = round(spend_raw * usd_rate, 2)
+            elif cur != "UAH":
+                print(f"  ⚠ {acc['name']}: валюта {cur} не конвертована")
+            rec["spend"]       = round(spend_raw, 2)
             rec["clicks"]      = int(row.get("clicks", 0) or 0)
             rec["impressions"] = int(row.get("impressions", 0) or 0)
             res = 0
