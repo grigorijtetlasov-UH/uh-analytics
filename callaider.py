@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # callaider.py — дані AI-дзвінків з CallAIder Ringing API (PULL). → docs/callaider.json
 # Запуск: ./run.sh callaider.py   (потрібен CALLAIDER_API_KEY у .env)
-import os, json, datetime
+import os, json, datetime, time
 from pathlib import Path
 from collections import Counter
 import requests
@@ -14,10 +14,24 @@ OUT = Path("docs/callaider.json")
 BRAND_KEYS = ["sofino", "matrasroll", "amebli", "hubstore"]
 
 
-def g(p):
-    r = requests.get(BASE + p, headers=H, timeout=90)
-    r.raise_for_status()
-    return r.json()
+def g(p, tries=5):
+    # CallAIder за Cloudflare іноді віддає 522/5xx — ретраїмо з backoff 6с×i.
+    # 4xx (напр. 401) кидаємо одразу, без повторів.
+    for i in range(1, tries + 1):
+        try:
+            r = requests.get(BASE + p, headers=H, timeout=90)
+        except requests.RequestException as e:
+            if i < tries:
+                print(f"  ⚠ {type(e).__name__} на {p} — ретрай {i}/{tries} через {6*i}с")
+                time.sleep(6 * i); continue
+            raise
+        if r.status_code == 200:
+            return r.json()
+        if 500 <= r.status_code < 600 and i < tries:
+            print(f"  ⚠ {r.status_code} на {p} — ретрай {i}/{tries} через {6*i}с")
+            time.sleep(6 * i); continue
+        r.raise_for_status()      # 4xx або останній 5xx → кидаємо
+    raise RuntimeError(f"CallAIder {p}: вичерпано {tries} спроб")
 
 
 def brand_of(name):
