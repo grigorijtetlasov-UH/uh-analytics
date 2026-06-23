@@ -41,6 +41,7 @@ class MonobankAdapter(BankAdapter):
         self.rate_limit_sec = rate_limit_sec
         self._creds: list[tuple[str, str]] = []        # [(label, token), ...]  label — лише для логів
         self._token_by_ext: dict[str, str] = {}        # clientId -> token (заповнює fetch_accounts)
+        self._target_iban_by_token: dict[str, Optional[str]] = {}
         self._last_request_at = 0.0                     # monotonic; спільний на всі токени
 
     # ── credentials: потрібен ЛИШЕ стовпець токенів ────────────────
@@ -57,8 +58,10 @@ class MonobankAdapter(BankAdapter):
         header = [str(c).strip().lower() if c is not None else "" for c in rows[0]]
         lbl_i = self._find_col(header, ["фіо", "піб", "фоп", "name", "ім"])
         tok_i = self._find_col(header, ["token", "токен", "ключ", "x-token"])
+        iban_i = self._find_col(header, ["iban", "рахун"])
 
         creds = []
+        target_map = {}
         for row in rows[1:]:
             if tok_i is not None:
                 token = row[tok_i]
@@ -66,10 +69,14 @@ class MonobankAdapter(BankAdapter):
             else:
                 label, token = self._guess_label_token(row)
             if token:
-                creds.append((str(label).strip() if label else "?", str(token).strip()))
+                tok = str(token).strip()
+                creds.append((str(label).strip() if label else "?", tok))
+                _iv = row[iban_i] if (iban_i is not None and iban_i < len(row)) else None
+                target_map[tok] = str(_iv).strip() if (_iv is not None and str(_iv).strip() and str(_iv).strip().lower() != "nan") else None
         if not creds:
             raise ValueError("Не знайдено токенів у Моно.xlsx — перевір заголовки")
         self._creds = creds
+        self._target_iban_by_token = target_map
         self.log.info("Завантажено %d Monobank токенів", len(creds))
 
     @staticmethod
@@ -129,7 +136,15 @@ class MonobankAdapter(BankAdapter):
             name = info.get("name") or label
             self._token_by_ext[client_id] = token
             accs = info.get("accounts", [])
-            for acc in accs:
+            target_iban = self._target_iban_by_token.get(token)
+            if not target_iban:
+                self.log.warning("%s [%s]: IBAN не задано у Моно.xlsx — пропускаю токен (інакше тягне особисті рахунки)", name, client_id)
+                continue
+            sel = [a for a in accs if (a.get("iban") or "") == target_iban]
+            if not sel:
+                self.log.warning("%s [%s]: цільовий IBAN …%s відсутній серед %d рахунків — пропускаю", name, client_id, target_iban[-6:], len(accs))
+                continue
+            for acc in sel:
                 cur = CURRENCY_BY_CODE.get(acc.get("currencyCode"), str(acc.get("currencyCode")))
                 out.append(Account(
                     external_id=client_id,            # унікальний clientId з API
@@ -140,7 +155,7 @@ class MonobankAdapter(BankAdapter):
                     provider_account_id=acc.get("id"),
                     raw=acc,
                 ))
-            self.log.info("%s [%s]: %d рахунків", name, client_id, len(accs))
+            self.log.info("%s [%s]: %d рахунків (whitelist)", name, client_id, len(sel))
         return out
 
     # ── transactions ───────────────────────────────────────────────
