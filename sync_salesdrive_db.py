@@ -360,6 +360,8 @@ def main():
     ap.add_argument("--to",   dest="date_to")
     ap.add_argument("--incremental", action="store_true")
     ap.add_argument("--days", type=int, default=3)
+    ap.add_argument("--since-min", dest="since_min", type=int, default=None,
+                    help="інкремент за останні N хвилин (точність до хвилини, по updateAt)")
     args = ap.parse_args()
     
     if not API_KEY: log.error("SD_API_KEY not set"); sys.exit(1)
@@ -371,6 +373,11 @@ def main():
         nm = datetime(int(y)+1, 1, 1) if m == "12" else datetime(int(y), int(m)+1, 1)
         dt = (nm - timedelta(days=1)).strftime("%Y-%m-%d")
         mode, filter_by = f"month {args.month}", "orderTime"
+    elif args.since_min is not None:
+        now = datetime.now()
+        dt = now.strftime("%Y-%m-%d %H:%M:%S")
+        df = (now - timedelta(minutes=args.since_min)).strftime("%Y-%m-%d %H:%M:%S")
+        mode, filter_by = f"incremental {args.since_min}min", "updateAt"
     elif args.incremental:
         dt = datetime.now().strftime("%Y-%m-%d")
         df = (datetime.now() - timedelta(days=args.days)).strftime("%Y-%m-%d")
