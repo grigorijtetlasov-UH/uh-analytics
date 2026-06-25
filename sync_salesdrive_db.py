@@ -374,10 +374,14 @@ def main():
         dt = (nm - timedelta(days=1)).strftime("%Y-%m-%d")
         mode, filter_by = f"month {args.month}", "orderTime"
     elif args.since_min is not None:
-        now = datetime.now()
+        # SalesDrive фільтрує/віддає updateAt у КИЇВСЬКОМУ часі; сервер у UTC.
+        # Вікно теж рахуємо в Києві, інакше ловимо інтервал зсунутий на ~3 год
+        # і свіжі зміни доїжджають у дзеркало із 3-годинним лагом.
+        from zoneinfo import ZoneInfo
+        now = datetime.now(ZoneInfo("Europe/Kyiv")).replace(tzinfo=None)
         dt = now.strftime("%Y-%m-%d %H:%M:%S")
         df = (now - timedelta(minutes=args.since_min)).strftime("%Y-%m-%d %H:%M:%S")
-        mode, filter_by = f"incremental {args.since_min}min", "updateAt"
+        mode, filter_by = f"incremental {args.since_min}min (Kyiv)", "updateAt"
     elif args.incremental:
         dt = datetime.now().strftime("%Y-%m-%d")
         df = (datetime.now() - timedelta(days=args.days)).strftime("%Y-%m-%d")
