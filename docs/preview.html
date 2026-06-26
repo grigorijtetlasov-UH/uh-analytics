@@ -408,7 +408,7 @@ tr.row-comp td{opacity:.8}
 .iris-quick{background:var(--s2);border:1px solid var(--brd);color:var(--td);font-family:'DM Sans',sans-serif;font-size:10px;padding:5px 10px;border-radius:8px;cursor:pointer;transition:.15s;white-space:nowrap}
 .iris-quick:hover{color:var(--ac2);border-color:var(--ac);background:var(--s3)}
 </style>
-<style>.ai-block{display:none}.mtab:has(.wip){display:none!important}.cd:has([id$="-funnel"]){display:none!important}.wip{font-size:7px;color:#ffa94d;vertical-align:super;margin-left:4px;opacity:.85;letter-spacing:.2px;font-weight:700;text-transform:uppercase}</style>
+<script>window.SHIP_DATA={"june": [11413, 114597, 623972, 1165188, 1509470, 116008, 85537, 589732, 715372, 928708, 1226390, 1169900, 221888, 22990, 1371757, 953632, 1249996, 1056359, 1146591, 160765, 1677, 710532, 987750, 802014, 844418], "may": 21782394, "plan": 0};</script><style>.ai-block{display:none}.mtab:has(.wip){display:none!important}.cd:has([id$="-funnel"]){display:none!important}.wip{font-size:7px;color:#ffa94d;vertical-align:super;margin-left:4px;opacity:.85;letter-spacing:.2px;font-weight:700;text-transform:uppercase}</style>
 </head>
 <body>
 
@@ -1236,6 +1236,8 @@ tr.row-comp td{opacity:.8}
   <div id="fp-cards" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px"></div>
   <div id="fp-table" style="margin-bottom:20px;overflow-x:auto"></div>
   <div style="height:300px;background:rgba(255,255,255,.02);border-radius:10px;padding:12px 14px"><canvas id="fp-chart"></canvas></div>
+  <div class="ct" style="margin:22px 0 14px"><span class="dot" style="background:#339af0"></span>Відгрузки — по днях vs план <span style="font-size:11px;color:var(--td);font-weight:400">· накопичувально</span></div>
+  <div style="height:300px;background:rgba(255,255,255,.02);border-radius:10px;padding:12px 14px"><canvas id="fp-ship-chart"></canvas></div>
 </div><!-- /mp-finplan -->
 <script>
 function initFinplan(){
@@ -1248,7 +1250,7 @@ function initFinplan(){
   for(var i=0;i<O;i++)sumDay.push(0);
   keys.forEach(function(k){
     var g=G[k],j=g.june||[],nd=0,act=0;
-    for(var i=0;i<j.length;i++){if(j[i]>0)nd++;act+=(j[i]||0);if(i<O)sumDay[i]+=(j[i]||0);}
+    for(var i=0;i<j.length;i++){if(j[i]>0)nd++;act+=(j[i]||0);if(k!=='sofino'&&i<O)sumDay[i]+=(j[i]||0);}
     if(!nd)nd=j.length||1;
     var avg=act/(nd||1),proj=Math.round(act+avg*(O-nd)),plan=g.plan||0;
     var pct=plan>0?Math.round(proj/plan*100):null;
@@ -1286,6 +1288,22 @@ function initFinplan(){
       {label:'План (без Софіно)',data:cumPlan,borderColor:'#66d9e8',borderDash:[2,3],borderWidth:1.5,pointRadius:0,tension:0}
     ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9aa0aa',boxWidth:12,font:{size:11}}}},scales:{x:{ticks:{color:'#6b7280',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#6b7280',font:{size:10},callback:function(v){return (v/1e6).toFixed(0)+'M';}},grid:{color:'rgba(255,255,255,.04)'}}}}});
   }
+  initFinplanShip();
+}
+function initFinplanShip(){
+  var S=window.SHIP_DATA||{};var j=S.june||[];var plan=S.plan||0;
+  var O=(typeof O_DIM!=='undefined')?O_DIM:30;
+  var ND=0;for(var i=0;i<j.length;i++){if(j[i]>0)ND++;}if(!ND)ND=j.length||O;
+  var labels=[];for(var i=1;i<=O;i++)labels.push(String(i));
+  var cumF=[],run=0;
+  for(var i=0;i<O;i++){if(i<ND){run+=j[i]||0;cumF.push(Math.round(run));}else cumF.push(null);}
+  var avgDay=ND>0?cumF[ND-1]/ND:0,cumProj=[];
+  for(var i=0;i<O;i++){if(i<ND-1)cumProj.push(null);else if(i===ND-1)cumProj.push(cumF[ND-1]);else cumProj.push(Math.round(cumF[ND-1]+avgDay*(i-(ND-1))));}
+  var ds=[{label:'Факт накопич.',data:cumF,borderColor:'#339af0',backgroundColor:'rgba(51,154,240,.08)',borderWidth:2,pointRadius:0,tension:.15,fill:true},
+          {label:'Прогноз',data:cumProj,borderColor:'#339af0',borderDash:[4,4],borderWidth:1.5,pointRadius:0,tension:.15}];
+  if(plan>0){var pd=plan/O,cumPlan=[];for(var i=0;i<O;i++)cumPlan.push(Math.round(pd*(i+1)));ds.push({label:'План',data:cumPlan,borderColor:'#66d9e8',borderDash:[2,3],borderWidth:1.5,pointRadius:0,tension:0});}
+  var ctx=document.getElementById('fp-ship-chart');
+  if(ctx&&typeof Chart!=='undefined'){new Chart(ctx,{type:'line',data:{labels:labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9aa0aa',boxWidth:12,font:{size:11}}}},scales:{x:{ticks:{color:'#6b7280',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#6b7280',font:{size:10},callback:function(v){return (v/1e6).toFixed(0)+'M';}},grid:{color:'rgba(255,255,255,.04)'}}}}});}
 }
 </script>
 
