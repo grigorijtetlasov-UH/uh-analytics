@@ -516,6 +516,7 @@ tr.row-comp td{opacity:.8}
   <button class="mtab"     onclick="swMain('reputation',this)">⭐ Репутація</button>
   <button class="mtab"     onclick="swMain('iris',this)">🧠 IRIS<sup class="wip">в розробці</sup></button>
   <button class="mtab"     onclick="swMain('callaider',this)">📞 Callider</button>
+  <button class="mtab"     onclick="swMain('finplan',this)">🎯 Фінплан</button>
 </div>
 
 <!-- ══════════════════════════════════════════════════
@@ -1224,6 +1225,70 @@ tr.row-comp td{opacity:.8}
 
 </div><!-- /mp-callaider -->
 
+<style>
+.fp-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.fp-tbl th{text-align:right;padding:8px 10px;color:var(--td);font-weight:600;border-bottom:1px solid var(--bd);font-size:11px;text-transform:uppercase;letter-spacing:.3px}
+.fp-tbl th:first-child,.fp-tbl td:first-child{text-align:left}
+.fp-tbl td{text-align:right;padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.04)}
+</style>
+<div class="mpnl" id="mp-finplan">
+  <div class="ct" style="margin:0 0 14px"><span class="dot" style="background:var(--ac2)"></span>Фінплан — продажі: план / факт / прогноз <span style="font-size:11px;color:var(--td);font-weight:400">· поточний місяць</span></div>
+  <div id="fp-cards" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px"></div>
+  <div id="fp-table" style="margin-bottom:20px;overflow-x:auto"></div>
+  <div style="height:300px;background:rgba(255,255,255,.02);border-radius:10px;padding:12px 14px"><canvas id="fp-chart"></canvas></div>
+</div><!-- /mp-finplan -->
+<script>
+function initFinplan(){
+  var G=(typeof CHO!=='undefined'&&CHO)?CHO:{};
+  var O=(typeof O_DIM!=='undefined')?O_DIM:30;
+  var order=['roll','amebli','seti','roznica','other','sofino'];
+  var keys=order.filter(function(k){return G[k];});
+  Object.keys(G).forEach(function(k){if(keys.indexOf(k)<0)keys.push(k);});
+  var rows=[],nsP=0,nsA=0,nsJ=0,sumDay=[];
+  for(var i=0;i<O;i++)sumDay.push(0);
+  keys.forEach(function(k){
+    var g=G[k],j=g.june||[],nd=0,act=0;
+    for(var i=0;i<j.length;i++){if(j[i]>0)nd++;act+=(j[i]||0);if(i<O)sumDay[i]+=(j[i]||0);}
+    if(!nd)nd=j.length||1;
+    var avg=act/(nd||1),proj=Math.round(act+avg*(O-nd)),plan=g.plan||0;
+    var pct=plan>0?Math.round(proj/plan*100):null;
+    rows.push({name:g.name,color:g.color,plan:plan,act:Math.round(act),proj:proj,pct:pct});
+    if(k!=='sofino'){nsP+=plan;nsA+=act;nsJ+=proj;}
+  });
+  var ND=0;for(var i=0;i<sumDay.length;i++){if(sumDay[i]>0)ND++;}if(!ND)ND=O;
+  function fmt(n){return Math.round(n||0).toLocaleString('uk-UA').replace(/,/g,' ').replace(/\u00a0/g,' ');}
+  function fmtK(n){n=n||0;return n>=1e6?(n/1e6).toFixed(2)+'M':Math.round(n/1e3)+'K';}
+  var nsPct=nsP>0?Math.round(nsJ/nsP*100):null;
+  document.getElementById('fp-cards').innerHTML=
+    '<div class="kpi"><div class="kl">План місяця (без Софіно)</div><div class="kv">'+fmtK(nsP)+'<span class="ku">\u20b4</span></div></div>'+
+    '<div class="kpi"><div class="kl">Факт накопич.</div><div class="kv">'+fmtK(nsA)+'<span class="ku">\u20b4</span></div></div>'+
+    '<div class="kpi"><div class="kl">Прогноз місяця</div><div class="kv" style="color:var(--g)">'+fmtK(nsJ)+'<span class="ku">\u20b4</span></div></div>'+
+    '<div class="kpi"><div class="kl">Виконання плану</div><div class="kv">'+(nsPct!=null?nsPct+'<span class="ku">%</span>':'\u2014')+'</div></div>';
+  var th='<tr><th>Група</th><th>План</th><th>Факт</th><th>Прогноз</th><th>Викон.</th></tr>';
+  var tb=rows.map(function(r){
+    var pc=r.pct!=null?r.pct+'%':'\u2014';
+    var col=r.pct==null?'':(r.pct>=100?'color:var(--g)':(r.pct>=80?'color:var(--y)':'color:var(--r)'));
+    return '<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:'+(r.color||'#888')+';margin-right:6px"></span>'+r.name+'</td><td>'+fmt(r.plan)+'</td><td>'+fmt(r.act)+'</td><td>'+fmt(r.proj)+'</td><td style="font-weight:600;'+col+'">'+pc+'</td></tr>';
+  }).join('');
+  tb+='<tr style="border-top:2px solid var(--bd);font-weight:700"><td>Разом (без Софіно)</td><td>'+fmt(nsP)+'</td><td>'+fmt(nsA)+'</td><td>'+fmt(nsJ)+'</td><td>'+(nsPct!=null?nsPct+'%':'\u2014')+'</td></tr>';
+  document.getElementById('fp-table').innerHTML='<table class="fp-tbl">'+th+tb+'</table>';
+  var labels=[];for(var i=1;i<=O;i++)labels.push(String(i));
+  var cumF=[],run=0;
+  for(var i=0;i<O;i++){if(i<ND){run+=sumDay[i]||0;cumF.push(Math.round(run));}else cumF.push(null);}
+  var avgDay=ND>0?(cumF[ND-1]/ND):0,cumProj=[];
+  for(var i=0;i<O;i++){if(i<ND-1)cumProj.push(null);else if(i===ND-1)cumProj.push(cumF[ND-1]);else cumProj.push(Math.round(cumF[ND-1]+avgDay*(i-(ND-1))));}
+  var pd=nsP/O,cumPlan=[];for(var i=0;i<O;i++)cumPlan.push(Math.round(pd*(i+1)));
+  var ctx=document.getElementById('fp-chart');
+  if(ctx&&typeof Chart!=='undefined'){
+    new Chart(ctx,{type:'line',data:{labels:labels,datasets:[
+      {label:'Факт накопич.',data:cumF,borderColor:'#00d68f',backgroundColor:'rgba(0,214,143,.08)',borderWidth:2,pointRadius:0,tension:.15,fill:true},
+      {label:'Прогноз',data:cumProj,borderColor:'#00d68f',borderDash:[4,4],borderWidth:1.5,pointRadius:0,tension:.15},
+      {label:'План (без Софіно)',data:cumPlan,borderColor:'#66d9e8',borderDash:[2,3],borderWidth:1.5,pointRadius:0,tension:0}
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9aa0aa',boxWidth:12,font:{size:11}}}},scales:{x:{ticks:{color:'#6b7280',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#6b7280',font:{size:10},callback:function(v){return (v/1e6).toFixed(0)+'M';}},grid:{color:'rgba(255,255,255,.04)'}}}}});
+  }
+}
+</script>
+
 
 <!-- Feedback modal -->
 <div class="fb-overlay" id="fbOverlay" onclick="if(event.target===this)closeFeedback()">
@@ -1417,6 +1482,7 @@ function swMain(name, btn) {
   if(name==='cart' && !window._cartInit) { initCartCharts(); window._cartInit=true; }
   if(name==='reputation' && !window._repInit) { initReputationCharts(); window._repInit=true; }
   if(name==='callaider' && !window._callInit) { callaiderInit(); window._callInit=true; }
+  if(name==='finplan' && !window._finplanInit) { initFinplan(); window._finplanInit=true; }
   if(name==='iris') { initIrisTab(); }
 }
 function swSales(name, btn) {
