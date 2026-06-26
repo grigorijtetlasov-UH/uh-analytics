@@ -1006,6 +1006,8 @@ def main():
     }
     out_path.parent.mkdir(parents=True, exist_ok=True)
     data["forecast"] = _build_forecast(data["sec1_orders"]["groups"], cur_month)
+    _y, _m = int(cur_month[:4]), int(cur_month[5:7])
+    data["forecast"]["_ship"] = _forecast_series((data.get("shipments") or {}).get("june", []), _y, _m)
     out_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print("✅ data.json:", out_path)

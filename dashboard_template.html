@@ -1853,7 +1853,10 @@ function renderSec1(key, btn){
   const ND=june.length;
   const juneActual=june.reduce((a,b)=>a+b,0);
   const avgDaily=juneActual/ND;
-  const juneProj=juneActual+avgDaily*(O_DIM-ND);
+  const _FC=window.FORECAST||{};
+  let juneProj;
+  if(key==='all'){juneProj=0;Object.keys(CHO).forEach(function(k){if(k!=='sofino'){var f=_FC[k]||{};juneProj+=(f.base!=null?f.base:0);}});if(!juneProj)juneProj=juneActual+avgDaily*(O_DIM-ND);}
+  else{var f=_FC[key]||{};juneProj=(f.base!=null?f.base:juneActual+avgDaily*(O_DIM-ND));}
   const mayArr=rampDaily(may), mayTotal=mayArr.reduce((a,b)=>a+b,0);
   const planDaily=Math.round(plan/O_DIM);
   const labels=Array.from({length:O_DIM},(_,i)=>String(i+1));
@@ -1966,7 +1969,8 @@ function renderSec1(key, btn){
   const SND=shipJune.length;
   const shipActual=shipJune.reduce((a,b)=>a+b,0);
   const shipAvg=shipActual/SND;
-  const shipProj=shipActual+shipAvg*(O_DIM-SND);
+  const _FCs=(window.FORECAST||{})._ship||{};
+  const shipProj=_FCs.base!=null?_FCs.base:shipActual+shipAvg*(O_DIM-SND);
   const shipPlan=17000000, shipPlanDaily=Math.round(shipPlan/O_DIM);
   const shipMay=rampDaily(16958769), shipMayTotal=shipMay.reduce((a,b)=>a+b,0);
   const shipSolid=shipLabels.map((_,i)=> i<SND?shipJune[i]:null);
