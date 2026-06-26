@@ -157,6 +157,77 @@ def _fetch_1c_orders(cur_month):
     return clean
 
 
+def _forecast_series(daily, year, month):
+    """Нелінійний прогноз місячного підсумку ряду daily (денний факт, дні що минули).
+    Декомпозиція: рівень x профіль_дня_тижня x тренд. Діапазон low/base/high."""
+    daily = [float(x or 0) for x in daily]
+    elapsed = len(daily)
+    actual = sum(daily)
+    nm = date(year + (1 if month == 12 else 0), 1 if month == 12 else month + 1, 1)
+    total_days = (nm - timedelta(days=1)).day
+    remaining = total_days - elapsed
+    if elapsed == 0:
+        return {"base": 0, "low": 0, "high": 0, "actual": 0,
+                "elapsed": 0, "total_days": total_days, "method": "n/a"}
+    if remaining <= 0:
+        return {"base": round(actual), "low": round(actual), "high": round(actual),
+                "actual": round(actual), "elapsed": elapsed, "total_days": total_days,
+                "remaining": 0, "method": "complete"}
+    pos = [daily[i] for i in range(elapsed) if daily[i] > 0]
+    if len(pos) < 3:
+        avg = actual / max(1, len(pos))
+        base = actual + avg * remaining
+        return {"base": round(base), "low": round(base * 0.7), "high": round(base * 1.3),
+                "actual": round(actual), "elapsed": elapsed, "total_days": total_days,
+                "remaining": remaining, "method": "linear (мало даних)"}
+    overall = sum(pos) / len(pos)
+    dow_vals = {i: [] for i in range(7)}
+    for i in range(elapsed):
+        if daily[i] > 0:
+            dow_vals[date(year, month, i + 1).weekday()].append(daily[i])
+    dow_avg = {d: (sum(dow_vals[d]) / len(dow_vals[d]) if dow_vals[d] else overall) for d in range(7)}
+    profile = {d: (dow_avg[d] / overall if overall > 0 else 1.0) for d in range(7)}
+    norm = [daily[i] / profile[date(year, month, i + 1).weekday()]
+            for i in range(elapsed) if daily[i] > 0]
+    level = sum(norm) / len(norm)
+    idx = list(range(len(norm)))
+    n = len(idx); mx = sum(idx) / n; my = sum(norm) / n
+    den = sum((x - mx) ** 2 for x in idx) or 1.0
+    slope = sum((idx[i] - mx) * (norm[i] - my) for i in range(n)) / den
+    cap = 0.5 * level
+    def trend_at(step):
+        delta = slope * step
+        delta = cap if delta > cap else (-cap if delta < -cap else delta)
+        return max(0.0, level + delta)
+    future = 0.0; step = 0
+    for d in range(elapsed + 1, total_days + 1):
+        step += 1
+        future += trend_at(step) * profile[date(year, month, d).weekday()]
+    base = actual + future
+    resid = []
+    for i in range(elapsed):
+        if daily[i] > 0:
+            pred = level * profile[date(year, month, i + 1).weekday()]
+            resid.append(daily[i] - pred)
+    if len(resid) > 1:
+        rm = sum(resid) / len(resid)
+        sigma = (sum((r - rm) ** 2 for r in resid) / (len(resid) - 1)) ** 0.5
+    else:
+        sigma = level * 0.2
+    conf = 1.6 if elapsed < 7 else (1.0 if elapsed >= 15 else 1.25)
+    unc = sigma * (remaining ** 0.5) * conf
+    low = max(actual, base - unc); high = base + unc
+    return {"base": round(base), "low": round(low), "high": round(high),
+            "actual": round(actual), "elapsed": elapsed, "total_days": total_days,
+            "remaining": remaining, "method": "профіль+тренд"}
+
+
+def _build_forecast(sec1_groups, cur_month):
+    """Прогноз по групах sec1_orders (1С ORDERS денний). cur_month='YYYY-MM'."""
+    y, m = int(cur_month[:4]), int(cur_month[5:7])
+    return {gk: _forecast_series(gv.get("june", []), y, m) for gk, gv in sec1_groups.items()}
+
+
 def orders_1c_section1(rows_cur, rows_prev, day_count):
     """Секція 1 (Огляд) з 1С ORDERS: денна `Сумма` по 6 групах (поточний місяць) + May-тотал.
     Групи: Ролл/Амебли/Сети/Розниця/Софіно/Інше (мапінг — _order_group). Доставку вже виключено.
@@ -934,6 +1005,7 @@ def main():
         "sec3_1c": orders_1c_section3(o1c_rows, day_count),
     }
     out_path.parent.mkdir(parents=True, exist_ok=True)
+    data["forecast"] = _build_forecast(data["sec1_orders"]["groups"], cur_month)
     out_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print("✅ data.json:", out_path)

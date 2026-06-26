@@ -216,6 +216,9 @@ def main():
     _pnl = data.get("pnl", {}) or {}
     _pcosts = data.get("costs", {}) or {}
     html = html.replace("</head>", "<script>window.PNL=" + json.dumps(_pnl, ensure_ascii=False) + ";window.PNL_COSTS=" + json.dumps(_pcosts, ensure_ascii=False) + ";</script></head>", 1)
+    # 7d) прогноз (нелінійний движок) для вкладки Фінплан
+    _fc = data.get("forecast", {}) or {}
+    html = html.replace("</head>", "<script>window.FORECAST=" + json.dumps(_fc, ensure_ascii=False) + ";</script></head>", 1)
     # 8) Секція 2 (Маркетинг/ДРР) — ТЕПЕР показуємо: KPI-картки + тренд завʼязані на MKT у JS
     #    (AI-блок усередині лишається схований глобальним .ai-block{display:none})
 
