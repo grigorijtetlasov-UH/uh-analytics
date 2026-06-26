@@ -2009,7 +2009,9 @@ function initSalesCharts() {
   const combined=Array.from({length:nd},(_,i)=>chans.reduce((s,c)=>s+c.june[i],0));
   const totalActual=combined.reduce((a,b)=>a+b,0);
   const avgD=totalActual/nd;
-  const proj=totalActual+avgD*(O_DIM-nd);
+  const _FCsales=window.FORECAST||{};
+  let proj=0;Object.keys(_FCsales).forEach(function(k){if(k!=='sofino'&&k!=='_ship'){var f=_FCsales[k]||{};proj+=(f.base!=null?f.base:0);}});
+  if(!proj)proj=totalActual+avgD*(O_DIM-nd);
   const planTotal=chans.reduce((s,c)=>s+c.plan,0);
   const planDaily=Math.round(planTotal/O_DIM);
   const mayTotal=chans.reduce((s,c)=>s+c.may,0);
