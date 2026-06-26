@@ -803,6 +803,8 @@ def main():
             grp[gk]["coverage"] = m1c[gk]["coverage"]
             grp[gk]["reliable"] = m1c[gk]["reliable"]
             grp[gk]["cats"] = m1c[gk]["cats"]
+    _pnl_rev = sum(v["rev"] for v in m1c.values()) if m1c else 0
+    _pnl_gm = sum(v["rev"] * (v.get("margin") or 0) / 100 for v in m1c.values()) if m1c else 0
 
     # ── KPI: конверсія з CRM, ВІДМОВИ — канонічні з 1С (СостояниеЗаказа) ──
     kpi = sales_kpi._kpi_for_period(df)
@@ -919,6 +921,8 @@ def main():
         "daily": ds,
         "groups": grp,
         "costs": costs,
+        "pnl": {"revenue": round(_pnl_rev), "gross_margin": round(_pnl_gm),
+                "margin_pct": round(_pnl_gm / _pnl_rev * 100, 1) if _pnl_rev else 0},
         "kpi": kpi,
         "shipments": ship,
         "funnel": funnel,
