@@ -1,5 +1,5 @@
 {
- "generated": "2026-06-28 10:21",
+ "generated": "2026-06-29 10:18",
  "campaigns": [
   {
    "id": 97,
@@ -7,12 +7,12 @@
    "brand": "other",
    "type": "inbound",
    "status": "in_progress",
-   "total": 46,
-   "completed": 46,
+   "total": 47,
+   "completed": 47,
    "failed": 0,
-   "evaluated": 46,
+   "evaluated": 47,
    "avg_duration": 101.3,
-   "answered": 46,
+   "answered": 47,
    "with_transcript": 0,
    "with_eval": 0,
    "daily": [
@@ -35,21 +35,35 @@
     {
      "date": "2026-06-26",
      "count": 14
+    },
+    {
+     "date": "2026-06-29",
+     "count": 1
     }
    ],
    "duration_buckets": {
     "0-10с": 4,
     "10-30с": 1,
     "30-60с": 10,
-    "1-3хв": 23,
+    "1-3хв": 24,
     "3хв+": 8
    },
    "ends": {
-    "normal": 27,
+    "normal": 28,
     "agent_hangup": 18,
     "transferred": 1
    },
    "recent": [
+    {
+     "phone": "0968157553",
+     "duration": 102,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 09:41",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
     {
      "phone": "0974355290",
      "duration": 105,
@@ -439,16 +453,6 @@
      "summary": "",
      "transcript": "",
      "eval": null
-    },
-    {
-     "phone": "0974355290",
-     "duration": 98,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-23 06:42",
-     "summary": "",
-     "transcript": "",
-     "eval": null
     }
    ]
   },
@@ -458,12 +462,12 @@
    "brand": "sofino",
    "type": "inbound",
    "status": "in_progress",
-   "total": 1417,
-   "completed": 1416,
+   "total": 1418,
+   "completed": 1417,
    "failed": 1,
-   "evaluated": 1416,
-   "avg_duration": 40.2,
-   "answered": 1414,
+   "evaluated": 1417,
+   "avg_duration": 40.1,
+   "answered": 1415,
    "with_transcript": 0,
    "with_eval": 0,
    "daily": [
@@ -558,22 +562,36 @@
     {
      "date": "2026-06-19",
      "count": 92
+    },
+    {
+     "date": "2026-06-29",
+     "count": 1
     }
    ],
    "duration_buckets": {
     "0-10с": 92,
-    "10-30с": 481,
+    "10-30с": 482,
     "30-60с": 761,
     "1-3хв": 62,
     "3хв+": 21
    },
    "ends": {
     "normal": 1398,
-    "transferred": 17,
+    "transferred": 18,
     "agent_hangup": 1,
     "rejected": 1
    },
    "recent": [
+    {
+     "phone": "0680349797",
+     "duration": 19,
+     "status": "evaluated",
+     "end": "transferred",
+     "date": "2026-06-29 10:10",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
     {
      "phone": "0992337637",
      "duration": 29,
@@ -963,16 +981,6 @@
      "summary": "",
      "transcript": "",
      "eval": null
-    },
-    {
-     "phone": "0994021321",
-     "duration": 28,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 11:15",
-     "summary": "",
-     "transcript": "",
-     "eval": null
     }
    ]
   },
@@ -982,12 +990,12 @@
    "brand": "hubstore",
    "type": "inbound",
    "status": "in_progress",
-   "total": 230,
-   "completed": 230,
+   "total": 240,
+   "completed": 240,
    "failed": 0,
-   "evaluated": 230,
-   "avg_duration": 40.9,
-   "answered": 230,
+   "evaluated": 240,
+   "avg_duration": 44.8,
+   "answered": 240,
    "with_transcript": 0,
    "with_eval": 0,
    "daily": [
@@ -1117,22 +1125,126 @@
     },
     {
      "date": "2026-06-28",
-     "count": 3
+     "count": 4
+    },
+    {
+     "date": "2026-06-29",
+     "count": 9
     }
    ],
    "duration_buckets": {
-    "0-10с": 7,
+    "0-10с": 8,
     "10-30с": 100,
-    "30-60с": 95,
-    "1-3хв": 24,
-    "3хв+": 4
+    "30-60с": 97,
+    "1-3хв": 28,
+    "3хв+": 7
    },
    "ends": {
-    "normal": 226,
+    "normal": 235,
     "transferred": 3,
-    "agent_hangup": 1
+    "agent_hangup": 2
    },
    "recent": [
+    {
+     "phone": "0631490058",
+     "duration": 115,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 10:13",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0672960885",
+     "duration": 78,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 09:59",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0672960885",
+     "duration": 92,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 09:47",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0955090159",
+     "duration": 76,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 08:56",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0501575428",
+     "duration": 192,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 08:48",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0978421755",
+     "duration": 34,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 07:30",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0681454051",
+     "duration": 446,
+     "status": "evaluated",
+     "end": "agent_hangup",
+     "date": "2026-06-29 07:13",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0679300558",
+     "duration": 49,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 06:44",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0732445863",
+     "duration": 4,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 06:05",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0679300558",
+     "duration": 247,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-28 15:25",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
     {
      "phone": "0636926821",
      "duration": 78,
@@ -1432,106 +1544,6 @@
      "summary": "",
      "transcript": "",
      "eval": null
-    },
-    {
-     "phone": "0682123915",
-     "duration": 31,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-25 08:03",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0968103593",
-     "duration": 36,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-24 14:03",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0968103593",
-     "duration": 44,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-24 14:02",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0968103593",
-     "duration": 27,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-24 14:01",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0679601022",
-     "duration": 31,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-24 13:55",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0679601022",
-     "duration": 22,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-24 13:54",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0673056151",
-     "duration": 19,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-24 13:43",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0968103593",
-     "duration": 35,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-24 13:23",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0509671031",
-     "duration": 27,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-24 11:09",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0962691818",
-     "duration": 26,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-24 09:52",
-     "summary": "",
-     "transcript": "",
-     "eval": null
     }
    ]
   },
@@ -1541,12 +1553,12 @@
    "brand": "matrasroll",
    "type": "inbound",
    "status": "in_progress",
-   "total": 3319,
-   "completed": 3312,
+   "total": 3321,
+   "completed": 3314,
    "failed": 6,
-   "evaluated": 3312,
-   "avg_duration": 36.8,
-   "answered": 3310,
+   "evaluated": 3314,
+   "avg_duration": 36.9,
+   "answered": 3312,
    "with_transcript": 0,
    "with_eval": 0,
    "daily": [
@@ -1641,23 +1653,47 @@
     {
      "date": "2026-06-19",
      "count": 200
+    },
+    {
+     "date": "2026-06-29",
+     "count": 2
     }
    ],
    "duration_buckets": {
     "0-10с": 123,
     "10-30с": 1365,
-    "30-60с": 1611,
-    "1-3хв": 181,
+    "30-60с": 1612,
+    "1-3хв": 182,
     "3хв+": 39
    },
    "ends": {
-    "normal": 3275,
-    "transferred": 36,
+    "normal": 3276,
+    "transferred": 37,
     "rejected": 6,
     "?": 1,
     "agent_hangup": 1
    },
    "recent": [
+    {
+     "phone": "0504234139",
+     "duration": 151,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 10:15",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0939538405",
+     "duration": 51,
+     "status": "evaluated",
+     "end": "transferred",
+     "date": "2026-06-29 10:06",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
     {
      "phone": "0950860533",
      "duration": 33,
@@ -2037,26 +2073,6 @@
      "summary": "",
      "transcript": "",
      "eval": null
-    },
-    {
-     "phone": "0507178240",
-     "duration": 25,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:02",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0935623341",
-     "duration": 31,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:01",
-     "summary": "",
-     "transcript": "",
-     "eval": null
     }
    ]
   },
@@ -2066,12 +2082,12 @@
    "brand": "other",
    "type": "inbound",
    "status": "in_progress",
-   "total": 2445,
-   "completed": 2439,
+   "total": 2450,
+   "completed": 2444,
    "failed": 5,
-   "evaluated": 2439,
-   "avg_duration": 35.8,
-   "answered": 2435,
+   "evaluated": 2444,
+   "avg_duration": 36.1,
+   "answered": 2440,
    "with_transcript": 0,
    "with_eval": 0,
    "daily": [
@@ -2178,23 +2194,77 @@
     {
      "date": "2026-06-19",
      "count": 151
+    },
+    {
+     "date": "2026-06-29",
+     "count": 5
     }
    ],
    "duration_buckets": {
     "0-10с": 119,
     "10-30с": 1261,
     "30-60с": 932,
-    "1-3хв": 110,
-    "3хв+": 23
+    "1-3хв": 114,
+    "3хв+": 24
    },
    "ends": {
-    "normal": 2406,
+    "normal": 2408,
     "transferred": 29,
+    "agent_hangup": 7,
     "rejected": 5,
-    "agent_hangup": 4,
     "?": 1
    },
    "recent": [
+    {
+     "phone": "0676211059",
+     "duration": 165,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 10:14",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0975064734",
+     "duration": 170,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 10:07",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0665925125",
+     "duration": 280,
+     "status": "evaluated",
+     "end": "agent_hangup",
+     "date": "2026-06-29 10:05",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0980810281",
+     "duration": 127,
+     "status": "evaluated",
+     "end": "agent_hangup",
+     "date": "2026-06-29 10:02",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0676211059",
+     "duration": 141,
+     "status": "evaluated",
+     "end": "agent_hangup",
+     "date": "2026-06-29 09:59",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
     {
      "phone": "0968619413",
      "duration": 8,
@@ -2544,56 +2614,6 @@
      "summary": "",
      "transcript": "",
      "eval": null
-    },
-    {
-     "phone": "0981103574",
-     "duration": 19,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:33",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0963703739",
-     "duration": 25,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:32",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0674034202",
-     "duration": 55,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:32",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0674034202",
-     "duration": 28,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:26",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0674034202",
-     "duration": 31,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:24",
-     "summary": "",
-     "transcript": "",
-     "eval": null
     }
    ]
   },
@@ -2624,10 +2644,10 @@
   }
  ],
  "totals": {
-  "calls": 7457,
-  "completed": 7443,
+  "calls": 7476,
+  "completed": 7462,
   "failed": 12,
-  "answered": 7435,
+  "answered": 7454,
   "with_transcript": 0,
   "with_eval": 0
  }
