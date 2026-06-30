@@ -1,5 +1,5 @@
 {
- "generated": "2026-06-29 10:18",
+ "generated": "2026-06-30 10:21",
  "campaigns": [
   {
    "id": 97,
@@ -7,14 +7,14 @@
    "brand": "other",
    "type": "inbound",
    "status": "in_progress",
-   "total": 47,
-   "completed": 47,
+   "total": 52,
+   "completed": 52,
    "failed": 0,
-   "evaluated": 47,
-   "avg_duration": 101.3,
-   "answered": 47,
-   "with_transcript": 0,
-   "with_eval": 0,
+   "evaluated": 52,
+   "avg_duration": 93.9,
+   "answered": 52,
+   "with_transcript": 2,
+   "with_eval": 2,
    "daily": [
     {
      "date": "2026-06-22",
@@ -38,22 +38,135 @@
     },
     {
      "date": "2026-06-29",
+     "count": 5
+    },
+    {
+     "date": "2026-06-30",
      "count": 1
     }
    ],
    "duration_buckets": {
-    "0-10с": 4,
-    "10-30с": 1,
-    "30-60с": 10,
+    "0-10с": 5,
+    "10-30с": 3,
+    "30-60с": 12,
     "1-3хв": 24,
     "3хв+": 8
    },
    "ends": {
-    "normal": 28,
+    "normal": 32,
     "agent_hangup": 18,
-    "transferred": 1
+    "transferred": 2
    },
    "recent": [
+    {
+     "phone": "0739590010",
+     "duration": 25,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:10",
+     "summary": "Клієнт звернувся з метою придбання матраца. Голосовий асистент Амелія ідентифікувала запит як нове замовлення та перенаправила виклик до відділу продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Я хочу купити матрац.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "О, по новому замовленню. З'єдную з відділом продажу, там підкажуть по моделях, наявності і ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:13",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Переадресація.",
+       "speaker": "unknown",
+       "timestamp": "00:21"
+      }
+     ],
+     "eval": {
+      "order_id": "452679",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0974355290",
+     "duration": 35,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 17:17",
+     "summary": "Клієнт звернувся для уточнення статусу замовлення. Голосовий асистент Амелія двічі намагалася перевести дзвінок на відділ обслуговування клієнтів, але лінії були зайняті.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Я би хотів узнати статус замовлення.",
+       "speaker": "client",
+       "timestamp": "00:09"
+      },
+      {
+       "text": "О, по замовленню. З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:12",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Дякую, що залишаєтесь на лінії. Зараз усі лінії відділу зайняті. Поки ви очікуєте з'єднання, я розкажу кілька цікавих фактів. Ось, наприклад, ортопедичні матраци спочатку були розроблені для медичних цілей, щоб підтримувати хребет. А ще деякі матраци можуть містити до тисячі пружин. Знову з'єдную вас з відділом обслуговування. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:24",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452443",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 2
+     }
+    },
+    {
+     "phone": "0974355290",
+     "duration": 5,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 15:02",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0974355290",
+     "duration": 29,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 11:44",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0974355290",
+     "duration": 30,
+     "status": "evaluated",
+     "end": "transferred",
+     "date": "2026-06-29 10:52",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
     {
      "phone": "0968157553",
      "duration": 102,
@@ -403,56 +516,6 @@
      "summary": "",
      "transcript": "",
      "eval": null
-    },
-    {
-     "phone": "0974355290",
-     "duration": 35,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-23 13:05",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0974355290",
-     "duration": 75,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-23 12:52",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0974355290",
-     "duration": 88,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-23 11:39",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0968157553",
-     "duration": 74,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-23 11:03",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0968157553",
-     "duration": 53,
-     "status": "evaluated",
-     "end": "agent_hangup",
-     "date": "2026-06-23 09:52",
-     "summary": "",
-     "transcript": "",
-     "eval": null
     }
    ]
   },
@@ -462,14 +525,14 @@
    "brand": "sofino",
    "type": "inbound",
    "status": "in_progress",
-   "total": 1418,
-   "completed": 1417,
-   "failed": 1,
-   "evaluated": 1417,
-   "avg_duration": 40.1,
-   "answered": 1415,
-   "with_transcript": 0,
-   "with_eval": 0,
+   "total": 1487,
+   "completed": 1485,
+   "failed": 2,
+   "evaluated": 1483,
+   "avg_duration": 40.2,
+   "answered": 1484,
+   "with_transcript": 38,
+   "with_eval": 38,
    "daily": [
     {
      "date": "2026-05-28",
@@ -565,422 +628,1470 @@
     },
     {
      "date": "2026-06-29",
-     "count": 1
+     "count": 29
+    },
+    {
+     "date": "2026-06-30",
+     "count": 41
     }
    ],
    "duration_buckets": {
-    "0-10с": 92,
-    "10-30с": 482,
-    "30-60с": 761,
-    "1-3хв": 62,
-    "3хв+": 21
+    "0-10с": 98,
+    "10-30с": 518,
+    "30-60с": 778,
+    "1-3хв": 70,
+    "3хв+": 23
    },
    "ends": {
-    "normal": 1398,
+    "normal": 1467,
     "transferred": 18,
     "agent_hangup": 1,
     "rejected": 1
    },
    "recent": [
     {
-     "phone": "0680349797",
-     "duration": 19,
-     "status": "evaluated",
-     "end": "transferred",
-     "date": "2026-06-29 10:10",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0992337637",
-     "duration": 29,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 15:26",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0992337637",
-     "duration": 27,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 15:25",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0967824307",
-     "duration": 5,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 15:16",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0983352908",
-     "duration": 31,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:34",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0663891423",
-     "duration": 28,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:29",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0689332828",
-     "duration": 29,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:27",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0689332828",
-     "duration": 34,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:23",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0680277279",
+     "phone": "0680392592",
      "duration": 36,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 14:23",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:19",
+     "summary": "Клієнтка звернулася зі скаргою на отримання невідповідного матраца через Нову Пошту. Голосовий асистент Софія висловила співчуття та перенаправила виклик до відділу обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Здрастуйте. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Мені через Нову Пошту прислали не той матрац, який я замовляла. Чому?",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Ой, божечки, як же так? Це дуже неприємно. З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:16",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Перемикаю.",
+       "speaker": "unknown",
+       "timestamp": "00:34"
+      }
+     ],
+     "eval": {
+      "order_id": "452832",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0937345562",
-     "duration": 30,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:22",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0680277279",
-     "duration": 38,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:22",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0680277279",
-     "duration": 40,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:18",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0674182637",
-     "duration": 35,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:10",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0970608321",
-     "duration": 23,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:07",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0674182637",
-     "duration": 259,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:06",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0680277279",
-     "duration": 73,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:58",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0990270086",
-     "duration": 43,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:56",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0680277279",
-     "duration": 122,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:55",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0680277279",
-     "duration": 44,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:53",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0983352908",
-     "duration": 30,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:01",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0983352908",
-     "duration": 30,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:01",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0983352908",
-     "duration": 35,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:58",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0677339739",
-     "duration": 47,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:27",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0677339739",
-     "duration": 49,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:26",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0677339739",
-     "duration": 60,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:25",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0677339739",
-     "duration": 55,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:21",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0637460913",
-     "duration": 30,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:20",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0677339739",
-     "duration": 32,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:19",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0677339739",
-     "duration": 23,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:18",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0677339739",
+     "phone": "0679782430",
      "duration": 24,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 12:17",
+     "date": "2026-06-30 09:18",
+     "summary": "Клієнт звернувся з питанням щодо замовлення. Голосовий асистент Софія перенаправила виклик до відділу обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Здрастуйте, мене звати Софія, я голосовий асистент компанії Софіно, я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "По замовленню.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Так, по замовленню. З'єдную вас з відділом обслуговування клієнтів, вони все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:12",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "unknown",
+       "timestamp": "00:23"
+      }
+     ],
+     "eval": {
+      "order_id": "452773",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0663192912",
+     "duration": 23,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:05",
+     "summary": "Клієнт звернувся з бажанням здійснити покупку. Голосовий асистент Софія перенаправила виклик до відділу продажу для подальшої консультації.",
+     "transcript": [
+      {
+       "text": "Здравствуйте. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Хочу купить.",
+       "speaker": "client",
+       "timestamp": "00:09"
+      },
+      {
+       "text": "Хочете купити? З’єдную з відділом продажу. Там вам підкажуть по моделях, наявності та ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:11",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "[звук переадресації]",
+       "speaker": "unknown",
+       "timestamp": "00:21"
+      }
+     ],
+     "eval": {
+      "order_id": "452758",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0663192912",
+     "duration": 25,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:03",
+     "summary": "Клієнт зателефонував, щоб подивитися матрац. Голосовий асистент Софія перевела дзвінок на відділ продажу для подальшої консультації.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Софія, я голосовий асистент компанії Софіна. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Матрас подивитись.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Ага, цікавить матрац, з'єдную з відділом продажу, вони все детально розкажуть. Залишайтесь на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452754",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0675010361",
+     "duration": 26,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:02",
+     "summary": "Клієнт звернувся зі скаргою на відсутність відповіді на попередні дзвінки та питанням щодо придбання ламелей для двоспального ліжка. Голосовий асистент Софія перенаправила виклик до відповідного відділу.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Питання, ви не відповідаєте, ні один телефон не відповідає на дзвінок. Це перше. Друге, в мене придбання ламелей для двоспального ліжка.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Перенаправляю.",
+       "speaker": "operator",
+       "timestamp": "00:25",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452753",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0663192912",
+     "duration": 4,
+     "status": "completed",
+     "end": "normal",
+     "date": "2026-06-30 09:02",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0675010361",
+     "duration": 32,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:01",
+     "summary": "Клієнт звернувся з питанням щодо придбання ламелей для двоспального ліжка. Голосовий асистент Софія ідентифікувала запит та перевела дзвінок на відділ продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Питання придбання ламелей для двохспальної кроваті.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Угу, цікавлять ламелі для двоспального ліжка. З'єдную вас з відділом продажу, там підкажуть по моделях і наявності. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:18",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Дякую.",
+       "speaker": "client",
+       "timestamp": "00:27"
+      }
+     ],
+     "eval": {
+      "order_id": "452751",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0675010361",
+     "duration": 3,
+     "status": "completed",
+     "end": "normal",
+     "date": "2026-06-30 09:01",
      "summary": "",
      "transcript": "",
      "eval": null
     },
     {
      "phone": "0677339739",
-     "duration": 41,
+     "duration": 48,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 12:16",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 09:00",
+     "summary": "Клієнт звернувся зі скаргою на незадовільну роботу компанії, вживаючи нецензурну лексику. Голосовий асистент Софія запропонувала розібратися в ситуації, після чого перевела виклик на керівника відділу за вимогою клієнта.",
+     "transcript": [
+      {
+       "text": "Доброго дня! Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Дуже хуйове.",
+       "speaker": "client",
+       "timestamp": "00:12"
+      },
+      {
+       "text": "Ой, чую, що ви на емоціях. Це справді неприємно. Розкажіть, що сталося?",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Хуйово працює ваша фірма. Дуже хуйово працює ваша фірма. Дуже хуйово.",
+       "speaker": "client",
+       "timestamp": "00:20"
+      },
+      {
+       "text": "Це серйозне звинувачення. Хочу розібратися детально.",
+       "speaker": "operator",
+       "timestamp": "00:27",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Да. З'єднайте мене з керівництвом.",
+       "speaker": "client",
+       "timestamp": "00:33"
+      },
+      {
+       "text": "З цього все почалось. З'єдную вас з керівником відділу негайно. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:37",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Негайно з'єднуйте, негайно.",
+       "speaker": "client",
+       "timestamp": "00:43"
+      },
+      {
+       "text": "Зараз з'єдную вас з...",
+       "speaker": "operator",
+       "timestamp": "00:46",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452746",
+      "transferred": true,
+      "is_obscenely": true,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
     },
     {
      "phone": "0677339739",
      "duration": 53,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 12:15",
+     "date": "2026-06-30 08:59",
+     "summary": "Оператор Софія привіталася з клієнтом та запитала про суть звернення для перенаправлення у відповідний відділ.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452743",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 0
+     }
+    },
+    {
+     "phone": "0675010361",
+     "duration": 119,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:59",
+     "summary": "Клієнт зателефонував з питанням щодо придбання ламелей для двоспального ліжка. Голосовий асистент Софія перенаправила виклик до відділу продажу.",
+     "transcript": [
+      {
+       "text": "Доброго дня! Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Мне вопрос приобретения ламелей для двухспальной кровати.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "О, цікавить придбання ламелей. З'єдную вас з відділом продажу. Вони все підкажуть по наявності та ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:17",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452742",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0677339739",
+     "duration": 51,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:57",
+     "summary": "Клієнт звернувся зі скаргою на незадовільну роботу компанії, використовуючи нецензурну лексику. Оператор Софія опрацювала емоційне звернення та перевела виклик на старшого спеціаліста за запитом клієнта.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Питання дуже важке.",
+       "speaker": "client",
+       "timestamp": "00:13"
+      },
+      {
+       "text": "Слухаю вас, не поспішайте.",
+       "speaker": "operator",
+       "timestamp": "00:16",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "У вас дуже хуйово працює ваша фірма.",
+       "speaker": "client",
+       "timestamp": "00:21"
+      },
+      {
+       "text": "Ой, чую, що ви на емоціях, і не дивно. Давайте розбиратися. Розкажіть, що сталося?",
+       "speaker": "operator",
+       "timestamp": "00:26",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Зв'яжіть мене з старшим чи, а ні, з керівництвом.",
+       "speaker": "client",
+       "timestamp": "00:33"
+      },
+      {
+       "text": "З'єдную вас зі старшим спеціалістом. Вони бачать ваше звернення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:39",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Давайте.",
+       "speaker": "client",
+       "timestamp": "00:47"
+      }
+     ],
+     "eval": {
+      "order_id": "452738",
+      "transferred": true,
+      "is_obscenely": true,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0677339739",
+     "duration": 34,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:56",
+     "summary": "Клієнт звернувся зі скаргою на затримку доставки матраца, замовленого два тижні тому. Голосовий асистент Софія перенаправила виклик до відділу обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня! Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Де мій матрац? Вже дві неділі замовив у вас матрац і його немає вже скільки.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Ой божечки, це справді неприємно. З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:19",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452735",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0976557221",
+     "duration": 26,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:39",
+     "summary": "Клієнт зателефонував, щоб отримати допомогу у виборі ортопедичного матраца. Голосовий асистент Софія перенаправила дзвінок до відділу продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Мене цікавить вибір ортопедичного матрацу.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Ага, цікавить матрац. З'єдную з відділом продажу, вони все детально розкажуть. Залишайтесь на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452716",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0976557221",
+     "duration": 21,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:39",
+     "summary": "Голосовий асистент Софія прийняла вхідний дзвінок. Клієнт висловив зацікавленість у покупці матраца \"Софт Кокос\", після чого виклик було переадресовано.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Мене цікавить матрац Софт Кокос.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      }
+     ],
+     "eval": {
+      "order_id": "452715",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0679782430",
+     "duration": 28,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:14",
+     "summary": "Клієнт звернувся з питанням щодо замовлення. Голосовий асистент Софія ідентифікувала запит та перенаправила виклик до відділу обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "З приводу замовлення.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "По замовленню. Так. З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "unknown",
+       "timestamp": "00:27"
+      }
+     ],
+     "eval": {
+      "order_id": "452684",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0679782430",
+     "duration": 16,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:03",
+     "summary": "Клієнт звернувся до компанії Софіно з питанням щодо свого замовлення. Голосовий асистент Софія прийняла запит та розпочала процес переадресації до відповідного відділу.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "З приводу замовлення.",
+       "speaker": "client",
+       "timestamp": "00:09"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452670",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0675897219",
+     "duration": 33,
+     "status": "failed",
+     "end": "normal",
+     "date": "2026-06-30 07:53",
      "summary": "",
      "transcript": "",
      "eval": null
     },
     {
-     "phone": "0973802416",
-     "duration": 31,
+     "phone": "0672326194",
+     "duration": 25,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 11:56",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 07:47",
+     "summary": "Клієнт зателефонував, щоб дізнатися про двоярусне ліжко. Голосовий асистент Софія перенаправила виклик до відділу продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня! Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Меня интересует двухъярусная кровать.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "О, двоярусне ліжко! З'єдную з відділом продажу, вони все детально розкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Переадресація.",
+       "speaker": "unknown",
+       "timestamp": "00:22"
+      }
+     ],
+     "eval": {
+      "order_id": "452655",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0969020675",
-     "duration": 137,
+     "phone": "0955224356",
+     "duration": 26,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 11:55",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 07:46",
+     "summary": "Клієнт звернувся з метою замовлення пружинного матраца. Голосовий асистент Софія перенаправила виклик до відділу продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня! Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Заказать матрас пружинный.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Ага, цікавить матрац. З'єдную з відділом продажу, вони все детально розкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:22",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452654",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0969020675",
-     "duration": 5,
+     "phone": "0987843498",
+     "duration": 20,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 11:53",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 07:35",
+     "summary": "Клієнт зателефонував, щоб дізнатися статус свого замовлення. Голосовий асистент Софія прийняла запит та ініціювала переадресацію до відповідного відділу.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Дізнатися, коли прийде моє замовлення.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:18",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452644",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0660386998",
-     "duration": 31,
+     "phone": "0688018694",
+     "duration": 26,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 11:52",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 07:31",
+     "summary": "Клієнт зателефонував з наміром купити ватний матрац. Голосовий асистент Софія ідентифікувала запит як нове замовлення та перенаправила виклик до відділу продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "купить ватный матрас",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "О, по новому замовленню. З'єдную з відділом продажів, там підкажуть по моделях, наявності та ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "unknown",
+       "timestamp": "00:25"
+      }
+     ],
+     "eval": {
+      "order_id": "452638",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0672340274",
-     "duration": 44,
+     "phone": "0987843498",
+     "duration": 29,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 11:51",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 07:30",
+     "summary": "Клієнтка звернулася, щоб дізнатися час доставки замовленого матраца. Голосовий асистент Софія перенаправила дзвінок до відділу обслуговування клієнтів. Наприкінці запису клієнтка вжила нецензурне слово.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Ну, я замовляла матрац, мені потрібно знати, коли його привезуть сьогодні.",
+       "speaker": "client",
+       "timestamp": "00:12"
+      },
+      {
+       "text": "О, по замовленню. З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:17",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Перехуярили",
+       "speaker": "client",
+       "timestamp": "00:28"
+      }
+     ],
+     "eval": {
+      "order_id": "452634",
+      "transferred": true,
+      "is_obscenely": true,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0660386998",
-     "duration": 47,
+     "phone": "0663426432",
+     "duration": 28,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 11:51",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 07:21",
+     "summary": "Клієнт звернувся з питанням щодо замовлення, оформленого тиждень тому. Голосовий асистент Софія перенаправила виклик до відділу обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Хочу дізнатися про замовлення, тиждень тому оформили.",
+       "speaker": "client",
+       "timestamp": "00:09"
+      },
+      {
+       "text": "О, по замовленню. З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "unknown",
+       "timestamp": "00:26"
+      }
+     ],
+     "eval": {
+      "order_id": "452628",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0967287798",
-     "duration": 37,
+     "phone": "0503837356",
+     "duration": 25,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 11:38",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 07:14",
+     "summary": "Клієнт звернувся з питанням щодо матрацу. Голосовий асистент Софія перенаправила виклик до відділу продажу для подальшої консультації.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Доброго дня, запитання щодо матрацу.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Ага, цікавить матрац. З'єдную з відділом продажу, вони все детально розкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Ой, пере...",
+       "speaker": "client",
+       "timestamp": "00:23"
+      }
+     ],
+     "eval": {
+      "order_id": "452620",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0672551171",
-     "duration": 41,
+     "phone": "0959449003",
+     "duration": 35,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 11:24",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 07:09",
+     "summary": "Клієнт звернувся через відсутність реакції на зроблену передоплату за стіл. Голосовий асистент Софія перевела дзвінок на відділ обслуговування клієнтів для вирішення питання.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Мы сделали предоплату, заказали стол, но пока никакого ответной реакции нет.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Ага, зрозуміло. Зробили передоплату і чекаєте на реакцію. З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:19",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Дякую.",
+       "speaker": "client",
+       "timestamp": "00:31"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "unknown",
+       "timestamp": "00:34"
+      }
+     ],
+     "eval": {
+      "order_id": "452614",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0663426432",
+     "duration": 20,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 07:08",
+     "summary": "Клієнт зателефонував, щоб дізнатися інформацію про своє замовлення. Голосовий асистент Софія прийняла запит і перенаправила дзвінок до відповідного відділу.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Я хочу узнати за замовлення.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Перенаправляю...",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452608",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0979797773",
+     "duration": 89,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:43",
+     "summary": "Клієнт звернувся з метою купівлі матраца. Голосовий асистент Софія ідентифікувала запит як нове замовлення та перевела дзвінок на відділ продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Софія, я голосовий асистент компанії Софіно, я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання? Я вас слухаю.",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Купити матрац.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "О, по новому замовленню, з'єдную з відділом продажу, там підкажуть по моделях, наявності і ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452582",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0736462911",
+     "duration": 24,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:38",
+     "summary": "Голосовий асистент Софія прийняла дзвінок від клієнта, який виявив бажання купити матрац. Дзвінок було успішно перенаправлено до відділу продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно, і я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Хочу матрац купити.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Ага, цікавить матрац? З'єдную з відділом продажу. Вони все детально розкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:13",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "unknown",
+       "timestamp": "00:22"
+      }
+     ],
+     "eval": {
+      "order_id": "452572",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0979797773",
+     "duration": 12,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:35",
+     "summary": "Голосовий асистент Софія привіталася з клієнтом та запитала про мету дзвінка. Клієнт на початку розмови вжив нецензурну лексику.",
+     "transcript": [
+      {
+       "text": "Та це, блять",
+       "speaker": "client",
+       "timestamp": "00:00"
+      },
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452561",
+      "transferred": false,
+      "is_obscenely": true,
+      "operator_name": "Софія",
+      "transferred_count": 0
+     }
+    },
+    {
+     "phone": "0669773635",
+     "duration": 42,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:31",
+     "summary": "Клієнт Курач з міста Золочів цікавиться часом доставки матраца (замовлення 4511616). Він висловив незадоволення тим, що це його десятий дзвінок, на який раніше не відповідали. Оператор Софія перенаправила виклик до відділу обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Я замовляв матрац, я вже дзвоню десятий раз, ніхто не бере трубку з ваших операторів. Моє замовлення 45-11-6-16, прізвище Курач, місто Золочів. Завтра має приїхати, хочу знати коли.",
+       "speaker": "client",
+       "timestamp": "00:10",
+       "speakerName": "Курач"
+      },
+      {
+       "text": "Ой, це вже десяте телефонуєте? Це точно не норма. Передаю ваш запит старшому спеціалісту позачергово. З'єдную вас з відділом обслуговування клієнтів, вони все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:22",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "З'єдную вас ще раз з відділом обслуговування. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:34",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452550",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 2
+     }
+    },
+    {
+     "phone": "0669773635",
+     "duration": 34,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:29",
+     "summary": "Клієнт на прізвище Курач звернувся для уточнення термінів виготовлення матраца. Голосовий асистент Софія перенаправила виклик до відділу обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Я замовив матрац із Золочева, моє прізвище Курач, номер замовлення 45 01 16. Мені треба знати, коли він буде готовий, з Золочева мені так казали.",
+       "speaker": "client",
+       "timestamp": "00:10",
+       "speakerName": "Курач"
+      },
+      {
+       "text": "Ой, як прикро, що так сталося. Зараз з'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення та все підкажуть. Залишайтесь, будь ласка на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:20",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Та вони то бачать, но вже ж не беруть трубку і самі не дзвонять. Вони то бачать, я розумію, просто рано починається...",
+       "speaker": "client",
+       "timestamp": "00:27",
+       "speakerName": "Курач"
+      }
+     ],
+     "eval": {
+      "order_id": "452544",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0934071983",
+     "duration": 33,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:20",
+     "summary": "Клієнт звернувся з питанням щодо дивану. Голосовий асистент Софія ідентифікувала запит та перевела дзвінок на відділ продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Диван.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Перепрошую, не розчула. З якого ви питання телефонуєте?",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Диван.",
+       "speaker": "client",
+       "timestamp": "00:19"
+      },
+      {
+       "text": "Ага, вас цікавить щось по новому товару? З'єдную з відділом продажу, вони все детально розкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:21",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "[музика]",
+       "speaker": "unknown",
+       "timestamp": "00:28"
+      }
+     ],
+     "eval": {
+      "order_id": "452529",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0669773635",
+     "duration": 29,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:13",
+     "summary": "Голосовий асистент Софія прийняла дзвінок від клієнта, який скаржився на неможливість отримати інформацію про доставку матраца та ігнорування з боку сервісної служби. У результаті розмови оператор перевела виклик на фахівця.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Софія, одне і те саме. Я почув 11 000 за матрац і я не можу додзвонитися, коли вони прийдуть завтра. В мене завтра міняються плани і ніхто не бере ваших товаришів трубку. Галацький, Галацький сервіс найкращий в світі. Вони наберуть мене чи ні?",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Переводжу...",
+       "speaker": "operator",
+       "timestamp": "00:27",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452516",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0669773635",
+     "duration": 43,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:10",
+     "summary": "Клієнт Юрій Володимирович Кураш звернувся щодо замовлення матраців до м. Золочів (№450116), оскільки не міг додзвонитися раніше. Голосовий асистент Софія перепросила за незручності та перенаправила виклик до відділу обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Я вже десь по п'ятому разу дзвоню, ніхто мені не бере трубку. В мене замовлення на завтра мають прийти матраци, місто Золочів. Номер замовлення 450116. Моє прізвище Кураш Юрій Володимирович.",
+       "speaker": "client",
+       "timestamp": "00:09",
+       "speakerName": "Юрій Володимирович Кураш"
+      },
+      {
+       "text": "Алло.",
+       "speaker": "client",
+       "timestamp": "00:28",
+       "speakerName": "Юрій Володимирович Кураш"
+      },
+      {
+       "text": "Ой, це вже вп'яте, це точно не норм. З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:30",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452515",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0669773635",
+     "duration": 36,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:09",
+     "summary": "Клієнт звернувся для уточнення статусу доставки матраців у місто Золочів, оскільки йому потрібно планувати поїздку. Голосовий асистент Софія перенаправила дзвінок до відділу обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Матраци замовляв в минулу середу, сьогодні мали отримати, мені треба знати, коли вони завтра прийдуть вірніше, тому що мені треба на Київ їхати. А це місто Золочів, Львівська область. Коли мені планувати?",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "О, по замовленню і доставці. З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка.",
+       "speaker": "operator",
+       "timestamp": "00:24",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "unknown",
+       "timestamp": "00:35"
+      }
+     ],
+     "eval": {
+      "order_id": "452514",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0669773635",
+     "duration": 55,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:06",
+     "summary": "Клієнт звернувся щодо затримки доставки матраців у місто Золочів. Голосовий асистент Софія двічі намагалася перевести виклик на відділ обслуговування клієнтів через зайнятість ліній.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Я замовляв матраци, на середу мали б вже прийти по Новій пошті в місто Золочів. Я телефоную, ніхто не бере трубку, ваш оператор.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Ой, божечки, як же так. Це справді неприємно. Зараз з'єдную вас з відділом обслуговування клієнтів. Вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:20",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Дякую, що залишаєтесь на лінії. Зараз усі лінії відділу зайняті. Поки ви очікуєте з'єднання, я розкажу кілька цікавих фактів. У давні часи м'якість місця для сну залежала від того, які природні матеріали були доступні поруч. Заможні римляни могли наповнювати матраци вовною, пір'ям або м'якою соломою. Спробувати ще раз з'єднати вас з відділом обслуговування, чи краще залишити заявку, щоб менеджер вам передзвонив?",
+       "speaker": "operator",
+       "timestamp": "00:30",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Да, спробуйте.",
+       "speaker": "client",
+       "timestamp": "00:53"
+      },
+      {
+       "text": "Добре, ще раз з'єдную вас з відділом обслуговування. Залишайтеся, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:55",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452512",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 2
+     }
+    },
+    {
+     "phone": "0966107707",
+     "duration": 16,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:05",
+     "summary": "Клієнт звернувся до компанії Софіно з метою оформлення замовлення. Голосовий асистент Софія перенаправила виклик до відповідного відділу.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Софія, я голосовий асистент компанії Софіно, я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Оформити замовлення.",
+       "speaker": "client",
+       "timestamp": "00:09"
+      },
+      {
+       "text": "Переключаю.",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452511",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0966107707",
+     "duration": 10,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:05",
+     "summary": "Голосовий асистент Софія привітала клієнта та запитала про суть звернення. Клієнт не встиг відповісти до завершення запису.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452510",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 0
+     }
+    },
+    {
+     "phone": "0966107707",
+     "duration": 18,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:05",
+     "summary": "Голосовий асистент Софія привіталася та запитала про мету дзвінка. Клієнт відповів, що не знає, чому йому телефонували, після чого оператор почала переадресацію.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Софія, я голосовий асистент компанії Софіно. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Софія"
+      },
+      {
+       "text": "Без поняття, ви мені дзвонили.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:16",
+       "speakerName": "Софія"
+      }
+     ],
+     "eval": {
+      "order_id": "452509",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Софія",
+      "transferred_count": 1
+     }
     }
    ]
   },
@@ -990,14 +2101,14 @@
    "brand": "hubstore",
    "type": "inbound",
    "status": "in_progress",
-   "total": 240,
-   "completed": 240,
+   "total": 247,
+   "completed": 247,
    "failed": 0,
-   "evaluated": 240,
-   "avg_duration": 44.8,
-   "answered": 240,
-   "with_transcript": 0,
-   "with_eval": 0,
+   "evaluated": 247,
+   "avg_duration": 44.3,
+   "answered": 247,
+   "with_transcript": 3,
+   "with_eval": 3,
    "daily": [
     {
      "date": "2026-05-28",
@@ -1129,22 +2240,173 @@
     },
     {
      "date": "2026-06-29",
-     "count": 9
+     "count": 13
+    },
+    {
+     "date": "2026-06-30",
+     "count": 3
     }
    ],
    "duration_buckets": {
-    "0-10с": 8,
-    "10-30с": 100,
-    "30-60с": 97,
-    "1-3хв": 28,
+    "0-10с": 9,
+    "10-30с": 103,
+    "30-60с": 99,
+    "1-3хв": 29,
     "3хв+": 7
    },
    "ends": {
-    "normal": 235,
+    "normal": 242,
     "transferred": 3,
     "agent_hangup": 2
    },
    "recent": [
+    {
+     "phone": "0979387276",
+     "duration": 18,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:08",
+     "summary": "Голосовий асистент Ганна прийняла дзвінок від клієнта, який звернувся з питанням підбору матраца. Оператор перенаправила виклик на профільний відділ.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Ганна, я голосовий асистент компанії Hubstor. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Ганна"
+      },
+      {
+       "text": "Підібрати матрац.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Переключаю.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Ганна"
+      }
+     ],
+     "eval": {
+      "order_id": "452759",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Ганна",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0667132530",
+     "duration": 30,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 07:21",
+     "summary": "Клієнт звернувся з питанням щодо термінів доставки матраца. Голосовий асистент Ганна перенаправила виклик до відділу обслуговування клієнтів для подальшої консультації.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Ганна, я голосовий асистент компанії Хабстер. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Ганна"
+      },
+      {
+       "text": "Треба дізнатися, коли приїде матрац.",
+       "speaker": "client",
+       "timestamp": "00:12"
+      },
+      {
+       "text": "Так, давайте подивимось по замовленню. З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:17",
+       "speakerName": "Ганна"
+      },
+      {
+       "text": "Ага, все хорошо, зараз почекаю.",
+       "speaker": "client",
+       "timestamp": "00:26"
+      }
+     ],
+     "eval": {
+      "order_id": "452630",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Ганна",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0978421755",
+     "duration": 20,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 07:08",
+     "summary": "Клієнт звернувся з питанням щодо доставки. Голосовий асистент Ганна перенаправила виклик до відповідного відділу.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Ганна, я голосовий асистент компанії HubStore. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Ганна"
+      },
+      {
+       "text": "Интересует доставка.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Переключаю.",
+       "speaker": "operator",
+       "timestamp": "00:19",
+       "speakerName": "Ганна"
+      }
+     ],
+     "eval": {
+      "order_id": "452612",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Ганна",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0679783157",
+     "duration": 4,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 14:08",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0679783157",
+     "duration": 71,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 14:05",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0964585711",
+     "duration": 27,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 13:56",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0679783157",
+     "duration": 32,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-29 13:00",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
     {
      "phone": "0631490058",
      "duration": 115,
@@ -1474,76 +2736,6 @@
      "summary": "",
      "transcript": "",
      "eval": null
-    },
-    {
-     "phone": "0986136077",
-     "duration": 32,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-25 14:04",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0986136077",
-     "duration": 32,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-25 14:03",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0665093867",
-     "duration": 26,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-25 12:31",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0665093867",
-     "duration": 26,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-25 12:22",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0968103593",
-     "duration": 34,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-25 11:27",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0968103593",
-     "duration": 31,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-25 11:25",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0682123915",
-     "duration": 31,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-25 08:06",
-     "summary": "",
-     "transcript": "",
-     "eval": null
     }
    ]
   },
@@ -1553,14 +2745,14 @@
    "brand": "matrasroll",
    "type": "inbound",
    "status": "in_progress",
-   "total": 3321,
-   "completed": 3314,
-   "failed": 6,
-   "evaluated": 3314,
-   "avg_duration": 36.9,
-   "answered": 3312,
-   "with_transcript": 0,
-   "with_eval": 0,
+   "total": 3438,
+   "completed": 3428,
+   "failed": 7,
+   "evaluated": 3428,
+   "avg_duration": 37.1,
+   "answered": 3427,
+   "with_transcript": 54,
+   "with_eval": 54,
    "daily": [
     {
      "date": "2026-05-28",
@@ -1656,423 +2848,1471 @@
     },
     {
      "date": "2026-06-29",
-     "count": 2
+     "count": 62
+    },
+    {
+     "date": "2026-06-30",
+     "count": 57
     }
    ],
    "duration_buckets": {
-    "0-10с": 123,
-    "10-30с": 1365,
-    "30-60с": 1612,
-    "1-3хв": 182,
-    "3хв+": 39
+    "0-10с": 132,
+    "10-30с": 1427,
+    "30-60с": 1642,
+    "1-3хв": 195,
+    "3хв+": 42
    },
    "ends": {
-    "normal": 3276,
-    "transferred": 37,
+    "normal": 3386,
+    "transferred": 41,
     "rejected": 6,
-    "?": 1,
-    "agent_hangup": 1
+    "?": 3,
+    "agent_hangup": 2
    },
    "recent": [
     {
-     "phone": "0504234139",
-     "duration": 151,
+     "phone": "0979430877",
+     "duration": 18,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-29 10:15",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:17",
+     "summary": "Голосовий асистент Марта прийняла дзвінок від клієнта, який звернувся з питанням оформлення замовлення. Оператор перенаправила виклик на відповідний відділ.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії Матрас Ролл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Оформлення замовлення.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Алло?",
+       "speaker": "client",
+       "timestamp": "00:16"
+      },
+      {
+       "text": "Переводжу.",
+       "speaker": "operator",
+       "timestamp": "00:17",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452828",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0939538405",
-     "duration": 51,
-     "status": "evaluated",
-     "end": "transferred",
-     "date": "2026-06-29 10:06",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0950860533",
-     "duration": 33,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:50",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0675173763",
-     "duration": 30,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:29",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0677295982",
-     "duration": 34,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:28",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0961084886",
-     "duration": 32,
+     "phone": "0502555330",
+     "duration": 6,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 14:28",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:11",
+     "summary": "Голосовий асистент Марта привітала клієнта та запитала про мету його звернення. Клієнт не встиг надати відповідь у наданому фрагменті запису.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Марта, я голосовий асистент компанії Матрас Ролл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452818",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 0
+     }
     },
     {
-     "phone": "0677295982",
-     "duration": 34,
+     "phone": "0676126450",
+     "duration": 25,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 14:27",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:10",
+     "summary": "Голосовий асистент Марта прийняла дзвінок від клієнта, який хоче придбати матрац. Оператор перенаправила виклик до відділу продажу для подальшої консультації.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії Матрас Рол. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Приобрести матрас.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "О, по новому замовленню. З'єдную з відділом продажу. Там підкажуть по моделях, наявності, ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:13",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452816",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0961084886",
-     "duration": 41,
+     "phone": "0676126450",
+     "duration": 18,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 14:26",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:09",
+     "summary": "Голосовий асистент Марта прийняла дзвінок від клієнта, який хоче оформити повернення товару. Оператор почала процес переадресації виклику до відповідного відділу.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії Матрас Ролл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Возврат товара.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:16",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452814",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0960781182",
-     "duration": 21,
+     "phone": "0680246208",
+     "duration": 25,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 14:24",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:05",
+     "summary": "Голосовий асистент Марта прийняла дзвінок від клієнта, який хоче замовити матрац. Виклик було перенаправлено до відділу продажу для подальшої консультації.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії Матрас Ролл, я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Хочу заказать матраса.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "О, по новому замовленню. З'єдную з відділом продажу, там підкажуть по моделях, наявності, ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:13",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:23",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452809",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0677295982",
-     "duration": 36,
+     "phone": "0979195585",
+     "duration": 27,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 14:22",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:02",
+     "summary": "Клієнт зателефонував з метою замовлення матраца топера. Голосовий асистент Марта ідентифікувала запит як нове замовлення та перевела виклик на відділ продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Марта, я голосовий асистент компанії Матрас Рол. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Замовити матрац топер.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "О, по новому замовленню. З'єдную з відділом продажу, там підкажуть по моделях, наявності і ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452807",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0677295982",
-     "duration": 10,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:21",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0960781182",
-     "duration": 35,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:20",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0960781182",
-     "duration": 7,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:19",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0977441057",
-     "duration": 23,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:18",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0977441057",
-     "duration": 33,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:17",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0992481785",
+     "phone": "0502555330",
      "duration": 26,
-     "status": "evaluated",
+     "status": "failed",
      "end": "normal",
-     "date": "2026-06-19 14:14",
+     "date": "2026-06-30 10:01",
      "summary": "",
      "transcript": "",
      "eval": null
     },
     {
-     "phone": "0983352908",
-     "duration": 32,
+     "phone": "0959209258",
+     "duration": 27,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 14:12",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 09:50",
+     "summary": "Клієнт звернувся з метою придбання топера. Голосовий асистент Марта перенаправила виклик до відділу продажів для оформлення замовлення.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії Матрас Ролл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Я хочу купити топер.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "О, по новому замовленню. З'єдную з відділом продажу, там підкажуть по моделях, наявності та ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452800",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0992481785",
-     "duration": 33,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:11",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0983352908",
-     "duration": 24,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:11",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0992481785",
-     "duration": 31,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:09",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0675173760",
-     "duration": 31,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:08",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0962088449",
-     "duration": 45,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:55",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0995145414",
-     "duration": 56,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:55",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0675173760",
-     "duration": 34,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:40",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0675173760",
-     "duration": 33,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:38",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0675173760",
-     "duration": 48,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:36",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0676502711",
-     "duration": 30,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:23",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0974867805",
-     "duration": 28,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:20",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0634164254",
-     "duration": 41,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:06",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0662955152",
-     "duration": 31,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:00",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0971784018",
-     "duration": 13,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:57",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0662955152",
-     "duration": 209,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:45",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0967738181",
-     "duration": 35,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:32",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0964287479",
-     "duration": 32,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:32",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0967738181",
-     "duration": 35,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:31",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0632634323",
-     "duration": 31,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:17",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0970068145",
-     "duration": 41,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 12:12",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0970068145",
+     "phone": "0687715959",
      "duration": 29,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 12:11",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 09:49",
+     "summary": "Клієнт звернувся до компанії МатрасРолл за допомогою у виборі топера. Голосовий асистент Марта ідентифікувала запит як нове замовлення та перевела дзвінок на відділ продажу.",
+     "transcript": [
+      {
+       "text": "Доброго дня! Мене звати Марта, я голосовий асистент компанії МатрасРолл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Мені потрібно допомогти вибрати топер.",
+       "speaker": "client",
+       "timestamp": "00:12"
+      },
+      {
+       "text": "О, по новому замовленню. З'єдную з відділом продажу, там підкажуть по моделях, наявності і ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:16",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "unknown",
+       "timestamp": "00:27"
+      }
+     ],
+     "eval": {
+      "order_id": "452797",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0661607808",
-     "duration": 36,
+     "phone": "0976732622",
+     "duration": 32,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 12:03",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 09:44",
+     "summary": "Голосовий асистент Марта прийняла дзвінок від клієнта, який хотів обговорити замовлення на сайті. Оператор перевела виклик на відділ обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Марта, я голосовий асистент компанії Матрас Рол. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Мені потрібно поговорити з менеджером стосовно мого замовлення на вашому сайті.",
+       "speaker": "client",
+       "timestamp": "00:12"
+      },
+      {
+       "text": "Ага, по замовленню. З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:20",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Дякую.",
+       "speaker": "client",
+       "timestamp": "00:27"
+      }
+     ],
+     "eval": {
+      "order_id": "452789",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0661607808",
+     "phone": "0638854875",
+     "duration": 29,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:36",
+     "summary": "Клієнт зателефонував з наміром купити матрац. Голосовий асистент Марта ідентифікувала запит як нове замовлення та перенаправила виклик до відділу продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Марта, я голосовий асистент компанії МатрасРолл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Матрас хочу купити.",
+       "speaker": "client",
+       "timestamp": "00:13"
+      },
+      {
+       "text": "О, по новому замовленню. З'єдную з відділом продажу, там підкажуть по моделях, наявності та ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:16",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Обалдеть.",
+       "speaker": "client",
+       "timestamp": "00:24"
+      },
+      {
+       "text": "Переключаю.",
+       "speaker": "unknown",
+       "timestamp": "00:27"
+      }
+     ],
+     "eval": {
+      "order_id": "452784",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0971667760",
+     "duration": 32,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:30",
+     "summary": "Клієнт зателефонував з метою скасування замовлення. Голосовий асистент Марта ідентифікувала запит та перевела дзвінок на відділ обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії Матрас Ролл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Хочу відмо... зробити відмінення замовлення. Відміну замовлення.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "О, відміна замовлення. З'єдную вас з відділом обслуговування клієнтів, вони зможуть це зробити. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:19",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452781",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0971667760",
+     "duration": 31,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:28",
+     "summary": "Клієнт зателефонував з метою оформлення нового замовлення. Голосовий асистент Марта ідентифікувала запит та перенаправила виклик до відділу продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії Матрас Ролл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Оформлення замовлення.",
+       "speaker": "client",
+       "timestamp": "00:12"
+      },
+      {
+       "text": "О, по новому замовленню. З'єдную з відділом продажу, там підкажуть по моделях, наявності і ціні.",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452780",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0974521222",
+     "duration": 30,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:26",
+     "summary": "Клієнт звернувся до компанії MatrasRoll, щоб дізнатися про матрац-топер товщиною 5 см та розміром 2х75. Голосовий асистент Марта прийняла запит і перевела дзвінок на відділ продажу.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії MatrasRoll. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Скажіть, матрац топер 5 сантиметрів 2 на 75.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Ага, цікавить матрац. З'єдную з відділом продажу, вони детально розкажуть про моделі та наявність. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:17",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Дякую.",
+       "speaker": "client",
+       "timestamp": "00:25"
+      },
+      {
+       "text": "Переадресація.",
+       "speaker": "unknown",
+       "timestamp": "00:26"
+      }
+     ],
+     "eval": {
+      "order_id": "452778",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0674128240",
      "duration": 28,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 12:02",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 09:22",
+     "summary": "Клієнт зателефонував з метою придбання матраца та отримання консультації. Голосовий асистент Марта перенаправила виклик до відділу продажу.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Марта, я голосовий асистент компанії Матрасолл, я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Хочу придбати матрас, тому хочу проконсультуватися.",
+       "speaker": "client",
+       "timestamp": "00:10",
+       "speakerName": "Клієнт"
+      },
+      {
+       "text": "О, по новому замовленню! З'єдную з відділом продажу, там підкажуть по моделях, наявності та ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:16",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452777",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0674128240",
+     "duration": 28,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:21",
+     "summary": "Клієнт зателефонував, щоб придбати матрац та отримати консультацію. Голосовий асистент Марта перевела дзвінок на відділ продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії Матрас-Ролл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Я хочу придбати матрац і хочу проконсультуватися.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Ага, цікавить матрац. З'єдную з відділом продажу, вони все детально розкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:17",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "unknown",
+       "timestamp": "00:26"
+      }
+     ],
+     "eval": {
+      "order_id": "452776",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0674128240",
+     "duration": 5,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:20",
+     "summary": "Голосовий асистент Марта привітала клієнта та запитала про мету дзвінка для подальшого перенаправлення. Клієнт у наданому аудіофрагменті не надав відповіді.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії Матрасрол. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452775",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 0
+     }
+    },
+    {
+     "phone": "0980603925",
+     "duration": 25,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:16",
+     "summary": "Клієнт зателефонував у компанію Матрасол з наміром купити топер. Голосовий асистент Марта ідентифікувала запит як нове замовлення та перенаправила виклик до відділу продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії Матрасол, і я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Потрібно купити топер.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "О, по новому замовленню. З'єдную з відділом продажу, там підкажуть по моделях, наявності, ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:13",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Переадресація.",
+       "speaker": "unknown",
+       "timestamp": "00:24"
+      }
+     ],
+     "eval": {
+      "order_id": "452772",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0979827860",
+     "duration": 27,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:15",
+     "summary": "Клієнт звернувся з метою придбання матраца. Голосовий асистент Марта ідентифікувала запит як нове замовлення та перевела дзвінок на відділ продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня! Мене звати Марта, я голосовий асистент компанії Матрасол. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Потрібен матрац.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "О, по новому замовленню. З'єдную з відділом продажу, там підкажуть по моделях, наявності та ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452770",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0979174708",
+     "duration": 29,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:13",
+     "summary": "Клієнтка звернулася з приводу замовлення матраца. Голосовий асистент Марта перенаправила дзвінок до відділу обслуговування клієнтів для подальшої допомоги.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії МатрасРол. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:02",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Заказала матрас.",
+       "speaker": "client",
+       "timestamp": "00:13"
+      },
+      {
+       "text": "О, по замовленню. З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:16",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:28",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452766",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0982244175",
+     "duration": 25,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:12",
+     "summary": "Голосовий асистент Марта прийняла дзвінок від клієнта, який цікавився матрацами. Оператор перенаправила виклик до відділу продажів для подальшої консультації.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Марта, я голосовий асистент компанії Матрас Ролл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Матраси.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Ага, матрас. З'єдную вас з відділом продажу, там підкажуть по моделях, наявності і ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:13",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452765",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0937113027",
+     "duration": 27,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:01",
+     "summary": "Голосовий асистент Марта прийняла дзвінок від клієнта, який звернувся з питанням щодо повернення замовлення. Оператор перенаправила виклик до профільного відділу обслуговування.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Марта, я голосовий асистент компанії МатрасРолл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Проблема с возвратом заказа.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "О, по поверненню замовлення? З'єдную вас з відділом обслуговування клієнтів, вони допоможуть з поверненням. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452749",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0733210003",
+     "duration": 27,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:55",
+     "summary": "Клієнт зателефонував, щоб отримати інформацію щодо свого замовлення. Голосовий асистент Марта перенаправила виклик до відділу обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії Матрас Рол. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Хочу поспілкуватися щодо мого замовлення.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "О, так, по замовленню. З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "[звук переадресації]",
+       "speaker": "unknown",
+       "timestamp": "00:23"
+      }
+     ],
+     "eval": {
+      "order_id": "452734",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0979195585",
+     "duration": 38,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:54",
+     "summary": "Клієнт звернувся з питанням щодо наявності матрацу. Голосовий асистент Марта перевела дзвінок на відділ продажів, після чого інший оператор почав повторну переадресацію.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії Матрас Рол. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Наявність товару матрацу.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Ага, наявність товару цікавить. З'єдную з відділом продажу, там підкажуть по моделях.",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Алло.",
+       "speaker": "client",
+       "timestamp": "00:25"
+      },
+      {
+       "text": "Так, я вас чую. Підкажіть, з якого ви питання телефонуєте?",
+       "speaker": "operator",
+       "timestamp": "00:27"
+      },
+      {
+       "text": "Наявність матрацу цікавить.",
+       "speaker": "client",
+       "timestamp": "00:31"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:33"
+      }
+     ],
+     "eval": {
+      "order_id": "452731",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 2
+     }
+    },
+    {
+     "phone": "0962108795",
+     "duration": 26,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:41",
+     "summary": "Голосовий асистент Марта прийняла дзвінок від клієнта щодо питання доставки. Після уточнення суті звернення оператор перенаправила клієнта до відділу обслуговування.",
+     "transcript": [
+      {
+       "text": "Доброго дня.",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Мене звати Марта, я голосовий асистент компанії МатрасРол.",
+       "speaker": "operator",
+       "timestamp": "00:02",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:04",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Доставка.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Угу, доставка.",
+       "speaker": "operator",
+       "timestamp": "00:13",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення та все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:24",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452718",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0678074862",
+     "duration": 24,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:20",
+     "summary": "Клієнт звернувся з питанням придбання матраца. Голосовий асистент Марта перенаправила виклик до відділу продажу.",
+     "transcript": [
+      {
+       "text": "Доброго дня.",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Мене звати Марта, я голосовий асистент компанії Матрас Ролл.",
+       "speaker": "operator",
+       "timestamp": "00:02",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:04",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Придбання матраца.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Ага, цікавить матрац? З'єдную з відділом продажу, вони все детально розкажуть. Залишайтесь на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452688",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0678074862",
+     "duration": 35,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:19",
+     "summary": "Голосовий асистент Марта привітала клієнта та запитала про мету дзвінка. Клієнт не надав відповіді, після чого розмова завершилася тишею.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії MatrasRoll. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452686",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 0
+     }
+    },
+    {
+     "phone": "0962108795",
+     "duration": 27,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:11",
+     "summary": "Клієнт звернувся з питанням щодо доставки. Голосовий асистент Марта ідентифікувала тематику звернення та перевела виклик на відділ обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії МатрасРолл, і я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Доставка.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Ага, доставка. З'єдную вас з відділом обслуговування клієнтів, там вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Переключаю.",
+       "speaker": "unknown",
+       "timestamp": "00:26"
+      }
+     ],
+     "eval": {
+      "order_id": "452680",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0979195585",
+     "duration": 46,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 07:52",
+     "summary": "Клієнтка звернулася з метою придбання матраца-топера. Голосовий асистент Марта уточнила суть запиту та перенаправила дзвінок до відділу продажів для подальшої консультації.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Марта, я голосовий асистент компанії МатрасРолл, я направляю запит клієнта на правильний відділ, скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Питання по замовленню топеру.",
+       "speaker": "client",
+       "timestamp": "00:09"
+      },
+      {
+       "text": "Алло.",
+       "speaker": "client",
+       "timestamp": "00:21"
+      },
+      {
+       "text": "Так, я вас чую, підкажіть, з якого ви питання телефонуєте?",
+       "speaker": "operator",
+       "timestamp": "00:23",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Питання про купівлю топеру матрацу.",
+       "speaker": "client",
+       "timestamp": "00:28"
+      },
+      {
+       "text": "О, по новому замовленню. З'єдную з відділом продажу, там підкажуть по моделях, наявності і ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:34",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452662",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0971765120",
+     "duration": 27,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 07:51",
+     "summary": "Клієнт зателефонував, щоб дізнатися статус свого замовлення. Голосовий асистент Марта перенаправила виклик до відділу обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії МатрасРолл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Дізнатись стан замовлення.",
+       "speaker": "client",
+       "timestamp": "00:12"
+      },
+      {
+       "text": "О, по замовленню. З'єдную вас з відділом обслуговування клієнтів. Вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:26",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452660",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0502413088",
+     "duration": 17,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 07:50",
+     "summary": "Клієнт звернувся до компанії МатрасРолл з метою замовлення матраца. Голосовий асистент Марта зафіксувала запит та почала процес переадресації на відповідний відділ.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії МатрасРолл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Замовити матрац.",
+       "speaker": "client",
+       "timestamp": "00:09"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:12",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452657",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0733210003",
+     "duration": 20,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 07:44",
+     "summary": "Клієнтка звернулася до компанії «Матрас Рол» з метою уточнення інформації щодо свого замовлення. Голосовий асистент Марта ініціювала переведення виклику на відповідний відділ.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Марта, я голосовий асистент компанії Матрас Рол, я направляю запит клієнта на правильний відділ, скажіть будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Я хотіла б уточнити щодо нашого замовлення.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452653",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0502413088",
+     "duration": 24,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 07:39",
+     "summary": "Клієнт зателефонував, щоб замовити матрац. Голосовий асистент Марта перенаправила виклик до відділу продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії Матрас Рол, і я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Замовити матрац.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "О, по новому замовленню. З'єдную з відділом продажу, там підкажуть по моделях, наявності та ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:12",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452652",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0960612891",
+     "duration": 6,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 07:08",
+     "summary": "Голосовий асистент Марта привітала клієнта та запитала про суть звернення, проте клієнт не надав відповіді.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії Матрас Ролл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452611",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 0
+     }
+    },
+    {
+     "phone": "0738482544",
+     "duration": 25,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:41",
+     "summary": "Клієнт звернувся до компанії МатрасРолл з питанням щодо повернення товару. Голосовий асистент Марта перенаправила виклик до відповідного відділу обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня.",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Мене звати Марта, я голосовий асистент компанії МатрасРолл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Повернення.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Повернення, з'єдную з відділом обслуговування клієнтів, вони займаються питаннями повернень. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:13",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452576",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0930433921",
+     "duration": 34,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:36",
+     "summary": "Клієнт звернувся зі скаргою на отримання невідповідного товару (іншого матраца). Голосовий асистент Марта уточнила статус замовлення та перевела виклик на відділ обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії МатрасРол. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Мне пришел не тот матрас.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Ой, це справді неприємно. Скажіть, ви вже робили у нас замовлення чи це перше звернення?",
+       "speaker": "operator",
+       "timestamp": "00:12",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Делала заказ.",
+       "speaker": "client",
+       "timestamp": "00:18"
+      },
+      {
+       "text": "Так, по замовленню. З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:21",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452568",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0994689066",
+     "duration": 12,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:36",
+     "summary": "Голосовий асистент Марта привітала клієнта та запитала про мету дзвінка. Клієнт не надав відповіді, і розмова завершилася без результату.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Марта, я голосовий асистент компанії МатрасРолл, я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "[нерозбірливо]",
+       "speaker": "client",
+       "timestamp": "00:09"
+      }
+     ],
+     "eval": {
+      "order_id": "452565",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 0
+     }
+    },
+    {
+     "phone": "0503103101",
+     "duration": 7,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:35",
+     "summary": "Голосовий асистент Марта привіталася з клієнтом та запитала про мету дзвінка для перенаправлення у відповідний відділ. Клієнт не надав відповіді до завершення запису.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії МатрасРолл.",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:04",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452563",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 0
+     }
+    },
+    {
+     "phone": "0675975994",
+     "duration": 28,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:35",
+     "summary": "Клієнтка зателефонувала, щоб придбати матрац. Голосовий асистент Марта ідентифікувала запит як нове замовлення та перевела дзвінок на відділ продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії Матрасролл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Хочу придбати матрац.",
+       "speaker": "client",
+       "timestamp": "00:13"
+      },
+      {
+       "text": "О, по новому замовленню. З'єдную з відділом продажу, там підкажуть по моделях, наявності і ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452562",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0994689066",
+     "duration": 17,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 06:35",
+     "summary": "Голосовий асистент Марта прийняла звернення від клієнта щодо отримання невідповідного товару (матраца). Оператор перенаправила виклик на профільний відділ для подальшого вирішення питання.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Марта, я голосовий асистент компанії МатрасРолл. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Марта"
+      },
+      {
+       "text": "Мне прислали не тот матрас.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Переключаю.",
+       "speaker": "operator",
+       "timestamp": "00:16",
+       "speakerName": "Марта"
+      }
+     ],
+     "eval": {
+      "order_id": "452560",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Марта",
+      "transferred_count": 1
+     }
     }
    ]
   },
@@ -2082,14 +4322,14 @@
    "brand": "other",
    "type": "inbound",
    "status": "in_progress",
-   "total": 2450,
-   "completed": 2444,
-   "failed": 5,
-   "evaluated": 2444,
-   "avg_duration": 36.1,
-   "answered": 2440,
-   "with_transcript": 0,
-   "with_eval": 0,
+   "total": 2628,
+   "completed": 2615,
+   "failed": 9,
+   "evaluated": 2615,
+   "avg_duration": 36.0,
+   "answered": 2616,
+   "with_transcript": 97,
+   "with_eval": 97,
    "daily": [
     {
      "date": "2026-05-25",
@@ -2197,420 +4437,1240 @@
     },
     {
      "date": "2026-06-29",
-     "count": 5
+     "count": 80
+    },
+    {
+     "date": "2026-06-30",
+     "count": 103
     }
    ],
    "duration_buckets": {
-    "0-10с": 119,
-    "10-30с": 1261,
-    "30-60с": 932,
-    "1-3хв": 114,
-    "3хв+": 24
+    "0-10с": 128,
+    "10-30с": 1374,
+    "30-60с": 969,
+    "1-3хв": 131,
+    "3хв+": 26
    },
    "ends": {
-    "normal": 2408,
-    "transferred": 29,
+    "normal": 2578,
+    "transferred": 35,
     "agent_hangup": 7,
     "rejected": 5,
-    "?": 1
+    "?": 3
    },
    "recent": [
     {
-     "phone": "0676211059",
-     "duration": 165,
-     "status": "evaluated",
+     "phone": "0990553304",
+     "duration": null,
+     "status": "in_progress",
+     "end": null,
+     "date": "2026-06-30 10:20",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0994605155",
+     "duration": 35,
+     "status": "evaluating",
      "end": "normal",
-     "date": "2026-06-29 10:14",
+     "date": "2026-06-30 10:19",
      "summary": "",
      "transcript": "",
      "eval": null
     },
     {
-     "phone": "0975064734",
-     "duration": 170,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-29 10:07",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0665925125",
-     "duration": 280,
-     "status": "evaluated",
-     "end": "agent_hangup",
-     "date": "2026-06-29 10:05",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0980810281",
-     "duration": 127,
-     "status": "evaluated",
-     "end": "agent_hangup",
-     "date": "2026-06-29 10:02",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0676211059",
-     "duration": 141,
-     "status": "evaluated",
-     "end": "agent_hangup",
-     "date": "2026-06-29 09:59",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0968619413",
-     "duration": 8,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 15:16",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0504196063",
-     "duration": 47,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 15:14",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0501630375",
+     "phone": "0990553304",
      "duration": 28,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 15:02",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:19",
+     "summary": "Клієнт звернувся зі скаргою на невірно вказаний або неякісний товар. Голосовий асистент Амелія перенаправила виклик до відділу обслуговування клієнтів для вирішення питання повернення.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія. Я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Невірно вказаний товар.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Ой, неякісний товар. Це дуже неприємно. Що саме сталося? З'єдную вас з відділом обслуговування клієнтів, вони допоможуть з поверненням. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:13",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452831",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0504196063",
-     "duration": 42,
+     "phone": "0990553304",
+     "duration": 20,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 14:45",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:18",
+     "summary": "Голосовий асистент Амелія привітала клієнта та запитала про суть звернення, проте клієнт не надав відповіді. Розмова завершилася мовчанням з боку клієнта.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452830",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 0
+     }
     },
     {
-     "phone": "0504196063",
-     "duration": 38,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:44",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0504196063",
-     "duration": 33,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:43",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0504196063",
-     "duration": 31,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:42",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0984211995",
-     "duration": 9,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:36",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0501630375",
-     "duration": 28,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:35",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0501630375",
-     "duration": 28,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:35",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0974503780",
-     "duration": 28,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:29",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0974503780",
+     "phone": "0994767614",
      "duration": 26,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 14:29",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:18",
+     "summary": "Клієнт зателефонував у відповідь на пропущений виклик. Голосовий асистент Амелія перенаправила дзвінок до відповідного відділу для з'єднання.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Только что звонили мне, я не успел поднять трубку. Пусть перезвонят еще раз.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Угу, зрозуміло. Зараз з'єднаю з тим відділом, що вам телефонував. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452829",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0974503780",
-     "duration": 23,
+     "phone": "0677406883",
+     "duration": 18,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 14:28",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:14",
+     "summary": "Клієнт звернувся з метою придбання ліжка. Голосовий асистент Амелія прийняла запит та перенаправила виклик до відповідного відділу.",
+     "transcript": [
+      {
+       "text": "Доброго дня! Мене звати Амелія. Я голосовий асистент компанії Амеблі і я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Придбати ліжко.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452826",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0676596446",
-     "duration": 142,
+     "phone": "0950908512",
+     "duration": 19,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 14:27",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:13",
+     "summary": "Голосовий асистент Амелія прийняла вхідний дзвінок. Клієнт повідомив, що звертається щодо попереднього дзвінка, після чого оператор розпочала процес переадресації.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Попередній дзвінок.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452824",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0632190041",
-     "duration": 32,
+     "phone": "0994767614",
+     "duration": 29,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 14:24",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:13",
+     "summary": "Голосовий асистент Амелія прийняла дзвінок від клієнта, якого цікавить матрац розміром 2х1.40. Дзвінок було переадресовано до відділу продажу.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Амелія, я голосовий асистент компанії Амеблі, я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Питання по поводу матраса. Матраса два на метр сорок.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Ага, цікавить матрас. З'єдную з відділом продажу, вони все детально розкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:17",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "[Переадресація]",
+       "speaker": "unknown",
+       "timestamp": "00:27"
+      }
+     ],
+     "eval": {
+      "order_id": "452823",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0966143838",
+     "phone": "0950908512",
      "duration": 28,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 14:19",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:11",
+     "summary": "Голосовий асистент Амелія прийняла дзвінок від клієнта, який повідомив про повторне звернення. Асистент перенаправила виклик до відділу обслуговування клієнтів для подальшої допомоги.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Попередній дзвінок.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Ага, повторний дзвінок. Це наша промашка по комунікації. Підключаю менеджера першочергово. З'єдную вас з відділом обслуговування клієнтів, вони все знають. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:13",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452822",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0677468660",
-     "duration": 30,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 14:17",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0977441057",
+     "phone": "0994767614",
      "duration": 31,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 14:16",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:11",
+     "summary": "Голосовий асистент Амелія прийняла дзвінок від клієнта, який повідомив про доставку матраца невідповідного розміру. Дзвінок було перенаправлено до відділу обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Амелія, я голосовий асистент компанії Амеблі, і я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Питання таке, що... матрац не по розміру доставили.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Ой, як прикро, що так сталось. З'єдную вас з відділом обслуговування клієнтів, вони допоможуть вирішити питання з розміром. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:17",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452820",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0677468660",
-     "duration": 27,
+     "phone": "0990553304",
+     "duration": 11,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 14:16",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:11",
+     "summary": "Голосовий асистент Амелія привітала клієнта та запитала про суть звернення. Клієнт не надав відповіді до завершення запису.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Амелія, я голосовий асистент компанії Амеблі, я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452819",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 0
+     }
     },
     {
-     "phone": "0679159558",
-     "duration": 34,
+     "phone": "0990553304",
+     "duration": 16,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 13:55",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:10",
+     "summary": "Голосовий асистент Амелія привітала клієнта та запитала про мету дзвінка. Клієнт не надав відповіді, після чого розмова перервалася.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "[нерозбірливо]",
+       "speaker": "unknown",
+       "timestamp": "00:08"
+      }
+     ],
+     "eval": {
+      "order_id": "452815",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 0
+     }
     },
     {
-     "phone": "0501471290",
-     "duration": 26,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:46",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0501470020",
-     "duration": 42,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:40",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0503101849",
-     "duration": 284,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:37",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0990374987",
-     "duration": 32,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:30",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0932460493",
-     "duration": 24,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:27",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0961227855",
-     "duration": 27,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:20",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0671675665",
-     "duration": 31,
-     "status": "evaluated",
-     "end": "normal",
-     "date": "2026-06-19 13:17",
-     "summary": "",
-     "transcript": "",
-     "eval": null
-    },
-    {
-     "phone": "0669262705",
+     "phone": "0950908512",
      "duration": 25,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 13:16",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:06",
+     "summary": "Клієнт звернувся з питанням щодо матраца для ліжка. Голосовий асистент Амелія ідентифікувала запит та перевела дзвінок на відділ продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Матрас для ліжка.",
+       "speaker": "client",
+       "timestamp": "00:09"
+      },
+      {
+       "text": "О, вас цікавить матрац? З'єдную з відділом продажу. Там підкажуть по моделях, наявності та ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:12",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Перек...",
+       "speaker": "unknown",
+       "timestamp": "00:23"
+      }
+     ],
+     "eval": {
+      "order_id": "452810",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0963703739",
-     "duration": 58,
+     "phone": "0979387276",
+     "duration": 61,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 12:41",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:03",
+     "summary": "Голосовий асистент Амелія привітала клієнта та запитала про суть звернення. Розмова завершилася до того, як клієнт встиг відповісти.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Амелія, я голосовий асистент компанії Амеблі, я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452808",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 0
+     }
     },
     {
-     "phone": "0963703739",
-     "duration": 5,
+     "phone": "0674595059",
+     "duration": 22,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 12:40",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 10:01",
+     "summary": "Голосовий асистент Амелія прийняла дзвінок від клієнта. Клієнт попросив з'єднати його з менеджером, після чого асистент розпочала процес переадресації.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Амелія, я голосовий асистент компанії Амеблі, я направляю запит клієнта на правильний відділ, скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Треба менеджера мені.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Угу, з'єдную вас з менеджером, залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452805",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0971618062",
+     "phone": "0994767614",
+     "duration": 138,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:59",
+     "summary": "Голосовий асистент Амелія привіталася та запитала про суть звернення, проте клієнт не надав відповіді. Протягом більшої частини розмови спостерігалася тиша, після чого виклик було завершено.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направлю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Слухаю вас, не поспішайте.",
+       "speaker": "operator",
+       "timestamp": "01:51",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452804",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 0
+     }
+    },
+    {
+     "phone": "0674595059",
      "duration": 26,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 12:40",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 09:57",
+     "summary": "Клієнт звернувся з питанням щодо повернення коштів. Голосовий асистент Амелія ідентифікувала запит та перенаправила виклик до відділу обслуговування клієнтів.",
+     "transcript": [
+      {
+       "text": "Доброго дня! Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Возврат грошей.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "Ага, повернення коштів. З'єдную вас з відділом обслуговування клієнтів, там вирішать це питання. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "unknown",
+       "timestamp": "00:24"
+      }
+     ],
+     "eval": {
+      "order_id": "452803",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0674034202",
-     "duration": 31,
+     "phone": "0674595059",
+     "duration": 28,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 12:39",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 09:54",
+     "summary": "Клієнт звернувся з питанням щодо повернення товару. Голосовий асистент Амелія перенаправила виклик до відділу обслуговування клієнтів для подальшого вирішення питання.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Е-е, мені треба зв'язатися з менеджером з приводу повернення.",
+       "speaker": "client",
+       "timestamp": "00:09"
+      },
+      {
+       "text": "Ой, розумію, питання повернення. З'єдную вас з відділом обслуговування клієнтів, там допоможуть з поверненням. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452802",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0968827583",
-     "duration": 42,
+     "phone": "0667818692",
+     "duration": 43,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 12:39",
-     "summary": "",
-     "transcript": "",
-     "eval": null
+     "date": "2026-06-30 09:47",
+     "summary": "Клієнт звернувся за консультацією щодо термінів початку експлуатації щойно отриманого матраца. Оператор Амелія перенаправила виклик до відділу продажу для надання детальної інформації.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Доброго дня, Амелія. В мене таке питання: нам надійшов матрац, який ми у вас замовляли, і мені потрібна консультація спеціаліста, через який час його можна експлуатувати.",
+       "speaker": "client",
+       "timestamp": "00:12"
+      },
+      {
+       "text": "Ага, зрозуміло. Щодо часу експлуатації матраца, з'єдную вас з відділом продажу, вони все детально розкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:29",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Дуже дякую.",
+       "speaker": "client",
+       "timestamp": "00:38"
+      }
+     ],
+     "eval": {
+      "order_id": "452796",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
     },
     {
-     "phone": "0666543352",
+     "phone": "0508611514",
+     "duration": 32,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:42",
+     "summary": "Клієнт звернувся до компанії «А-меблі» з питанням щодо затримки відправлення замовлення. Голосовий асистент Амелія перенаправила виклик до відділу обслуговування клієнтів для подальшої консультації.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії А-меблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Уточнити з приводу замовлення, яке ми робили в магазині, а нам його досі не відправили.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "О, по замовленню. З'єдную вас з відділом обслуговування клієнтів. Вони бачать ваше замовлення і все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:19",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452788",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0675659549",
      "duration": 24,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 12:35",
+     "date": "2026-06-30 09:14",
+     "summary": "Клієнт звернувся до компанії з питанням щодо повернення товару. Голосовий асистент Амелія перенаправила виклик до відповідного відділу обслуговування.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Повернення товару.",
+       "speaker": "client",
+       "timestamp": "00:09"
+      },
+      {
+       "text": "О, повернення товару. З'єдную вас з відділом обслуговування клієнтів, там допоможуть з поверненням. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:12",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "unknown",
+       "timestamp": "00:23"
+      }
+     ],
+     "eval": {
+      "order_id": "452768",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0503396845",
+     "duration": 17,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:13",
+     "summary": "Клієнт звернувся до голосового асистента Амелії з питанням щодо повернення коштів. Асистент розпочала процес переадресації виклику до відповідного відділу.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Повернення коштів.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452767",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0675659549",
+     "duration": 57,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:12",
+     "summary": "Клієнт звернувся до голосового асистента Амелії з питанням щодо повернення коштів. Асистент перенаправив виклик до відповідного відділу обслуговування.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Повернення коштів.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "О, повернення коштів. З'єдную вас з відділом обслуговування.",
+       "speaker": "operator",
+       "timestamp": "00:12",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452764",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0675659549",
+     "duration": 10,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:12",
+     "summary": "Голосовий асистент Амелія привіталася з клієнтом та запитала про мету дзвінка для подальшого спрямування у потрібний відділ. Клієнт встиг лише сказати «Алло» перед завершенням запису.",
+     "transcript": [
+      {
+       "text": "Алло",
+       "speaker": "client",
+       "timestamp": "00:00"
+      },
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452763",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 0
+     }
+    },
+    {
+     "phone": "0675659549",
+     "duration": 17,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:11",
+     "summary": "Клієнт звернувся до голосового асистента Амелії з питанням щодо повернення коштів. Асистент розпочав переадресацію виклику до відповідного відділу.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Повернення коштів.",
+       "speaker": "client",
+       "timestamp": "00:09"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452762",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0952828700",
+     "duration": 36,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:00",
+     "summary": "Клієнт звернувся зі скаргою на затримку виготовлення топера, який мали доставити ще минулого тижня. Голосовий асистент Амелія перенаправила дзвінок до відділу обслуговування клієнтів для вирішення питання.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії А-меблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Питання по виробництву топера, який я замовила, мені обіцяли ще в четвер на тій неділі. Максимум п'ятниця. Сьогодні вже вівторок слідуючої неділі.",
+       "speaker": "client",
+       "timestamp": "00:09"
+      },
+      {
+       "text": "Ой божечки, як же так склалось. Давайте розбиратися. З'єдную вас з відділом обслуговування клієнтів, вони бачать ваше замовлення та все підкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:21",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "[звук переадресації]",
+       "speaker": "unknown",
+       "timestamp": "00:31"
+      }
+     ],
+     "eval": {
+      "order_id": "452748",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0965465505",
+     "duration": 10,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 09:00",
+     "summary": "Голосовий асистент Амелія привітала клієнта та запитала про мету дзвінка. Клієнт не надав відповіді, розмова завершилася.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Амелія, я голосовий асистент компанії Амеблі.",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:04",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452745",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 0
+     }
+    },
+    {
+     "phone": "0973031097",
+     "duration": 26,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:57",
+     "summary": "Клієнт звернувся з метою замовлення матраца топпера. Голосовий асистент Амелія ідентифікувала запит та перевела дзвінок на відділ продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Замовити хочу матрац топпер.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "О, хочете замовити матрац? З'єдную вас з відділом продажу. Там вам підкажуть по моделях, наявності і ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:13",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452740",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0979387276",
+     "duration": 29,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:57",
+     "summary": "Клієнтка звернулася до компанії «Амеблі» з метою придбання ортопедичного матраца. Голосовий асистент Амелія перенаправила дзвінок до відділу продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Хочу купити матрац ортопедичний.",
+       "speaker": "client",
+       "timestamp": "00:13"
+      },
+      {
+       "text": "Ага, цікавить матрац. З'єдную з відділом продажу, вони все детально розкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:17",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452739",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0631868578",
+     "duration": 21,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:56",
+     "summary": "Клієнт звернувся до компанії Амеблі з питанням щодо співпраці. Голосовий асистент Амелія перенаправила виклик до відповідного відділу.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Співпраця.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "По співпраці передаю у відповідний відділ, залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:12",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Переключаю.",
+       "speaker": "operator",
+       "timestamp": "00:19",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452737",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0978421755",
+     "duration": 21,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:56",
+     "summary": "Клієнт звернувся зі скаргою на те, що з ним не зв'язалися протягом двох днів, і попросив перетелефонувати. Голосовий асистент Амелія розпочала процес переадресації виклику до відповідного відділу.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Можна мені передзвонити, тому що зі мною так ніхто і не зв'язався вже два дні.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Пере...",
+       "speaker": "operator",
+       "timestamp": "00:18",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452736",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0503101849",
+     "duration": 18,
+     "status": "failed",
+     "end": "normal",
+     "date": "2026-06-30 08:55",
      "summary": "",
      "transcript": "",
      "eval": null
     },
     {
-     "phone": "0674034202",
-     "duration": 30,
+     "phone": "0631868578",
+     "duration": 23,
      "status": "evaluated",
      "end": "normal",
-     "date": "2026-06-19 12:34",
+     "date": "2026-06-30 08:54",
+     "summary": "Клієнт зателефонував з питанням щодо співпраці. Голосовий асистент Амелія перенаправила виклик до відповідного відділу.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Співпраця.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "Ага, співпраця. З'єдную вас із відділом співпраці. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:12",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452730",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0503101849",
+     "duration": 59,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:54",
+     "summary": "Клієнт зателефонував, щоб дізнатися статус доставки купленого матраца. Голосовий асистент Амелія перенаправила дзвінок до профільного відділу.",
+     "transcript": [
+      {
+       "text": "Доброго дня. Мене звати Амелія. Я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Я купив матрац і чекаю на доставку.",
+       "speaker": "client",
+       "timestamp": "00:10"
+      },
+      {
+       "text": "О, по замовленню. З'єдную вас з...",
+       "speaker": "operator",
+       "timestamp": "00:14",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452729",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0677384861",
+     "duration": 16,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:50",
+     "summary": "Голосовий асистент Амелія привітала клієнта та запитала про суть звернення. Клієнт не надав відповіді, тому розмова завершилася безрезультатно.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:01",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452726",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 0
+     }
+    },
+    {
+     "phone": "0973031097",
+     "duration": 27,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:49",
+     "summary": "Клієнтка зателефонувала, щоб замовити матрац-топпер. Голосовий асистент Амелія ідентифікувала запит та перенаправила виклик до відділу продажів.",
+     "transcript": [
+      {
+       "text": "Доброго дня! Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Хочу замовити матрац-топпер.",
+       "speaker": "client",
+       "timestamp": "00:12"
+      },
+      {
+       "text": "Ага, цікавить матрац. З'єдную з відділом продажу, вони все детально розкажуть. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:15",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Дякую.",
+       "speaker": "client",
+       "timestamp": "00:22"
+      }
+     ],
+     "eval": {
+      "order_id": "452725",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0936408113",
+     "duration": 25,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:37",
+     "summary": "Голосовий асистент Амелія прийняла дзвінок від клієнта, який хотів оформити замовлення. Оператор перенаправила виклик до відділу продажів для подальшої консультації.",
+     "transcript": [
+      {
+       "text": "Доброго дня! Мене звати Амелія, я голосовий асистент компанії Амеблі. Я направляю запит клієнта на правильний відділ. Скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "Оформити замовлення.",
+       "speaker": "client",
+       "timestamp": "00:11"
+      },
+      {
+       "text": "О, по новому замовленню. З відділом продажу, там підкажуть по моделях, наявності і ціні. Залишайтесь, будь ласка, на лінії.",
+       "speaker": "operator",
+       "timestamp": "00:13",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452709",
+      "transferred": true,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 1
+     }
+    },
+    {
+     "phone": "0936408113",
+     "duration": 5,
+     "status": "evaluated",
+     "end": "normal",
+     "date": "2026-06-30 08:36",
+     "summary": "Голосовий асистент Амелія привітала клієнта та запитала про мету дзвінка. Клієнт не надав відповіді, і розмова завершилася на етапі привітання.",
+     "transcript": [
+      {
+       "text": "Доброго дня, мене звати Амелія, я голосовий асистент компанії Амеблі,",
+       "speaker": "operator",
+       "timestamp": "00:00",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "я направляю запит клієнта на правильний відділ,",
+       "speaker": "operator",
+       "timestamp": "00:03",
+       "speakerName": "Амелія"
+      },
+      {
+       "text": "скажіть, будь ласка, яке у вас питання?",
+       "speaker": "operator",
+       "timestamp": "00:06",
+       "speakerName": "Амелія"
+      }
+     ],
+     "eval": {
+      "order_id": "452708",
+      "transferred": false,
+      "is_obscenely": false,
+      "operator_name": "Амелія",
+      "transferred_count": 0
+     }
+    },
+    {
+     "phone": "0936408113",
+     "duration": 40,
+     "status": "failed",
+     "end": "normal",
+     "date": "2026-06-30 08:35",
+     "summary": "",
+     "transcript": "",
+     "eval": null
+    },
+    {
+     "phone": "0503396845",
+     "duration": 91,
+     "status": "failed",
+     "end": "normal",
+     "date": "2026-06-30 08:35",
      "summary": "",
      "transcript": "",
      "eval": null
@@ -2644,11 +5704,11 @@
   }
  ],
  "totals": {
-  "calls": 7476,
-  "completed": 7462,
-  "failed": 12,
-  "answered": 7454,
-  "with_transcript": 0,
-  "with_eval": 0
+  "calls": 7852,
+  "completed": 7827,
+  "failed": 18,
+  "answered": 7826,
+  "with_transcript": 194,
+  "with_eval": 194
  }
 }
